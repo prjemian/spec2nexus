@@ -10,7 +10,7 @@ Converts SPEC data files and scans into NeXus HDF5 files
 :license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
 :URL:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
-:documentation: -tba-
+:documentation: http://prjemian.github.io/spec2nexus
 
 Provides
 ########
@@ -70,7 +70,8 @@ nexpy     http://nexpy.github.io/nexpy/
 How to use spec2nexus
 #####################
 
-See the documentation for complete instructions.
+See the documentation (http://spec2nexus.github.io/spec2nexus) 
+for complete instructions.
 
 simple use
 **********
