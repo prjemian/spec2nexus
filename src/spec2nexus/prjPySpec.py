@@ -25,7 +25,8 @@ to read and interpret the information.
 :author: Pete Jemian
 :email: jemian@anl.gov
 
-:Dependencies:
+**Dependencies**
+
 * os: operating system package
 * re: regular expression package
 * sys: system package
@@ -319,7 +320,7 @@ def main(spec_file_name = None):
     """
     if spec_file_name is None:
         path = os.path.dirname(__file__)
-        path = os.path.join(path, '..', '..', 'data')
+        path = os.path.join(path, 'data')
         spec_dir = os.path.abspath(path)
         spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
         os.chdir(spec_dir)

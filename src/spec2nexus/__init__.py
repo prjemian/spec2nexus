@@ -10,9 +10,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import spec2nexus
-
-__version__ = '2014-02-18'
+__version__ = '2014-02-19'
 __author__ = 'Pete R. Jemian'
 __email__ = 'prjemian@gmail.com'
 __copyright__ = '2014, Pete R. Jemian'

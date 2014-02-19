@@ -21,6 +21,12 @@ import sys                          #@UnusedImport
 import time
 import numpy as np                  #@UnusedImport
 from nexpy.api.nexus import NXroot, NXentry, NXfield, NXdata, NXlog
+
+if __name__ == "__main__":
+    # put us on the path for developers
+    path = os.path.join('..', os.path.dirname(__file__))
+    sys.path.insert(0, os.path.abspath(path))
+
 import spec2nexus
 import prjPySpec
 
@@ -282,7 +288,7 @@ def developer_test():
     """
     test support for specific scans
     """
-    spec_file_name = os.path.join('..', '..', 'data', '33id_spec.dat')
+    spec_file_name = os.path.join('data', '33id_spec.dat')
     spec_data = prjPySpec.SpecDataFile(spec_file_name)
     scan = spec_data.getScan(22)
     print str(scan)
@@ -410,15 +416,16 @@ def main():
     
     # developer test items
     #sys.argv.append('--help')
+    #sys.argv.append('-V')
     #sys.argv.append('-q')
     #sys.argv.append('-v')
     #sys.argv.append('-f')
     #sys.argv.append('-t')
     #sys.argv.append('-s 19,1-4,19')
     #sys.argv.append('-s 2')
-    #sys.argv.append(os.path.join('..', '..', 'data', 'APS_spec_data.dat'))
-    #sys.argv.append(os.path.join('..', '..', 'data', '33id_spec.dat'))
-    #sys.argv.append(os.path.join('..', '..', 'data', '33bm_spec.dat'))
+    #sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
+    #sys.argv.append(os.path.join('data', '33id_spec.dat'))
+    #sys.argv.append(os.path.join('data', '33bm_spec.dat'))
 
     user_parms = get_user_parameters()
 

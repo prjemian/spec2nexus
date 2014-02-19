@@ -38,7 +38,10 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        requires = ('numpy', 'h5py', 'nexpy'),   # intend to drop nexpy requirement
        package_dir = {'': 'src'},
        packages = ['spec2nexus', ],
-       #packages=find_packages(),       
+       #packages=find_packages(),
+       package_data = {
+                       'spec2nexus': ['data/*'],
+                       },
        classifiers= ['Development Status :: 4 - Beta'], # converting to independent project from nexpy
 #        classifiers= ['Development Status :: 5 - Production/Stable',
 #                      'Intended Audience :: Developers',

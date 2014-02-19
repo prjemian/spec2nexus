@@ -13,15 +13,16 @@
 
 
 '''
-eznx: (Easy NeXus) support reading & writing NeXus HDF5 files using h5py
+(Easy NeXus) support reading & writing NeXus HDF5 files using h5py
 
-:source: NeXus h5py example code: ``my_lib.py``
-:URL: http://download.nexusformat.org/doc/html/examples/h5py/index.html#mylib-support-module
+:predecessor: NeXus h5py example code: ``my_lib.py`` [#]_
+
+.. [#] http://download.nexusformat.org/doc/html/examples/h5py/index.html#mylib-support-module
 '''
 
 
 import h5py    # HDF5 support
-import numpy   # in this case, provides data structures
+#import numpy   # in this case, provides data structures
 
 
 def makeFile(filename, **attr):
@@ -30,7 +31,7 @@ def makeFile(filename, **attr):
     
     Any named parameters in the call to this method will be saved as
     attributes of the root of the file.
-    Note that **attr is a dictionary of named parameters.
+    Note that ``**attr`` is a dictionary of named parameters.
 
     :param str filename: valid file name
     :param attr: optional keywords of attributes
@@ -46,14 +47,15 @@ def makeGroup(parent, name, nxclass, **attr):
     create a NeXus group
     
     Any named parameters in the call to this method 
-	will be saved as attributes of the group.
-    Note that **attr is a dictionary of named parameters.
-
+    will be saved as attributes of the group.
+    Note that ``**attr`` is a dictionary of named parameters.
+    
     :param obj parent: parent group
     :param str name: valid NeXus group name
     :param str nxclass: valid NeXus class name
     :param attr: optional keywords of attributes
     :return: h5py group object
+
     """
     obj = parent.create_group(name)
     obj.attrs["NX_class"] = nxclass
@@ -113,7 +115,7 @@ def makeExternalLink(hdf5FileObject, sourceFile, sourcePath, targetPath):
        its ".file" and ".parent" properties will refer to 
        objects in that file, not the file in which the link resides.
 
-    .. see:: http://www.h5py.org/docs-1.3/guide/group.html#external-links
+    :see: http://www.h5py.org/docs-1.3/guide/group.html#external-links
     
     This routine is provided as a reminder how to do this simple operation.
     """

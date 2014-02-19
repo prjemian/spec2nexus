@@ -1,0 +1,32 @@
+..
+  This file describes user-visible changes between the versions.
+
+Change History
+##############
+
+Development: GitHub repository
+******************************
+
+* 2014-02-18: fork to GitHub to make generally available
+
+Development: NeXpy branch
+*************************
+
+* 2014-01: briefly, a branch in https://github.com/nexpy/nexpy
+
+  * spec2nexus added during this phase
+  * relies on nexpy.api.nexus for NeXus support
+
+Production: USAXS livedata
+**************************
+
+* 2010-2014: production use
+
+  * support livedata WWW page of APS USAXS instrument
+  
+    * (http://usaxs.xray.aps.anl.gov/livedata/),
+
+  * https://subversion.xray.aps.anl.gov/trac/small_angle/browser/USAXS/livedata/prjPySpec.py
+  * converted from Tcl
+
+* 2000-2010: Tcl code (*readSpecData.tcl*) in production use at APS sectors 32, 33, & 34
