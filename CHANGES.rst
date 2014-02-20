@@ -8,6 +8,7 @@ Change History
 Development: GitHub repository
 ******************************
 
+* 2014.02.20: version number fits PEP440, LICENSE file included in sdist, more documentation and examples
 * 2014-02-19: reference published documentation (re-posted)
 * 2014-02-19: add documentation framework
 * 2014-02-18: fork to GitHub to make generally available

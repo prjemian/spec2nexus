@@ -8,9 +8,9 @@ Converts SPEC data files and scans into NeXus HDF5 files
 :email:     prjemian@gmail.com
 :copyright: 2014, Pete R. Jemian
 :license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
-:URL:       https://github.com/prjemian/spec2nexus
+:URL:       http://prjemian.github.io/spec2nexus
+:git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
-:documentation: http://prjemian.github.io/spec2nexus
 
 Provides
 ########
@@ -90,7 +90,7 @@ show installed version
 Verify the version of the installed spec2nexus::
 
    $ spec2nexus  -V
-   2014-02-18
+   2014.02.20
 
 Help on usage
 *************

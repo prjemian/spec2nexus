@@ -1,2 +1,2 @@
 include README.rst
-include LICENSE.txt
+include src/spec2nexus/LICENSE.txt

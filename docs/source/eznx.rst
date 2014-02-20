@@ -10,6 +10,41 @@ eznx
 How to use :mod:`spec2nexus.eznx`
 *********************************
 
+Here is a simple example to write a NeXus data file using eznx:
+
+.. literalinclude:: ../../src/spec2nexus/eznx_example.py
+   :tab-width: 4
+   :linenos:
+   :language: guess
+
+The output of this code is an HDF5 file (binary).
+It has this structure::
+
+	eznx_example.hdf5:NeXus data file
+	  entry:NXentry
+	    @NX_class = NXentry
+	    data:NXdata
+	      @NX_class = NXdata
+	      counts --> /entry/instrument/detector/counts
+	      two_theta --> /entry/instrument/detector/two_theta
+	    instrument:NXinstrument
+	      @NX_class = NXinstrument
+	      detector:NXdetector
+	        @NX_class = NXdetector
+	        counts:NX_FLOAT64[11] = __array
+	          @units = counts
+	          @signal = 1
+	          @axes = two_theta
+	          @target = /entry/instrument/detector/counts
+	          __array = [1037.0, 2857.0, 23819.0, '...', 1321.0]
+	        two_theta:NX_FLOAT64[11] = __array
+	          @units = degrees
+	          @target = /entry/instrument/detector/two_theta
+	          __array = [17.926079999999999, 17.92558, 17.925080000000001, '...', 17.92108]
+
+
+----
+
 source code documentation
 *************************
 

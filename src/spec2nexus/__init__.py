@@ -7,10 +7,10 @@
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
-# The full license is in the file LICENSE, distributed with this software.
+# The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__ = '2014-02-19'
+__version__ = '2014.02.20'
 __author__ = 'Pete R. Jemian'
 __email__ = 'prjemian@gmail.com'
 __copyright__ = '2014, Pete R. Jemian'
@@ -21,6 +21,6 @@ __license__ = 'Creative Commons Attribution 4.0 International Public License (se
 __description__ = 'Converts SPEC data files and scans into NeXus HDF5 files'
 __author_name__ = __author__
 __author_email__ = __email__
-__url__ = 'https://github.com/prjemian/spec2nexus'
+__url__ = 'http://prjemian.github.io/spec2nexus'
 __download_url__ = 'https://github.com/prjemian/spec2nexus/tarball/' + __version__
 __keywords__ = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
