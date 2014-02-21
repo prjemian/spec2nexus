@@ -3,7 +3,6 @@ spec2nexus
 
 Converts SPEC data files and scans into NeXus HDF5 files
 
-:status:    forking from NeXpy *prjPySpec* branch
 :author:    Pete R. Jemian
 :email:     prjemian@gmail.com
 :copyright: 2014, Pete R. Jemian

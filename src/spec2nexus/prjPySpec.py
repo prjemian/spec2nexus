@@ -33,12 +33,12 @@ to read and interpret the information.
 
 """
 
+
+# TODO:   add a plug-in architecture to parse metadata (issue #2)
+
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
-
-
-__version__ = 'prjPySpec_2014-01-21'
 
 
 def specScanLine_stripKey(line):
