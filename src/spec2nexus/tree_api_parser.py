@@ -24,6 +24,7 @@ import spec2nexus
 
 
 class Parser(object):
+    ''' '''
     
     def __init__(self, spec_data):
         self.SPECfile = spec_data

@@ -12,7 +12,11 @@
 #-----------------------------------------------------------------------------
 
 
-'''Parses SPEC data using spec2nexus.eznx API (only requires h5py)'''
+'''
+Parses SPEC data using spec2nexus.eznx API (only requires h5py)
+
+.. warning:: The *eznx_api_parser* code is not ready for production use yet.
+'''
 
 # TODO:   develop eznx parser (issue #1)
 
@@ -26,6 +30,7 @@ import spec2nexus
 
 
 class Parser(object):
+    ''' '''
     
     def __init__(self, spec_data):
         self.SPECfile = spec_data
@@ -34,12 +39,17 @@ class Parser(object):
         '''
         convert scans from chosen SPEC file into h5py object and structure
         
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Figure out how this should be called.  
-        eznx builds the tree differently than nexpy.api.nexus.tree
-        For example, eznx opens the file at the start while tree saves it at the end.
+        .. warning::
+            Figure out how this should be called.  
+            eznx builds the tree differently than nexpy.api.nexus.tree
+            For example, eznx opens the file at the start while tree saves it at the end.
+
         Here's the example code.
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+        .. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+        ::
+        
             f = eznx.makeFile(HDF5_FILE)  # create the HDF5 NeXus file
             
             nxentry = eznx.makeGroup(f, 'entry', 'NXentry')
@@ -55,14 +65,15 @@ class Parser(object):
             eznx.makeLink(nxdetector, counts, nxdata.name+'/counts')
 
             f.close()    # be CERTAIN to close the file
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        .. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         Each scan in the range from self.scanmin to self.scanmax (inclusive)
         will be converted to a NXentry.  Scan data will go in a NXdata where 
         the signal=1 is the last column and the corresponding axes= is the first column.
         
-        :param [int] scanlist
-        :raises: ValueError is Min or Max scan number are not given properly
+        :param [int] scanlist: list of scan numbers to be read
+        :raises ValueError: when Min or Max scan number are not given properly
         '''
         # check that scan_list is valid
         if len(scan_list) == 0:

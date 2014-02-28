@@ -34,7 +34,7 @@ def makeFile(filename, **attr):
     Note that ``**attr`` is a dictionary of named parameters.
 
     :param str filename: valid file name
-    :param attr: optional keywords of attributes
+    :param dict attr: optional dictionary of attributes
     :return: h5py file object
     """
     obj = h5py.File(filename, "w")
@@ -53,7 +53,7 @@ def makeGroup(parent, name, nxclass, **attr):
     :param obj parent: parent group
     :param str name: valid NeXus group name
     :param str nxclass: valid NeXus class name
-    :param attr: optional keywords of attributes
+    :param dict attr: optional dictionary of attributes
     :return: h5py group object
 
     """
@@ -61,6 +61,22 @@ def makeGroup(parent, name, nxclass, **attr):
     obj.attrs["NX_class"] = nxclass
     addAttributes(obj, **attr)
     return obj
+
+
+def openGroup(parent, name, nx_class, **attr):
+    '''open or create the NeXus/HDF5 group, return the object
+
+    :param obj parent: h5py parent object
+    :param str name: valid NeXus group name to open or create
+    :param str nxclass: valid NeXus class name (base class or application definition)
+    :param dict attr: optional dictionary of attributes
+    '''
+    try:
+        group = parent[name]
+        addAttributes(parent, **attr)
+    except KeyError:
+        group = makeGroup(parent, name, nx_class, **attr)
+    return group
 
 
 def makeDataset(parent, name, data = None, **attr):
@@ -72,8 +88,8 @@ def makeDataset(parent, name, data = None, **attr):
 
     :param obj parent: parent group
     :param str name: valid NeXus dataset name
-    :param obj data: the data to be saved
-    :param attr: optional keywords of attributes
+    :param obj data: the information to be written
+    :param dict attr: optional dictionary of attributes
     :return: h5py dataset object
     '''
     if data == None:
@@ -82,6 +98,23 @@ def makeDataset(parent, name, data = None, **attr):
         obj = parent.create_dataset(name, data=data)
     addAttributes(obj, **attr)
     return obj
+
+
+def write_dataset(parent, name, data, **attr):
+    '''write to the NeXus/HDF5 dataset, create it if necessary, return the object
+
+    :param obj parent: h5py parent object
+    :param str name: valid NeXus dataset name to write
+    :param obj data: the information to be written
+    :param dict attr: optional dictionary of attributes
+    '''
+    try:
+        dset = parent[name]
+        dset[:] = data
+        addAttributes(dset, **attr)
+    except KeyError:
+        dset = makeDataset(parent, name, data, **attr)
+    return dset
 
 
 def makeLink(parent, sourceObject, targetName):
@@ -127,7 +160,7 @@ def addAttributes(parent, **attr):
     add attributes to an h5py data item
 
     :param obj parent: h5py parent object
-    :param dict attr: dictionary of attributes
+    :param dict attr: optional dictionary of attributes
     """
     if attr and type(attr) == type({}):
         # attr is a dictionary of attributes
