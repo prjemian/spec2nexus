@@ -95,6 +95,8 @@ def makeDataset(parent, name, data = None, **attr):
     if data == None:
         obj = parent.create_dataset(name)
     else:
+        if isinstance(data, float) or isinstance(data, int):
+            data = [data,]
         obj = parent.create_dataset(name, data=data)
     addAttributes(obj, **attr)
     return obj

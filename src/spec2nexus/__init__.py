@@ -10,7 +10,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__ = '2014.02.28'
+__version__ = '2014.03.02'
 __author__ = 'Pete R. Jemian'
 __email__ = 'prjemian@gmail.com'
 __copyright__ = '2014, Pete R. Jemian'
@@ -34,7 +34,7 @@ import time
 
 
 def reshape_data(scan_data, scan_shape):
-    # modified from nexpy.readers.readspec.reshape_data
+    '''modified from nexpy.readers.readspec.reshape_data'''
     scan_size = np.prod(scan_shape)
     if scan_data.size == scan_size:
         data = scan_data
@@ -48,7 +48,20 @@ def reshape_data(scan_data, scan_shape):
     return data.reshape(scan_shape)
 
 
-def sanitize_name(group, key):
+def sanitize_name(group, key):      # TODO: group object is not used, deprecate to clean_name() below
+    '''make name that is allowed by HDF5 and NeXus rules
+    
+    :see: http://download.nexusformat.org/doc/html/datarules.html
+    
+    sanitized name fits this regexp::
+    
+        [A-Za-z_][\w_]*
+    
+    An easier expression might be:  ``[\w_]*`` but this will not pass
+    the rule that valid names cannot start with a digit.
+
+    :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
+    '''
     # see: http://download.nexusformat.org/doc/html/datarules.html
     # clean name fits this regexp:  [A-Za-z_][\w_]*
     # easier:  [\w_]* but cannot start with a digit
@@ -60,8 +73,28 @@ def sanitize_name(group, key):
     return txt
 
 
+def clean_name(key):
+    '''make name that is allowed by HDF5 and NeXus rules
+    
+    :see: http://download.nexusformat.org/doc/html/datarules.html
+    
+    sanitized name fits this regexp::
+    
+        [A-Za-z_][\w_]*
+    
+    An easier expression might be:  ``[\w_]*`` but this will not pass
+    the rule that valid names cannot start with a digit.
+    '''
+    replacement = '_'
+    noncompliance = '[^\w_]'
+    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
+    if txt[0].isdigit():
+        txt = replacement + txt # can't start with a digit
+    return txt
+
+
 def iso8601(date):
-    # parse time from SPEC (example: Wed Nov 03 13:39:34 2010)
+    ''''parse time from SPEC (example: Wed Nov 03 13:39:34 2010)'''
     spec_fmt = '%a %b %d %H:%M:%S %Y'
     t = time.strptime(date, spec_fmt)
     # convert to ISO8601 format (example: 2010-11-03T13:39:34)

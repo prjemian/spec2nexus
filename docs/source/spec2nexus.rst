@@ -38,7 +38,6 @@ command-line options
      -s SCAN_LIST, --scan SCAN_LIST
                            specify which scans to save, such as: -s all or -s 1
                            or -s 1,2,3-5 (no spaces!), default = all
-     -t, --tree-only       print NeXus/HDF5 node tree (does not save to a file)
      -q, --quiet           suppress all program output (except errors), do not
                            use with -v option
      -v, --verbose         print more program output, do not use with -q option

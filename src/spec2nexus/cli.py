@@ -26,26 +26,13 @@ if __name__ == "__main__":
 
 import spec2nexus
 import prjPySpec
-import tree_api_parser
+from spec2nexus import prjPySpec2eznx
 
 
 hdf5_extension = '.hdf5'
 
 
 #-------------------------------------------------------------------------------------------
-
-
-def developer_test():
-    """
-    test support for specific scans
-    """
-    spec_file_name = os.path.join('data', '33id_spec.dat')
-    spec_data = prjPySpec.SpecDataFile(spec_file_name)
-    scan = spec_data.getScan(22)
-    print str(scan)
-    root = tree_api_parser.Parser(spec_data).toTree([22])
-    #print root._str_tree(indent=2, attrs=True, recursive=True)
-    print root.tree
 
 
 REPORTING_QUIET    = 'quiet'
@@ -92,12 +79,12 @@ def get_user_parameters():
                         dest='scan_list',
                         default=SCAN_LIST_ALL,
                         help=msg)
-    parser.add_argument('-t', 
-                        '--tree-only', 
-                        action='store_true',
-                        dest='tree_only',
-                        help='print NeXus/HDF5 node tree (does not save to a file)',
-                        default=False)
+#     parser.add_argument('-t', 
+#                         '--tree-only', 
+#                         action='store_true',
+#                         dest='tree_only',
+#                         help='print NeXus/HDF5 node tree (does not save to a file)',
+#                         default=False)
 
     group = parser.add_mutually_exclusive_group()
     group.set_defaults(reporting_level=REPORTING_STANDARD)
@@ -171,15 +158,11 @@ def main():
     #sys.argv.append('-q')
     #sys.argv.append('-v')
     #sys.argv.append('-f')
-    #sys.argv.append('-t')
-    #sys.argv.append('-s 19,1-4,19')
+    #sys.argv.append('-s 19,5-9,19')
     #sys.argv.append('-s 2')
-    #sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
+    sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
     #sys.argv.append(os.path.join('data', '33id_spec.dat'))
     #sys.argv.append(os.path.join('data', '33bm_spec.dat'))
-    
-    # FIXME:  routine looks too complicated
-    # TODO:   change to use eznx parser (issue #1)
 
     user_parms = get_user_parameters()
 
@@ -188,15 +171,8 @@ def main():
     if user_parms.scan_list != SCAN_LIST_ALL:
         user_parms.scan_list = parse_scan_list_spec(user_parms.scan_list)
     
-    if user_parms.tree_only:
-        if user_parms.reporting_level in (REPORTING_QUIET):
-            msg = 'do not use -t/--tree-only and -q/--quiet options together'
-            raise ValueError, msg
-        elif user_parms.reporting_level in (REPORTING_VERBOSE):
-            user_parms.reporting_level = REPORTING_STANDARD
-    else:
-        if not user_parms.hdf5_extension.startswith(os.extsep):
-            user_parms.hdf5_extension = os.extsep + user_parms.hdf5_extension
+    if not user_parms.hdf5_extension.startswith(os.extsep):
+        user_parms.hdf5_extension = os.extsep + user_parms.hdf5_extension
 
     for spec_data_file_name in spec_data_file_name_list:
         if not os.path.exists(spec_data_file_name):
@@ -205,8 +181,7 @@ def main():
             continue
 
         if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
-            if not user_parms.tree_only:
-                print 'reading SPEC data file: '+spec_data_file_name
+            print 'reading SPEC data file: '+spec_data_file_name
         spec_data = prjPySpec.SpecDataFile(spec_data_file_name)
     
         scan_list = pick_scans(spec_data.scans.keys(), user_parms.scan_list)
@@ -214,19 +189,14 @@ def main():
             print '  discovered', len(spec_data.scans.keys()), ' scans'
             print '  converting scans: '  +  ', '.join(map(str, scan_list))
 
-        tree = tree_api_parser.Parser(spec_data).toTree(scan_list)
-    
-        if user_parms.tree_only:
-            print tree.tree
-        else:
-            basename = os.path.splitext(spec_data_file_name)[0]
-            nexus_output_file_name = basename + user_parms.hdf5_extension
-            if user_parms.force_write or not os.path.exists(nexus_output_file_name):
-                tree.save(nexus_output_file_name)
-                if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
-                    print 'wrote NeXus HDF5 file: ' + nexus_output_file_name
+        basename = os.path.splitext(spec_data_file_name)[0]
+        nexus_output_file_name = basename + user_parms.hdf5_extension
+        if user_parms.force_write or not os.path.exists(nexus_output_file_name):
+            out = prjPySpec2eznx.Writer(spec_data)
+            out.save(nexus_output_file_name, scan_list)
+            if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+                print 'wrote NeXus HDF5 file: ' + nexus_output_file_name
 
 
 if __name__ == "__main__":
-    #developer_test()
     main()
