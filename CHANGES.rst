@@ -4,6 +4,10 @@
 Change History
 ##############
 
+Production
+**********
+
+* 2014.03.02: drops nexus tree API (and its dependencies) in favor of native h5py writer
 
 Development: GitHub repository
 ******************************

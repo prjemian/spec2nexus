@@ -49,7 +49,7 @@ APIs provided:
 .. toctree::
    :maxdepth: 1
    
-   eznx_api_parser.rst
+   prjPySpec2eznx.rst
    tree_api_parser.rst
 
 ----

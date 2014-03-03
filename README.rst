@@ -10,6 +10,7 @@ Converts SPEC data files and scans into NeXus HDF5 files
 :URL:       http://prjemian.github.io/spec2nexus
 :git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
+:Ohloh:     http://ohloh.net/p/spec2nexus
 
 Provides
 ########
@@ -63,7 +64,6 @@ Library   URL
 ========  =============================
 h5py      http://www.h5py.org
 numpy     http://numpy.scipy.org/
-nexpy     http://nexpy.github.io/nexpy/
 ========  =============================
 
 How to use spec2nexus
@@ -89,7 +89,7 @@ show installed version
 Verify the version of the installed spec2nexus::
 
    $ spec2nexus  -V
-   2014.02.20
+   2014.03.02
 
 Help on usage
 *************
@@ -116,7 +116,6 @@ Help on usage
      -s SCAN_LIST, --scan SCAN_LIST
                            specify which scans to save, such as: -s all or -s 1
                            or -s 1,2,3-5 (no spaces!), default = all
-     -t, --tree-only       print NeXus/HDF5 node tree (does not save to a file)
      -q, --quiet           suppress all program output (except errors), do not
                            use with -v option
      -v, --verbose         print more program output, do not use with -q option

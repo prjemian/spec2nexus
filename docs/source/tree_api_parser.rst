@@ -3,6 +3,7 @@
 tree_api_parser
 ###############
 
+This API is intended for use with the NeXpy (https://github.com/nexpy/nexpy) project.
 
 ----
 

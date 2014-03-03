@@ -1,7 +1,7 @@
-.. _eznx_api_parser:
+.. _prjPySpec2eznx:
 
-eznx_api_parser
-###############
+prjPySpec2eznx
+##############
 
 
 ----
@@ -9,7 +9,7 @@ eznx_api_parser
 source code documentation
 *************************
 
-.. automodule:: spec2nexus.eznx_api_parser
+.. automodule:: spec2nexus.prjPySpec2eznx
     :members: 
     :synopsis: Parses SPEC data using spec2nexus.eznx API (only requires h5py)
     
