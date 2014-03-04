@@ -39,7 +39,7 @@ The :meth:`~spec2nexus.prjPySpec.SpecDataFile.read` method is called automatical
 
 * :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : data file was not found
 * :meth:`~spec2nexus.prjPySpec.SpecDataFileCouldNotOpen` : data file could not be opened
-* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : content of file is not SPEC data (first line must start with ``#F`)
+* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : content of file is not SPEC data (first line must start with ``#F``)
 
 .. rubric:: Example
 
@@ -72,11 +72,13 @@ import sys      #@UnusedImport
 class SpecDataFileNotFound(Exception): 
     '''data file was not found'''
     pass
+
 class SpecDataFileCouldNotOpen(Exception): 
     '''data file could not be opened'''
     pass
+
 class NotASpecDataFile(Exception): 
-    '''content of file is not SPEC data (first line must start with ``#F`)'''
+    '''content of file is not SPEC data (first line must start with ``#F``)'''
     pass
     
 
