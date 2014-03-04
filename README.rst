@@ -103,6 +103,9 @@ Help on usage
    
    spec2nexus: Convert SPEC data file into a NeXus HDF5 file.
    
+   ...
+
+..   
    positional arguments:
      infile                SPEC data file name(s)
    

@@ -25,11 +25,38 @@ to read and interpret the information.
 :author: Pete Jemian
 :email: jemian@anl.gov
 
-**Dependencies**
+.. rubric:: Dependencies
 
 * os: operating system package
 * re: regular expression package
 * sys: system package
+
+:meth:`~spec2nexus.prjPySpec.SpecDataFile` is the only class users will need to call.
+All other :mod:`~spec2nexus.prjPySpec` classes are called from this class.
+The :meth:`~spec2nexus.prjPySpec.SpecDataFile.read` method is called automatically.
+
+.. rubric:: Exceptions raised
+
+* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : data file was not found
+* :meth:`~spec2nexus.prjPySpec.SpecDataFileCouldNotOpen` : data file could not be opened
+* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : content of file is not SPEC data (first line must start with ``#F`)
+
+.. rubric:: Example
+
+>>> from spec2nexus import prjPySpec
+>>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
+>>> print spec_data.fileName
+path/to/my/spec_data.dat
+>>> print 'first scan: ', spec_data.getMinScanNumber()
+1
+>>> print 'last scan: ', spec_data.getMaxScanNumber()
+22
+>>> spec_data = prjPySpec.SpecDataFile('missing_file')
+Traceback (most recent call last):
+  ...
+prjPySpec.SpecDataFileNotFound: file does not exist: missing_file
+
+.. rubric::  Classes and Methods
 
 """
 
@@ -42,6 +69,17 @@ import os       #@UnusedImport
 import sys      #@UnusedImport
 
 
+class SpecDataFileNotFound(Exception): 
+    '''data file was not found'''
+    pass
+class SpecDataFileCouldNotOpen(Exception): 
+    '''data file could not be opened'''
+    pass
+class NotASpecDataFile(Exception): 
+    '''content of file is not SPEC data (first line must start with ``#F`)'''
+    pass
+    
+
 def specScanLine_stripKey(line):
     """return everything after the first space on the line from the spec data file"""
     pos = line.find(" ")
@@ -53,7 +91,9 @@ def specScanLine_stripKey(line):
 
 
 class SpecDataFile(object):
-    """contents of a spec data file"""
+    '''
+    contents of a spec data file
+    '''
 
     fileName = ''
     parts = ''
@@ -63,25 +103,27 @@ class SpecDataFile(object):
     readOK = -1
 
     def __init__(self, filename):
-        self.fileName = filename
+        self.fileName = None
         self.errMsg = ''
         self.headers = []
         self.scans = {}
         self.readOK = -1
+        if not os.path.exists(filename):
+            raise SpecDataFileNotFound, 'file does not exist: ' + str(filename)
+        self.fileName = filename
         self.read()
 
     def read(self):
         """Reads a spec data file"""
         try:
             buf = open(self.fileName, 'r').read()
-        except:
-            self.errMsg = "\n Could not open spec file: " + self.fileName +"\n"
-            self.readOK = 1
-            return
+        except IOError:
+            msg = 'Could not open spec file: ' + str(self.fileName)
+            raise SpecDataFileCouldNotOpen, msg
         if (buf.count('#F ') <= 0):
+            msg = 'Not a spec data file: ' + str(self.fileName)
             self.errMsg = '\n' + self.fileName + ' is not a spec data file.\n'
-            self.readOK = 2
-            return
+            raise NotASpecDataFile, msg
         #------------------------------------------------------
         self.parts = buf.split('\n\n#')     # Break the spec file into component scans
         del buf                             # Dispose of the input buffer memory (necessary?)
