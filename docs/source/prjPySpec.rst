@@ -3,7 +3,7 @@
 prjPySpec
 #########
 
-Classes to read the contents of a SPEC data file.
+Library of classes to read the contents of a SPEC data file.
 
 .. index:: examples
 
@@ -38,6 +38,24 @@ For one example data file provided with spec2nexus, the output starts with::
  
 
 ----
+
+source code classes
+*******************
+
+.. autosummary::
+   :nosignatures:
+
+   ~spec2nexus.prjPySpec.SpecDataFile
+   ~spec2nexus.prjPySpec.SpecDataFileHeader
+   ~spec2nexus.prjPySpec.SpecDataFileScan
+
+source code methods
+*******************
+
+.. autosummary::
+   :nosignatures:
+
+   ~spec2nexus.prjPySpec.specScanLine_stripKey
 
 source code documentation
 *************************

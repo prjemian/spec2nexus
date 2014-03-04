@@ -35,6 +35,7 @@ to read and interpret the information.
 
 
 # TODO:   add a plug-in architecture to parse metadata (issue #2)
+# TODO: can this code handle SPEC files with no blank line before #S line?
 
 import re       #@UnusedImport
 import os       #@UnusedImport
@@ -151,6 +152,7 @@ class SpecDataFileHeader(object):
         for line in lines:
             i += 1
             key = line[0:2]
+            # TODO: handle these keys with plugins
             if (key == "#C"):
                 self.comments.append(specScanLine_stripKey(line))
             elif (key == "#D"):
@@ -214,6 +216,7 @@ class SpecDataFileScan(object):
             #print "[%s] %s" % (i, line)
             key = line[0:2]
             #print i, key
+            # TODO: handle these keys with plugins
             if (key[0] == "#"):
                 if (key == "#C"):
                     self.comments.append(specScanLine_stripKey(line))

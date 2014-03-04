@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 
+'''command-line tool to convert SPEC data files to NeXus HDF5'''
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
@@ -10,7 +12,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__ = '2014.03.02'
+__version__ = '2014.03.03'
 __author__ = 'Pete R. Jemian'
 __email__ = 'prjemian@gmail.com'
 __copyright__ = '2014, Pete R. Jemian'

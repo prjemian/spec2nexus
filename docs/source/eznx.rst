@@ -54,6 +54,23 @@ APIs provided:
 
 ----
 
+source code methods
+*******************
+
+.. autosummary::
+   :nosignatures:
+
+   ~spec2nexus.eznx.addAttributes
+   ~spec2nexus.eznx.makeFile
+   ~spec2nexus.eznx.makeDataset
+   ~spec2nexus.eznx.makeExternalLink
+   ~spec2nexus.eznx.makeGroup
+   ~spec2nexus.eznx.openGroup
+   ~spec2nexus.eznx.makeLink
+   ~spec2nexus.eznx.read_nexus_field
+   ~spec2nexus.eznx.read_nexus_group_fields
+   ~spec2nexus.eznx.write_dataset
+
 source code documentation
 *************************
 
