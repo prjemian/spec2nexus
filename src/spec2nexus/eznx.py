@@ -168,3 +168,43 @@ def addAttributes(parent, **attr):
         # attr is a dictionary of attributes
         for k, v in attr.items():
             parent.attrs[k] = v
+
+
+def read_nexus_field(parent, dataset_name, astype=None):
+    '''
+    get numpy data from the HDF5 dataset as a numpy structure
+    
+    :param obj parent: h5py parent object
+    :param str dataset_name: name of the dataset (NeXus field) to be read
+    :param obj astype: option to return as different numpy data type
+    '''
+    try:
+        dataset = parent[dataset_name]
+    except KeyError:
+        return None
+    dtype = dataset.dtype
+    if astype is not None:
+        dtype = astype
+    if len(dataset.shape) > 1:
+        raise RuntimeError, "unexpected %d-D data" % len(dataset.shape)
+    if dataset.size > 1:
+        return dataset[...].astype(dtype)   # as array
+    else:
+        return dataset[0].astype(dtype)     # as scalar
+
+
+def read_nexus_group_fields(parent, name, fields):
+    '''
+    return the fields in the NeXus group as a dict(name=dataset)
+    
+    This routine provides a mass way to read a directed list
+    of datasets (NeXus fields) in an HDF5 group.
+    
+    :param obj parent: h5py parent object
+    :param str name: name of the group containing the fields
+    :param [name] fields: list of field names to be read
+    :returns: dictionary of {name:dataset}
+    :raises KeyError: if a field is not found
+    '''
+    group = parent[name]
+    return {key: read_nexus_field(group, key) for key in fields}
