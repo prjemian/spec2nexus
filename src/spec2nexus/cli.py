@@ -160,7 +160,7 @@ def main():
     #sys.argv.append('-f')
     #sys.argv.append('-s 19,5-9,19')
     #sys.argv.append('-s 2')
-    sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
+    #sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
     #sys.argv.append(os.path.join('data', '33id_spec.dat'))
     #sys.argv.append(os.path.join('data', '33bm_spec.dat'))
 
