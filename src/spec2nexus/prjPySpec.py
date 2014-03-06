@@ -22,6 +22,50 @@ specifying the file reference (by path reference as needed)
 and the internal routines will take care of all that is necessary
 to read and interpret the information.
 
+.. rubric:: Assumption about data file structure
+
+The parser makes the assumption that a SPEC data file is composed from
+a sequence of component blocks.  The component blocks are either header 
+or scan blocks.  Header blocks have the first line starting with ``#F `` 
+while scan blocks have the first line starting with ``#S ``.  Usually,
+there is only one header block in a SPEC data file, followed by many 
+scan blocks.  The header block contains information common to all the 
+scan blocks that follow it.  Content for each block continues until 
+the next block starts or the file ends.  The pattern is:
+
+* #F line starts a header block
+* there could be multiple #F lines in a data file
+* #S lines start a SPEC scan
+* everything between #F and the next #S is header content
+* everything after a #S line is scan content (until EOF, the next #S or the next #F)
+
+.. rubric:: Additional assumptions
+
+* Lines that begin with ``#`` contain metadata of some form.
+* Lines that begin with ``@`` contain MCA data
+* Lines that begin with a number are data points
+* Line that are blank will be ignored
+* Lines that begin with anything else are unexpected and will be ignored
+
+For lines that begin with ``#``, these hold keys to some form of metadata.
+Some of the keys are identified and used by the SPEC standard.mac (and other) 
+macro files.  Other keys are left to the user to define.  There are two 
+general types of key, best described by a regular expression:
+
+====================  ============  ============================
+regexp                example       how it appears
+====================  ============  ============================
+``^#[a-zA-Z]+\s``     ``#S ``       by itself
+``^#[a-zA-Z]+\d+\s``  ``#P5 ``      part of a numbered series
+====================  ============  ============================
+
+Note that keys that appear as part of a numbered series (such as ``#O0 #O1 #O2`` ...),
+usually have numbers starting at 0.  Note that the SPEC geometry keys (``#G0 #G1`` ...)
+have meanings that are unique to specific diffractometer geometries including
+different numbers of values.  Consult the geometry macro file for specifics.
+
+
+
 :author: Pete Jemian
 :email: jemian@anl.gov
 
@@ -62,7 +106,6 @@ prjPySpec.SpecDataFileNotFound: file does not exist: missing_file
 
 
 # TODO:   add a plug-in architecture to parse metadata (issue #2)
-# TODO: can this code handle SPEC files with no blank line before #S line?
 
 import re       #@UnusedImport
 import os       #@UnusedImport
@@ -127,11 +170,16 @@ class SpecDataFile(object):
             self.errMsg = '\n' + self.fileName + ' is not a spec data file.\n'
             raise NotASpecDataFile, msg
         #------------------------------------------------------
-        self.parts = buf.split('\n\n#')     # Break the spec file into component scans
-        del buf                             # Dispose of the input buffer memory (necessary?)
-        for index, substr in enumerate(self.parts):
-            if (substr[0] != '#'):          # Was "#" stripped by the buf.split() above?
-                self.parts[index]= '#' + substr  # Reinstall the "#" character on each part
+        self.parts = []
+        buf = '\n' + buf                        # so the next search will always succeed
+        for part in buf.split('\n#F '):         # Break the spec file by header sections (usually just 1)
+            if len(part) == 0: continue
+            part = '#F ' + part         
+            for block in part.split('\n#S '):   # break header sections by scans
+                if not block.startswith('#'):
+                    block = '#S ' + block
+                self.parts.append(block)        # keep each block (starts with either #F or #S
+        del buf                                 # Dispose of the input buffer memory (necessary?)
         #------------------------------------------------------
         # pull the information from each scan head
         for part in self.parts:
@@ -164,10 +212,18 @@ class SpecDataFile(object):
         return self.scans[scan_number]
     
     def getMinScanNumber(self):
+        '''return the lowest numbered scan'''
         return min(self.scans.keys())
     
     def getMaxScanNumber(self):
+        '''return the highest numbered scan'''
         return max(self.scans.keys())
+    
+    def getScanCommands(self, scan_list=None):
+        '''return all the scan commands as a list, with scan number'''
+        if scan_list is None:
+            scan_list = sorted(self.scans.keys())
+        return ['#S ' + str(key) + self.scans[key].scanCmd for key in scan_list]
 
 
 #-------------------------------------------------------------------------------------------
@@ -210,6 +266,7 @@ class SpecDataFileHeader(object):
             elif (key == "#O"):
                 self.O.append(specScanLine_stripKey(line).split())
             else:
+                # TODO: do something with this (perhaps log it)
                 self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
         return
 
@@ -293,6 +350,7 @@ class SpecDataFileScan(object):
                 elif (key == "#V"):
                     self.V.append(specScanLine_stripKey(line))
                 else:
+                    # TODO: do something with this (perhaps log it)
                     self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
             elif len(line) < 2:
                 self.errMsg = "problem with  key " + key + " at scan header line " + str(i)
@@ -359,7 +417,7 @@ class SpecDataFileScan(object):
 #-------------------------------------------------------------------------------------------
 
 
-def main(spec_file_name = None):
+def developer_test(spec_file_name = None):
     """
     test the routines that read from the spec data file
     
@@ -369,7 +427,8 @@ def main(spec_file_name = None):
         path = os.path.dirname(__file__)
         path = os.path.join(path, 'data')
         spec_dir = os.path.abspath(path)
-        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it
@@ -397,7 +456,8 @@ def main(spec_file_name = None):
     # test = SpecDataFile('07_02_sn281_8950.dat')
     print test.getScan(1).L
     print test.getScan(5)
+    print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
 
 
 if __name__ == "__main__":
-    main()
+    developer_test()
