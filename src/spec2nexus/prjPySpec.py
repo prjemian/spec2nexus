@@ -26,8 +26,8 @@ to read and interpret the information.
 
 The parser makes the assumption that a SPEC data file is composed from
 a sequence of component blocks.  The component blocks are either header 
-or scan blocks.  Header blocks have the first line starting with ``#F `` 
-while scan blocks have the first line starting with ``#S ``.  Usually,
+or scan blocks.  Header blocks have the first line starting with ``#F``
+while scan blocks have the first line starting with ``#S``.  Usually,
 there is only one header block in a SPEC data file, followed by many 
 scan blocks.  The header block contains information common to all the 
 scan blocks that follow it.  Content for each block continues until 
@@ -55,8 +55,8 @@ general types of key, best described by a regular expression:
 ====================  ============  ============================
 regexp                example       how it appears
 ====================  ============  ============================
-``^#[a-zA-Z]+\s``     ``#S ``       by itself
-``^#[a-zA-Z]+\d+\s``  ``#P5 ``      part of a numbered series
+``^#[a-zA-Z]+\s``     ``#S``        by itself
+``^#[a-zA-Z]+\d+\s``  ``#P5``       part of a numbered series
 ====================  ============  ============================
 
 Note that keys that appear as part of a numbered series (such as ``#O0 #O1 #O2`` ...),
