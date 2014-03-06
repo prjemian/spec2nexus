@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+* 2014.03.051: prjPySpec now handles SPEC v6 data file header additions, add new getScanCommands() method
 * 2014.03.04: (2014_Mardi_Gras release) removed nexpy project requirement from setup, prjPySpec raises exceptions now
 * 2014.03.02: drops nexus tree API (and its dependencies) in favor of native h5py writer
 
