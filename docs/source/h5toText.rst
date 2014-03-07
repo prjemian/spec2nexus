@@ -16,7 +16,7 @@ Here's an example from a test data file
 .. code-block:: guess
     :linenos:
 
-      [linux,512]$ h5toText -h data/writer_1_3.h5
+      [linux,512]$ h5toText data/writer_1_3.h5
       data/writer_1_3.h5 : NeXus data file
         Scan:NXentry
           @NX_class = NXentry
