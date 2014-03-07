@@ -14,8 +14,9 @@ Provides
 .. index:: SPEC, NeXus, HDF5, h5py
 
 * :ref:`spec2nexus`  : command-line tool to convert SPEC data files to NeXus HDF5
-* :ref:`prjPySpec`   : python binding to read SPEC [#]_ data files
 * :ref:`eznx`        : (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
+* :ref:`h5toText`    : Print the structure of an HDF5 file
+* :ref:`prjPySpec`   : python binding to read SPEC [#]_ data files
 
 .. [#] http://certif.com
 .. [#] http://nexusformat.org

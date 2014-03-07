@@ -22,6 +22,8 @@ specifying the file reference (by path reference as needed)
 and the internal routines will take care of all that is necessary
 to read and interpret the information.
 
+.. index:: SPEC data file structure
+
 .. rubric:: Assumption about data file structure
 
 The parser makes the assumption that a SPEC data file is composed from
@@ -123,7 +125,36 @@ class SpecDataFileCouldNotOpen(Exception):
 class NotASpecDataFile(Exception): 
     '''content of file is not SPEC data (first line must start with ``#F``)'''
     pass
+
+
+def is_spec_file(filename):
+    '''
+    test if a given file name is a SPEC data file
+
+    filename is a spec file only if:
     
+    * the first line begins with #F
+    
+    The next two lines might begin with:
+
+    * #E
+    * #D
+
+    but this is not guaranteed
+    '''
+    test = False
+    f = open(filename)
+    line = f.readline()
+    if line.split()[0] == "#F":
+        #line = f.readline()
+        #print filename, "|", line, "|"
+        #if line.split()[0] == "#E":
+        #    line = f.readline()
+        #    if line.split()[0] == "#D":
+        test = True
+    f.close()
+    return test
+
 
 def specScanLine_stripKey(line):
     """return everything after the first space on the line from the spec data file"""
@@ -155,6 +186,8 @@ class SpecDataFile(object):
         self.readOK = -1
         if not os.path.exists(filename):
             raise SpecDataFileNotFound, 'file does not exist: ' + str(filename)
+        if not is_spec_file(filename):
+            raise NotASpecDataFile, 'not a SPEC data file: ' + str(filename)
         self.fileName = filename
         self.read()
 
@@ -165,9 +198,9 @@ class SpecDataFile(object):
         except IOError:
             msg = 'Could not open spec file: ' + str(self.fileName)
             raise SpecDataFileCouldNotOpen, msg
-        if (buf.count('#F ') <= 0):
+        if not is_spec_file(self.fileName):
             msg = 'Not a spec data file: ' + str(self.fileName)
-            self.errMsg = '\n' + self.fileName + ' is not a spec data file.\n'
+            self.errMsg = '\n' + msg + '\n'
             raise NotASpecDataFile, msg
         #------------------------------------------------------
         self.parts = []

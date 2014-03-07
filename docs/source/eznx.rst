@@ -18,7 +18,10 @@ Here is a simple example to write a NeXus data file using eznx:
    :language: guess
 
 The output of this code is an HDF5 file (binary).
-It has this structure::
+It has this structure:
+
+.. code-block:: guess
+    :linenos:
 
 	eznx_example.hdf5:NeXus data file
 	  entry:NXentry
@@ -41,6 +44,46 @@ It has this structure::
 	          @units = degrees
 	          @target = /entry/instrument/detector/two_theta
 	          __array = [17.926079999999999, 17.92558, 17.925080000000001, '...', 17.92108]
+
+NeXus HDF5 File Structure
+*************************
+
+The output of this code is an HDF5 file (binary).
+It has this general structure (indentation shows HDF5 groups, 
+@ signs describe attributes of the preceding item):
+
+.. code-block:: guess
+    :linenos:
+
+      hdf5_file:NeXus data file
+         S1:NXentry     (one NXentry for each scan)
+            title = #S
+            T or M: #T or #M
+            comments: #C for entire scan
+            date: #D
+            scan_number: #S
+            G:NXcollection
+               @description = SPEC geometry arrays, meanings defined by SPEC diffractometer support
+               G0:NX_FLOAT64[] #G0
+               G1:NX_FLOAT64[] #G1
+               ...
+            data:NXdata
+               @description = SPEC scan data (content from #L and data lines)
+               Epoch:NX_FLOAT64[]
+               I0:NX_FLOAT64[]         (last data column)
+                 @spec_name = I0
+                 @signal = 1
+                 @axes = mr
+               mr:NX_FLOAT64[]         (first data column)
+               ...
+            metadata:NXcollection
+               @description = SPEC metadata (UNICAT-style #H & #V lines)
+               ARenc_0:NX_FLOAT64 = 0.0
+               ...
+            positioners:NXcollection
+               @description = SPEC positioners (#P & #O lines)
+               mr:NX_FLOAT64
+               ...
 
 
 

@@ -8,6 +8,7 @@ Contents
    overview
    spec2nexus
    prjPySpec
+   h5toText
    eznx
    changes
    license

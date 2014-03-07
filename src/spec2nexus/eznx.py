@@ -46,6 +46,8 @@
     Out[7]: <HDF5 dataset "counts": shape (4,), type "<i8">
     In [8]: root.close()
 
+.. index:: NeXus structure; SPEC data
+
 The resulting (binary) data file has this structure::
 
     test.h5:NeXus data file
@@ -142,7 +144,7 @@ def makeDataset(parent, name, data = None, **attr):
     if data == None:
         obj = parent.create_dataset(name)
     else:
-        if isinstance(data, float) or isinstance(data, int):
+        if isinstance(data, float) or isinstance(data, int) or isinstance(data, str):
             data = [data,]
         obj = parent.create_dataset(name, data=data)
     addAttributes(obj, **attr)
