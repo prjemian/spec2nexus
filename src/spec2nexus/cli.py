@@ -12,7 +12,11 @@
 #-----------------------------------------------------------------------------
 
 
-'''Converts SPEC data files and scans into NeXus HDF5 files'''
+'''
+Converts SPEC data files and scans into NeXus HDF5 files
+
+(http://prjemian.github.io/spec2nexus/spec2nexus.html)
+'''
 
 
 import os                           #@UnusedImport
@@ -45,8 +49,9 @@ def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     global hdf5_extension
     import argparse
-    parser = argparse.ArgumentParser(prog='spec2nexus', 
-                                     description=main.__doc__.strip())
+    doc = __doc__.strip()
+    doc += ' v' + spec2nexus.__version__
+    parser = argparse.ArgumentParser(prog='spec2nexus', description=doc)
     parser.add_argument('infile', 
                         action='store', 
                         nargs='+', 
@@ -150,7 +155,7 @@ def pick_scans(all_scans, opt_scan_list):
 
 
 def main():
-    '''spec2nexus: Convert SPEC data file into a NeXus HDF5 file.'''
+    '''entry point for command-line interface'''
     
     # developer test items
     #sys.argv.append('--help')

@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
-'''Command line tool to print the structure of an HDF5 file'''
+'''
+Command line tool to print the structure of an HDF5 file
+
+(http://prjemian.github.io/spec2nexus/h5toText.html)
+'''
 
 
+import os       #@UnusedImport
+import sys      #@UnusedImport
 import h5py
-import os
-import sys
 import numpy
 import spec2nexus
 
@@ -16,7 +20,8 @@ class H5toText(object):
     
         mc = H5toText(filename)
         mc.array_items_shown = 5
-        mc.report()
+        show_attributes = False
+        txt = mc.report(show_attributes)
     '''
     requested_filename = None
     isNeXus = False
@@ -26,17 +31,19 @@ class H5toText(object):
         '''store filename and test if file is NeXus HDF5'''
         self.requested_filename = filename
         self.filename = None
+        self.show_attributes = True
         if os.path.exists(filename):
             self.filename = filename
             self.isNeXus = isNeXusFile(filename)
 
-    def report(self):
+    def report(self, show_attributes=True):
         '''
         return the structure of the HDF5 file in a list of strings
         
         The work of parsing the datafile is done in this method.
         '''
         if self.filename is None: return None
+        self.show_attributes = show_attributes
         f = h5py.File(self.filename, 'r')
         txt = self.filename
         if self.isNeXus:
@@ -97,8 +104,9 @@ class H5toText(object):
     def _renderAttributes(self, obj, indentation = "  "):
         '''return a [formatted_string] with any attributes'''
         s = []
-        for name, value in obj.attrs.iteritems():
-            s.append("%s  @%s = %s" % (indentation, name, str(value)))
+        if self.show_attributes:
+            for name, value in obj.attrs.iteritems():
+                s.append("%s  @%s = %s" % (indentation, name, str(value)))
         return s
 
     def _renderLinkedObject(self, obj, name, indentation = "  "):
@@ -134,10 +142,16 @@ class H5toText(object):
         else:
 
             if self.array_items_shown > 2:
-                s += [ "%s%s:%s%s = __array" % (
-                        indentation, name, txType, txShape) ]
                 value = self._renderArray(dset, indentation + '  ')
-                s += [ "%s  %s = %s" % (indentation, "__array", value) ]
+                if len(dset.shape) < 2:
+                    # show the array inline with the field
+                    s += [ "%s%s:%s%s = %s" % (
+                            indentation, name, txType, txShape, value) ]
+                else:
+                    # show multi-D arrays different
+                    s += [ "%s%s:%s%s = __array" % (
+                            indentation, name, txType, txShape) ]
+                    s += [ "%s  %s = %s" % (indentation, "__array", value) ]
             else:
                 s += [ "%s%s:%s%s = [ ... ]" % (
                         indentation, name, txType, txShape) ]
@@ -235,18 +249,21 @@ def isNeXusFile(filename):
     '''
     try:
         f = h5py.File(filename, 'r')
-        if isHdf5File(f):
-            for node0 in f.values():
-                if isNeXusGroup(node0, 'NXentry'):
-                    for node1 in node0.values():
-                        if isNeXusGroup(node1, 'NXdata'):
-                            signal1_count = 0   # count datasets with signal=1 attribute
-                            for node2 in node1.values():
-                                if isNeXusDataset(node2):
-                                    if node2.attrs.get('signal', None) in (1, '1'):
-                                        signal1_count += 1
-                            if signal1_count == 1:  # ensure only 1 is defined
-                                return True
+        if not isHdf5File(f):
+            f.close()
+            return False
+        for node0 in f.values():
+            if not isNeXusGroup(node0, 'NXentry'):
+                continue
+            for node1 in node0.values():
+                if not isNeXusGroup(node1, 'NXdata'):
+                    continue
+                signal1_count = 0   # count datasets with signal=1 attribute
+                for node2 in node1.values():
+                    if isNeXusDataset(node2) and node2.attrs.get('signal', None) in (1, '1'):
+                        signal1_count += 1
+                if signal1_count == 1:  # ensure only 1 is defined
+                    return True
         f.close()
     except:
         pass    # ignore any Exceptions, they mean that result stays "False"
@@ -299,9 +316,9 @@ def isHdf5ExternalLink(obj):
     return isinstance(obj, h5py.ExternalLink)
 
 
-def do_filelist(filelist, limit=5):
+def do_filelist(filelist, limit=5, show_attributes=True):
     '''
-    interpret the structure of a list of HDF5 files
+    interpret and print the structure of a list of HDF5 files
     
     :param [str] filelist: one or more file names to be interpreted
     :param int limit: maximum number of array items to be shown (default = 5)
@@ -309,48 +326,36 @@ def do_filelist(filelist, limit=5):
     for item in filelist:
         mc = H5toText(item)
         mc.array_items_shown = limit
-        report = mc.report()
+        report = mc.report(show_attributes)
         if report is not None:
             print '\n'.join(report)
 
 
-def get_test_file_list():
-    path = os.path.dirname(os.path.abspath(__file__))
-    filelist = []
-    testfiles = (
-                 'generic2dqtimeseries.h5',
-                 'generic2dtimetpseries.h5',
-                 'mydata.h5',
-                 'NXtest.h5',
-                 'writer_1_3.h5',
-                 'writer_2_1.h5',
-                 'simple.nxs',
-                 'bad.h5',
-                 )
-    for item in testfiles:
-        hdf5File = os.path.join(path, '..', '..', 'data', item)
-        filelist.append(os.path.abspath(hdf5File))
-    
-    return filelist
-
-
 def main():
     '''standard command-line interface'''
+    NUM_DISPLAYED_DEFAULT = 5
+    NUM_DISPLAYED_MIN = 3
     import argparse
-    parser = argparse.ArgumentParser(prog='h5toText', 
-                                     description=__doc__.strip())
+    doc = __doc__.strip()
+    doc += ' v' + spec2nexus.__version__
+    parser = argparse.ArgumentParser(prog='h5toText', description=doc)
     parser.add_argument('infile', 
                         action='store', 
                         nargs='+', 
                         help="HDF5 data file name(s)")
     msg =  "limit number of displayed array items to NUM_DISPLAYED"
-    msg += " (must be 3 or more or 'None')"
-    msg += ", default = %s" % '5'
+    msg += " (must be >=%d or 'None')" % NUM_DISPLAYED_MIN
+    msg += ", default = %s" % str(NUM_DISPLAYED_DEFAULT)
     parser.add_argument('-n', 
                         action='store', 
                         dest='num_displayed', 
                         help=msg, 
-                        default='5')
+                        default=str(NUM_DISPLAYED_DEFAULT))
+    parser.add_argument('-a', 
+                        action='store_false', 
+                        default=True,
+                        dest='show_attributes',
+                        help='Do not print attributes')
     parser.add_argument('-V', 
                         '--version', 
                         action='version', 
@@ -360,14 +365,15 @@ def main():
     if cmd_args.num_displayed.lower() == "none":
         limit = None
     else:
-        limit = max(3, int(cmd_args.num_displayed))
-    do_filelist(cmd_args.infile, limit=limit)
+        limit = max(NUM_DISPLAYED_MIN, int(cmd_args.num_displayed))
+    do_filelist(cmd_args.infile, limit, cmd_args.show_attributes)
 
 
 if __name__ == '__main__':
-    sys.argv = [sys.argv[0],]
+#     sys.argv = [sys.argv[0],]
 #     sys.argv.append('-h')
 #     sys.argv.append('-V')
+#     sys.argv.append('-a')
 #     sys.argv.append('-n')
 #     sys.argv.append('6')
 #     sys.argv.append('data/writer_1_3.h5')
