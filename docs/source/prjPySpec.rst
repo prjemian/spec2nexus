@@ -93,6 +93,49 @@ SPEC data file keys
 
 SPEC data files are composed of a sequence of file header block and scan blocks.
 
+..
+
+	2014-03-07 from Gerry
+
+	Here is a list from the comments in the new file.mac macro source file:
+	
+	===============  ===================================================================================
+	key              description
+	===============  ===================================================================================
+	#C               comment line
+	#D date          current date and time in UNIX format
+	#E num           the UNIX epoch (seconds from 00:00 GMT 1/1/70)
+	#F name          name by which file was created
+	#G1 ...          geometry parameters from G[] array (geo mode, sector, etc)
+	#G2 ...          geometry parameters from U[] array (lattice constants, orientation reflections)
+	#G3 ...          geometry parameters from UB[] array (orientation matrix)
+	#G4 ...          geometry parameters from Q[] array (lambda, frozen angles, cut points, etc)
+	#I num           a normalizing factor to apply to the data
+	#j% ...          mnemonics of counter (% = 0,1,2,... with eight counters per row)
+	#J% ...          names of counters (each separated by two spaces)
+	#L s1  ...       labels for the data columns
+	#M num           data was counted to this many monitor counts
+	#N num [num2]    number of columns of data [ num2 sets per row ]
+	#o% ...          mnemonics of motors (% = 0,1,2,... with eight motors per row)
+	#O% ...          names of motors (each separated by two spaces)
+	#P% ...          positions of motors corresponding to above #O/#o
+	#Q               a reciprocal space position (H K L)
+	#R               user-defined results from a scan
+	#S num           scan number
+	#T num           data was counted for this many seconds
+	#U               user defined
+	#X               a temperature
+	#@MCA fmt        this scan contains MCA data (array_dump() format, as in "%16C")
+	#@CALIB a b c    coefficients for x[i] = a + b * i + c * i * i for MCA data
+	#@CHANN n f l r  MCA channel information (number_saved, first_saved, last_saved, reduction coef)
+	#@CTIME p l r    MCA count times (preset_time, elapsed_live_time, elapsed_real_time)
+	#@ROI n f l      MCA ROI channel information (ROI_name, first_chan, last_chan)
+	===============  ===================================================================================
+
+
+
+
+
 Tables of keys in SPEC data file header blocks
 ==============================================
 
