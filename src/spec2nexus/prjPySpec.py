@@ -15,92 +15,99 @@
 """
 Provides a set of classes to read the contents of a SPEC data file.
 
-Includes the UNICAT extensions which write additional metadata
+:author: Pete Jemian
+:email: jemian@anl.gov
+
+:meth:`~spec2nexus.prjPySpec.SpecDataFile` is the only class users will need to call.
+All other :mod:`~spec2nexus.prjPySpec` classes are called from this class.
+The :meth:`~spec2nexus.prjPySpec.SpecDataFile.read` method is called automatically.
+
+Includes the UNICAT control lines which write additional metadata
 in the scan headers using #H/#V pairs of labels/values.
 The user should create a class instance for each spec data file,
 specifying the file reference (by path reference as needed)
 and the internal routines will take care of all that is necessary
 to read and interpret the information.
 
-.. index:: SPEC data file structure
+..  -----------------------------------------------------------------------------------------
+    old documentation
+    -----------------------------------------------------------------------------------------
 
-.. rubric:: Assumption about data file structure
+    The parser makes the assumption that a SPEC data file is composed from
+    a sequence of component blocks.  The component blocks are either header 
+    or scan blocks.  Header blocks have the first line starting with ``#F``
+    while scan blocks have the first line starting with ``#S``.  Usually,
+    there is only one header block in a SPEC data file, followed by many 
+    scan blocks.  The header block contains information common to all the 
+    scan blocks that follow it.  Content for each block continues until 
+    the next block starts or the file ends.  The pattern is:
+    
+    * #F line starts a header block
+    * there could be multiple #F lines in a data file
+    * #S lines start a SPEC scan
+    * everything between #F and the next #S is header content
+    * everything after a #S line is scan content (until EOF, the next #S or the next #F)
+    
+    .. rubric:: Additional assumptions
+    
+    * Lines that begin with ``#`` contain metadata of some form.
+    * Lines that begin with ``@`` contain MCA data
+    * Lines that begin with a number are data points
+    * Line that are blank will be ignored
+    * Lines that begin with anything else are unexpected and will be ignored
+    
+    For lines that begin with ``#``, these hold keys to some form of metadata.
+    Some of the keys are identified and used by the SPEC standard.mac (and other) 
+    macro files.  Other keys are left to the user to define.  There are two 
+    general types of key, best described by a regular expression:
 
-The parser makes the assumption that a SPEC data file is composed from
-a sequence of component blocks.  The component blocks are either header 
-or scan blocks.  Header blocks have the first line starting with ``#F``
-while scan blocks have the first line starting with ``#S``.  Usually,
-there is only one header block in a SPEC data file, followed by many 
-scan blocks.  The header block contains information common to all the 
-scan blocks that follow it.  Content for each block continues until 
-the next block starts or the file ends.  The pattern is:
+    ====================  ============  ============================
+    regexp                example       how it appears
+    ====================  ============  ============================
+    ``^#[a-zA-Z]+\s``     ``#S``        by itself
+    ``^#[a-zA-Z]+\d+\s``  ``#P5``       part of a numbered series
+    ====================  ============  ============================
+    
+    Note that keys that appear as part of a numbered series (such as ``#O0 #O1 #O2`` ...),
+    usually have numbers starting at 0.  
+    -----------------------------------------------------------------------------------------
 
-* #F line starts a header block
-* there could be multiple #F lines in a data file
-* #S lines start a SPEC scan
-* everything between #F and the next #S is header content
-* everything after a #S line is scan content (until EOF, the next #S or the next #F)
-
-.. rubric:: Additional assumptions
-
-* Lines that begin with ``#`` contain metadata of some form.
-* Lines that begin with ``@`` contain MCA data
-* Lines that begin with a number are data points
-* Line that are blank will be ignored
-* Lines that begin with anything else are unexpected and will be ignored
-
-For lines that begin with ``#``, these hold keys to some form of metadata.
-Some of the keys are identified and used by the SPEC standard.mac (and other) 
-macro files.  Other keys are left to the user to define.  There are two 
-general types of key, best described by a regular expression:
-
-====================  ============  ============================
-regexp                example       how it appears
-====================  ============  ============================
-``^#[a-zA-Z]+\s``     ``#S``        by itself
-``^#[a-zA-Z]+\d+\s``  ``#P5``       part of a numbered series
-====================  ============  ============================
-
-Note that keys that appear as part of a numbered series (such as ``#O0 #O1 #O2`` ...),
-usually have numbers starting at 0.  Note that the SPEC geometry keys (``#G0 #G1`` ...)
+Note that the SPEC geometry control lines (``#G0 #G1`` ...)
 have meanings that are unique to specific diffractometer geometries including
 different numbers of values.  Consult the geometry macro file for specifics.
 
 
 
-:author: Pete Jemian
-:email: jemian@anl.gov
+.. rubric:: Examples
 
-.. rubric:: Dependencies
+Get the first and last scan numbers from the file:
 
-* os: operating system package
-* re: regular expression package
-* sys: system package
+    >>> from spec2nexus import prjPySpec
+    >>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> print spec_data.fileName
+    path/to/my/spec_data.dat
+    >>> print 'first scan: ', spec_data.getMinScanNumber()
+    1
+    >>> print 'last scan: ', spec_data.getMaxScanNumber()
+    22
 
-:meth:`~spec2nexus.prjPySpec.SpecDataFile` is the only class users will need to call.
-All other :mod:`~spec2nexus.prjPySpec` classes are called from this class.
-The :meth:`~spec2nexus.prjPySpec.SpecDataFile.read` method is called automatically.
+Get plottable data from scan number 10:
 
-.. rubric:: Exceptions raised
+    >>> from spec2nexus import prjPySpec
+    >>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> scan10 = spec_data.getScan(10)
+    >>> x_label = scan10.L[0]
+    >>> y_label = scan10.L[-1]
+    >>> x_data = scan10.data[x_label]
+    >>> y_data = scan10.data[y_label]
 
-* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : data file was not found
-* :meth:`~spec2nexus.prjPySpec.SpecDataFileCouldNotOpen` : data file could not be opened
-* :meth:`~spec2nexus.prjPySpec.SpecDataFileNotFound` : content of file is not SPEC data (first line must start with ``#F``)
 
-.. rubric:: Example
+Try to read a file that does not exist:
 
->>> from spec2nexus import prjPySpec
->>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
->>> print spec_data.fileName
-path/to/my/spec_data.dat
->>> print 'first scan: ', spec_data.getMinScanNumber()
-1
->>> print 'last scan: ', spec_data.getMaxScanNumber()
-22
->>> spec_data = prjPySpec.SpecDataFile('missing_file')
-Traceback (most recent call last):
-  ...
-prjPySpec.SpecDataFileNotFound: file does not exist: missing_file
+    >>> spec_data = prjPySpec.SpecDataFile('missing_file')
+    Traceback (most recent call last):
+      ...
+    prjPySpec.SpecDataFileNotFound: file does not exist: missing_file
 
 .. rubric::  Classes and Methods
 
@@ -114,11 +121,11 @@ import os       #@UnusedImport
 import sys      #@UnusedImport
 
 
-class SpecDataFileNotFound(Exception): 
+class SpecDataFileNotFound(IOError): 
     '''data file was not found'''
     pass
 
-class SpecDataFileCouldNotOpen(Exception): 
+class SpecDataFileCouldNotOpen(IOError): 
     '''data file could not be opened'''
     pass
 
@@ -130,30 +137,34 @@ class NotASpecDataFile(Exception):
 def is_spec_file(filename):
     '''
     test if a given file name is a SPEC data file
-
-    filename is a spec file only if:
     
-    * the first line begins with #F
+    :param str filename: path/to/possible/spec/data.file
+
+    *filename* is a SPEC file only if the file starts [#]_ 
+    with these control lines in order:
+
+    * #F    - original filename
+    * #E    - the UNIX epoch (seconds from 00:00 GMT 1/1/70)
+    * #D    - current date and time in UNIX format
+    * #C    - comment line (the first one provides the filename again and the user name)
+
+    such as::
+
+        #F LNO_LAO
+        #E 1276730676
+        #D Wed Jun 16 18:24:36 2010
+        #C LNO_LAO  User = epix33bm
     
-    The next two lines might begin with:
-
-    * #E
-    * #D
-
-    but this is not guaranteed
+    .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
     '''
-    test = False
-    f = open(filename)
-    line = f.readline()
-    if line.split()[0] == "#F":
-        #line = f.readline()
-        #print filename, "|", line, "|"
-        #if line.split()[0] == "#E":
-        #    line = f.readline()
-        #    if line.split()[0] == "#D":
-        test = True
-    f.close()
-    return test
+    expected_controls = ('#F ', '#E ', '#D ', '#C ')
+    lines = open(filename).readlines()[:len(expected_controls)]
+    if len(lines) != len(expected_controls):
+        return False
+    for expected, line in zip(expected_controls, lines):
+        if not line.startswith(expected):
+            return False
+    return True
 
 
 def specScanLine_stripKey(line):
@@ -490,6 +501,14 @@ def developer_test(spec_file_name = None):
     print test.getScan(1).L
     print test.getScan(5)
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
+
+
+def test_isSpecFile():
+    '''for the developer'''
+    import glob
+    for fname in glob.glob('data/*'):
+        t = is_spec_file(fname)
+        print fname, t
 
 
 if __name__ == "__main__":
