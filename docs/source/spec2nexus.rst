@@ -14,9 +14,17 @@ Convert all scans in a SPEC data file::
 
     $ spec2nexus  path/to/file/specfile.dat
 
-Writes ``path/to/file/specfile.hdf5`` (note: will not
+Writes ``path/to/file/specfile.hdf5`` (Will not
 overwrite if the HDF5 exists, use the *-f* option
 to force overwrite).
+
+show installed version
+**********************
+
+Verify the version of the installed spec2nexus::
+
+   $ spec2nexus  -V
+   2014.03.02
 
 command-line options
 ********************

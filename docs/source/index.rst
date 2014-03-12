@@ -23,10 +23,10 @@ Provides
 .. [#] http://hdfgroup.org
 .. [#] http://h5py.org
 
-Contents:
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
    
    contents
 

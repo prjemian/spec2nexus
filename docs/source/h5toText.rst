@@ -5,34 +5,12 @@ h5toText
 
 Command line tool to print the structure of an HDF5 file
 
+How to use **h5toText**
+***********************
 
-Example
-*******
+Print the HDF5 tree of a file::
 
-Here's an example from a test data file 
-(**writer_1_3.h5** from the NeXus documentation):
-
-
-.. code-block:: guess
-    :linenos:
-
-      [linux,512]$ h5toText data/writer_1_3.h5
-      data/writer_1_3.h5 : NeXus data file
-        Scan:NXentry
-          @NX_class = NXentry
-          data:NXdata
-            @NX_class = NXdata
-            counts:NX_INT32[31] = __array
-              __array = [1037, 1318, 1704, '...', 1321]
-              @units = counts
-              @signal = 1
-              @axes = two_theta
-            two_theta:NX_FLOAT64[31] = __array
-              __array = [17.926079999999999, 17.925909999999998, 17.925750000000001, '...', 17.92108]
-              @units = degrees
-
-usage
-*****
+    $ h5toText  path/to/file/hdf5/file.hdf5
 
 the usage message::
 
@@ -61,6 +39,34 @@ the help message::
                        (must be 3 or more or 'None'), default = None
      -V, --version     show program's version number and exit
 
+
+Example
+*******
+
+Here's an example from a test data file 
+(**writer_1_3.h5** from the NeXus documentation [#]_):
+
+
+.. code-block:: guess
+    :linenos:
+
+      [linux,512]$ h5toText data/writer_1_3.h5
+      data/writer_1_3.h5 : NeXus data file
+        Scan:NXentry
+          @NX_class = NXentry
+          data:NXdata
+            @NX_class = NXdata
+            counts:NX_INT32[31] = __array
+              __array = [1037, 1318, 1704, '...', 1321]
+              @units = counts
+              @signal = 1
+              @axes = two_theta
+            two_theta:NX_FLOAT64[31] = __array
+              __array = [17.926079999999999, 17.925909999999998, 17.925750000000001, '...', 17.92108]
+              @units = degrees
+
+.. [#] writer_1_3 from NeXus:
+   http://download.nexusformat.org/doc/html/examples/h5py/writer_1_3.html
 
 ----
 

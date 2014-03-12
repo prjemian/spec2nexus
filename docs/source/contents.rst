@@ -10,6 +10,7 @@ Contents
    prjPySpec
    h5toText
    eznx
+   install
    changes
    license
 

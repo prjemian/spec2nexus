@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.03.11: documentation
 :2014.03.09: h5toText: option to suppress printing of attributes, put URLs in command-line usage documentation, better test of is_spec_file()
 :2014.03.08: fixed string writer and content display bug in eznx, added h5toText.py, prjPySpec docs improved again
 :2014.03.051: prjPySpec now handles SPEC v6 data file header additions, add new getScanCommands() method

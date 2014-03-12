@@ -3,7 +3,7 @@
 eznx
 ####
 
-(Easy NeXus) support reading & writing NeXus HDF5 files using h5py
+(Easy NeXus) support library for reading & writing NeXus HDF5 files using h5py
 
 .. index:: examples
 
