@@ -22,6 +22,10 @@ import spec2nexus
 
 verbose=1
 long_description = open('README.rst', 'r').read()
+install_requires = [
+                     'h5py',
+                     'numpy',
+		   ]
 
 
 setup (name =  spec2nexus.__package_name__,        # spec2nexus
@@ -35,7 +39,7 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        download_url=spec2nexus.__download_url__,
        keywords=spec2nexus.__keywords__,
        platforms='any',
-       requires = ('numpy', 'h5py'),   # intend to drop nexpy requirement
+       install_requires = install_requires,
        package_dir = {'': 'src'},
        packages = ['spec2nexus', ],
        #packages=find_packages(),
