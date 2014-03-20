@@ -5,7 +5,7 @@ spec2nexus
 
 Converts SPEC data files and scans into NeXus HDF5 files.
 
-.. index:: examples
+.. index:: examples; spec2nexus
 
 How to use **spec2nexus**
 *************************

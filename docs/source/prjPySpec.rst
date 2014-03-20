@@ -5,7 +5,7 @@
 
 Library of classes to read the contents of a SPEC data file.
 
-.. index:: examples
+.. index:: examples; prjPySpec
 
 How to use :mod:`spec2nexus.prjPySpec`
 **************************************
@@ -183,7 +183,7 @@ Data files with deviations from this standard are produced at some facilities.
 .. index:: SPEC; data file structure
 .. index:: SPEC; control lines
 .. index:: SPEC; data lines
-.. index:: SPEC; control lines; special data lines
+.. index:: SPEC; special data lines
 
 Assumptions about data file structure
 =====================================
@@ -218,48 +218,15 @@ These assumptions are used to parse SPEC data files:
 
     #S 78  ascan  del 84.6484 84.8484  20 1
     #D Thu Jul 17 08:03:54 2003
-
-
    
-   
-..	[#] The command word may have a number at the end, indicating it is part of a sequence,
-	such as these control lines (see command word notes for how to interpret):
+..	[#] See :ref:`control_line_examples`
 
-	..	code-block:: guess
-		:linenos:
-
-		#D Wed Nov 03 13:42:03 2010
-		#T 0.3  (seconds)
-		#G0 0
-		#G1 0
-		#G3 0
-		#G4 0
-		#Q 
-		#P0 -0.5396381 -0.5675 0.395862 0.7425 40.489861 0 5.894899e-07 11
-		#P1 24 0 -1.19 9.0028278 25.000378 -22.29064 1.5 5
-		#P2 -43 -0.01 98 11.8 0 -6.3275 111.52875 -8.67896
-		#P3 -0.11352 1e-05 0.199978 0.4001875 1.2998435 15.6077 0 0
-		#P4 3.03 0 3.21 6.805 2.835 2.4475 0.9355 -0.072
-		#P5 1.31 0.0875 2442.673 -0.391 12 -14.4125 15.498553 
-
-
-.. [#] Lines with MCA array data begin with the **@A** command word.
-   (If such a data line ends with a continuation character ``\``, 
-   the next line is read as part of this line.  This  
-   continues until no continuation character is found.)  Such as
-   this 91-channel array:
-     
-	..  code-block:: guess
-		:linenos:
-
-		@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-		 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-		 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-		 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-		 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-		 0 0 0 0 0 0 0 0 0 0 0 
+.. [#] See :ref:`mca_data_example`
 
 .. [#]  It is very unusual to have more than one file header block in a SPEC data file.
+
+
+.. _control_line_list:
 
 Control lines (keys) defined by SPEC
 ====================================
@@ -298,6 +265,57 @@ command word     description
 #@CTIME p l r    MCA count times (preset_time, elapsed_live_time, elapsed_real_time)
 #@ROI n f l      MCA ROI channel information (ROI_name, first_chan, last_chan)
 ===============  ===================================================================================
+
+.. index:: examples; SPEC control lines
+
+.. _control_line_examples:
+
+Example of Control Lines
+++++++++++++++++++++++++
+
+The command word of a control line may have a number at the end, 
+indicating it is part of a sequence, such as these control lines 
+(see :ref:`control_line_list` for how to interpret):
+
+.. code-block:: guess
+   :linenos:
+   
+   #D Wed Nov 03 13:42:03 2010
+   #T 0.3  (seconds)
+   #G0 0
+   #G1 0
+   #G3 0
+   #G4 0
+   #Q 
+   #P0 -0.5396381 -0.5675 0.395862 0.7425 40.489861 0 5.894899e-07 11
+   #P1 24 0 -1.19 9.0028278 25.000378 -22.29064 1.5 5
+   #P2 -43 -0.01 98 11.8 0 -6.3275 111.52875 -8.67896
+   #P3 -0.11352 1e-05 0.199978 0.4001875 1.2998435 15.6077 0 0
+   #P4 3.03 0 3.21 6.805 2.835 2.4475 0.9355 -0.072
+   #P5 1.31 0.0875 2442.673 -0.391 12 -14.4125 15.498553 
+
+.. index:: examples; SPEC MCA data
+
+.. _mca_data_example:
+
+Example of MCA data lines
++++++++++++++++++++++++++
+
+Lines with MCA array data begin with the **@A** command word.
+(If such a data line ends with a continuation character ``\``, 
+the next line is read as part of this line.)
+
+This is an example of a 91-channel MCA data array with trivial (zero) values:
+
+.. code-block:: guess
+   :linenos:
+   
+   @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+    0 0 0 0 0 0 0 0 0 0 0 
 
 
 Supported header keys (command words)

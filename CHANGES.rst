@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.0320.4: Sphinx cannot build PDF with code-block in a footnote
 :2014.0320.3: note the new home URL in the packaging, too, drop nexpy requirement, default docs theme
 :2014.0320.2: tree_api_parse will go back into nexpy project, remove docs of it here
 :2014.0320.1: allow readthedocs to build Sphinx without extra package requirements

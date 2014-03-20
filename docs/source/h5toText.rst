@@ -5,6 +5,8 @@ h5toText
 
 Command line tool to print the structure of an HDF5 file
 
+.. index:: examples; h5toText
+
 How to use **h5toText**
 ***********************
 
