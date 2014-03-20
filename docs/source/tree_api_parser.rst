@@ -1,11 +1,7 @@
 .. _tree_api_parser:
 
-tree_api_parser
-###############
-
-This API is intended for use with the NeXpy (https://github.com/nexpy/nexpy) project.
-
-----
+:mod:`spec2nexus.tree_api_parser`
+#######################################
 
 source code documentation
 *************************

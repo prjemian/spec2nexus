@@ -7,9 +7,10 @@ Contents
    
    overview
    spec2nexus
-   prjPySpec
    h5toText
+   prjPySpec
    eznx
+   utils
    install
    changes
    license

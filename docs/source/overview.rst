@@ -1,4 +1,4 @@
-Overview
-========
+Project Overview
+================
 
 .. include:: ../../README.rst

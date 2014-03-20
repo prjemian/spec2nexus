@@ -12,7 +12,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__   = '2014.0315.0'
+__version__   = '2014.0320.0'
 __release__   = __version__
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
@@ -28,79 +28,26 @@ __url__          = 'http://prjemian.github.io/spec2nexus'
 __download_url__ = 'https://github.com/prjemian/spec2nexus/tarball/' + __version__
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
 
+__install_requires__ = ('h5py','numpy',)
+__classifiers__ = [
+     'Development Status :: 5 - Production/Stable',
+     'Environment :: Console',
+     'Intended Audience :: Science/Research',
+     'License :: Freely Distributable',
+     'License :: Public Domain',
+     'Programming Language :: Python',
+     'Programming Language :: Python :: 2',
+     'Programming Language :: Python :: 2.7',
+     'Topic :: Scientific/Engineering',
+     'Topic :: Scientific/Engineering :: Astronomy',
+     'Topic :: Scientific/Engineering :: Bio-Informatics',
+     'Topic :: Scientific/Engineering :: Chemistry',
+     'Topic :: Scientific/Engineering :: Information Analysis',
+     'Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator',
+     'Topic :: Scientific/Engineering :: Mathematics',
+     'Topic :: Scientific/Engineering :: Physics',
+     'Topic :: Scientific/Engineering :: Visualization',
+     'Topic :: Software Development',
+     'Topic :: Utilities',
+   ]
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-import numpy as np
-import re
-import time
-
-
-def reshape_data(scan_data, scan_shape):
-    '''modified from nexpy.readers.readspec.reshape_data'''
-    scan_size = np.prod(scan_shape)
-    if scan_data.size == scan_size:
-        data = scan_data
-    elif scan_data.size < scan_size:
-        data = np.empty(scan_size)
-        data.fill(np.NaN)               # pad data with NaN
-        data[0:scan_data.size] = scan_data.ravel()  # flatten & insert
-    else:
-        data = scan_data.ravel()        # flatten
-        data = data[0:scan_size]        # truncate extra data
-    return data.reshape(scan_shape)
-
-
-def sanitize_name(group, key):      # TODO: group object is not used, deprecate to clean_name() below
-    '''make name that is allowed by HDF5 and NeXus rules
-    
-    :see: http://download.nexusformat.org/doc/html/datarules.html
-    
-    sanitized name fits this regexp::
-    
-        [A-Za-z_][\w_]*
-    
-    An easier expression might be:  ``[\w_]*`` but this will not pass
-    the rule that valid names cannot start with a digit.
-
-    :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
-    '''
-    # see: http://download.nexusformat.org/doc/html/datarules.html
-    # clean name fits this regexp:  [A-Za-z_][\w_]*
-    # easier:  [\w_]* but cannot start with a digit
-    replacement = '_'
-    noncompliance = '[^\w_]'
-    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
-    if txt[0].isdigit():
-        txt = replacement + txt # can't start with a digit
-    return txt
-
-
-def clean_name(key):
-    '''make name that is allowed by HDF5 and NeXus rules
-    
-    :see: http://download.nexusformat.org/doc/html/datarules.html
-    
-    sanitized name fits this regexp::
-    
-        [A-Za-z_][\w_]*
-    
-    An easier expression might be:  ``[\w_]*`` but this will not pass
-    the rule that valid names cannot start with a digit.
-    '''
-    replacement = '_'
-    noncompliance = '[^\w_]'
-    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
-    if txt[0].isdigit():
-        txt = replacement + txt # can't start with a digit
-    return txt
-
-
-def iso8601(date):
-    ''''parse time from SPEC (example: Wed Nov 03 13:39:34 2010)'''
-    spec_fmt = '%a %b %d %H:%M:%S %Y'
-    t = time.strptime(date, spec_fmt)
-    # convert to ISO8601 format (example: 2010-11-03T13:39:34)
-    iso_fmt = '%Y-%m-%dT%H:%M:%S'
-    iso = time.strftime(iso_fmt, t)
-    return iso

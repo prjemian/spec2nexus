@@ -7,6 +7,10 @@ Change History
 Production
 **********
 
+:2014.0320.0:
+    * new home page at http://spec2nexus.readthedocs.org, easier to publish there
+    * move common methods from __init__.py so docs will build at readthedocs.org
+    * new test case fails existing SPEC reader, ignore blank lines
 :2014.03.11: documentation
 :2014.03.09: h5toText: option to suppress printing of attributes, put URLs in command-line usage documentation, better test of is_spec_file()
 :2014.03.08: fixed string writer and content display bug in eznx, added h5toText.py, prjPySpec docs improved again

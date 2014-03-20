@@ -32,6 +32,8 @@ to read and interpret the information.
 ..  -----------------------------------------------------------------------------------------
     old documentation
     -----------------------------------------------------------------------------------------
+    
+    .. index:: SPEC data file structure
 
     The parser makes the assumption that a SPEC data file is composed from
     a sequence of component blocks.  The component blocks are either header 
@@ -167,7 +169,7 @@ def is_spec_file(filename):
     return True
 
 
-def specScanLine_stripKey(line):
+def strip_first_word(line):
     """return everything after the first space on the line from the spec data file"""
     pos = line.find(" ")
     val = line[pos:]
@@ -241,7 +243,6 @@ class SpecDataFile(object):
             else:
                 self.errMsg = "unknown key: %s" % key
         self.readOK = 0
-        return
     
     def getScan(self, scan_number=0):
         '''return the scan number indicated, None if not found'''
@@ -267,7 +268,7 @@ class SpecDataFile(object):
         '''return all the scan commands as a list, with scan number'''
         if scan_list is None:
             scan_list = sorted(self.scans.keys())
-        return ['#S ' + str(key) + self.scans[key].scanCmd for key in scan_list]
+        return ['#S ' + str(key) + self.scans[key].scanCmd for key in scan_list if key in self.scans]
 
 
 #-------------------------------------------------------------------------------------------
@@ -287,7 +288,6 @@ class SpecDataFileHeader(object):
         self.O = []
         self.raw = buf
         self.interpret()
-        return
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
@@ -295,24 +295,25 @@ class SpecDataFileHeader(object):
         i = 0
         for line in lines:
             i += 1
-            key = line[0:2]
+            if len(line) == 0:
+                continue            # ignore blank lines
+            key = line[0:line.find(' ')].strip()
             # TODO: handle these keys with plugins
-            if (key == "#C"):
-                self.comments.append(specScanLine_stripKey(line))
-            elif (key == "#D"):
-                self.date = specScanLine_stripKey(line)
-            elif (key == "#E"):
-                self.epoch = int(specScanLine_stripKey(line))
-            elif (key == "#F"):
-                self.file = specScanLine_stripKey(line)
-            elif (key == "#H"):
-                self.H.append(specScanLine_stripKey(line).split())
-            elif (key == "#O"):
-                self.O.append(specScanLine_stripKey(line).split())
+            if (line.startswith('#C')):
+                self.comments.append(strip_first_word(line))
+            elif (line.startswith('#D')):
+                self.date = strip_first_word(line)
+            elif (line.startswith('#E')):
+                self.epoch = int(strip_first_word(line))
+            elif (line.startswith('#F')):
+                self.file = strip_first_word(line)
+            elif (line.startswith('#H')):
+                self.H.append(strip_first_word(line).split())
+            elif (line.startswith('#O')):
+                self.O.append(strip_first_word(line).split())
             else:
                 # TODO: do something with this (perhaps log it)
                 self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
-        return
 
 
 #-------------------------------------------------------------------------------------------
@@ -346,7 +347,6 @@ class SpecDataFileScan(object):
         self.column_first = ''
         self.column_last = ''
         self.interpret()
-        return
     
     def __str__(self):
         return self.S
@@ -358,48 +358,47 @@ class SpecDataFileScan(object):
         self.specFile = self.header.file    # this is the short name, does not have the file system path
         for line in lines:
             i += 1
-            #print "[%s] %s" % (i, line)
-            key = line[0:2]
-            #print i, key
             # TODO: handle these keys with plugins
-            if (key[0] == "#"):
-                if (key == "#C"):
-                    self.comments.append(specScanLine_stripKey(line))
-                elif (key == "#D"):
-                    self.date = specScanLine_stripKey(line)
-                elif (key == "#G"):     # diffractometer geometry
+            if len(line) == 0:
+                continue            # ignore blank lines
+            if (line.startswith('#')):
+                if (line.startswith('#C')):
+                    self.comments.append(strip_first_word(line))
+                elif (line.startswith('#D')):
+                    self.date = strip_first_word(line)
+                elif (line.startswith('#G')):      # diffractometer geometry
                     subkey = line.split()[0].lstrip('#')
-                    self.G[subkey] = specScanLine_stripKey(line)
-                elif (key == "#L"):
+                    self.G[subkey] = strip_first_word(line)
+                elif (line.startswith('#L')):
                     # Some folks use more than two spaces!  Use regular expression(re) module
-                    self.L = re.split("  +", specScanLine_stripKey(line))
+                    self.L = re.split("  +", strip_first_word(line))
                     self.column_first = self.L[0]
                     self.column_last = self.L[-1]
-                elif (key == "#M"):
-                    self.M, dname = specScanLine_stripKey(line).split()
+                elif (line.startswith('M')):
+                    self.M, dname = strip_first_word(line).split()
                     self.monitor_name = dname.lstrip('(').rstrip(')')
-                elif (key == "#N"):
-                    self.N = int(specScanLine_stripKey(line))
-                elif (key == "#P"):
-                    self.P.append(specScanLine_stripKey(line))
-                elif (key == "#Q"):
-                    self.Q = specScanLine_stripKey(line)
-                elif (key == "#S"):
-                    self.S = specScanLine_stripKey(line)
+                elif (line.startswith('#N')):
+                    self.N = int(strip_first_word(line))
+                elif (line.startswith('#P')):
+                    self.P.append(strip_first_word(line))
+                elif (line.startswith('#Q')):
+                    self.Q = strip_first_word(line)
+                elif (line.startswith('#S')):
+                    self.S = strip_first_word(line)
                     pos = self.S.find(" ")
                     self.scanNum = int(self.S[0:pos])
                     self.scanCmd = self.S[pos+1:]
-                elif (key == "#T"):
-                    self.T = specScanLine_stripKey(line).split()[0]
-                elif (key == "#V"):
-                    self.V.append(specScanLine_stripKey(line))
+                elif (line.startswith('#T')):
+                    self.T = strip_first_word(line).split()[0]
+                elif (line.startswith('#V')):
+                    self.V.append(strip_first_word(line))
                 else:
                     # TODO: do something with this (perhaps log it)
-                    self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
+                    self.errMsg = "line %d: unknown key, text: %s" % (i, line)
             elif len(line) < 2:
-                self.errMsg = "problem with  key " + key + " at scan header line " + str(i)
-            elif key[1] == "@":
-                self.errMsg = "cannot handle @ data yet."
+                self.errMsg = "problem with scan header line " + str(i) + ' text: ' + line
+            elif line[0:2] == "#@":
+                self.errMsg = "cannot handle #@ data yet."
             else:
                 self.data_lines.append(line)
         #print self.scanNum, "\n\t".join( self.comments )
@@ -444,7 +443,6 @@ class SpecDataFileScan(object):
                 for col, val in enumerate(values.split()):
                     label = self.L[col]
                     self.data[label].append(float(val))
-        return
     
     def _unique_key(self, label, keylist):
         '''ensure that label is not yet existing in keylist'''
@@ -468,11 +466,10 @@ def developer_test(spec_file_name = None):
     :param str spec_file_name: if set, spec file name is given on command line
     """
     if spec_file_name is None:
-        path = os.path.dirname(__file__)
-        path = os.path.join(path, 'data')
+        path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
-        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
-        spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
+        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it
@@ -484,7 +481,7 @@ def developer_test(spec_file_name = None):
     print 'scans', len(test.scans)
     #print 'positioners in first scan:'; print test.scans[0].positioner
     for scan in test.scans.values():
-        print scan.scanNum, scan.date, 'AR', scan.positioner['ar'], 'eV', 1e3*scan.metadata['DCM_energy']
+        print scan.scanNum, scan.date, scan.column_first, scan.positioner[scan.column_first], 'eV', 1e3*scan.metadata['DCM_energy']
     print 'first scan: ', test.getMinScanNumber()
     print 'last scan: ', test.getMaxScanNumber()
     print 'positioners in last scan:'
@@ -497,7 +494,6 @@ def developer_test(spec_file_name = None):
     print pLabel, dLabel
     for i in range(len(last_scan.data[pLabel])):
         print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
-    # test = SpecDataFile('07_02_sn281_8950.dat')
     print test.getScan(1).L
     print test.getScan(5)
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))

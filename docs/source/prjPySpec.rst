@@ -1,7 +1,7 @@
 .. _prjPySpec:
 
-prjPySpec
-#########
+:mod:`spec2nexus.prjPySpec`
+###########################
 
 Library of classes to read the contents of a SPEC data file.
 
@@ -362,7 +362,7 @@ methods
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.prjPySpec.specScanLine_stripKey
+   ~spec2nexus.prjPySpec.strip_first_word
 
 exceptions
 ==========

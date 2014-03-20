@@ -1,7 +1,7 @@
 .. _eznx:
 
-eznx
-####
+:mod:`spec2nexus.eznx`
+#######################################
 
 (Easy NeXus) support library for reading & writing NeXus HDF5 files using h5py
 

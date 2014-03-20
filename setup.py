@@ -22,10 +22,6 @@ import spec2nexus
 
 verbose=1
 long_description = open('README.rst', 'r').read()
-install_requires = [
-                     'h5py',
-                     'numpy',
-		   ]
 
 
 setup (name =  spec2nexus.__package_name__,        # spec2nexus
@@ -39,33 +35,14 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        download_url=spec2nexus.__download_url__,
        keywords=spec2nexus.__keywords__,
        platforms='any',
-       install_requires = install_requires,
+       install_requires = spec2nexus.__install_requires__,
        package_dir = {'': 'src'},
        packages = ['spec2nexus', ],
        #packages=find_packages(),
        package_data = {
                        'spec2nexus': ['data/*'],
                        },
-        classifiers= ['Development Status :: 5 - Production/Stable',
-                      'Environment :: Console',
-                      'Intended Audience :: Science/Research',
-                      'License :: Freely Distributable',
-                      'License :: Public Domain',
-                      'Programming Language :: Python',
-                      'Programming Language :: Python :: 2',
-                      'Programming Language :: Python :: 2.7',
-                      'Topic :: Scientific/Engineering',
-                      'Topic :: Scientific/Engineering :: Astronomy',
-                      'Topic :: Scientific/Engineering :: Bio-Informatics',
-                      'Topic :: Scientific/Engineering :: Chemistry',
-                      'Topic :: Scientific/Engineering :: Information Analysis',
-                      'Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator',
-                      'Topic :: Scientific/Engineering :: Mathematics',
-                      'Topic :: Scientific/Engineering :: Physics',
-                      'Topic :: Scientific/Engineering :: Visualization',
-                      'Topic :: Software Development',
-                      'Topic :: Utilities',
-                      ],
+       classifiers = spec2nexus.__classifiers__,
        entry_points={
             # create & install scripts in <python>/bin
             'console_scripts': [

@@ -1,10 +1,7 @@
 .. _prjPySpec2eznx:
 
-prjPySpec2eznx
-##############
-
-
-----
+:mod:`spec2nexus.prjPySpec2eznx`
+#######################################
 
 source code documentation
 *************************

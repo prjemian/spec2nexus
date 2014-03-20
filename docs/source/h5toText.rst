@@ -37,6 +37,7 @@ the help message::
      -h, --help        show this help message and exit
      -n NUM_DISPLAYED  limit number of displayed array items to NUM_DISPLAYED
                        (must be 3 or more or 'None'), default = None
+     -a                Do not print attributes
      -V, --version     show program's version number and exit
 
 
