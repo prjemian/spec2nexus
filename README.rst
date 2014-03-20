@@ -7,7 +7,7 @@ Converts SPEC data files and scans into NeXus HDF5 files
 :email:     prjemian@gmail.com
 :copyright: 2014, Pete R. Jemian
 :license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
-:URL:       http://spec2nexus.readthedocs
+:URL:       http://spec2nexus.readthedocs.org
 :git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
 :Ohloh:     http://ohloh.net/p/spec2nexus
