@@ -14,6 +14,7 @@
 
 '''(internal library) Parses SPEC data using nexpy.api.nexus.tree API for NeXpy (https://github.com/nexpy/nexpy) project'''
 
+# TODO: move this back to the nexpy project
 
 import numpy as np
 from nexpy.api.nexus import NXroot, NXentry, NXfield, NXdata, NXlog

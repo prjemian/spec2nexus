@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.0320.2: tree_api_parse will go back into nexpy project, remove docs of it here
 :2014.0320.1: allow readthedocs to build Sphinx without extra package requirements
 :2014.0320.0:
     * new home page at http://spec2nexus.readthedocs.org, easier to publish there

@@ -300,6 +300,6 @@ class Mock(object):
             return Mock()
 
 # TODO: get these from spec2nexus.__install_requires__
-MOCK_MODULES = ['h5py', 'numpy',]
+MOCK_MODULES = ['h5py', 'numpy', ]
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

@@ -93,7 +93,6 @@ APIs provided:
    :maxdepth: 1
    
    prjPySpec2eznx.rst
-   tree_api_parser.rst
 
 ----
 
