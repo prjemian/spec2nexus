@@ -201,15 +201,23 @@ These assumptions are used to parse SPEC data files:
    *special data*   containing MCA data [#]_
    ==============   =========================================================================
 
-#. Lines in a SPEC data file are grouped into a file header block or a scan block.
+#. Lines in a SPEC data file start with a file name control line, 
+   then series of blocks.  Each block may be either a file header block 
+   or a scan block.  (Most SPEC files have only one header block.  A new header
+   block is created if the list of positioners is changed in SPEC
+   without creating a new file.  SPEC users are encouraged to *always* start a new
+   data file after changing the list of positioners.)
    A block consists of a series of control, data, and blank lines.
    
    SPEC data files are composed of a sequence of a single file header block 
    and zero or more scan blocks. [#]_
 
-#. A file header block begins with these control lines in order: #F #E #D #C, such as::
+#. A SPEC data file always begins with this control lines: #F, such as::
 
     #F samplecheck_7_17_03
+
+#. A file header block begins with these control lines in order: #E #D #C, such as::
+
     #E 1058427452
     #D Thu Jul 17 02:37:32 2003
     #C psic  User = epix

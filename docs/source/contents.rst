@@ -12,6 +12,7 @@ Contents
    eznx
    utils
    install
+   example_data
    changes
    license
 

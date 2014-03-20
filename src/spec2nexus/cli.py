@@ -156,18 +156,6 @@ def pick_scans(all_scans, opt_scan_list):
 
 def main():
     '''entry point for command-line interface'''
-    
-    # developer test items
-    #sys.argv.append('--help')
-    #sys.argv.append('-V')
-    #sys.argv.append('-q')
-    #sys.argv.append('-v')
-    #sys.argv.append('-f')
-    #sys.argv.append('-s 19,5-9,19')
-    #sys.argv.append('-s 2')
-    #sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
-    #sys.argv.append(os.path.join('data', '33id_spec.dat'))
-    #sys.argv.append(os.path.join('data', '33bm_spec.dat'))
 
     user_parms = get_user_parameters()
 

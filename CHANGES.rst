@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.0320.6: handle multiple header sections in SPEC data file
 :2014.0320.5: fix the new project URL
 :2014.0320.4: Sphinx cannot build PDF with code-block in a footnote
 :2014.0320.3: note the new home URL in the packaging, too, drop nexpy requirement, default docs theme

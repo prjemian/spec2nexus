@@ -79,7 +79,7 @@ class Writer(object):
         header0 = self.spec.headers[0]
         dd = dict(
             prjPySpec_version = spec2nexus.__version__,
-            SPEC_file = header0.file,
+            SPEC_file = self.spec.specFile,
             SPEC_epoch = header0.epoch,
             SPEC_date = utils.iso8601(header0.date),
             SPEC_comments = '\n'.join(header0.comments),

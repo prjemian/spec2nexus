@@ -216,33 +216,34 @@ class SpecDataFile(object):
             self.errMsg = '\n' + msg + '\n'
             raise NotASpecDataFile, msg
         #------------------------------------------------------
-        self.parts = []
-        buf = '\n' + buf                        # so the next search will always succeed
-        for part in buf.split('\n#F '):         # Break the spec file by header sections (usually just 1)
-            if len(part) == 0: continue
-            part = '#F ' + part         
-            for block in part.split('\n#S '):   # break header sections by scans
-                if not block.startswith('#'):
-                    block = '#S ' + block
-                self.parts.append(block)        # keep each block (starts with either #F or #S
+        headers = []
+        for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
+            if len(part) == 0: continue         # just in case
+            if part.startswith('#F'): 
+                self.specFile = strip_first_word(part).strip()
+                continue
+            headers.append('#E ' + part)        # remember the new header is starting
         del buf                                 # Dispose of the input buffer memory (necessary?)
+
+        self.parts = []         # break into list of blocks, either #E or #S, in order of appearance
+        for part in headers:
+            for block in part.split('\n#S '):   # break header sections by scans
+                if not block.startswith('#S ') and not block.startswith('#E '):
+                    block = '#S ' + block
+                self.parts.append(block)        # keep each block (starts with either #E or #S
+        del headers, block
         #------------------------------------------------------
         # pull the information from each scan head
         for part in self.parts:
-            key = part[0:2]
-            if (key == "#F"):
-                self.headers.append(SpecDataFileHeader(part))
-                self.specFile = self.headers[-1].file
-            elif (key == "#S"):
+            if part.startswith('#E'):
+                self.headers.append(SpecDataFileHeader(part, parent=self))
+            elif part.startswith('#S'):
                 scan = SpecDataFileScan(self.headers[-1], part)
-                key = scan.scanNum
-                if key in self.scans:
-                    pass                # TODO: what if?
-                else:
-                    self.scans[key] = scan
+                if scan.scanNum not in self.scans:      # FIXME: silently ignores repeated use of same scan number
+                    self.scans[scan.scanNum] = scan
             else:
-                self.errMsg = "unknown key: %s" % key
-        self.readOK = 0
+                self.errMsg = "unknown SPEC data file part: " + part.splitlines()[0].strip()
+        self.readOK = 0     # consider raising exceptions instead
     
     def getScan(self, scan_number=0):
         '''return the scan number indicated, None if not found'''
@@ -256,18 +257,22 @@ class SpecDataFile(object):
                 return None
         return self.scans[scan_number]
     
+    def getScanNumbers(self):
+        '''return a list of all scan numbers'''
+        return self.scans.keys()
+    
     def getMinScanNumber(self):
         '''return the lowest numbered scan'''
-        return min(self.scans.keys())
+        return min(self.getScanNumbers())
     
     def getMaxScanNumber(self):
         '''return the highest numbered scan'''
-        return max(self.scans.keys())
+        return max(self.getScanNumbers())
     
     def getScanCommands(self, scan_list=None):
         '''return all the scan commands as a list, with scan number'''
         if scan_list is None:
-            scan_list = sorted(self.scans.keys())
+            scan_list = sorted(self.getScanNumbers())
         return ['#S ' + str(key) + self.scans[key].scanCmd for key in scan_list if key in self.scans]
 
 
@@ -277,13 +282,14 @@ class SpecDataFile(object):
 class SpecDataFileHeader(object):
     """contents of a spec data file header (#F) section"""
 
-    def __init__(self, buf):
+    def __init__(self, buf, parent = None):
         #----------- initialize the instance variables
+        self.parent = parent        # instance of SpecDataFile
         self.comments = []
         self.date = ''
         self.epoch = 0
         self.errMsg = ''
-        self.file = ''
+        #self.file = None        # TODO: removal of this may change the interface for clients!
         self.H = []
         self.O = []
         self.raw = buf
@@ -305,8 +311,8 @@ class SpecDataFileHeader(object):
                 self.date = strip_first_word(line)
             elif (line.startswith('#E')):
                 self.epoch = int(strip_first_word(line))
-            elif (line.startswith('#F')):
-                self.file = strip_first_word(line)
+            #elif (line.startswith('#F')):
+            #    self.file = strip_first_word(line)
             elif (line.startswith('#H')):
                 self.H.append(strip_first_word(line).split())
             elif (line.startswith('#O')):
@@ -322,7 +328,8 @@ class SpecDataFileHeader(object):
 class SpecDataFileScan(object):
     """contents of a spec data file scan (#S) section"""
     
-    def __init__(self, header, buf):
+    def __init__(self, header, buf, parent=None):
+        self.parent = parent        # instance of SpecDataFile
         self.comments = []
         self.data = {}
         self.data_lines = []
@@ -341,7 +348,7 @@ class SpecDataFileScan(object):
         self.S = ''
         self.scanNum = -1
         self.scanCmd = ''
-        self.specFile = ''
+        #self.specFile = ''        # TODO: removal of this may change the interface for clients!
         self.T = ''
         self.V = []
         self.column_first = ''
@@ -355,7 +362,6 @@ class SpecDataFileScan(object):
         """interpret the supplied buffer with the spec scan data"""
         lines = self.raw.splitlines()
         i = 0
-        self.specFile = self.header.file    # this is the short name, does not have the file system path
         for line in lines:
             i += 1
             # TODO: handle these keys with plugins
@@ -406,6 +412,10 @@ class SpecDataFileScan(object):
         self.positioner = {}
         for row, values in enumerate(self.P):
             for col, val in enumerate(values.split()):
+                if row >= len(self.header.O):
+                    pass
+                if col >= len(self.header.O[row]):
+                    pass
                 mne = self.header.O[row][col]
                 self.positioner[mne] = float(val)
         # interpret the UNICAT metadata (mostly floating point) from the scan header

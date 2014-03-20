@@ -1,5 +1,8 @@
 *.py[cod]
 
+# output from this program
+src/spec2nexus/data/*.hdf5
+
 # C extensions
 *.so
 
