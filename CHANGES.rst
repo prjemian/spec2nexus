@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.0320.1: allow readthedocs to build Sphinx without extra package requirements
 :2014.0320.0:
     * new home page at http://spec2nexus.readthedocs.org, easier to publish there
     * move common methods from __init__.py so docs will build at readthedocs.org
