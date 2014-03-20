@@ -11,8 +11,11 @@ import prjPySpec2eznx
 
 if __name__ == '__main__':
     pwd = os.path.abspath(os.getcwd())
-    file1 = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data.dat'))
-    hfile = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data.hdf5'))
+    prefix = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data'))
+    file1 = prefix + '.dat'
+    prefix = os.path.abspath(os.path.join(pwd, 'data', 'lmn40'))
+    file1 = prefix + '.spe'
+    hfile = prefix + '.hdf5'
     specfile = prjPySpec.SpecDataFile(file1)
     writer = prjPySpec2eznx.Writer(specfile)
     writer.save(hfile, [5,6])

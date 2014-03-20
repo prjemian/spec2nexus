@@ -152,7 +152,7 @@ source code methods
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.prjPySpec.specScanLine_stripKey
+   ~spec2nexus.prjPySpec.strip_first_word
 
 source code documentation
 *************************

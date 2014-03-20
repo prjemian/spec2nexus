@@ -18,6 +18,7 @@
 import numpy as np
 from nexpy.api.nexus import NXroot, NXentry, NXfield, NXdata, NXlog
 import spec2nexus
+import utils
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,7 +59,7 @@ class Parser(object):
         header0 = self.SPECfile.headers[0]
         root.attrs['SPEC_file'] = header0.file
         root.attrs['SPEC_epoch'] = header0.epoch
-        root.attrs['SPEC_date'] = spec2nexus.iso8601(header0.date)
+        root.attrs['SPEC_date'] = utils.iso8601(header0.date)
         root.attrs['SPEC_comments'] = '\n'.join(header0.comments)
         try:
             c = header0.comments[0]
@@ -72,7 +73,7 @@ class Parser(object):
             scan = self.SPECfile.getScan(key)
             entry = NXentry()
             entry.title = str(scan)
-            entry.date = spec2nexus.iso8601(scan.date)  
+            entry.date = utils.iso8601(scan.date)  
             entry.command = scan.scanCmd 
             entry.scan_number = NXfield(scan.scanNum)
             entry.comments = '\n'.join(scan.comments)
@@ -139,12 +140,12 @@ class Parser(object):
     def parser_1D_columns(self, nxdata, scan):
         '''generic data parser for 1-D column data'''
         for column in scan.L:
-            clean_name = spec2nexus.sanitize_name(nxdata, column)
+            clean_name = utils.sanitize_name(nxdata, column)
             nxdata[clean_name] = NXfield(scan.data[column])
             nxdata[clean_name].original_name = column
 
-        signal = spec2nexus.sanitize_name(nxdata, scan.column_last)      # primary Y axis
-        axis = spec2nexus.sanitize_name(nxdata, scan.column_first)       # primary X axis
+        signal = utils.sanitize_name(nxdata, scan.column_last)      # primary Y axis
+        axis = utils.sanitize_name(nxdata, scan.column_first)       # primary X axis
         nxdata.nxsignal = nxdata[signal]
         nxdata.nxaxes = nxdata[axis]
         
@@ -199,11 +200,11 @@ class Parser(object):
             data_shape = [len(axis1), len(axis2)]
             for label in column_labels:
                 axis = np.array( scan.data.get(label) )
-                clean_name = spec2nexus.sanitize_name(nxdata, label)
-                nxdata[clean_name] = NXfield(spec2nexus.reshape_data(axis, data_shape))
+                clean_name = utils.sanitize_name(nxdata, label)
+                nxdata[clean_name] = NXfield(utils.reshape_data(axis, data_shape))
                 nxdata[clean_name].original_name = label
 
-            signal_axis_label = spec2nexus.sanitize_name(nxdata, scan.column_last)
+            signal_axis_label = utils.sanitize_name(nxdata, scan.column_last)
             nxdata.nxsignal = nxdata[signal_axis_label]
             nxdata.nxaxes = [nxdata[label1], nxdata[label2]]
 
@@ -212,7 +213,7 @@ class Parser(object):
             num_channels = len(scan.data['_mca_'][0])
             data_shape.append(num_channels)
             mca = np.array(scan.data['_mca_'])
-            nxdata.mca__spectrum_ = NXfield(spec2nexus.reshape_data(mca, data_shape))
+            nxdata.mca__spectrum_ = NXfield(utils.reshape_data(mca, data_shape))
             nxdata.mca__spectrum_channel = NXfield(range(1, num_channels+1))
             nxdata.mca__spectrum_channel.units = 'channel'
             axes = (label1, label2, 'mca__spectrum_channel')
@@ -225,7 +226,7 @@ class Parser(object):
         nxlog = NXlog()
         nxlog.attrs['description'] = description
         for subkey, value in spec_metadata.items():
-            clean_name = spec2nexus.sanitize_name(nxlog, subkey)
+            clean_name = utils.sanitize_name(nxlog, subkey)
             nxlog[clean_name] = NXfield(value)
             nxlog[clean_name].original_name = subkey
         return nxlog

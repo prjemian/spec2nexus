@@ -18,6 +18,7 @@
 import numpy as np
 import eznx
 import spec2nexus
+import utils
 
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
@@ -44,10 +45,25 @@ class Writer(object):
         '''
         save the information in this SPEC data file to a NeXus HDF5 file
         
-        Each scan in scan_list will be converted to a NXentry.  
-        Scan data will go in a NXdata where the signal=1 is the 
-        last column and the corresponding axes= is the name of 
-        the first column.
+        Each scan in scan_list will be converted to a **NXentry** group.  
+        Scan data will be placed in a **NXdata** group where the attribute **signal=1** is the 
+        last column and the corresponding attribute **axes=<name of the first column>**.
+        There are variations on this for 2-D and higher dimensionality data, such as mesh scans.
+        
+        In general, the tree structure of the NeXus HDF5 file is::
+        
+            hdf5_file: NXroot
+                # attributes
+                S1:NXentry
+                    # attributes and metadata fields
+                    data:NXdata
+                        @signal=<name of signal field>
+                        @axes=<name(s) of axes of signal>
+                        <signal_is_the_last_column>:NX_NUMBER[number of points] = ... data ...
+                            @signal=1
+                            @axes='<axis_is_name_of_first_column>'
+                        <axis_is_name_of_first_column>:NX_NUMBER[number of points] = ... data ...
+                        # other columns from the scan
         
         :param str hdf_file: name of NeXus/HDF5 file to be written
         :param [int] scanlist: list of scan numbers to be read
@@ -65,7 +81,7 @@ class Writer(object):
             prjPySpec_version = spec2nexus.__version__,
             SPEC_file = header0.file,
             SPEC_epoch = header0.epoch,
-            SPEC_date = spec2nexus.iso8601(header0.date),
+            SPEC_date = utils.iso8601(header0.date),
             SPEC_comments = '\n'.join(header0.comments),
             SPEC_num_headers = len(self.spec.headers),
             )
@@ -81,7 +97,7 @@ class Writer(object):
         '''*internal*: save the data from each SPEC scan to its own NXentry group'''
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
-        eznx.write_dataset(nxentry, "date", spec2nexus.iso8601(scan.date)  )
+        eznx.write_dataset(nxentry, "date", utils.iso8601(scan.date)  )
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
         eznx.write_dataset(nxentry, "comments", '\n'.join(scan.comments))
@@ -156,8 +172,8 @@ class Writer(object):
         for column in scan.L:
             self.write_ds(nxdata, column, scan.data[column])
 
-        signal = spec2nexus.clean_name(scan.column_last)      # primary Y axis
-        axis = spec2nexus.clean_name(scan.column_first)       # primary X axis
+        signal = utils.clean_name(scan.column_last)      # primary Y axis
+        axis = utils.clean_name(scan.column_first)       # primary X axis
         self.mca_spectra(nxdata, scan, axis)                 # records any MCA data
         return signal, axis
     
@@ -211,16 +227,16 @@ class Writer(object):
             data_shape = [len(axis1), len(axis2)]
             for label in column_labels:
                 axis = np.array( scan.data.get(label) )
-                self.write_ds(nxdata, label, spec2nexus.reshape_data(axis, data_shape))
+                self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
 
-            signal = spec2nexus.clean_name(scan.column_last)
+            signal = utils.clean_name(scan.column_last)
             axes = ':'.join([label1, label2])
 
         if '_mca_' in scan.data:    # 3-D array
             num_channels = len(scan.data['_mca_'][0])
             data_shape.append(num_channels)
             mca = np.array(scan.data['_mca_'])
-            data = spec2nexus.reshape_data(mca, data_shape)
+            data = utils.reshape_data(mca, data_shape)
             channels = range(1, num_channels+1)
             self.write_ds(nxdata, '_mca_', data, axes=axes+':'+'_mca_channel_')
             self.write_ds(nxdata, '_mca_channel_', channels, units='channel')
@@ -229,5 +245,5 @@ class Writer(object):
     
     def write_ds(self, group, label, data, **attr):
         '''*internal*: writes a dataset to the HDF5 file, records the SPEC name as an attribute'''
-        clean_name = spec2nexus.clean_name(label)
+        clean_name = utils.clean_name(label)
         eznx.write_dataset(group, clean_name, data, spec_name=label, **attr)
