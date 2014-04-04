@@ -7,6 +7,8 @@ Change History
 Production
 **********
 
+:2014.0404.1: fix sdist utf8 problem, see: http://bugs.python.org/issue11638
+:2014.0404.0: tree_api_parser moved back into NeXpy project
 :2014.0320.6: handle multiple header sections in SPEC data file
 :2014.0320.5: fix the new project URL
 :2014.0320.4: Sphinx cannot build PDF with code-block in a footnote

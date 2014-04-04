@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 '''
 Writes a simple NeXus HDF5 file using h5py with links.
 

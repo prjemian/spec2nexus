@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 '''(internal library) common methods used **spec2nexus** modules'''
 
