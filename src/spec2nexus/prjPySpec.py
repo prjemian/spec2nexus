@@ -348,7 +348,11 @@ class SpecDataFileScan(object):
         self.S = ''
         self.scanNum = -1
         self.scanCmd = ''
-        #self.specFile = ''        # TODO: removal of this may change the interface for clients!
+        if parent is not None:
+            # avoid changing the interface for clients
+            self.specFile = parent.fileName
+        else:
+            self.specFile = ''
         self.T = ''
         self.V = []
         self.column_first = ''
