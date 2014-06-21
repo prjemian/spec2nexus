@@ -12,7 +12,7 @@
 
 
 '''
-Pull out named columns from scan(s) in a SPEC data file and save to TSV files
+Save columns from SPEC data file scan(s) to TSV files
 
 **Usage**::
 
@@ -96,7 +96,7 @@ def extractScans(cmdArgs):
 
     print "program: " + sys.argv[0]
     # now open the file and read it
-    specData = prjPySpec.specDataFile(specFile)
+    specData = prjPySpec.SpecDataFile(specFile)
     print "read: " + specFile
     
     for scanNum in scanList:
@@ -197,14 +197,18 @@ def test():
     #  /home/beams/IXS/Data/HERIX/SPEC/2013-1/Weber/CeCoIn5
     # copy it and use the scratch copy (to be safe)
     # cp /home/beams/IXS/Data/HERIX/SPEC/2013-1/Weber/CeCoIn5 /tmp
-    cmdLine = sys.argv[0] + r' /tmp/CeCoIn5   5 6 7 8 9   HerixE Ana5 ICO-C'
+    # cmdLine = sys.argv[0] + r' /tmp/CeCoIn5   5 6 7 8 9   HerixE Ana5 ICO-C'
 
     # alternate test data from USAXS archive
-    cmdLine = sys.argv[0] + r' ./testdata/11_03_Vinod.dat   1 2 12   USAXS.m2rp Monitor  I0'
+    # cmdLine = sys.argv[0] + r' ./testdata/11_03_Vinod.dat   1 2 12   USAXS.m2rp Monitor  I0'
+    testpath = os.path.abspath(os.path.split(__file__)[0])
+    testfile = os.path.join(testpath, 'data', 'CdSe')
+    cmdLine = sys.argv[0] + r' ' + testfile + '   92   HerixE T_sample_LS340  HRMpzt1'
     
     extractScans(cmdLine.split())
+    # FIXME: returned information scan #95!  Fix this!
 
 
 if __name__ == "__main__":
-    main()
-    #test()
+    #main()
+    test()

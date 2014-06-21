@@ -454,9 +454,20 @@ class SpecDataFileScan(object):
                 if not in_array_data:   # last step, add to data column
                     self.data['_mca_'].append(mca_spectrum)
             else:
+                # TODO: What if len(values.split()) != len(self.L)
+                if len(values.split()) != len(self.L):
+                    # How often does this happen?
+                    # Perhaps lots when the same column label is given multiple times.
+                    # That's not uncommon.
+                    # But this test did not capture the ValueError raised below
+                    pass
                 for col, val in enumerate(values.split()):
                     label = self.L[col]
-                    self.data[label].append(float(val))
+                    try:
+                        self.data[label].append(float(val))
+                    except ValueError:
+                        # TODO: need to report and handle this problem
+                        pass
     
     def _unique_key(self, label, keylist):
         '''ensure that label is not yet existing in keylist'''

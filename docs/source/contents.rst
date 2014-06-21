@@ -8,6 +8,7 @@ Contents
    overview
    spec2nexus
    h5toText
+   extractSpecScan
    prjPySpec
    eznx
    utils
