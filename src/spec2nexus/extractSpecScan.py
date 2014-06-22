@@ -34,9 +34,9 @@ Compatible with Python 2.6+
 '''
 
 
-import prjPySpec
 import os
 import sys
+import prjPySpec
 
 
 PrintLabels = True      # put column labels in output file
@@ -186,16 +186,5 @@ def main():
     extractScans(sys.argv)
 
 
-def test():
-    testpath = os.path.abspath(os.path.split(__file__)[0])
-    testfile = os.path.join(testpath, 'data', 'CdSe')
-    testscans = '92 95'
-    testlabels = 'HerixE T_sample_LS340  HRMpzt1'
-    cmdLine = ' '.join((sys.argv[0], testfile, testscans, testlabels))
-    
-    extractScans(cmdLine.split())
-
-
 if __name__ == "__main__":
     main()
-    #test()

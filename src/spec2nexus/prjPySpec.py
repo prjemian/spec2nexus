@@ -454,19 +454,10 @@ class SpecDataFileScan(object):
                 if not in_array_data:   # last step, add to data column
                     self.data['_mca_'].append(mca_spectrum)
             else:
-                # TODO: What if len(values.split()) != len(self.L)
-                if len(values.split()) != len(self.L):
-                    # How often does this happen?
-                    # Perhaps lots when the same column label is given multiple times.
-                    # That's not uncommon.
-                    # But this test did not capture the ValueError considered in _interpret_data_row()
-                    pass
                 buf = self._interpret_data_row(values)
-                if len(buf.keys()) == len(self.data.keys()):    # only keep complete rows
+                if len(buf) == len(self.data):      # only keep complete rows
                     for label, val in buf.items():
                         self.data[label].append(val)
-                else:
-                    pass
     
     def _interpret_data_row(self, row_text):
         buf = {}
