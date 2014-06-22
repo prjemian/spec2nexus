@@ -101,11 +101,7 @@ def extractScans(cmdArgs):
     
     for scanNum in scanList:
         outFile = makeOutputFileName(specFile, scanNum)
-        # assume that this data file started with #S 1 (scan 1)
-        scan = specData.scans[scanNum-1]
-        # TODO: since this might not be true for some files, make this more robust.
-        # Better to make an interface in prjPySpec and call that here:
-        #   scan = specData.get_scan(scanNum)
+        scan = specData.getScan(scanNum)
     
         # get the column numbers corresponding to the column_labels
         column_numbers = []
@@ -122,14 +118,12 @@ def extractScans(cmdArgs):
             txt = []
             if PrintLabels:
                 txt.append( '# ' + '\t'.join(column_labels) )
-            for data_row in scan.data_lines:
-                data_row = data_row.split()
-                row_data = [data_row[col] for col in column_numbers]
-                txt.append( '\t'.join(row_data) )
-            result = '\n'.join(txt)
+            data = [scan.data[item] for item in column_labels]
+            for data_row in zip(*data):
+                txt.append( '\t'.join(map(str, data_row)) )
         
             fp = open(outFile, 'w')
-            fp.write(result)
+            fp.write('\n'.join(txt))
             fp.close()
             print "wrote: " + outFile
 
@@ -193,22 +187,15 @@ def main():
 
 
 def test():
-    # test file for sector 30 is here:
-    #  /home/beams/IXS/Data/HERIX/SPEC/2013-1/Weber/CeCoIn5
-    # copy it and use the scratch copy (to be safe)
-    # cp /home/beams/IXS/Data/HERIX/SPEC/2013-1/Weber/CeCoIn5 /tmp
-    # cmdLine = sys.argv[0] + r' /tmp/CeCoIn5   5 6 7 8 9   HerixE Ana5 ICO-C'
-
-    # alternate test data from USAXS archive
-    # cmdLine = sys.argv[0] + r' ./testdata/11_03_Vinod.dat   1 2 12   USAXS.m2rp Monitor  I0'
     testpath = os.path.abspath(os.path.split(__file__)[0])
     testfile = os.path.join(testpath, 'data', 'CdSe')
-    cmdLine = sys.argv[0] + r' ' + testfile + '   92   HerixE T_sample_LS340  HRMpzt1'
+    testscans = '92 95'
+    testlabels = 'HerixE T_sample_LS340  HRMpzt1'
+    cmdLine = ' '.join((sys.argv[0], testfile, testscans, testlabels))
     
     extractScans(cmdLine.split())
-    # FIXME: returned information scan #95!  Fix this!
 
 
 if __name__ == "__main__":
-    #main()
-    test()
+    main()
+    #test()

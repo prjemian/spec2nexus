@@ -459,16 +459,26 @@ class SpecDataFileScan(object):
                     # How often does this happen?
                     # Perhaps lots when the same column label is given multiple times.
                     # That's not uncommon.
-                    # But this test did not capture the ValueError raised below
+                    # But this test did not capture the ValueError considered in _interpret_data_row()
                     pass
-                for col, val in enumerate(values.split()):
-                    label = self.L[col]
-                    try:
-                        self.data[label].append(float(val))
-                    except ValueError:
-                        # TODO: need to report and handle this problem
-                        pass
+                buf = self._interpret_data_row(values)
+                if len(buf.keys()) == len(self.data.keys()):    # only keep complete rows
+                    for label, val in buf.items():
+                        self.data[label].append(val)
+                else:
+                    pass
     
+    def _interpret_data_row(self, row_text):
+        buf = {}
+        for col, val in enumerate(row_text.split()):
+            label = self.L[col]
+            try:
+                buf[label] = float(val)
+            except ValueError:
+                # TODO: need to report and handle this problem
+                break
+        return buf
+
     def _unique_key(self, label, keylist):
         '''ensure that label is not yet existing in keylist'''
         i = 0
