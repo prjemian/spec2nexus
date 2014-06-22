@@ -14,32 +14,51 @@
 '''
 Save columns from SPEC data file scan(s) to TSV files
 
+.. note:: TSV: tab-separated values
+
 **Usage**::
 
-  extractSpecScan.py /tmp/CeCoIn5 5 HerixE Ana5 ICO-C
-  extractSpecScan.py ./testdata/11_03_Vinod.dat   2 12   USAXS.m2rp Monitor  I0
+  extractSpecScan.py /tmp/CeCoIn5 -s 5 -c HerixE Ana5 ICO-C
+  extractSpecScan.py ./testdata/11_03_Vinod.dat   -s 2 12   -c USAXS.m2rp Monitor  I0
 
 **General usage**::
 
-  extractSpecScan.py ./path/to/specFile  scanNumbers  columnLabels
+    usage: extractSpecScan [-h] [-f] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
 
-where the path to the spec data file can be relative, absolute, 
-or no directory part given at all,
-the scan numbers are integers, separated by spaces and the columns 
-labels are character strings (not valid integers), separated by spaces.
+Save columns from SPEC data file scan(s) to TSV files
 
-.. note:: TSV: tab-separated values
 
-Compatible with Python 2.6+
+positional arguments:
+
+========================  ==========================================================================
+argument                  description
+========================  ==========================================================================
+spec_file                 SPEC data file name (path is optional, can use relative or absolute)
+========================  ==========================================================================
+
+
+optional arguments:
+
+=============================  ==========================================================================
+argument                       description
+=============================  ==========================================================================
+-h, --help                     show this help message and exit
+-f, --nolabels                 do not write column labels to output file (default: write labels)
+-s SCAN [SCAN ...]             scan number(s) to be extracted, must be integers
+--scan SCAN [SCAN ...]         same as *-s* option
+-c COLUMN [COLUMN ...]         column label(s) to be extracted
+--column COLUMN [COLUMN ...]   same as *-c* option
+=============================  ==========================================================================
+
+.. note:: column names MUST appear in all chosen scans
+
+Compatible with Python 2.7+
 '''
 
 
 import os
 import sys
 import prjPySpec
-
-
-PrintLabels = True      # put column labels in output file
 
 
 #-------------------------------------------------------------------------------------------
@@ -72,11 +91,55 @@ def makeOutputFileName(specFile, scanNum):
     return outFile
 
 
-def extractScans(cmdArgs):
+def get_user_parameters():
+    '''configure user's command line parameters from sys.argv'''
+    import argparse
+    doc = __doc__.strip().splitlines()[0]
+    parser = argparse.ArgumentParser(prog='extractSpecScan', description=doc)
+
+    parser.add_argument('-f', 
+                        '--nolabels', 
+                        action='store_true',
+                        help='do not write column labels to output file',
+                        default=False)
+    parser.add_argument('spec_file', 
+                        action='store', 
+                        nargs=1, 
+                        help="SPEC data file name(s)")
+    parser.add_argument('-s',
+                        '--scan', 
+                        action='store', 
+                        nargs='+', 
+                        type=int,
+                        help="scan number(s) to be extracted")
+    parser.add_argument('-c',
+                        '--column', 
+                        action='store', 
+                        nargs='+', 
+                        help="column label(s) to be extracted")
+
+    args = parser.parse_args()
+
+    if args.scan is None:
+        raise KeyError, "must name at least one scan number to extract"
+    if args.column is None:
+        raise KeyError, "must name at least one column to extract"
+    args.spec_file = args.spec_file[0]
+    
+    args.print_labels = not args.nolabels
+    del args.nolabels
+
+    return args
+
+
+def main():
     '''
     read the data file, find each scan, find the columns, save the data
     
-    :param [str] cmdArgs: command line arguments split into a list, as in sys.argv
+    :param [str] cmdArgs: Namespace from argparse, returned from get_user_parameters()
+    
+    ..  such as:
+      Namespace(column=['x', 'y', 'I0', 'I'], print_labels=True, scan=[92, 95], spec_file=['data\\APS_spec_data.dat'])
     
     .. note:: Each column label must match *exactly* the name of a label
        in each chosen SPEC scan number or the program will skip that particular scan
@@ -91,21 +154,20 @@ def extractScans(cmdArgs):
         1.9975    65449    478
     
     '''
-    global PrintLabels
-    specFile, scanList, column_labels = parseCmdLine(cmdArgs)
+    cmdArgs = get_user_parameters()
 
     print "program: " + sys.argv[0]
     # now open the file and read it
-    specData = prjPySpec.SpecDataFile(specFile)
-    print "read: " + specFile
+    specData = prjPySpec.SpecDataFile(cmdArgs.spec_file)
+    print "read: " + cmdArgs.spec_file
     
-    for scanNum in scanList:
-        outFile = makeOutputFileName(specFile, scanNum)
+    for scanNum in cmdArgs.scan:
+        outFile = makeOutputFileName(cmdArgs.spec_file, scanNum)
         scan = specData.getScan(scanNum)
     
         # get the column numbers corresponding to the column_labels
         column_numbers = []
-        for label in column_labels:
+        for label in cmdArgs.column:
             if label in scan.L:
                 # report all columns in order specified on command-line
                 column_numbers.append( scan.L.index(label) )
@@ -114,11 +176,11 @@ def extractScans(cmdArgs):
                 msg += str(scanNum) + ' ... skipping'
                 print msg       # report all mismatched column labels
     
-        if len(column_numbers) == len(column_labels):   # must be perfect matches
+        if len(column_numbers) == len(cmdArgs.column):   # must be perfect matches
             txt = []
-            if PrintLabels:
-                txt.append( '# ' + '\t'.join(column_labels) )
-            data = [scan.data[item] for item in column_labels]
+            if cmdArgs.print_labels:
+                txt.append( '# ' + '\t'.join(cmdArgs.column) )
+            data = [scan.data[item] for item in cmdArgs.column]
             for data_row in zip(*data):
                 txt.append( '\t'.join(map(str, data_row)) )
         
@@ -126,64 +188,6 @@ def extractScans(cmdArgs):
             fp.write('\n'.join(txt))
             fp.close()
             print "wrote: " + outFile
-
-
-def parseCmdLine(cmdArgs):
-    '''
-    interpret the command-line arguments (avoid getopts, optparse, and argparse)
-    
-    :param [str] cmdArgs: command line arguments split into a list, as in sys.argv
-    
-    :returns tuple: specFile, scanList, column_labels
-    
-    :param str specFile: name of existing SPEC data file to be read
-    :param [int] scanList: list of chosen SPEC scan numbers
-    :param [str] column_labels: list of column labels
-    '''
-    global PrintLabels
-
-    if len(cmdArgs) < 4:
-        print "usage: extractSpecScan.py specFile scanNum [scanNum [...]] [-nolabels] col1 [col2 [col3 [...]]]"
-        exit(1)
-
-    # positional argument
-    specFile = cmdArgs[1]
-    if not os.path.exists(specFile):
-        raise RuntimeError, "file not found: " + specFile
-
-    # variable length argument (optparse cannot handle, argparse requires python 2.7+)
-    # read the list of scan numbers as integers
-    # list ends when we get to a column label
-    # column labels are not integers
-    pos = 2
-    scanList = []
-    while True:
-        try:
-            scanNum = int(cmdArgs[pos])
-            if scanNum not in scanList:
-                # avoid reporting the same scan number more than once
-                scanList.append( scanNum )
-            pos += 1
-        except ValueError:
-            break
-
-    # check for the '-nolabels' option to disable column labels in the output file
-    if cmdArgs[pos] == '-nolabels':
-        PrintLabels = False
-        pos += 1
-    
-    # variable length argument
-    # all that is left on the line are column labels
-    column_labels = []
-    for label in cmdArgs[pos:]:
-        if label not in column_labels:
-            # avoid reporting the same column label more than once
-            column_labels.append( label )
-    return specFile, scanList, column_labels
-
-
-def main():
-    extractScans(sys.argv)
 
 
 if __name__ == "__main__":

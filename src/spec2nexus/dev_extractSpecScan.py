@@ -20,8 +20,21 @@ import extractSpecScan
 
 testpath = os.path.abspath(os.path.split(__file__)[0])
 testfile = os.path.join(testpath, 'data', 'CdSe')
-testscans = '92 95'
-testlabels = 'HerixE T_sample_LS340  HRMpzt1'
-cmdLine = ' '.join((sys.argv[0], testfile, testscans, testlabels))
+if not os.path.exists(testfile):
+    raise IOError, 'file does not exist: ' + testfile
 
-extractSpecScan.extractScans(cmdLine.split())
+sys.argv = [sys.argv[0], ]
+sys.argv.append(testfile)
+sys.argv.append('-s')
+sys.argv.append('92')
+sys.argv.append('95')
+sys.argv.append('-c')
+sys.argv.append('HerixE')
+sys.argv.append('T_sample_LS340')
+sys.argv.append('HRMpzt1')
+
+# Show how to get the help/usage text
+# sys.argv = [sys.argv[0], ]
+# sys.argv.append('-h')
+
+extractSpecScan.main()

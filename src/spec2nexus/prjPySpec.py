@@ -466,7 +466,7 @@ class SpecDataFileScan(object):
             try:
                 buf[label] = float(val)
             except ValueError:
-                # TODO: need to report and handle this problem
+                # TODO: need to report and/or handle this problem
                 break
         return buf
 
