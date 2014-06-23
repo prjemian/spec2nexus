@@ -19,8 +19,8 @@ Provides
 * **spec2nexus**      : command-line tool: Convert SPEC data files to NeXus HDF5
 * **h5toText**        : command-line tool: Print the structure of an HDF5 file
 * **extractSpecScan** : command-line tool: Save columns from SPEC data file scan(s) to TSV files
-* **eznx**            : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
 * **prjPySpec**       : library: python binding to read SPEC [#]_ data files
+* **eznx**            : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
 
 .. [#] http://certif.com
 .. [#] http://nexusformat.org

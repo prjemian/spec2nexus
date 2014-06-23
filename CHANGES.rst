@@ -7,7 +7,7 @@ Change History
 Production
 **********
 
-:2014.0622.1: added extractSpecScan.py to the suite from the USAXS project
+:2014.0622.2: added extractSpecScan.py to the suite from the USAXS project
 :2014.0410.0: restore scan.fileName variable to keep interface the same for some legacy clients
 :2014.0404.1: fix sdist utf8 problem, see: http://bugs.python.org/issue11638
 :2014.0404.0: tree_api_parser moved back into NeXpy project
