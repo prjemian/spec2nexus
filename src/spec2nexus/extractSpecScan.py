@@ -23,7 +23,7 @@ Save columns from SPEC data file scan(s) to TSV files
 
 **General usage**::
 
-    usage: extractSpecScan [-h] [-f] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
+    usage: extractSpecScan [-h] [--nolabels] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
 
 Save columns from SPEC data file scan(s) to TSV files
 
@@ -43,7 +43,7 @@ optional arguments:
 argument                       description
 =============================  ==========================================================================
 -h, --help                     show this help message and exit
--f, --nolabels                 do not write column labels to output file (default: write labels)
+--nolabels                     do not write column labels to output file (default: write labels)
 -s SCAN [SCAN ...]             scan number(s) to be extracted, must be integers
 --scan SCAN [SCAN ...]         same as *-s* option
 -c COLUMN [COLUMN ...]         column label(s) to be extracted
@@ -97,8 +97,7 @@ def get_user_parameters():
     doc = __doc__.strip().splitlines()[0]
     parser = argparse.ArgumentParser(prog='extractSpecScan', description=doc)
 
-    parser.add_argument('-f', 
-                        '--nolabels', 
+    parser.add_argument('--nolabels', 
                         action='store_true',
                         help='do not write column labels to output file',
                         default=False)
