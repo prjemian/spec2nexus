@@ -58,6 +58,8 @@ class H5toText(object):
         s = []
         nxclass = obj.attrs.get('NX_class', '')
         if len(nxclass) > 0:
+            if isinstance(nxclass, numpy.ndarray):      # attribute reported as DATATYPE SIMPLE
+                nxclass = nxclass[0]                    # convert as if DATATYPE SCALAR
             nxclass = ":" + nxclass
         s += [ indentation + name + nxclass ]
         s += self._renderAttributes(obj, indentation)
@@ -327,9 +329,7 @@ def do_filelist(filelist, limit=5, show_attributes=True):
     for item in filelist:
         mc = H5toText(item)
         mc.array_items_shown = limit
-        report = mc.report(show_attributes)
-        if report is not None:
-            print '\n'.join(report)
+        print '\n'.join(mc.report(show_attributes) or '')
 
 
 def main():
@@ -371,11 +371,4 @@ def main():
 
 
 if __name__ == '__main__':
-#     sys.argv = [sys.argv[0],]
-#     sys.argv.append('-h')
-#     sys.argv.append('-V')
-#     sys.argv.append('-a')
-#     sys.argv.append('-n')
-#     sys.argv.append('6')
-#     sys.argv.append('data/writer_1_3.h5')
     main()
