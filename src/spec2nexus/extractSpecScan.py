@@ -23,7 +23,7 @@ Save columns from SPEC data file scan(s) to TSV files
 
 **General usage**::
 
-    usage: extractSpecScan [-h] [-f] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
+    usage: extractSpecScan [-h] [--nolabels] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
 
 Save columns from SPEC data file scan(s) to TSV files
 
@@ -43,7 +43,7 @@ optional arguments:
 argument                       description
 =============================  ==========================================================================
 -h, --help                     show this help message and exit
--f, --nolabels                 do not write column labels to output file (default: write labels)
+--nolabels                     do not write column labels to output file (default: write labels)
 -s SCAN [SCAN ...]             scan number(s) to be extracted, must be integers
 --scan SCAN [SCAN ...]         same as *-s* option
 -c COLUMN [COLUMN ...]         column label(s) to be extracted
@@ -97,34 +97,43 @@ def get_user_parameters():
     doc = __doc__.strip().splitlines()[0]
     parser = argparse.ArgumentParser(prog='extractSpecScan', description=doc)
 
-    parser.add_argument('-f', 
-                        '--nolabels', 
+    parser.add_argument('-v',
+                        '--version', 
                         action='store_true',
-                        help='do not write column labels to output file',
+                        help='print version number and exit',
+                        default=False)
+    msg = 'do not write column labels to output file (default: write labels)'
+    parser.add_argument('--nolabels', 
+                        action='store_true',
+                        help=msg,
                         default=False)
     parser.add_argument('spec_file', 
                         action='store', 
-                        nargs=1, 
                         help="SPEC data file name(s)")
+    msg = "scan number(s) to be extracted (must specify at least one)"
     parser.add_argument('-s',
                         '--scan', 
                         action='store', 
                         nargs='+', 
                         type=int,
-                        help="scan number(s) to be extracted")
+                        required=True,
+                        help=msg)
+    msg = "column label(s) to be extracted (must specify at least one)"
     parser.add_argument('-c',
                         '--column', 
                         action='store', 
                         nargs='+', 
-                        help="column label(s) to be extracted")
+                        required=True,
+                        help=msg)
 
     args = parser.parse_args()
-
-    if args.scan is None:
-        raise KeyError, "must name at least one scan number to extract"
-    if args.column is None:
-        raise KeyError, "must name at least one column to extract"
-    args.spec_file = args.spec_file[0]
+    
+    if args.version:
+        import spec2nexus
+        prog = sys.argv[0]
+        # prog = os.path.split(prog)[1]
+        print ', '.join((prog, 'version ' + spec2nexus.__version__))
+        sys.exit(0)
     
     args.print_labels = not args.nolabels
     del args.nolabels
@@ -139,7 +148,7 @@ def main():
     :param [str] cmdArgs: Namespace from argparse, returned from get_user_parameters()
     
     ..  such as:
-      Namespace(column=['x', 'y', 'I0', 'I'], print_labels=True, scan=[92, 95], spec_file=['data\\APS_spec_data.dat'])
+      Namespace(column=['mr', 'I0', 'USAXS_PD'], print_labels=True, scan=[1, 6], spec_file=['data/APS_spec_data.dat'])
     
     .. note:: Each column label must match *exactly* the name of a label
        in each chosen SPEC scan number or the program will skip that particular scan
@@ -148,7 +157,7 @@ def main():
     
     example output::
 
-        # USAXS.m2rp    Monitor    I0
+        # mr    I0    USAXS_PD
         1.9475    65024    276
         1.9725    64845    352
         1.9975    65449    478

@@ -32,6 +32,7 @@ sys.argv.append('-c')
 sys.argv.append('HerixE')
 sys.argv.append('T_sample_LS340')
 sys.argv.append('HRMpzt1')
+#sys.argv.append('-v')
 
 # Show how to get the help/usage text
 # sys.argv = [sys.argv[0], ]
