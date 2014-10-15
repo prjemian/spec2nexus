@@ -21,25 +21,49 @@ import sys                          #@UnusedImport
 import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 import pprint                       #@UnusedImport
+import re                           #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'PRJPYSPEC_PLUGIN_PATH'
+PATH_DELIMITER = ','
+FILE_NAME_ENDING = '_handlers.py'
+
+
+class DuplicateControlLineKey(Exception): 
+    '''This control line key regular expression has been used more than once.'''
+    pass
+
+
+class DuplicatePlugin(Exception): 
+    '''This plugin file name has been used more than once.'''
+    pass
 
 
 class ControlLineHandler(object):
     '''
     Handle a single control line in a SPEC data file
     
-    Create a subclass of ControlLineHandler for each different control line
+    Create a subclass of ControlLineHandler for each different control line.
+    
+    * The subclass must define a value for the ``key_regexp`` which is
+      unique across all :class:`ControlLineHandler` classes.
+    * The subclass must override the definition of :meth:`process` and
+      return either None or a ??? dictionary ???
+      # TODO: decide the return API for process()
+    
+    :param str key_regexp: regular expression to match a control line key, up to the first space
     '''
     
-    plugin_name = None
+    key_regexp = None
     
-    def getName(self):
-        return str(self.plugin_name)
+    def getKey(self):
+        return str(self.key_regexp)
     
     def __str__(self):
         return str(self.__name__)
+    
+    def process(self, *args, **kw):
+        raise NotImplementedError       # MUST implement in the subclass
 
 
 class ControlLineHandlerManager(object):
@@ -51,17 +75,42 @@ class ControlLineHandlerManager(object):
         self.handler_dict = {}
     
     def register(self, handler):
-        handler_name = handler().getName()
-        if handler_name not in self.handler_dict:
-            self.handler_dict[handler_name] = handler
-        # TODO: else report warning that handler was already known
+        '''add this handler to the list of known handlers, key must be unique'''
+        handler_key = handler().getKey()
+        if handler_key in self.handler_dict:
+            raise DuplicateControlLineKey(handler_key)
+        self.handler_dict[handler_key] = handler
+    
+    def hasKey(self, key):
+        '''Is this key known?'''
+        return key in self.handler_dict
+    
+    def getKey(self, spec_data_file_line):
+        '''
+        Find the key that matches this line in a SPEC data file.  Return None if not found.
+        
+        :param str spec_data_file_line: one line from a SPEC data file
+        '''
+        pos = spec_data_file_line.find(' ')
+        if pos < 0:
+            return None
+        txt = spec_data_file_line[:pos]
+        for key in self.handler_dict.keys():
+            if re.match(key, txt) is not None:
+                return key
+        return None
+
+    def get(self, key):
+        '''return the handler identified by key or None'''
+        if not self.hasKey(key):
+            return None
+        return self.handler_dict[key]
 
 
 def getPluginFiles(plugin_path_list):
     '''
     construct a dictionary of modules containing plugin classes, keyed by module name
     '''
-    match_key = '_handlers.py'
     module_dict = {}
     for path in plugin_path_list:
         if not os.path.exists(path):
@@ -70,12 +119,12 @@ def getPluginFiles(plugin_path_list):
             full_name = os.path.join(path, fname)
             if not os.path.isfile(full_name):
                 continue
-            if not fname.endswith(match_key):
+            if not fname.endswith(FILE_NAME_ENDING):
                 continue
             module_name = os.path.splitext(fname)[0]
-            if module_name not in module_dict:
-                module_dict[module_name] = full_name
-            # TODO: else report warning that module_name was already known
+            if module_name in module_dict:
+                raise DuplicatePlugin(module_name + ' in ' + full_name)
+            module_dict[module_name] = full_name
     return module_dict
 
 
@@ -93,17 +142,17 @@ def identify_control_line_plugins(plugin_path_list):
         module_obj = imp.load_source(k, v)
         try:
             member_list = inspect.getmembers(module_obj)
-            for k, obj in member_list:
-                if not inspect.isclass(obj):
+            for k, class_obj in member_list:
+                if not inspect.isclass(class_obj):
                     continue
-                if not isControlLineHandler(obj):
+                if not isControlLineHandler(class_obj):
                     continue
                 if k is 'ControlLineHandler':
                     continue
-                control_line = obj.plugin_name
-                if control_line not in control_line_dict:
-                    control_line_dict[control_line] = obj
-                # TODO: else report warning that control line was already known
+                control_line = class_obj().getKey()
+                if control_line in control_line_dict:
+                    raise DuplicateControlLineKey(control_line + ' in ' + v)
+                control_line_dict[control_line] = class_obj
         except AttributeError:
             pass
     return control_line_dict
@@ -119,7 +168,7 @@ def getSearchPath(internal_path, env_var_name):
     def cleanup_name(txt):
         return txt.strip()
     if search_path is not None:
-        control_line_search_path += map(cleanup_name, search_path.split(','))
+        control_line_search_path += map(cleanup_name, search_path.split(PATH_DELIMITER))
     return control_line_search_path
 
 
@@ -131,3 +180,28 @@ if __name__ == '__main__':
     for k, v in plugin_dict.items():
         manager.register(v)
     pprint.pprint(manager.handler_dict)
+
+    print '#F', plugin_dict.has_key('#F')
+
+    spec_data = '''
+        #S 1 ascan eta 43.6355 44.0355 40 1
+        #D Thu Jul 17 02:38:24 2003
+        #T 1 (seconds)
+        #G0 0 0 0 0 0 1 0 0 0 0 0 0 50 0 0 0 1 0 0 0 0
+        #V110 101.701 56 1 4 1 1 1 1 992.253
+        #@CHANN 1201 1110 1200 1
+        #N 14
+        #L eta H K L elastic Kalpha Epoch seconds signal I00 harmonic signal2 I0 I0
+        #@MCA 16C
+        #@CHANN 1201 1110 1200 1
+        #o0 un0 mx my waxsx ax un5 az un7
+        @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        #H4 FB_o2_on FB_o2_r FB_o2_sp
+        #Pete wrote this stuff
+    '''
+    for spec_line in spec_data.strip().splitlines():
+        txt = spec_line.strip()
+        if len(txt) > 0:
+            key = manager.getKey(txt)
+            print key, manager.get(key)

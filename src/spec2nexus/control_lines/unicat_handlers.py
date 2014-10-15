@@ -1,11 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
-'''
-define custom control lines for SPEC data files
-
-use this to test the plugin architecture
-'''
+'''prjPySpec plugins for control lines defined by APS UNICAT'''
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -21,9 +17,9 @@ use this to test the plugin architecture
 from spec2nexus.plugin import ControlLineHandler
 
 
-class Pete(ControlLineHandler):
-    plugin_name = '#Pete'
+class MetadataMnes(ControlLineHandler):
+    key_regexp = '#H\d+'
 
 
-class Alta(ControlLineHandler):
-    plugin_name = '#Alta'
+class MetadataValues(ControlLineHandler):
+    key_regexp = '#V\d+'

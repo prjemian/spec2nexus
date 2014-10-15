@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-provide SPEC data file header
+define custom control lines for SPEC data files
 
-Also serves as an example of a Control Line plugin file.
-Can define handlers for one or more Control Lines.
-Each handler is a subclass of spec2nexus.plugin.ControlLineHandler
+use this to test the plugin architecture
 '''
 
 #-----------------------------------------------------------------------------
@@ -23,13 +21,9 @@ Each handler is a subclass of spec2nexus.plugin.ControlLineHandler
 from spec2nexus.plugin import ControlLineHandler
 
 
-class F_line(ControlLineHandler):
-    plugin_name = '#F'
+class Pete(ControlLineHandler):
+    key_regexp = '#Pete'
 
 
-class E_line(ControlLineHandler):
-    plugin_name = '#E'
-
-
-class D_line(ControlLineHandler):
-    plugin_name = '#D'
+class Alta(ControlLineHandler):
+    key_regexp = '#Alta'
