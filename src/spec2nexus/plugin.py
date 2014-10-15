@@ -20,6 +20,7 @@ import os                           #@UnusedImport
 import sys                          #@UnusedImport
 import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
+import pprint                       #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'PRJPYSPEC_PLUGIN_PATH'
@@ -126,5 +127,7 @@ if __name__ == '__main__':
     os.environ[PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE] = 'C://Users//Pete//Desktop, /tmp'
     control_line_search_path = getSearchPath('control_lines', PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE)
     plugin_dict = identify_control_line_plugins(control_line_search_path)
+    manager = ControlLineHandlerManager()
     for k, v in plugin_dict.items():
-        print k, v
+        manager.register(v)
+    pprint.pprint(manager.handler_dict)
