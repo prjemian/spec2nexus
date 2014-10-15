@@ -80,6 +80,9 @@ class CL_Time(ControlLineHandler):
 class CL_Temperature(ControlLineHandler):
     key_regexp = 'X'
 
+class CL_DataLine(ControlLineHandler):
+    key_regexp = '\d+'      # TODO: need more general regexp for signed data
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # MCA: multi-channel analyzer
