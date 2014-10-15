@@ -121,6 +121,10 @@ Try to read a file that does not exist:
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
+import plugin   #@UnusedImport
+
+
+plugin_manager = None   # will initialize when SpecDataFile is first called
 
 
 class SpecDataFileNotFound(IOError): 
@@ -133,6 +137,10 @@ class SpecDataFileCouldNotOpen(IOError):
 
 class NotASpecDataFile(Exception): 
     '''content of file is not SPEC data (first line must start with ``#F``)'''
+    pass
+
+class DuplicateSpecScanNumber(Exception): 
+    '''multiple use of scan number in a single SPEC data file'''
     pass
 
 
@@ -192,6 +200,7 @@ class SpecDataFile(object):
     readOK = -1
 
     def __init__(self, filename):
+        global plugin_manager
         self.fileName = None
         self.errMsg = ''
         self.headers = []
@@ -202,10 +211,16 @@ class SpecDataFile(object):
         if not is_spec_file(filename):
             raise NotASpecDataFile, 'not a SPEC data file: ' + str(filename)
         self.fileName = filename
+
+        if plugin_manager is None:
+            plugin_manager = plugin.ControlLineHandlerManager()
+            plugin_manager.load_plugins()
+
         self.read()
 
     def read(self):
         """Reads a spec data file"""
+        global plugin_manager
         try:
             buf = open(self.fileName, 'r').read()
         except IOError:
@@ -217,6 +232,7 @@ class SpecDataFile(object):
             raise NotASpecDataFile, msg
         #------------------------------------------------------
         headers = []
+        # TODO: integrate the plugins here
         for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
             if len(part) == 0: continue         # just in case
             if part.startswith('#F'): 
@@ -239,8 +255,10 @@ class SpecDataFile(object):
                 self.headers.append(SpecDataFileHeader(part, parent=self))
             elif part.startswith('#S'):
                 scan = SpecDataFileScan(self.headers[-1], part)
-                if scan.scanNum not in self.scans:      # FIXME: silently ignores repeated use of same scan number
-                    self.scans[scan.scanNum] = scan
+                if scan.scanNum in self.scans:
+                    msg = str(scan.scanNum) + ' in ' + self.fileName
+                    raise DuplicateSpecScanNumber(msg)
+                self.scans[scan.scanNum] = scan
             else:
                 self.errMsg = "unknown SPEC data file part: " + part.splitlines()[0].strip()
         self.readOK = 0     # consider raising exceptions instead
@@ -297,6 +315,7 @@ class SpecDataFileHeader(object):
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
+        global plugin_manager
         lines = self.raw.splitlines()
         i = 0
         for line in lines:
@@ -364,6 +383,7 @@ class SpecDataFileScan(object):
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
+        global plugin_manager
         lines = self.raw.splitlines()
         i = 0
         for line in lines:
@@ -535,3 +555,4 @@ def test_isSpecFile():
 
 if __name__ == "__main__":
     developer_test()
+    #test_isSpecFile()

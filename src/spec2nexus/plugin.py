@@ -24,7 +24,7 @@ import pprint                       #@UnusedImport
 import re                           #@UnusedImport
 
 
-PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'PRJPYSPEC_PLUGIN_PATH'
+PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
 PLUGIN_INTERNAL_SUBDIRECTORY = 'control_lines'
 PATH_DELIMITER = ','
 FILE_NAME_ENDING = '_handlers.py'
