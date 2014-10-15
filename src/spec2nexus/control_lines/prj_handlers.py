@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-provide SPEC data file header
+define custom control lines for SPEC data files
+
+use this to test the plugin architecture
 '''
 
 #-----------------------------------------------------------------------------

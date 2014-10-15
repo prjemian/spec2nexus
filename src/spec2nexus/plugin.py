@@ -22,7 +22,7 @@ import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 
 
-CONTROL_LINE_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'CONTROL_LINE_SEARCH_PATH'
+PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'PRJPYSPEC_PLUGIN_PATH'
 
 
 class ControlLineHandler(object):
@@ -115,14 +115,16 @@ def getSearchPath(internal_path, env_var_name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), internal_path)
     control_line_search_path = [path, ]
     search_path = os.environ.get(env_var_name, None)
+    def cleanup_name(txt):
+        return txt.strip()
     if search_path is not None:
-        control_line_search_path += search_path.split(',')
+        control_line_search_path += map(cleanup_name, search_path.split(','))
     return control_line_search_path
 
 
 if __name__ == '__main__':
-    os.environ[CONTROL_LINE_SEARCH_PATH_ENVIRONMENT_VARIABLE] = 'C://Users//Pete//Desktop,/tmp'
-    control_line_search_path = getSearchPath('control_lines', CONTROL_LINE_SEARCH_PATH_ENVIRONMENT_VARIABLE)
-    clp = identify_control_line_plugins(control_line_search_path)
-    for k, v in clp.items():
+    os.environ[PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE] = 'C://Users//Pete//Desktop, /tmp'
+    control_line_search_path = getSearchPath('control_lines', PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE)
+    plugin_dict = identify_control_line_plugins(control_line_search_path)
+    for k, v in plugin_dict.items():
         print k, v
