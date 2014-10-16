@@ -65,6 +65,10 @@ class ControlLineHandler(object):
     
     def process(self, *args, **kw):
         raise NotImplementedError       # MUST implement in the subclass
+    
+    def _strip_first_word(self, line):
+        '''return everything after the first space on the line of text'''
+        return line[line.find(" "):].strip()
 
 
 class ControlLineHandlerManager(object):
@@ -133,7 +137,7 @@ class ControlLineHandlerManager(object):
     
     def _identify_control_line_plugins(self, plugin_path_list):
         '''
-        construct a dictionary of plugin classes, keyed by control line
+        build dictionary of plugin classes, keyed by control line
         '''
         control_line_dict = {}
         module_dict = self._getPluginFiles(plugin_path_list)
@@ -162,7 +166,7 @@ class ControlLineHandlerManager(object):
 
     def _getPluginFiles(self, plugin_path_list):
         '''
-        construct a dictionary of modules containing plugin classes, keyed by module name
+        build dictionary of modules containing plugin classes, keyed by module name
         '''
         module_dict = {}
         for path in plugin_path_list:
@@ -179,6 +183,12 @@ class ControlLineHandlerManager(object):
                     raise DuplicatePlugin(module_name + ' in ' + full_name)
                 module_dict[module_name] = full_name
         return module_dict
+    
+    def process(self, key, *args, **kw):
+        '''pick the control line handler by key and call its process() method'''
+        handler = self.get(key)
+        if handler is not None:
+            handler().process(*args, **kw)
 
 
 def simple_test():
