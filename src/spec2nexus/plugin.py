@@ -22,6 +22,7 @@ import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 import pprint                       #@UnusedImport
 import re                           #@UnusedImport
+from pySpec import strip_first_word
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
@@ -65,10 +66,6 @@ class ControlLineHandler(object):
     
     def process(self, *args, **kw):
         raise NotImplementedError       # MUST implement in the subclass
-    
-    def _strip_first_word(self, line):
-        '''return everything after the first space on the line of text'''
-        return line[line.find(" "):].strip()
 
 
 class ControlLineHandlerManager(object):

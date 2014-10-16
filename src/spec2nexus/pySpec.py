@@ -185,6 +185,13 @@ def strip_first_word(line):
     return val.strip()
 
 
+def get_all_plugins():
+    '''load all plugin modules'''
+    manager = plugin.ControlLineHandlerManager()
+    manager.load_plugins()
+    return manager
+
+
 #-------------------------------------------------------------------------------------------
 
 
@@ -212,21 +219,20 @@ class SpecDataFile(object):
         self.fileName = filename
 
         if plugin_manager is None:
-            plugin_manager = plugin.ControlLineHandlerManager()
-            plugin_manager.load_plugins()
+            plugin_manager = get_all_plugins()
+        self.plugin_manager = plugin_manager
 
         self.read()
 
     def read(self):
         """Reads and parses a spec data file"""
-        global plugin_manager
         buf = self._read_file_(self.fileName)
         
         text = buf.splitlines()[0].strip()
-        key = plugin_manager.getKey(text)
+        key = self.plugin_manager.getKey(text)
         if key != '#F':
             raise NotASpecDataFile('First line does not start with #F: ' + self.fileName)
-        plugin_manager.process(key, text, self)
+        self.plugin_manager.process(key, text, self)
         buf = buf[len(text):]
 
         #------------------------------------------------------
@@ -235,7 +241,7 @@ class SpecDataFile(object):
         for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
             if len(part) == 0: continue         # just in case
             text = part.splitlines()[0].strip()
-            key = plugin_manager.getKey(text)
+            key = self.plugin_manager.getKey(text)
             if key != '#E':
                 headers.append('#E ' + part)        # new header is starting
         del buf                                 # Dispose of the input buffer memory (necessary?)
@@ -247,7 +253,7 @@ class SpecDataFile(object):
         for part in headers:
             for block in part.split('\n#S '):   # break header sections by scans
                 text = block.splitlines()[0].strip()
-                if plugin_manager.getKey(text) not in ('#E', '#S'):
+                if self.plugin_manager.getKey(text) not in ('#E', '#S'):
                     block = '#S ' + block
                 self.parts.append(block)        # keep each block (starts with either #E or #S)
         del headers, block
@@ -257,9 +263,9 @@ class SpecDataFile(object):
         # pull the information from each scan head
         for part in self.parts:
             text = part.splitlines()[0].strip()
-            key = plugin_manager.getKey(text)
+            key = self.plugin_manager.getKey(text)
             if key in ('#E', '#S'):
-                plugin_manager.process(key, part, self)
+                self.plugin_manager.process(key, part, self)
             else:
                 raise UnknownSpecFilePart(part.splitlines()[0].strip())
 
@@ -322,42 +328,28 @@ class SpecDataFileHeader(object):
         self.H = []
         self.O = []
         self.raw = buf
-        #self.interpret()
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
-        global plugin_manager
-        lines = self.raw.splitlines()
-        i = 0
-        for line in lines:
-            i += 1
+        for i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
-            key = line[0:line.find(' ')].strip()
-            # TODO: handle these keys with plugins
-            if (line.startswith('#C')):
-                self.comments.append(strip_first_word(line))
-            elif (line.startswith('#D')):
-                self.date = strip_first_word(line)
-            elif (line.startswith('#E')):
-                self.epoch = int(strip_first_word(line))
-            #elif (line.startswith('#F')):
-            #    self.file = strip_first_word(line)
-            elif (line.startswith('#H')):
-                self.H.append(strip_first_word(line).split())
-            elif (line.startswith('#O')):
-                self.O.append(strip_first_word(line).split())
+            key = self.parent.plugin_manager.getKey(line)
+            if key is None:
+                raise UnknownSpecFilePart("line %d: unknown header line: %s" % (i, line))
+            elif key == '#E':
+                pass    # avoid recursion
             else:
-                raise UnknownSpecFilePart("line %d: unknown key (%s) detected" % (i, key))
+                self.parent.plugin_manager.process(key, line, self)
 
 
 #-------------------------------------------------------------------------------------------
 
-LAZY_INTERPRET_SCAN_DATA = [
-                        'comments', 'data', 'data_lines', 'date', 'G',
-                        'L', 'M', 'positioner', 'N', 'P', 'Q', 'T', 'V',
-                        'column_first', 'column_last'
-                        ]
+LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
+    'comments', 'data', 'data_lines', 'date', 'G',
+    'L', 'M', 'positioner', 'N', 'P', 'Q', 'T', 'V',
+    'column_first', 'column_last'
+]
 
 
 class SpecDataFileScan(object):
@@ -392,71 +384,40 @@ class SpecDataFileScan(object):
         self.column_first = ''
         self.column_last = ''
         
-        # these attributes (and perhaps others) will be configured
-        # only after a call to self.interpret()
+        # the attributes defined in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES
+        # (and perhaps others) are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
-        self.interpreted = False
+        self.__lazy_interpret__ = True
     
     def __str__(self):
         return self.S
     
     def __getattribute__(self, attr):
-        if attr in LAZY_INTERPRET_SCAN_DATA:
-            if not self.interpreted:
-                self.interpreted = True     # set now to avoid recursion
+        if attr in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES:
+            if self.__lazy_interpret__:
+                self.__lazy_interpret__ = False     # set now to avoid recursion
                 self.interpret()
         return object.__getattribute__(self, attr)
         
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
-        global plugin_manager
         lines = self.raw.splitlines()
-        i = 0
-        for line in lines:
-            i += 1
-            # TODO: handle these keys with plugins
+        for i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
-            if (line.startswith('#')):
-                if (line.startswith('#C')):
-                    self.comments.append(strip_first_word(line))
-                elif (line.startswith('#D')):
-                    self.date = strip_first_word(line)
-                elif (line.startswith('#G')):      # diffractometer geometry
-                    subkey = line.split()[0].lstrip('#')
-                    self.G[subkey] = strip_first_word(line)
-                elif (line.startswith('#L')):
-                    # Some folks use more than two spaces!  Use regular expression(re) module
-                    self.L = re.split("  +", strip_first_word(line))
-                    self.column_first = self.L[0]
-                    self.column_last = self.L[-1]
-                elif (line.startswith('M')):
-                    self.M, dname = strip_first_word(line).split()
-                    self.monitor_name = dname.lstrip('(').rstrip(')')
-                elif (line.startswith('#N')):
-                    self.N = int(strip_first_word(line))
-                elif (line.startswith('#P')):
-                    self.P.append(strip_first_word(line))
-                elif (line.startswith('#Q')):
-                    self.Q = strip_first_word(line)
-                elif (line.startswith('#S')):
-                    self.S = strip_first_word(line)
-                    pos = self.S.find(" ")
-                    self.scanNum = int(self.S[0:pos])
-                    self.scanCmd = self.S[pos+1:]
-                elif (line.startswith('#T')):
-                    self.T = strip_first_word(line).split()[0]
-                elif (line.startswith('#V')):
-                    self.V.append(strip_first_word(line))
-                else:
-                    raise UnknownSpecFilePart("line %d: unknown key, text: %s" % (i, line))
-            elif len(line) < 2:
-                raise UnknownSpecFilePart("problem with scan header line " + str(i) + ' text: ' + line)
+            key = self.parent.plugin_manager.getKey(line)
+            if key is None:
+                raise UnknownSpecFilePart("line %d: unknown key, text: %s" % (i, line))
+            elif key == '#S':
+                pass        # avoid recursion
             else:
-                self.data_lines.append(line)
+                self.parent.plugin_manager.process(key, line, self)
+
+            # self.data_lines.append(line)
+
         #print self.scanNum, "\n\t".join( self.comments )
-        # interpret the motor positions from the scan header
+        # interpret the motor positions from the scan header    # TODO: move to plugin
         self.positioner = {}
         for row, values in enumerate(self.P):
             for col, val in enumerate(values.split()):
@@ -466,7 +427,7 @@ class SpecDataFileScan(object):
                     pass
                 mne = self.header.O[row][col]
                 self.positioner[mne] = float(val)
-        # interpret the UNICAT metadata (mostly floating point) from the scan header
+        # interpret the UNICAT metadata (mostly floating point) from the scan header    # TODO: move to plugin
         self.metadata = {}
         for row, values in enumerate(self.V):
             for col, val in enumerate(values.split()):
@@ -485,7 +446,7 @@ class SpecDataFileScan(object):
             self.data[label] = []
         in_array_data = False
         for row, values in enumerate(self.data_lines):
-            if values.startswith('@A'):     # Can there be more than 1 specified?
+            if values.startswith('@A'):     # Can there be more than 1 specified?    # TODO: move to plugin
                 in_array_data = True
                 if '_mca_' not in self.data:
                     self.data['_mca_'] = []

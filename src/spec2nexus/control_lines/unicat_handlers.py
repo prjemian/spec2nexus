@@ -14,12 +14,18 @@
 #-----------------------------------------------------------------------------
 
 
-from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.plugin import ControlLineHandler, strip_first_word
 
 
 class MetadataMnes(ControlLineHandler):
     key_regexp = '#H\d+'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        spec_obj.H.append( strip_first_word(text).split() )
 
 
 class MetadataValues(ControlLineHandler):
     key_regexp = '#V\d+'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        spec_obj.V.append( strip_first_word(text) )       # TODO: what about post-processing?
