@@ -23,17 +23,28 @@ Each handler is a subclass of spec2nexus.plugin.ControlLineHandler
 
 
 from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.pySpec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # header block
 
+# TODO: add comment to each class
+
 class CL_File(ControlLineHandler):
     key_regexp = '#F'
+    
+    def process(self, text, spec_file_obj, *args, **kws):
+        spec_file_obj.specFile = self._strip_first_word(text)
 
 
 class CL_Epoch(ControlLineHandler):
     key_regexp = '#E'
+    
+    def process(self, buf, spec_file_obj, *args, **kws):
+        header = SpecDataFileHeader(buf, parent=spec_file_obj)
+        spec_file_obj.headers.append(header)
+        
 
 
 class CL_Date(ControlLineHandler):
@@ -73,6 +84,18 @@ class CL_HKL(ControlLineHandler):
 
 class CL_Scan(ControlLineHandler):
     key_regexp = '#S'
+    
+    def process(self, part, spec_file_obj, *args, **kws):
+        scan = SpecDataFileScan(spec_file_obj.headers[-1], part)
+        text = part.splitlines()[0].strip()
+        scan.S = self._strip_first_word(text)
+        pos = scan.S.find(' ')
+        scan.scanNum = int(scan.S[0:pos])
+        scan.scanCmd = scan.S[pos+1:]
+        if scan.scanNum in spec_file_obj.scans:
+            msg = str(scan.scanNum) + ' in ' + spec_file_obj.fileName
+            raise DuplicateSpecScanNumber(msg)
+        spec_file_obj.scans[scan.scanNum] = scan
 
 class CL_Time(ControlLineHandler):
     key_regexp = '#T'
