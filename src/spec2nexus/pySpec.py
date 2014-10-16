@@ -195,7 +195,6 @@ class SpecDataFile(object):
 
     fileName = ''
     parts = ''
-    errMsg = ''
     headers = []
     scans = {}
     readOK = -1
@@ -203,7 +202,6 @@ class SpecDataFile(object):
     def __init__(self, filename):
         global plugin_manager
         self.fileName = None
-        self.errMsg = ''
         self.headers = []
         self.scans = {}
         self.readOK = -1
@@ -274,8 +272,7 @@ class SpecDataFile(object):
             raise SpecDataFileCouldNotOpen, msg
         if not is_spec_file(spec_file_name):
             msg = 'Not a spec data file: ' + str(spec_file_name)
-            self.errMsg = '\n' + msg + '\n'
-            raise NotASpecDataFile, msg
+            raise NotASpecDataFile(msg)
         return buf
     
     def getScan(self, scan_number=0):
@@ -321,7 +318,6 @@ class SpecDataFileHeader(object):
         self.comments = []
         self.date = ''
         self.epoch = 0
-        self.errMsg = ''
         #self.file = None        # TODO: removal of this may change the interface for clients!
         self.H = []
         self.O = []
@@ -352,11 +348,16 @@ class SpecDataFileHeader(object):
             elif (line.startswith('#O')):
                 self.O.append(strip_first_word(line).split())
             else:
-                # TODO: do something with this (perhaps log it)
-                self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
+                raise UnknownSpecFilePart("line %d: unknown key (%s) detected" % (i, key))
 
 
 #-------------------------------------------------------------------------------------------
+
+LAZY_INTERPRET_SCAN_DATA = [
+                        'comments', 'data', 'data_lines', 'date', 'G',
+                        'L', 'M', 'positioner', 'N', 'P', 'Q', 'T', 'V',
+                        'column_first', 'column_last'
+                        ]
 
 
 class SpecDataFileScan(object):
@@ -368,7 +369,6 @@ class SpecDataFileScan(object):
         self.data = {}
         self.data_lines = []
         self.date = ''
-        self.errMsg = ''
         self.G = {}
         self.header = header        # index number of relevant #F section previously interpreted
         self.L = []
@@ -391,11 +391,22 @@ class SpecDataFileScan(object):
         self.V = []
         self.column_first = ''
         self.column_last = ''
+        
+        # these attributes (and perhaps others) will be configured
+        # only after a call to self.interpret()
+        # That call is triggered on the first call for any of these attributes.
         self.interpreted = False
-        #self.interpret()
     
     def __str__(self):
         return self.S
+    
+    def __getattribute__(self, attr):
+        if attr in LAZY_INTERPRET_SCAN_DATA:
+            if not self.interpreted:
+                self.interpreted = True     # set now to avoid recursion
+                self.interpret()
+        return object.__getattribute__(self, attr)
+        
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
@@ -439,12 +450,9 @@ class SpecDataFileScan(object):
                 elif (line.startswith('#V')):
                     self.V.append(strip_first_word(line))
                 else:
-                    # TODO: do something with this (perhaps log it)
-                    self.errMsg = "line %d: unknown key, text: %s" % (i, line)
+                    raise UnknownSpecFilePart("line %d: unknown key, text: %s" % (i, line))
             elif len(line) < 2:
-                self.errMsg = "problem with scan header line " + str(i) + ' text: ' + line
-            elif line[0:2] == "#@":
-                self.errMsg = "cannot handle #@ data yet."
+                raise UnknownSpecFilePart("problem with scan header line " + str(i) + ' text: ' + line)
             else:
                 self.data_lines.append(line)
         #print self.scanNum, "\n\t".join( self.comments )
@@ -560,6 +568,7 @@ def developer_test(spec_file_name = None):
     print 'labels in scan 1:', test.getScan(1).L
     print 'command line of scan 5:', test.getScan(5).scanCmd
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
+    print test.getScan(5).L
 
 
 def test_isSpecFile():
