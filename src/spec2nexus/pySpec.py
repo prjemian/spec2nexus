@@ -116,8 +116,6 @@ Try to read a file that does not exist:
 """
 
 
-# TODO:   add a plug-in architecture to parse metadata (issue #2)
-
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
@@ -308,7 +306,7 @@ class SpecDataFile(object):
         '''return all the scan commands as a list, with scan number'''
         if scan_list is None:
             scan_list = sorted(self.getScanNumbers())
-        return ['#S ' + str(key) + self.scans[key].scanCmd for key in scan_list if key in self.scans]
+        return ['#S ' + str(key) + ' ' + self.scans[key].scanCmd for key in scan_list if key in self.scans]
 
 
 #-------------------------------------------------------------------------------------------
@@ -393,6 +391,7 @@ class SpecDataFileScan(object):
         self.V = []
         self.column_first = ''
         self.column_last = ''
+        self.interpreted = False
         #self.interpret()
     
     def __str__(self):
@@ -552,13 +551,14 @@ def developer_test(spec_file_name = None):
     print last_scan.positioner
     pLabel = last_scan.column_first
     dLabel = last_scan.column_last
-    print last_scan.data[pLabel]
-    print len(last_scan.data[pLabel])
-    print pLabel, dLabel
-    for i in range(len(last_scan.data[pLabel])):
-        print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
-    print test.getScan(1).L
-    print test.getScan(5)
+    if len(pLabel) > 0:
+        print last_scan.data[pLabel]
+        print len(last_scan.data[pLabel])
+        print pLabel, dLabel
+        for i in range(len(last_scan.data[pLabel])):
+            print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
+    print 'labels in scan 1:', test.getScan(1).L
+    print 'command line of scan 5:', test.getScan(5).scanCmd
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
 
 

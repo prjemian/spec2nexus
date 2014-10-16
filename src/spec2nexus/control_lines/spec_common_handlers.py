@@ -91,7 +91,7 @@ class CL_Scan(ControlLineHandler):
         scan.S = self._strip_first_word(text)
         pos = scan.S.find(' ')
         scan.scanNum = int(scan.S[0:pos])
-        scan.scanCmd = scan.S[pos+1:]
+        scan.scanCmd = self._strip_first_word(scan.S[pos+1:])
         if scan.scanNum in spec_file_obj.scans:
             msg = str(scan.scanNum) + ' in ' + spec_file_obj.fileName
             raise DuplicateSpecScanNumber(msg)
