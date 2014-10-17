@@ -79,6 +79,8 @@ class ControlLineHandlerManager(object):
     def register(self, handler):
         '''add this handler to the list of known handlers, key must be unique'''
         handler_key = handler().getKey()
+        if handler_key is None:
+            raise NotImplementedError('Must define **key_regexp** in ' + self.__class__)
         if handler_key in self.handler_dict:
             raise DuplicateControlLineKey(handler_key)
         self.handler_dict[handler_key] = handler
