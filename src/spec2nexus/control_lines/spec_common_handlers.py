@@ -161,7 +161,7 @@ class CL_Temperature(ControlLineHandler):
     key_regexp = '#X'
 
 class CL_DataLine(ControlLineHandler):
-    key_regexp = '\d+'      # TODO: need more general regexp for signed data
+    key_regexp = r'[+-]?\d*\.?\d?'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.data_lines.append(text)
