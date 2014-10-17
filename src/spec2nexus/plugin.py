@@ -51,7 +51,6 @@ class ControlLineHandler(object):
       unique across all :class:`ControlLineHandler` classes.
     * The subclass must override the definition of :meth:`process` and
       return either None or a ??? dictionary ???
-      # TODO: decide the return API for process()
     
     :param str key_regexp: regular expression to match a control line key, up to the first space
     '''
@@ -65,6 +64,18 @@ class ControlLineHandler(object):
         return str(self.__name__)
     
     def process(self, *args, **kw):
+        '''
+        Parse this text from the SPEC data file according to the control line key.
+        
+        A plugin will receive *text* and an object 
+        (:class:`~spec2nexus.pySpec.SpecDataFile`,
+        :class:`~spec2nexus.pySpec.SpecDataFileHeader`,
+        or :class:`~spec2nexus.pySpec.SpecDataFileScan`).
+        The plugin will parse the text and store the content into the object.
+        Any value returned by the plugin will be ignored.
+        A plugin may raise an exception.  Unhandled exceptions can terminate a program.
+        '''
+        
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
@@ -134,6 +145,7 @@ class ControlLineHandlerManager(object):
         def cleanup_name(txt):
             return txt.strip()
         if search_path is not None:
+            # ALWAYS add the custom search path AFTER the internal one
             control_line_search_path += map(cleanup_name, search_path.split(PATH_DELIMITER))
         return control_line_search_path
     

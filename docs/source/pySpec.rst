@@ -239,7 +239,7 @@ These assumptions are used to parse SPEC data files:
 Control lines (keys) defined by SPEC
 ====================================
 
-Here is a list of keys (command words) from the comments in the *file.mac* (SPEC v6) macro source file:
+Here is a list [#]_ of keys (command words) from the comments in the *file.mac* (SPEC v6) macro source file:
 
 ===============  ===================================================================================
 command word     description
@@ -273,6 +273,8 @@ command word     description
 #@CTIME p l r    MCA count times (preset_time, elapsed_live_time, elapsed_real_time)
 #@ROI n f l      MCA ROI channel information (ROI_name, first_chan, last_chan)
 ===============  ===================================================================================
+
+.. [#] Compare with :ref:`supplied_plugins`
 
 .. index:: examples; SPEC control lines
 
@@ -329,57 +331,8 @@ This is an example of a 91-channel MCA data array with trivial (zero) values:
 Supported header keys (command words)
 =====================================
 
-This is the table of SPEC data file keys recognized in file header blocks
-as defined in :mod:`~spec2nexus.control_lines.spec_common_handlers`
-and handled by :mod:`~spec2nexus.pySpec`:
-
-====   ========================================================
-key    description
-====   ========================================================
-#F     original data file name (starts a file header block)
-#D     date/time stamp
-#C     comment
-#E     the UNIX epoch (seconds from 00:00 GMT 1/1/70)
-#O     positioner names (numbered rows: #O0, #O1, ...)
-====   ========================================================
-
-
-Supported scan keys (command words)
-===================================
-
-This is the table of SPEC data file keys recognized in scan blocks
-as defined in :mod:`~spec2nexus.control_lines.spec_common_handlers`
-and handled by :mod:`~spec2nexus.pySpec`:
-
-====   =================================================================
-key    description
-====   =================================================================
-#S     scan (starts a scan block)
-#C     comment
-#D     date/time stamp
-#G     diffractometer geometry (numbered rows: #G0, #G1, ...)
-#L     data column labels
-#M     counting against this constant monitor count (see #T)
-#N     number of data columns
-#P     positioner values at start of scan (numbered rows: #P0, #P1, ...)
-#Q     :math:`Q` (:math:`hkl`) at start of scan
-#T     counting against this constant number of seconds (see #M)
-====   =================================================================
-
-
-Custom scan keys (command words)
-================================
-
-Custom scan keys (as defined by the user) can be added.
-This is demonstrated in :mod:`~spec2nexus.control_lines.unicat_handlers`
-and handled by :mod:`~spec2nexus.pySpec`:
-
-====   ===========================================================
-key    description
-====   ===========================================================
-#H     UNICAT metadata names (numbered rows: #H0, #H1, ...)
-#V     UNICAT metadata values (numbered rows: #V0, #V1, ...)
-====   ===========================================================
+The SPEC data file keys recognized by :mod:`~spec2nexus.pySpec`
+are listed in :ref:`supplied_plugins`.
 
 
 ----

@@ -11,6 +11,7 @@ Contents
    extractSpecScan
    pySpec
    eznx
+   plugin
    utils
    install
    example_data

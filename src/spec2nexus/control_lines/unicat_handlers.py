@@ -21,8 +21,8 @@ in the scans using #H/#V pairs of labels/values.
 
 from spec2nexus.plugin import ControlLineHandler, strip_first_word
 
-class MetadataMnes(ControlLineHandler):
-    '''UNICAT metadata names (numbered rows: #H0, #H1, ...)'''
+class UNICAT_MetadataMnemonics(ControlLineHandler):
+    '''**#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)'''
 
     key_regexp = '#H\d+'
     
@@ -30,8 +30,8 @@ class MetadataMnes(ControlLineHandler):
         spec_obj.H.append( strip_first_word(text).split() )
 
 
-class MetadataValues(ControlLineHandler):
-    '''UNICAT metadata values (numbered rows: #V0, #V1, ...)'''
+class UNICAT_MetadataValues(ControlLineHandler):
+    '''**#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)'''
 
     key_regexp = '#V\d+'
     

@@ -30,8 +30,8 @@ from spec2nexus.pySpec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpe
 
 # header block
 
-class CL_File(ControlLineHandler):
-    '''original data file name (starts a file header block)'''
+class SPEC_File(ControlLineHandler):
+    '''**#F** -- original data file name (starts a file header block)'''
 
     key_regexp = '#F'
     
@@ -39,9 +39,9 @@ class CL_File(ControlLineHandler):
         spec_file_obj.specFile = strip_first_word(text)
 
 
-class CL_Epoch(ControlLineHandler):
+class SPEC_Epoch(ControlLineHandler):
     '''
-    the UNIX epoch (seconds from 00:00 GMT 1/1/70)
+    **#E** -- the UNIX epoch (seconds from 00:00 GMT 1/1/70)
     
     In SPEC data files, the ``#E`` control line indicates the 
     start of a *header* block.
@@ -58,8 +58,8 @@ class CL_Epoch(ControlLineHandler):
         
 
 
-class CL_Date(ControlLineHandler):
-    '''date/time stamp'''
+class SPEC_Date(ControlLineHandler):
+    '''**#D** -- date/time stamp'''
 
     key_regexp = '#D'
     
@@ -67,8 +67,8 @@ class CL_Date(ControlLineHandler):
         spec_obj.date = strip_first_word(text)
 
 
-class CL_Comment(ControlLineHandler):
-    '''any comment'''
+class SPEC_Comment(ControlLineHandler):
+    '''**#C** -- any comment either in the scan header or somewhere in the scan'''
 
     key_regexp = '#C'
     
@@ -79,9 +79,9 @@ class CL_Comment(ControlLineHandler):
 
 # scan block
 
-class CL_Geometry(ControlLineHandler):
+class SPEC_Geometry(ControlLineHandler):
     '''
-    diffractometer geometry (numbered rows: #G0, #G1, ...)
+    **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
 
     See :ref:`control_line_list` for more information.
     '''
@@ -92,32 +92,32 @@ class CL_Geometry(ControlLineHandler):
         subkey = text.split()[0].lstrip('#')
         spec_obj.G[subkey] = strip_first_word(text)
 
-class CL_NormalizingFactor(ControlLineHandler):
-    '''intensity normalizing factor'''
+class SPEC_NormalizingFactor(ControlLineHandler):
+    '''**#I** -- intensity normalizing factor'''
 
     key_regexp = 'I'
 
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.I = int(strip_first_word(text))
 
-class CL_CounterNames(ControlLineHandler):
-    '''names of counters (each separated by two spaces) (ignored for now)'''
+class SPEC_CounterNames(ControlLineHandler):
+    '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
 
     key_regexp = '#J\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
 
-class CL_CounterMnes(ControlLineHandler):
-    '''mnemonics of counter (% = 0,1,2,... with eight counters per row) (ignored for now)'''
+class SPEC_CounterMnemonics(ControlLineHandler):
+    '''**#j** -- mnemonics of counter (% = 0,1,2,... with eight counters per row) (ignored for now)'''
 
     key_regexp = '#j\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
 
-class CL_Labels(ControlLineHandler):
-    '''data column labels'''
+class SPEC_Labels(ControlLineHandler):
+    '''**#L** -- data column labels'''
 
     key_regexp = '#L'
     
@@ -127,9 +127,9 @@ class CL_Labels(ControlLineHandler):
         spec_obj.column_first = spec_obj.L[0]
         spec_obj.column_last = spec_obj.L[-1]
 
-class CL_Monitor(ControlLineHandler):
+class SPEC_Monitor(ControlLineHandler):
     '''
-    counting against this constant monitor count (see #T)
+    **#M** -- counting against this constant monitor count (see #T)
     
     See :ref:`spec.keys` for more information.
     '''
@@ -140,9 +140,9 @@ class CL_Monitor(ControlLineHandler):
         spec_obj.M, dname = strip_first_word(text).split()
         spec_obj.monitor_name = dname.lstrip('(').rstrip(')')
 
-class CL_NumColumns(ControlLineHandler):
+class SPEC_NumColumns(ControlLineHandler):
     '''
-    number of columns of data [ num2 sets per row ]
+    **#N** -- number of columns of data [ num2 sets per row ]
     
     See :ref:`spec.keys` for more information.
     '''
@@ -152,24 +152,24 @@ class CL_NumColumns(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.N = int(strip_first_word(text))
 
-class CL_PositionerNames(ControlLineHandler):
-    '''positioner names (numbered rows: #O0, #O1, ...)'''
+class SPEC_PositionerNames(ControlLineHandler):
+    '''**#O** -- positioner names (numbered rows: #O0, #O1, ...)'''
 
     key_regexp = '#O\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.O.append( strip_first_word(text).split() )
 
-class CL_PositionerMnes(ControlLineHandler):
-    '''positioner mnemonics (ignored for now)'''
+class SPEC_PositionerMnemonics(ControlLineHandler):
+    '''**#o** -- positioner mnemonics (ignored for now)'''
 
     key_regexp = '#o\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
 
-class CL_Positioners(ControlLineHandler):
-    '''positioner values at start of scan (numbered rows: #P0, #P1, ...)'''
+class SPEC_Positioners(ControlLineHandler):
+    '''**#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)'''
 
     key_regexp = '#P\d+'
     
@@ -177,17 +177,17 @@ class CL_Positioners(ControlLineHandler):
         spec_obj.P.append( strip_first_word(text) )
         spec_obj.addPostProcessor('motor_positions', motor_positions_postprocessing)
 
-class CL_HKL(ControlLineHandler):
-    ''':math:`Q` (:math:`hkl`) at start of scan'''
+class SPEC_HKL(ControlLineHandler):
+    '''**#Q** -- :math:`Q` (:math:`hkl`) at start of scan'''
 
     key_regexp = '#Q'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.Q = strip_first_word(text)
 
-class CL_Scan(ControlLineHandler):
+class SPEC_Scan(ControlLineHandler):
     '''
-    SPEC scan
+    **#S** -- SPEC scan
     
     In SPEC data files, the ``#S`` control line indicates the 
     start of a *scan* block.
@@ -209,9 +209,9 @@ class CL_Scan(ControlLineHandler):
             raise DuplicateSpecScanNumber(msg)
         spec_obj.scans[scan.scanNum] = scan
 
-class CL_CountTime(ControlLineHandler):
+class SPEC_CountTime(ControlLineHandler):
     '''
-    counting against this constant number of seconds (see #M)
+    **#T** -- counting against this constant number of seconds (see #M)
     
     See :ref:`spec.keys` for more information.
     '''
@@ -221,8 +221,8 @@ class CL_CountTime(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.T = strip_first_word(text).split()[0]
 
-class CL_TemperatureSetPoint(ControlLineHandler):
-    '''Temperature'''
+class SPEC_TemperatureSetPoint(ControlLineHandler):
+    '''**#X** -- Temperature'''
 
     key_regexp = '#X'
     
@@ -236,8 +236,8 @@ class CL_TemperatureSetPoint(ControlLineHandler):
             x = strip_first_word(text)  # might have trailing text: 12.345kZ
         spec_obj.X = x
 
-class CL_DataLine(ControlLineHandler):
-    '''scan data line'''
+class SPEC_DataLine(ControlLineHandler):
+    '''**(numbers)** -- scan data line'''
 
     key_regexp = r'[+-]?\d*\.?\d?'
     
@@ -249,37 +249,37 @@ class CL_DataLine(ControlLineHandler):
 
 # MCA: multi-channel analyzer
 
-class CL_MCA(ControlLineHandler):
+class SPEC_MCA(ControlLineHandler):
     '''
-    declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
+    **#@MCA** -- declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
     
     See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#@MCA'
 
-class CL_MCA_Array(ControlLineHandler):
-    '''MCA Array data'''
+class SPEC_MCA_Array(ControlLineHandler):
+    '''**@A** -- MCA Array data'''
 
     key_regexp = '@A'
 
-class CL_MCA_Calibration(ControlLineHandler):
-    '''coefficients for ``x[i] = a + b * i + c * i * i`` for MCA data'''
+class SPEC_MCA_Calibration(ControlLineHandler):
+    '''**#@CALIB** -- coefficients for ``x[i] = a + b * i + c * i * i`` (:math:`x_i = a +bi + ci^2`) for MCA data'''
 
     key_regexp = '#@CALIB'
 
-class CL_MCA_ChannelInformation(ControlLineHandler):
-    '''MCA channel information (number_saved, first_saved, last_saved, reduction coef)'''
+class SPEC_MCA_ChannelInformation(ControlLineHandler):
+    '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction coef)'''
 
     key_regexp = '#@CHANN'
 
-class CL_MCA_CountTime(ControlLineHandler):
-    '''MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
+class SPEC_MCA_CountTime(ControlLineHandler):
+    '''**#@CTIME** -- MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
 
     key_regexp = '#@CTIME'
 
-class CL_MCA_RegionOfInterest(ControlLineHandler):
-    '''MCA ROI channel information (ROI_name, first_chan, last_chan)'''
+class SPEC_MCA_RegionOfInterest(ControlLineHandler):
+    '''**#@ROI** -- MCA ROI channel information (ROI_name, first_chan, last_chan)'''
 
     key_regexp = '#@ROI'
 
