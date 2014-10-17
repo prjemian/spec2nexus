@@ -78,6 +78,18 @@ class CL_Geometry(ControlLineHandler):
 class CL_NormalizingFactor(ControlLineHandler):
     key_regexp = 'I'
 
+class CL_CounterNames(ControlLineHandler):
+    key_regexp = '#J\d+'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        pass
+
+class CL_CounterMnes(ControlLineHandler):
+    key_regexp = '#j\d+'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        pass
+
 class CL_Labels(ControlLineHandler):
     key_regexp = '#L'
     
@@ -100,11 +112,17 @@ class CL_NumColumns(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.N = int(strip_first_word(text))
 
-class CL_PositionerMnes(ControlLineHandler):
+class CL_PositionerNames(ControlLineHandler):
     key_regexp = '#O\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.O.append( strip_first_word(text).split() )
+
+class CL_PositionerMnes(ControlLineHandler):
+    key_regexp = '#o\d+'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        pass
 
 class CL_Positioners(ControlLineHandler):
     key_regexp = '#P\d+'

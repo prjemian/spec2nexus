@@ -499,8 +499,8 @@ def developer_test(spec_file_name = None):
     if spec_file_name is None:
         path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
-        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
-        #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
+        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it
