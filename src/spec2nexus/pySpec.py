@@ -18,12 +18,10 @@ Provides a set of classes to read the contents of a SPEC data file.
 :author: Pete Jemian
 :email: jemian@anl.gov
 
-:meth:`~spec2nexus.prjPySpec.SpecDataFile` is the only class users will need to call.
-All other :mod:`~spec2nexus.prjPySpec` classes are called from this class.
-The :meth:`~spec2nexus.prjPySpec.SpecDataFile.read` method is called automatically.
+:meth:`~spec2nexus.pySpec.SpecDataFile` is the only class users will need to call.
+All other :mod:`~spec2nexus.pySpec` classes are called from this class.
+The :meth:`~spec2nexus.pySpec.SpecDataFile.read` method is called automatically.
 
-Includes the UNICAT control lines which write additional metadata
-in the scan headers using #H/#V pairs of labels/values.
 The user should create a class instance for each spec data file,
 specifying the file reference (by path reference as needed)
 and the internal routines will take care of all that is necessary
@@ -84,8 +82,8 @@ different numbers of values.  Consult the geometry macro file for specifics.
 
 Get the first and last scan numbers from the file:
 
-    >>> from spec2nexus import prjPySpec
-    >>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> from spec2nexus import pySpec
+    >>> spec_data = pySpec.SpecDataFile('path/to/my/spec_data.dat')
     >>> print spec_data.fileName
     path/to/my/spec_data.dat
     >>> print 'first scan: ', spec_data.getMinScanNumber()
@@ -95,8 +93,8 @@ Get the first and last scan numbers from the file:
 
 Get plottable data from scan number 10:
 
-    >>> from spec2nexus import prjPySpec
-    >>> spec_data = prjPySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> from spec2nexus import pySpec
+    >>> spec_data = pySpec.SpecDataFile('path/to/my/spec_data.dat')
     >>> scan10 = spec_data.getScan(10)
     >>> x_label = scan10.L[0]
     >>> y_label = scan10.L[-1]
@@ -106,10 +104,10 @@ Get plottable data from scan number 10:
 
 Try to read a file that does not exist:
 
-    >>> spec_data = prjPySpec.SpecDataFile('missing_file')
+    >>> spec_data = pySpec.SpecDataFile('missing_file')
     Traceback (most recent call last):
       ...
-    prjPySpec.SpecDataFileNotFound: file does not exist: missing_file
+    pySpec.SpecDataFileNotFound: file does not exist: missing_file
 
 .. rubric::  Classes and Methods
 
@@ -340,6 +338,7 @@ class SpecDataFileHeader(object):
             elif key == '#E':
                 pass    # avoid recursion
             else:
+                # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)
 
 
@@ -383,7 +382,8 @@ class SpecDataFileScan(object):
         self.V = []
         self.column_first = ''
         self.column_last = ''
-        
+        self.postprocessors = {}
+    
         # the attributes defined in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES
         # (and perhaps others) are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
@@ -412,57 +412,24 @@ class SpecDataFileScan(object):
             elif key == '#S':
                 pass        # avoid recursion
             else:
+                # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)
 
-            # self.data_lines.append(line)
-
-        #print self.scanNum, "\n\t".join( self.comments )
-        # interpret the motor positions from the scan header    # TODO: move to plugin
-        self.positioner = {}
-        for row, values in enumerate(self.P):
-            for col, val in enumerate(values.split()):
-                if row >= len(self.header.O):
-                    pass
-                if col >= len(self.header.O[row]):
-                    pass
-                mne = self.header.O[row][col]
-                self.positioner[mne] = float(val)
-        # interpret the UNICAT metadata (mostly floating point) from the scan header    # TODO: move to plugin
-        self.metadata = {}
-        for row, values in enumerate(self.V):
-            for col, val in enumerate(values.split()):
-                label = self.header.H[row][col]
-                try:
-                    self.metadata[label] = float(val)
-                except ValueError:
-                    self.metadata[label] = val
-        # interpret the data lines from the body of the scan
-        self.data = {}
-        for col in range(len(self.L)):
-            label = self._unique_key(self.L[col], self.data.keys())
-            # need to guard when same column label is used more than once
-            if label != self.L[col]:
-                self.L[col] = label    # rename this column's label
-            self.data[label] = []
-        in_array_data = False
-        for row, values in enumerate(self.data_lines):
-            if values.startswith('@A'):     # Can there be more than 1 specified?    # TODO: move to plugin
-                in_array_data = True
-                if '_mca_' not in self.data:
-                    self.data['_mca_'] = []
-                mca_spectrum = []       # accumulate this spectrum
-                values = values[2:]     # strip the header
-            if in_array_data:
-                if not values.endswith('\\'):
-                    in_array_data = False       # last row of this spectrum
-                mca_spectrum += map(float, values.rstrip('\\').split())
-                if not in_array_data:   # last step, add to data column
-                    self.data['_mca_'].append(mca_spectrum)
-            else:
-                buf = self._interpret_data_row(values)
-                if len(buf) == len(self.data):      # only keep complete rows
-                    for label, val in buf.items():
-                        self.data[label].append(val)
+        # call any post-processing hook functions from the plugins
+        for func in self.postprocessors.values():
+            func(self)
+    
+    def addPostProcessor(self, label, func):
+        '''
+        add a function to be processed after interpreting all lines from a scan
+        
+        :param str label: unique label by which this postprocessor will be known
+        :param obj func: function reference of postprocessor
+        
+        The postprocessors will be called at the end of scan data interpretation.
+        '''
+        if label not in self.postprocessors:
+            self.postprocessors[label] = func
     
     def _interpret_data_row(self, row_text):
         buf = {}
@@ -499,8 +466,8 @@ def developer_test(spec_file_name = None):
     if spec_file_name is None:
         path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
-        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
-        spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
+        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it

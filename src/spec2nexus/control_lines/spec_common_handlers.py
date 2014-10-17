@@ -131,7 +131,8 @@ class CL_Positioners(ControlLineHandler):
     key_regexp = '#P\d+'
     
     def process(self, text, spec_obj, *args, **kws):
-        spec_obj.P.append( strip_first_word(text) )     # TODO: what about post-processing?
+        spec_obj.P.append( strip_first_word(text) )
+        spec_obj.addPostProcessor('motor_positions', motor_positions_postprocessing)
 
 class CL_HKL(ControlLineHandler):
     key_regexp = '#Q'
@@ -177,6 +178,7 @@ class CL_DataLine(ControlLineHandler):
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.data_lines.append(text)
+        spec_obj.addPostProcessor('data_lines', data_lines_postprocessing)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -199,3 +201,56 @@ class CL_MCA_CountTime(ControlLineHandler):
 
 class CL_MCA_RegionOfInterest(ControlLineHandler):
     key_regexp = '#@ROI'
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def data_lines_postprocessing(scan):
+    '''
+    interpret the data lines from the body of the scan
+    
+    :param SpecDataFileScan scan: data from a single SPEC scan
+    '''
+    # interpret the data lines from the body of the scan
+    scan.data = {}
+    for col in range(len(scan.L)):
+        label = scan._unique_key(scan.L[col], scan.data.keys())
+        # need to guard when same column label is used more than once
+        if label != scan.L[col]:
+            scan.L[col] = label    # rename this column's label
+        scan.data[label] = []
+    in_array_data = False
+    for row, values in enumerate(scan.data_lines):
+        if values.startswith('@A'):     # Can there be more than 1 specified?    # TODO: move to plugin
+            in_array_data = True
+            if '_mca_' not in scan.data:
+                scan.data['_mca_'] = []
+            mca_spectrum = []       # accumulate this spectrum
+            values = values[2:]     # strip the header
+        if in_array_data:
+            if not values.endswith('\\'):
+                in_array_data = False       # last row of this spectrum
+            mca_spectrum += map(float, values.rstrip('\\').split())
+            if not in_array_data:   # last step, add to data column
+                scan.data['_mca_'].append(mca_spectrum)
+        else:
+            buf = scan._interpret_data_row(values)
+            if len(buf) == len(scan.data):      # only keep complete rows
+                for label, val in buf.items():
+                    scan.data[label].append(val)
+
+
+def motor_positions_postprocessing(scan):
+    '''
+    interpret the motor positions from the scan header
+    
+    :param SpecDataFileScan scan: data from a single SPEC scan
+    '''
+    scan.positioner = {}
+    for row, values in enumerate(scan.P):
+        for col, val in enumerate(values.split()):
+            if row >= len(scan.header.O):
+                pass
+            if col >= len(scan.header.O[row]):
+                pass
+            mne = scan.header.O[row][col]
+            scan.positioner[mne] = float(val)
