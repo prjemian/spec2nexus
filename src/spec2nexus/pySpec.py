@@ -143,6 +143,7 @@ class UnknownSpecFilePart(Exception):
     '''unknown part in a single SPEC data file'''
     pass
 
+
 def is_spec_file(filename):
     '''
     test if a given file name is a SPEC data file
@@ -183,7 +184,7 @@ def strip_first_word(line):
     return val.strip()
 
 
-def get_all_plugins():
+def _get_all_plugins():
     '''load all plugin modules'''
     manager = plugin.ControlLineHandlerManager()
     manager.load_plugins()
@@ -217,7 +218,7 @@ class SpecDataFile(object):
         self.fileName = filename
 
         if plugin_manager is None:
-            plugin_manager = get_all_plugins()
+            plugin_manager = _get_all_plugins()
         self.plugin_manager = plugin_manager
 
         self.read()
@@ -346,7 +347,7 @@ class SpecDataFileHeader(object):
 
 LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
     'comments', 'data', 'data_lines', 'date', 'G', 'I',
-    'L', 'M', 'positioner', 'N', 'P', 'Q', 'T', 'V',
+    'L', 'M', 'positioner', 'N', 'P', 'Q', 'T',
     'column_first', 'column_last'
 ]
 
@@ -363,7 +364,6 @@ class SpecDataFileScan(object):
         self.G = {}
         self.header = header        # index number of relevant #F section previously interpreted
         self.L = []
-        self.metadata = {}             # UNICAT-style metadata in the header (non-positioners)
         self.M = ''
         self.positioner = {}
         self.N = -1
@@ -466,8 +466,9 @@ def developer_test(spec_file_name = None):
     if spec_file_name is None:
         path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
-        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
         #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
+        spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it

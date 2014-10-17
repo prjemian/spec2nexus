@@ -65,7 +65,7 @@ class ControlLineHandler(object):
         return str(self.__name__)
     
     def process(self, *args, **kw):
-        raise NotImplementedError       # MUST implement in the subclass
+        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
 class ControlLineHandlerManager(object):

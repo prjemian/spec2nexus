@@ -9,7 +9,7 @@ Contents
    spec2nexus
    h5toText
    extractSpecScan
-   prjPySpec
+   pySpec
    eznx
    utils
    install
