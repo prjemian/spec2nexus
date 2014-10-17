@@ -78,17 +78,20 @@ class CL_Geometry(ControlLineHandler):
 class CL_NormalizingFactor(ControlLineHandler):
     key_regexp = 'I'
 
+    def process(self, text, spec_obj, *args, **kws):
+        spec_obj.I = int(strip_first_word(text))
+
 class CL_CounterNames(ControlLineHandler):
     key_regexp = '#J\d+'
     
     def process(self, text, spec_obj, *args, **kws):
-        pass
+        pass    # ignore this for now
 
 class CL_CounterMnes(ControlLineHandler):
     key_regexp = '#j\d+'
     
     def process(self, text, spec_obj, *args, **kws):
-        pass
+        pass    # ignore this for now
 
 class CL_Labels(ControlLineHandler):
     key_regexp = '#L'
@@ -122,7 +125,7 @@ class CL_PositionerMnes(ControlLineHandler):
     key_regexp = '#o\d+'
     
     def process(self, text, spec_obj, *args, **kws):
-        pass
+        pass    # ignore this for now
 
 class CL_Positioners(ControlLineHandler):
     key_regexp = '#P\d+'
@@ -157,8 +160,17 @@ class CL_Time(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.T = strip_first_word(text).split()[0]
 
-class CL_Temperature(ControlLineHandler):
+class CL_TemperatureSetPoint(ControlLineHandler):
     key_regexp = '#X'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        try:
+            x = float( strip_first_word(text) )
+        except ValueError:
+            # #X       setpoint       The temperature setpoint. 
+            # def Fheader '_cols++;printf("#X %gKohm (%gC)\n",TEMP_SP,DEGC_SP)'
+            x = strip_first_word(text)  # might have trailing text: 12.345kZ
+        spec_obj.X = x
 
 class CL_DataLine(ControlLineHandler):
     key_regexp = r'[+-]?\d*\.?\d?'
