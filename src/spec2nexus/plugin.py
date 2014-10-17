@@ -98,8 +98,11 @@ class ControlLineHandlerManager(object):
             return None
         txt = spec_data_file_line[:pos]
         for key in self.handler_dict.keys():
-            if re.match(key, txt) is not None:
-                return key
+            t = re.match(key, txt)
+            if t is not None:
+                # test regexp match to avoid false positives
+                if t.regs[0][1] != 0:   # FIXME: this looks fragile
+                    return key
         return None
 
     def get(self, key):
