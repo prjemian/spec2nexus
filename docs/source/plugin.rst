@@ -53,6 +53,7 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
    ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_RegionOfInterest
    ~spec2nexus.control_lines.unicat_handlers.UNICAT_MetadataMnemonics
    ~spec2nexus.control_lines.unicat_handlers.UNICAT_MetadataValues
+   ~spec2nexus.control_lines.uim_handlers.UIM_generic
 
 .. [#] Compare this list with :ref:`control_line_list`
 
@@ -91,6 +92,11 @@ To get :class:`spec2nexus.plugin.ControlLineHandler`,
 it will be necessary to import in some form, such as::
 
    from spec2nexus.plugin import ControlLineHandler, strip_first_word
+
+.. sidebar:: regular expressions
+
+   There are several regular expression testers available on the web.
+   Try this one, for example: http://regexpal.com/
 
 Each subclass must define ``key_regexp`` as a regular expression match for the 
 control line key.  A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
@@ -258,12 +264,14 @@ source code documentation
 supplied plugins
 ================
 
+.. _spec_plugin:
+
 SPEC standard plugin
 --------------------
 
 .. automodule:: spec2nexus.control_lines.spec_common_handlers
     :members: 
-    :synopsis: Define the plug-in architecture.
+    :synopsis: SPEC standard data file support.
 
 .. _unicat_plugin:
 
@@ -272,4 +280,14 @@ UNICAT metadata plugin
 
 .. automodule:: spec2nexus.control_lines.unicat_handlers
     :members: 
-    :synopsis: Define the plug-in architecture.
+    :synopsis: Metadata in SPEC data files as defined by APS UNICAT.
+
+.. _uim_plugin:
+
+UIM plugin
+----------
+
+.. automodule:: spec2nexus.control_lines.uim_handlers
+    :members: 
+    :synopsis: Image header information from EPICS areaDetector.
+
