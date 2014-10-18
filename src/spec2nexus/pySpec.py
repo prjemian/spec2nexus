@@ -117,7 +117,6 @@ Try to read a file that does not exist:
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
-import plugin   #@UnusedImport
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
@@ -186,6 +185,7 @@ def strip_first_word(line):
 
 def _get_all_plugins():
     '''load all plugin modules'''
+    import plugin
     manager = plugin.ControlLineHandlerManager()
     manager.load_plugins()
     return manager
