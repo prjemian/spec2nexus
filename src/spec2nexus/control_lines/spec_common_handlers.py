@@ -93,10 +93,10 @@ class SPEC_Geometry(ControlLineHandler):
 class SPEC_NormalizingFactor(ControlLineHandler):
     '''**#I** -- intensity normalizing factor'''
 
-    key = 'I'
+    key = '#I'
 
     def process(self, text, spec_obj, *args, **kws):
-        spec_obj.I = int(strip_first_word(text))
+        spec_obj.I = float(strip_first_word(text))
 
 class SPEC_CounterNames(ControlLineHandler):
     '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
@@ -235,7 +235,7 @@ class SPEC_DataLine(ControlLineHandler):
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.data_lines.append(text)
-        spec_obj.addPostProcessor('data_lines', data_lines_postprocessing)
+        spec_obj.addPostProcessor('numbers', data_lines_postprocessing)
     
     def match_key(self, text):
         '''
