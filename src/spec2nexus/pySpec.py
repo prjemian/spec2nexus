@@ -469,8 +469,12 @@ def developer_test(spec_file_name = None):
         spec_dir = os.path.abspath(path)
         #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
         #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
-        spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
+        #spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
+        #spec_file_name = os.path.join(spec_dir, '33bm_spec.dat')
         #spec_file_name = os.path.join(spec_dir, 'CdSe')
+        spec_file_name = os.path.join(spec_dir, 'lmn40.spe')
+        #spec_file_name = os.path.join(spec_dir, 'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc')
+        #spec_file_name = os.path.join(spec_dir, '130123B_2.spc')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it
