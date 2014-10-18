@@ -71,8 +71,8 @@ be raised if a custom plugin module tries to provide support for an existing con
 
 Give the custom plugin module a name ending with ``_handlers.py``.
 Ensure this name is different than any other plugin module you will use
-(currently, avoid ``spec_common_handlers.py`` and ``unicat_handlers.py``)
-to avoid possible duplication.
+(currently, avoid ``spec_common_handlers.py``, ``uim_handlers.py``, 
+and ``unicat_handlers.py``) to avoid possible duplication.
 
 The custom plugin module can be stored in any directory that is convenient.
 Define the environment variable ``SPEC2NEXUS_PLUGIN_PATH`` with the
@@ -99,8 +99,11 @@ it will be necessary to import in some form, such as::
    Try this one, for example: http://regexpal.com/
 
 Each subclass must define ``key`` as a regular expression match for the 
-control line key.  A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
-exception is raised if ``key`` is not defined.
+control line key.  It is possible to override any of the supplied plugins.
+Caution is advised to avoid introducing instability.
+
+.. A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
+   exception is raised if ``key`` is not defined.
 
 Each subclass must also define a :meth:`process` method to process the control line.
 A :class:`NotImplementedError` exception is raised if ``key`` is not defined.
@@ -256,7 +259,7 @@ prove tedious or difficult, such as when testing for a
 floating point number with optional preceding white space
 at the start of a line.  This is typical for data lines in a scan
 or continued lines from an MCA spectrum.  in such cases, the handler
-can overwrite the :meth:`match_key()` method.  Here is an example::
+can override the :meth:`match_key()` method.  Here is an example::
 
     def match_key(self, text):
         '''
@@ -289,7 +292,7 @@ Summary Requirements for custom plugin
   * write the function
   * register the function with spec_obj.addPostProcessor(key_name, the_function) in the handler's :meth:`process`
 
-.. [#] It is possible to overwrite the default regular expression match
+.. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
    :meth:`spec2nexus.control_lines.spec_common_handlers.SPEC_DataLine.match_key()`
    method for an example.

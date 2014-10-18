@@ -22,13 +22,18 @@ import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 import pprint                       #@UnusedImport
 import re                           #@UnusedImport
-from pySpec import strip_first_word
+from pySpec import strip_first_word #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
 PLUGIN_INTERNAL_SUBDIRECTORY = 'control_lines'
 PATH_DELIMITER = ','
 FILE_NAME_ENDING = '_handlers.py'
+
+
+class DuplicateControlLinePlugin(Exception): 
+    '''This control line handler has been used more than once.'''
+    pass
 
 
 class DuplicateControlLineKey(Exception): 
@@ -100,12 +105,12 @@ class ControlLineHandlerManager(object):
         self.handler_dict = {}
     
     def register(self, handler):
-        '''add this handler to the list of known handlers, key must be unique'''
+        '''add this handler to the list of known handlers'''
         handler_key = handler().getKey()
         if handler_key is None:
             raise NotImplementedError('Must define **key** in ' + self.__class__)
-        if handler_key in self.handler_dict:
-            raise DuplicateControlLineKey(handler_key)
+#         if handler_key in self.handler_dict:
+#             raise DuplicateControlLineKey(handler_key)
         self.handler_dict[handler_key] = handler
     
     def hasKey(self, key):
@@ -140,9 +145,7 @@ class ControlLineHandlerManager(object):
         env_var = PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE
         internal_dir = PLUGIN_INTERNAL_SUBDIRECTORY
         control_line_search_path = self._getSearchPath(internal_dir, env_var)
-        plugin_dict = self._identify_control_line_plugins(control_line_search_path)
-        for _, v in plugin_dict.items():
-            self.register(v)
+        self._register_control_line_plugins(control_line_search_path)
     
     def _getSearchPath(self, internal_path, env_var_name):
         '''
@@ -158,11 +161,10 @@ class ControlLineHandlerManager(object):
             control_line_search_path += map(cleanup_name, search_path.split(PATH_DELIMITER))
         return control_line_search_path
     
-    def _identify_control_line_plugins(self, plugin_path_list):
+    def _register_control_line_plugins(self, plugin_path_list):
         '''
-        build dictionary of plugin classes, keyed by control line
+        register all plugin classes, keyed by control line key
         '''
-        control_line_dict = {}
         module_dict = self._getPluginFiles(plugin_path_list)
         def isControlLineHandler(obj):
             def cname(thing):
@@ -179,13 +181,9 @@ class ControlLineHandlerManager(object):
                         continue
                     if k is 'ControlLineHandler':
                         continue
-                    control_line = class_obj().getKey()
-                    if control_line in control_line_dict:
-                        raise DuplicateControlLineKey(control_line + ' in ' + v)
-                    control_line_dict[control_line] = class_obj
+                    self.register(class_obj)
             except AttributeError:
                 pass
-        return control_line_dict
 
     def _getPluginFiles(self, plugin_path_list):
         '''
