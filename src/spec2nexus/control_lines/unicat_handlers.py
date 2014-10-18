@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-prjPySpec plugins for control lines defined by APS UNICAT
+Metadata in SPEC data files as defined by APS UNICAT
 
 Handles the UNICAT control lines which write additional metadata
 in the scans using #H/#V pairs of labels/values.

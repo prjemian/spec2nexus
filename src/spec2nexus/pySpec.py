@@ -406,8 +406,9 @@ class SpecDataFileScan(object):
         for i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
-            key = self.parent.plugin_manager.getKey(line)
+            key = self.parent.plugin_manager.getKey(line.lstrip())
             if key is None:
+                s = '<' + line + '>'
                 raise UnknownSpecFilePart("line %d: unknown key, text: %s" % (i, line))
             elif key == '#S':
                 pass        # avoid recursion
@@ -467,8 +468,8 @@ def developer_test(spec_file_name = None):
         path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
         #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
-        spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
-        #spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
+        #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
+        spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
         #spec_file_name = os.path.join(spec_dir, 'CdSe')
         os.chdir(spec_dir)
     print '-'*70
@@ -510,5 +511,18 @@ def test_isSpecFile():
 
 
 if __name__ == "__main__":
-    developer_test()
+    path = os.path.join(os.path.dirname(__file__), 'data')
+    spec_dir = os.path.abspath(path)
+    for fname in ['APS_spec_data.dat', 
+                  '03_05_UImg.dat', 
+                  '33id_spec.dat', 
+                  'CdSe',
+                  '33bm_spec.dat',
+                  'lmn40.spe',
+                  'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc',
+                  '130123B_2.spc',
+                  ]:
+        developer_test(os.path.join(spec_dir, fname))
+        print '#'*60
+    #developer_test()
     #test_isSpecFile()
