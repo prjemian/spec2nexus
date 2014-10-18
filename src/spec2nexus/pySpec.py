@@ -290,7 +290,9 @@ class SpecDataFile(object):
                 scan_number = keylist[key]
             else:
                 return None
-        return self.scans[scan_number]
+        if scan_number in self.scans:
+            return self.scans[scan_number]
+        return None
     
     def getScanNumbers(self):
         '''return a list of all scan numbers'''
@@ -501,9 +503,9 @@ def developer_test(spec_file_name = None):
         for i in range(len(last_scan.data[pLabel])):
             print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
     print 'labels in scan 1:', test.getScan(1).L
-    print 'command line of scan 5:', test.getScan(5).scanCmd
+    if test.getScan(5) is not None:
+        print 'command line of scan 5:', test.getScan(5).scanCmd
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
-    print test.getScan(5).L
 
 
 def test_isSpecFile():
@@ -515,18 +517,23 @@ def test_isSpecFile():
 
 
 if __name__ == "__main__":
-    path = os.path.join(os.path.dirname(__file__), 'data')
-    spec_dir = os.path.abspath(path)
-    for fname in ['APS_spec_data.dat', 
-                  '03_05_UImg.dat', 
-                  '33id_spec.dat', 
-                  'CdSe',
-                  '33bm_spec.dat',
-                  'lmn40.spe',
-                  'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc',
-                  '130123B_2.spc',
-                  ]:
-        developer_test(os.path.join(spec_dir, fname))
-        print '#'*60
+    fname = 'test_1.spec'
+    spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
+    os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
+    developer_test(os.path.join(spec_dir, fname))
+    
+#     path = os.path.join(os.path.dirname(__file__), 'data')
+#     spec_dir = os.path.abspath(path)
+#     for fname in ['APS_spec_data.dat', 
+#                   '03_05_UImg.dat', 
+#                   '33id_spec.dat', 
+#                   'CdSe',
+#                   '33bm_spec.dat',
+#                   'lmn40.spe',
+#                   'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc',
+#                   '130123B_2.spc',
+#                   ]:
+#         developer_test(os.path.join(spec_dir, fname))
+#         print '#'*60
     #developer_test()
     #test_isSpecFile()
