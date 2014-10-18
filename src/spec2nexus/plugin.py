@@ -47,19 +47,31 @@ class ControlLineHandler(object):
     
     Create a subclass of ControlLineHandler for each different control line.
     
-    * The subclass must define a value for the ``key_regexp`` which is
+    * The subclass must define a value for the ``key`` which is
       unique across all :class:`ControlLineHandler` classes.
     * The subclass must override the definition of :meth:`process` and
       return either None or a ??? dictionary ???
     
-    :param str key_regexp: regular expression to match a control line key, up to the first space
+    :param str key: regular expression to match a control line key, up to the first space
     '''
     
-    key_regexp = None
+    key = None
     
     def getKey(self):
-        return str(self.key_regexp)
+        '''return this handler's unique identifying key'''
+        return str(self.key)
     
+    def match_key(self, text):
+        '''
+        does the text match to this handler's unique identifying key?
+        '''
+        t = re.match(self.key, text)
+        if t is not None:
+            # test regexp match to avoid false positives
+            if t.regs[0][1] != 0:   # FIXME: this looks fragile
+                return True
+        return False
+
     def __str__(self):
         return str(self.__name__)
     
@@ -91,7 +103,7 @@ class ControlLineHandlerManager(object):
         '''add this handler to the list of known handlers, key must be unique'''
         handler_key = handler().getKey()
         if handler_key is None:
-            raise NotImplementedError('Must define **key_regexp** in ' + self.__class__)
+            raise NotImplementedError('Must define **key** in ' + self.__class__)
         if handler_key in self.handler_dict:
             raise DuplicateControlLineKey(handler_key)
         self.handler_dict[handler_key] = handler
@@ -109,13 +121,10 @@ class ControlLineHandlerManager(object):
         pos = spec_data_file_line.find(' ')
         if pos < 0:
             return None
-        txt = spec_data_file_line[:pos]
-        for key in self.handler_dict.keys():
-            t = re.match(key, txt)
-            if t is not None:
-                # test regexp match to avoid false positives
-                if t.regs[0][1] != 0:   # FIXME: this looks fragile
-                    return key
+        text = spec_data_file_line[:pos]
+        for key, handler in self.handler_dict.items():
+            if handler().match_key(text):
+                return key
         return None
 
     def get(self, key):

@@ -33,7 +33,7 @@ from spec2nexus.pySpec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpe
 class SPEC_File(ControlLineHandler):
     '''**#F** -- original data file name (starts a file header block)'''
 
-    key_regexp = '#F'
+    key = '#F'
     
     def process(self, text, spec_file_obj, *args, **kws):
         spec_file_obj.specFile = strip_first_word(text)
@@ -47,7 +47,7 @@ class SPEC_Epoch(ControlLineHandler):
     start of a *header* block.
     '''
 
-    key_regexp = '#E'
+    key = '#E'
     
     def process(self, buf, spec_obj, *args, **kws):
         header = SpecDataFileHeader(buf, parent=spec_obj)
@@ -61,7 +61,7 @@ class SPEC_Epoch(ControlLineHandler):
 class SPEC_Date(ControlLineHandler):
     '''**#D** -- date/time stamp'''
 
-    key_regexp = '#D'
+    key = '#D'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.date = strip_first_word(text)
@@ -70,7 +70,7 @@ class SPEC_Date(ControlLineHandler):
 class SPEC_Comment(ControlLineHandler):
     '''**#C** -- any comment either in the scan header or somewhere in the scan'''
 
-    key_regexp = '#C'
+    key = '#C'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.comments.append( strip_first_word(text) )
@@ -84,7 +84,7 @@ class SPEC_Geometry(ControlLineHandler):
     **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
     '''
 
-    key_regexp = '#G\d+'
+    key = '#G\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -93,7 +93,7 @@ class SPEC_Geometry(ControlLineHandler):
 class SPEC_NormalizingFactor(ControlLineHandler):
     '''**#I** -- intensity normalizing factor'''
 
-    key_regexp = 'I'
+    key = 'I'
 
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.I = int(strip_first_word(text))
@@ -101,7 +101,7 @@ class SPEC_NormalizingFactor(ControlLineHandler):
 class SPEC_CounterNames(ControlLineHandler):
     '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
 
-    key_regexp = '#J\d+'
+    key = '#J\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
@@ -109,7 +109,7 @@ class SPEC_CounterNames(ControlLineHandler):
 class SPEC_CounterMnemonics(ControlLineHandler):
     '''**#j** -- mnemonics of counter (% = 0,1,2,... with eight counters per row) (ignored for now)'''
 
-    key_regexp = '#j\d+'
+    key = '#j\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
@@ -117,7 +117,7 @@ class SPEC_CounterMnemonics(ControlLineHandler):
 class SPEC_Labels(ControlLineHandler):
     '''**#L** -- data column labels'''
 
-    key_regexp = '#L'
+    key = '#L'
     
     def process(self, text, spec_obj, *args, **kws):
         # Some folks use more than two spaces!  Use regular expression(re) module
@@ -130,7 +130,7 @@ class SPEC_Monitor(ControlLineHandler):
     **#M** -- counting against this constant monitor count (see #T)
     '''
 
-    key_regexp = '#M'
+    key = '#M'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.M, dname = strip_first_word(text).split()
@@ -141,7 +141,7 @@ class SPEC_NumColumns(ControlLineHandler):
     **#N** -- number of columns of data [ num2 sets per row ]
     '''
 
-    key_regexp = '#N'
+    key = '#N'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.N = int(strip_first_word(text))
@@ -149,7 +149,7 @@ class SPEC_NumColumns(ControlLineHandler):
 class SPEC_PositionerNames(ControlLineHandler):
     '''**#O** -- positioner names (numbered rows: #O0, #O1, ...)'''
 
-    key_regexp = '#O\d+'
+    key = '#O\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.O.append( strip_first_word(text).split() )
@@ -157,7 +157,7 @@ class SPEC_PositionerNames(ControlLineHandler):
 class SPEC_PositionerMnemonics(ControlLineHandler):
     '''**#o** -- positioner mnemonics (ignored for now)'''
 
-    key_regexp = '#o\d+'
+    key = '#o\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         pass    # ignore this for now
@@ -165,7 +165,7 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
 class SPEC_Positioners(ControlLineHandler):
     '''**#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)'''
 
-    key_regexp = '#P\d+'
+    key = '#P\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.P.append( strip_first_word(text) )
@@ -174,7 +174,7 @@ class SPEC_Positioners(ControlLineHandler):
 class SPEC_HKL(ControlLineHandler):
     '''**#Q** -- :math:`Q` (:math:`hkl`) at start of scan'''
 
-    key_regexp = '#Q'
+    key = '#Q'
     
     def process(self, text, spec_obj, *args, **kws):
         # TODO: convert to numbers, handle case of text='#Q '
@@ -188,7 +188,7 @@ class SPEC_Scan(ControlLineHandler):
     start of a *scan* block.
     '''
 
-    key_regexp = '#S'
+    key = '#S'
     
     def process(self, part, spec_obj, *args, **kws):
         scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
@@ -207,7 +207,7 @@ class SPEC_CountTime(ControlLineHandler):
     **#T** -- counting against this constant number of seconds (see #M)
     '''
 
-    key_regexp = '#T'
+    key = '#T'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.T = strip_first_word(text).split()[0]
@@ -215,7 +215,7 @@ class SPEC_CountTime(ControlLineHandler):
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''**#X** -- Temperature'''
 
-    key_regexp = '#X'
+    key = '#X'
     
     def process(self, text, spec_obj, *args, **kws):
         try:
@@ -230,11 +230,22 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
 class SPEC_DataLine(ControlLineHandler):
     '''**(numbers)** -- scan data line'''
 
-    key_regexp = r'[+-]?\d*\.?\d?'
+    # key = r'[+-]?\d*\.?\d?'
+    key = r'scan data'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.data_lines.append(text)
         spec_obj.addPostProcessor('data_lines', data_lines_postprocessing)
+    
+    def match_key(self, text):
+        '''
+        Easier to try conversion to number than construct complicated regexp
+        '''
+        try:
+            float( text.strip().split()[0] )
+            return True
+        except ValueError:
+            return False
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -245,7 +256,7 @@ class SPEC_MCA(ControlLineHandler):
     **#@MCA** -- declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
     '''
 
-    key_regexp = '#@MCA'
+    key = '#@MCA'
     
     def process(self, text, spec_obj, *args, **kws):
         # #@MCA 16C
@@ -254,7 +265,7 @@ class SPEC_MCA(ControlLineHandler):
 class SPEC_MCA_Array(ControlLineHandler):
     '''**@A** -- MCA Array data'''
 
-    key_regexp = '@A'
+    key = '@A'
     
     def process(self, text, spec_obj, *args, **kws):
         # acquire like numerical data, handle in postprocessing
@@ -263,12 +274,12 @@ class SPEC_MCA_Array(ControlLineHandler):
 class SPEC_MCA_Calibration(ControlLineHandler):
     '''**#@CALIB** -- coefficients for ``x[i] = a + b * i + c * i * i`` (:math:`x_i = a +bi + ci^2`) for MCA data'''
 
-    key_regexp = '#@CALIB'
+    key = '#@CALIB'
 
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
     '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction coef)'''
 
-    key_regexp = '#@CHANN'
+    key = '#@CHANN'
     
     def process(self, text, spec_obj, *args, **kws):
         # #@CHANN 1201 1110 1200 1
@@ -278,12 +289,12 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
 class SPEC_MCA_CountTime(ControlLineHandler):
     '''**#@CTIME** -- MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
 
-    key_regexp = '#@CTIME'
+    key = '#@CTIME'
 
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     '''**#@ROI** -- MCA ROI channel information (ROI_name, first_chan, last_chan)'''
 
-    key_regexp = '#@ROI'
+    key = '#@ROI'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

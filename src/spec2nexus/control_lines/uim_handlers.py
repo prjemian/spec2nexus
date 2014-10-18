@@ -42,7 +42,7 @@ from spec2nexus.plugin import ControlLineHandler
 class UIM_generic(ControlLineHandler):
     '''**#UIM** -- various image header information'''
 
-    key_regexp = '#UIM\w*'
+    key = '#UIM\w*'
     
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'UIM'):

@@ -24,7 +24,7 @@ from spec2nexus.plugin import ControlLineHandler, strip_first_word
 class UNICAT_MetadataMnemonics(ControlLineHandler):
     '''**#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)'''
 
-    key_regexp = '#H\d+'
+    key = '#H\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.H.append( strip_first_word(text).split() )
@@ -33,7 +33,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
 class UNICAT_MetadataValues(ControlLineHandler):
     '''**#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)'''
 
-    key_regexp = '#V\d+'
+    key = '#V\d+'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.V.append( strip_first_word(text) )

@@ -98,12 +98,12 @@ it will be necessary to import in some form, such as::
    There are several regular expression testers available on the web.
    Try this one, for example: http://regexpal.com/
 
-Each subclass must define ``key_regexp`` as a regular expression match for the 
+Each subclass must define ``key`` as a regular expression match for the 
 control line key.  A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
-exception is raised if ``key_regexp`` is not defined.
+exception is raised if ``key`` is not defined.
 
 Each subclass must also define a :meth:`process` method to process the control line.
-A :class:`NotImplementedError` exception is raised if ``key_regexp`` is not defined.
+A :class:`NotImplementedError` exception is raised if ``key`` is not defined.
 
 Example for **#U** control line
 -------------------------------
@@ -120,7 +120,7 @@ point numbers, this subclass could be written::
    class User_ControlLine(ControlLineHandler):
        '''**#U** -- User data (#U user1 user2 user3)'''
    
-       key_regexp = '#U'
+       key = '#U'
        
        def process(self, text, spec_obj, *args, **kws):
            args = strip_first_word(text).split()
@@ -149,7 +149,7 @@ ignores processing by doing nothing::
    class Ignore_Y_ControlLine(ControlLineHandler):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
-       key_regexp = '#Y'
+       key = '#Y'
        
        def process(self, text, spec_obj, *args, **kws):
            pass
@@ -205,7 +205,7 @@ Gathering all parts of the examples above, the custom plugin module is::
    class User_ControlLine(ControlLineHandler):
        '''**#U** -- User data (#U user1 user2 user3)'''
    
-       key_regexp = '#U'
+       key = '#U'
        
        def process(self, text, spec_obj, *args, **kws):
            args = strip_first_word(text).split()
@@ -228,13 +228,49 @@ Gathering all parts of the examples above, the custom plugin module is::
    class Ignore_Y_ControlLine(ControlLineHandler):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
-       key_regexp = '#Y'
+       key = '#Y'
        
        def process(self, text, spec_obj, *args, **kws):
            pass
 
-Summary Requirement for custom plugin
--------------------------------------
+Custom key match function
+-------------------------
+
+The default test that a given line
+matches a specific :class:`spec2nexus.plugin.ControlLineHandler` subclass
+is to use a regular expression match.  
+
+::
+
+    def match_key(self, text):
+        '''default regular expression match, based on self.key'''
+        t = re.match(self.key, text)
+        if t is not None:
+            if t.regs[0][1] != 0:
+                return True
+        return False
+
+
+In some cases, that may
+prove tedious or difficult, such as when testing for a
+floating point number with optional preceding white space
+at the start of a line.  This is typical for data lines in a scan
+or continued lines from an MCA spectrum.  in such cases, the handler
+can overwrite the :meth:`match_key()` method.  Here is an example::
+
+    def match_key(self, text):
+        '''
+        Easier to try conversion to number than construct complicated regexp
+        '''
+        try:
+            float( text.strip().split()[0] )
+            return True
+        except ValueError:
+            return False
+
+
+Summary Requirements for custom plugin
+--------------------------------------
 
 * file name must end in ``_handlers.py``
 * file can go in any directory
@@ -245,7 +281,7 @@ Summary Requirement for custom plugin
   * do not redefine existing supported control lines
   * subclass :class:`spec2nexus.plugin.ControlLineHandler`
   * identify the control line pattern
-  * define ``key_regexp`` with a regular expression to match
+  * define ``key`` with a regular expression to match [#]_
   * define :meth:`process` to handle the supplied text
 
 * for each postprocessing function:
@@ -253,6 +289,10 @@ Summary Requirement for custom plugin
   * write the function
   * register the function with spec_obj.addPostProcessor(key_name, the_function) in the handler's :meth:`process`
 
+.. [#] It is possible to overwrite the default regular expression match
+   in the subclass with a custom match function.  See the
+   :meth:`spec2nexus.control_lines.spec_common_handlers.SPEC_DataLine.match_key()`
+   method for an example.
 
 source code documentation
 =========================
