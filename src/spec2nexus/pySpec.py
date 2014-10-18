@@ -166,6 +166,8 @@ def is_spec_file(filename):
     
     .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
     '''
+    if not os.path.isfile(filename):
+        return False
     expected_controls = ('#F ', '#E ', '#D ', '#C ')
     lines = open(filename).readlines()[:len(expected_controls)]
     if len(lines) != len(expected_controls):
@@ -508,14 +510,6 @@ def developer_test(spec_file_name = None):
     print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
 
 
-def test_isSpecFile():
-    '''for the developer'''
-    import glob
-    for fname in glob.glob('data/*'):
-        t = is_spec_file(fname)
-        print fname, t
-
-
 if __name__ == "__main__":
     fname = 'test_1.spec'
     spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
@@ -536,4 +530,3 @@ if __name__ == "__main__":
 #         developer_test(os.path.join(spec_dir, fname))
 #         print '#'*60
     #developer_test()
-    #test_isSpecFile()
