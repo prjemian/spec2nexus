@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-provide SPEC data file header
+SPEC standard data file support
 
 Also serves as an example of a Control Line plugin file.
 Can define handlers for one or more Control Lines.
@@ -82,8 +82,6 @@ class SPEC_Comment(ControlLineHandler):
 class SPEC_Geometry(ControlLineHandler):
     '''
     **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
-
-    See :ref:`control_line_list` for more information.
     '''
 
     key_regexp = '#G\d+'
@@ -130,8 +128,6 @@ class SPEC_Labels(ControlLineHandler):
 class SPEC_Monitor(ControlLineHandler):
     '''
     **#M** -- counting against this constant monitor count (see #T)
-    
-    See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#M'
@@ -143,8 +139,6 @@ class SPEC_Monitor(ControlLineHandler):
 class SPEC_NumColumns(ControlLineHandler):
     '''
     **#N** -- number of columns of data [ num2 sets per row ]
-    
-    See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#N'
@@ -183,6 +177,7 @@ class SPEC_HKL(ControlLineHandler):
     key_regexp = '#Q'
     
     def process(self, text, spec_obj, *args, **kws):
+        # TODO: convert to numbers, handle case of text='#Q '
         spec_obj.Q = strip_first_word(text)
 
 class SPEC_Scan(ControlLineHandler):
@@ -191,8 +186,6 @@ class SPEC_Scan(ControlLineHandler):
     
     In SPEC data files, the ``#S`` control line indicates the 
     start of a *scan* block.
-    
-    See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#S'
@@ -212,8 +205,6 @@ class SPEC_Scan(ControlLineHandler):
 class SPEC_CountTime(ControlLineHandler):
     '''
     **#T** -- counting against this constant number of seconds (see #M)
-    
-    See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#T'
@@ -252,16 +243,22 @@ class SPEC_DataLine(ControlLineHandler):
 class SPEC_MCA(ControlLineHandler):
     '''
     **#@MCA** -- declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
-    
-    See :ref:`spec.keys` for more information.
     '''
 
     key_regexp = '#@MCA'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        # #@MCA 16C
+        pass        # not sure how to handle this, ignore it for now
 
 class SPEC_MCA_Array(ControlLineHandler):
     '''**@A** -- MCA Array data'''
 
     key_regexp = '@A'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        # acquire like numerical data, handle in postprocessing
+        spec_obj.data_lines.append(text)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
     '''**#@CALIB** -- coefficients for ``x[i] = a + b * i + c * i * i`` (:math:`x_i = a +bi + ci^2`) for MCA data'''
@@ -272,6 +269,11 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction coef)'''
 
     key_regexp = '#@CHANN'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        # #@CHANN 1201 1110 1200 1
+        pass        # not sure how to handle this, ignore it for now
+
 
 class SPEC_MCA_CountTime(ControlLineHandler):
     '''**#@CTIME** -- MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
