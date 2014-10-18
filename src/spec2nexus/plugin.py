@@ -28,7 +28,7 @@ from pySpec import strip_first_word #@UnusedImport
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
 PLUGIN_INTERNAL_SUBDIRECTORY = 'control_lines'
 PATH_DELIMITER = ','
-FILE_NAME_ENDING = '_handlers.py'
+FILE_NAME_ENDING = '_pyspec.py'
 
 
 class DuplicateControlLinePlugin(Exception): 

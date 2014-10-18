@@ -26,34 +26,34 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_File
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Epoch
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Date
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Comment
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Geometry
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_NormalizingFactor
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_CounterNames
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_CounterMnemonics
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Labels
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Monitor
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_NumColumns
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_PositionerNames
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_PositionerMnemonics
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Positioners
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_HKL
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_Scan
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_CountTime
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_TemperatureSetPoint
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_DataLine
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_Array
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_Calibration
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_ChannelInformation
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_CountTime
-   ~spec2nexus.control_lines.spec_common_handlers.SPEC_MCA_RegionOfInterest
-   ~spec2nexus.control_lines.unicat_handlers.UNICAT_MetadataMnemonics
-   ~spec2nexus.control_lines.unicat_handlers.UNICAT_MetadataValues
-   ~spec2nexus.control_lines.uim_handlers.UIM_generic
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_File
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Epoch
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Date
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Comment
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Geometry
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_NormalizingFactor
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_CounterNames
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_CounterMnemonics
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Labels
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Monitor
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_NumColumns
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_PositionerNames
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_PositionerMnemonics
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Positioners
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_HKL
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_Scan
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_CountTime
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_TemperatureSetPoint
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_DataLine
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA_Array
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA_Calibration
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA_ChannelInformation
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA_CountTime
+   ~spec2nexus.control_lines.spec_common_pyspec.SPEC_MCA_RegionOfInterest
+   ~spec2nexus.control_lines.unicat_pyspec.UNICAT_MetadataMnemonics
+   ~spec2nexus.control_lines.unicat_pyspec.UNICAT_MetadataValues
+   ~spec2nexus.control_lines.uim_pyspec.UIM_generic
 
 .. [#] Compare this list with :ref:`control_line_list`
 
@@ -69,10 +69,10 @@ A custom plugin module for :mod:`spec2nexus.pySpec` is provided in a python modu
 In this custom plugin module are subclasses for each *new* control line to be supported.  An exception will 
 be raised if a custom plugin module tries to provide support for an existing control line.  
 
-Give the custom plugin module a name ending with ``_handlers.py``.
+Give the custom plugin module a name ending with ``_pyspec.py``.
 Ensure this name is different than any other plugin module you will use
-(currently, avoid ``spec_common_handlers.py``, ``uim_handlers.py``, 
-and ``unicat_handlers.py``) to avoid possible duplication.
+(currently, avoid ``spec_common_pyspec.py``, ``uim_pyspec.py``, 
+and ``unicat_pyspec.py``) to avoid possible duplication.
 
 The custom plugin module can be stored in any directory that is convenient.
 Define the environment variable ``SPEC2NEXUS_PLUGIN_PATH`` with the
@@ -275,7 +275,7 @@ can override the :meth:`match_key()` method.  Here is an example::
 Summary Requirements for custom plugin
 --------------------------------------
 
-* file name must end in ``_handlers.py``
+* file name must end in ``_pyspec.py``
 * file can go in any directory
 * add directory to ``SPEC2NEXUS_PLUGIN_PATH`` environment variable (comma-delimited for multiple directories)
 * multiple control line handlers can go in a single file
@@ -294,7 +294,7 @@ Summary Requirements for custom plugin
 
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
-   :meth:`spec2nexus.control_lines.spec_common_handlers.SPEC_DataLine.match_key()`
+   :meth:`spec2nexus.control_lines.spec_common_pyspec.SPEC_DataLine.match_key()`
    method for an example.
 
 source code documentation
@@ -312,7 +312,7 @@ supplied plugins
 SPEC standard plugin
 --------------------
 
-.. automodule:: spec2nexus.control_lines.spec_common_handlers
+.. automodule:: spec2nexus.control_lines.spec_common_pyspec
     :members: 
     :synopsis: SPEC standard data file support.
 
@@ -321,7 +321,7 @@ SPEC standard plugin
 UNICAT metadata plugin
 ----------------------
 
-.. automodule:: spec2nexus.control_lines.unicat_handlers
+.. automodule:: spec2nexus.control_lines.unicat_pyspec
     :members: 
     :synopsis: Metadata in SPEC data files as defined by APS UNICAT.
 
@@ -330,7 +330,7 @@ UNICAT metadata plugin
 UIM plugin
 ----------
 
-.. automodule:: spec2nexus.control_lines.uim_handlers
+.. automodule:: spec2nexus.control_lines.uim_pyspec
     :members: 
     :synopsis: Image header information from EPICS areaDetector.
 
