@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Image header information from EPICS areaDetector
+**#UIM** : Image header information from EPICS areaDetector
 '''
 
 #-----------------------------------------------------------------------------
@@ -47,4 +47,7 @@ class UIM_generic(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'UIM'):
             spec_obj.UIM = []
+
         spec_obj.UIM.append( text )
+
+# TODO: this support could do more

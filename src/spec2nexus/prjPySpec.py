@@ -13,7 +13,7 @@
 
 
 """
-Provides a set of classes to read the contents of a SPEC data file.
+(Legacy) Provides a set of classes to read the contents of a SPEC data file.  Support frozen at version 2014.0623.0.
 
 :author: Pete Jemian
 :email: jemian@anl.gov

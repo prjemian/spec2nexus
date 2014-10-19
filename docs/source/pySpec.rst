@@ -1,4 +1,4 @@
-.. _prjPySpec:
+.. _pySpec:
 
 :mod:`spec2nexus.pySpec`
 ########################
