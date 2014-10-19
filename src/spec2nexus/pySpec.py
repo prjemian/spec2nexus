@@ -166,6 +166,8 @@ def is_spec_file(filename):
     
     .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
     '''
+    if not os.path.exists(filename):
+        return False
     if not os.path.isfile(filename):
         return False
     expected_controls = ('#F ', '#E ', '#D ', '#C ')
@@ -471,12 +473,12 @@ def developer_test(spec_file_name = None):
     if spec_file_name is None:
         path = os.path.join(os.path.dirname(__file__), 'data')
         spec_dir = os.path.abspath(path)
-        #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
+        spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
         #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
         #spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
         #spec_file_name = os.path.join(spec_dir, '33bm_spec.dat')
         #spec_file_name = os.path.join(spec_dir, 'CdSe')
-        spec_file_name = os.path.join(spec_dir, 'lmn40.spe')
+        #spec_file_name = os.path.join(spec_dir, 'lmn40.spe')
         #spec_file_name = os.path.join(spec_dir, 'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc')
         #spec_file_name = os.path.join(spec_dir, '130123B_2.spc')
         os.chdir(spec_dir)
@@ -514,7 +516,7 @@ if __name__ == "__main__":
     fname = 'test_1.spec'
     spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
     os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
-    developer_test(os.path.join(spec_dir, fname))
+    #developer_test(os.path.join(spec_dir, fname))
     
 #     path = os.path.join(os.path.dirname(__file__), 'data')
 #     spec_dir = os.path.abspath(path)
@@ -529,4 +531,4 @@ if __name__ == "__main__":
 #                   ]:
 #         developer_test(os.path.join(spec_dir, fname))
 #         print '#'*60
-    #developer_test()
+    developer_test()
