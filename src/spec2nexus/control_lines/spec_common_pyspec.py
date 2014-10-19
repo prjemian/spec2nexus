@@ -177,8 +177,9 @@ class SPEC_HKL(ControlLineHandler):
     key = '#Q'
     
     def process(self, text, spec_obj, *args, **kws):
-        # TODO: convert to numbers, handle case of text='#Q '
-        spec_obj.Q = strip_first_word(text)
+        s = strip_first_word(text)
+        if len(s) > 0:
+            spec_obj.Q = map(float, s.split())
 
 class SPEC_Scan(ControlLineHandler):
     '''
