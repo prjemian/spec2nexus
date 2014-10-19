@@ -142,11 +142,10 @@ class SPEC_NumColumns(ControlLineHandler):
     '''
 
     key = '#N'
-    # TODO: support #N N [M]
     # TODO: Needs an example data file to test (issue #8)
     
     def process(self, text, spec_obj, *args, **kws):
-        spec_obj.N = int(strip_first_word(text))
+        spec_obj.N = map(int, strip_first_word(text).split())
 
 class SPEC_PositionerNames(ControlLineHandler):
     '''**#O** -- positioner names (numbered rows: #O0, #O1, ...)'''
@@ -219,6 +218,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''**#X** -- Temperature'''
 
     key = '#X'
+    # TODO: Needs an example data file to test
     
     def process(self, text, spec_obj, *args, **kws):
         try:
@@ -231,14 +231,17 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
         spec_obj.X = x
 
 class SPEC_DataLine(ControlLineHandler):
-    '''**(numbers)** -- scan data line'''
+    '''**(scan data)** -- scan data line'''
 
     # key = r'[+-]?\d*\.?\d?'
+    # use custom key match since regexp for floats is tedious!
     key = r'scan data'
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.data_lines.append(text)
-        spec_obj.addPostProcessor('numbers', data_lines_postprocessing)
+        
+        # defer processing since comments and MCA data may intersperse the scan data
+        spec_obj.addPostProcessor('scan data', data_lines_postprocessing)
     
     def match_key(self, text):
         '''
@@ -263,44 +266,98 @@ class SPEC_MCA(ControlLineHandler):
     
     def process(self, text, spec_obj, *args, **kws):
         # #@MCA 16C
+        # Isn't this only informative to how the data is presented in the file?
         pass        # not sure how to handle this, ignore it for now
 
 class SPEC_MCA_Array(ControlLineHandler):
     '''**@A** -- MCA Array data'''
 
     key = '@A'
+    # continued lines will be matched by SPEC_DataLine
+    # process these lines only after all lines have been read
+
     # TODO: need more examples of MCA spectra in SPEC files to improve this
     # Are there any other MCA spectra (such as @B) possible?
     
     def process(self, text, spec_obj, *args, **kws):
         # acquire like numerical data, handle in postprocessing
         spec_obj.data_lines.append(text)
-        spec_obj.addPostProcessor('numbers', data_lines_postprocessing)
+        spec_obj.addPostProcessor('scan data', data_lines_postprocessing)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
-    '''**#@CALIB** -- coefficients for ``x[i] = a + b * i + c * i * i`` (:math:`x_i = a +bi + ci^2`) for MCA data'''
+    '''**#@CALIB** -- coefficients for :math:`x_i = a +bi + ci^2` for MCA data'''
 
     key = '#@CALIB'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        # #@CALIB a b c
+        s = strip_first_word(text).split()
+        a, b, c = map(float, s)
+        
+        if not hasattr(spec_obj, 'MCA'):
+            spec_obj.MCA = {}
+        if 'CALIB' not in spec_obj.MCA:
+            spec_obj.MCA['CALIB'] = {}
+
+        spec_obj.MCA['CALIB']['a'] = a
+        spec_obj.MCA['CALIB']['b'] = b
+        spec_obj.MCA['CALIB']['c'] = c
 
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
-    '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction coef)'''
+    '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction_coef)'''
 
     key = '#@CHANN'
     
     def process(self, text, spec_obj, *args, **kws):
         # #@CHANN 1201 1110 1200 1
-        pass        # not sure how to handle this, ignore it for now
+        s = strip_first_word(text).split()
+        number_saved, first_saved, last_saved = map(int, s[0:2])
+        reduction_coef = float(s[-1])
+
+        if not hasattr(spec_obj, 'MCA'):
+            spec_obj.MCA = {}
+
+        spec_obj.MCA['number_saved'] = number_saved
+        spec_obj.MCA['first_saved'] = first_saved
+        spec_obj.MCA['last_saved'] = last_saved
+        spec_obj.MCA['reduction_coef'] = reduction_coef
 
 
 class SPEC_MCA_CountTime(ControlLineHandler):
     '''**#@CTIME** -- MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
 
     key = '#@CTIME'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        s = strip_first_word(text).split()
+        preset_time, elapsed_live_time, elapsed_real_time = map(float, s)
+
+        if not hasattr(spec_obj, 'MCA'):
+            spec_obj.MCA = {}
+
+        spec_obj.MCA['preset_time'] = preset_time
+        spec_obj.MCA['elapsed_live_time'] = elapsed_live_time
+        spec_obj.MCA['elapsed_real_time'] = elapsed_real_time
+
 
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     '''**#@ROI** -- MCA ROI channel information (ROI_name, first_chan, last_chan)'''
 
     key = '#@ROI'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        s = strip_first_word(text).split()
+        ROI_name = s[0]
+        first_chan, last_chan = map(int, s[1:])
+
+        if not hasattr(spec_obj, 'MCA'):
+            spec_obj.MCA = {}
+        if 'ROI' not in spec_obj.MCA:
+            spec_obj.MCA['ROI'] = {}
+
+        spec_obj.MCA['ROI'][ROI_name] = {}
+        spec_obj.MCA['ROI'][ROI_name]['first_chan'] = first_chan
+        spec_obj.MCA['ROI'][ROI_name]['last_chan'] = last_chan
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -328,7 +385,7 @@ def data_lines_postprocessing(scan):
         scan.data['_mca_'] = []
 
     # interpret the data lines from the body of the scan
-    for row, values in enumerate(dl.splitlines()):
+    for _, values in enumerate(dl.splitlines()):
         if values.startswith('@A'):
             # accumulate this spectrum
             mca_spectrum = map(float, values[2:].split())
