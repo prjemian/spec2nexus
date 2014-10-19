@@ -142,6 +142,8 @@ class SPEC_NumColumns(ControlLineHandler):
     '''
 
     key = '#N'
+    # TODO: support #N N [M]
+    # TODO: Needs an example data file to test (issue #8)
     
     def process(self, text, spec_obj, *args, **kws):
         spec_obj.N = int(strip_first_word(text))
