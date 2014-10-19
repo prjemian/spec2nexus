@@ -266,10 +266,13 @@ class SPEC_MCA_Array(ControlLineHandler):
     '''**@A** -- MCA Array data'''
 
     key = '@A'
+    # TODO: need more examples of MCA spectra in SPEC files to improve this
+    # Are there any other MCA spectra (such as @B) possible?
     
     def process(self, text, spec_obj, *args, **kws):
         # acquire like numerical data, handle in postprocessing
         spec_obj.data_lines.append(text)
+        spec_obj.addPostProcessor('numbers', data_lines_postprocessing)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
     '''**#@CALIB** -- coefficients for ``x[i] = a + b * i + c * i * i`` (:math:`x_i = a +bi + ci^2`) for MCA data'''
@@ -304,31 +307,33 @@ def data_lines_postprocessing(scan):
     
     :param SpecDataFileScan scan: data from a single SPEC scan
     '''
-    # interpret the data lines from the body of the scan
+    # first, get the column labels, rename redundant labels to be unique
+    # the unique labels will be the scan.data dictionary keys
     scan.data = {}
     for col in range(len(scan.L)):
         label = scan._unique_key(scan.L[col], scan.data.keys())
         # need to guard when same column label is used more than once
         if label != scan.L[col]:
-            scan.L[col] = label    # rename this column's label
-        scan.data[label] = []
-    in_array_data = False
-    for row, values in enumerate(scan.data_lines):
-        if values.startswith('@A'):     # Can there be more than 1 specified?
-            in_array_data = True
-            if '_mca_' not in scan.data:
-                scan.data['_mca_'] = []
-            mca_spectrum = []       # accumulate this spectrum
-            values = values[2:]     # strip the header
-        if in_array_data:
-            if not values.endswith('\\'):
-                in_array_data = False       # last row of this spectrum
-            mca_spectrum += map(float, values.rstrip('\\').split())
-            if not in_array_data:   # last step, add to data column
-                scan.data['_mca_'].append(mca_spectrum)
+            scan.L[col] = label     # rename this column's label
+        scan.data[label] = []       # list for the column's data
+    num_columns = len(scan.data)
+    
+    # gather up any continuation lines
+    dl = '\n'.join(scan.data_lines).replace('\\\n', ' ')
+    if dl.find('@A') > -1:
+        # Can there be more than 1 MCA spectrum specified?
+        scan.data['_mca_'] = []
+
+    # interpret the data lines from the body of the scan
+    for row, values in enumerate(dl.splitlines()):
+        if values.startswith('@A'):
+            # accumulate this spectrum
+            mca_spectrum = map(float, values[2:].split())
+            scan.data['_mca_'].append(mca_spectrum)
         else:
             buf = scan._interpret_data_row(values)
-            if len(buf) == len(scan.data):      # only keep complete rows
+            if len(buf) == num_columns:
+                # only keep complete rows
                 for label, val in buf.items():
                     scan.data[label].append(val)
 

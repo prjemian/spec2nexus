@@ -181,16 +181,19 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.column_first, 'eta')
         self.assertEqual(scan.column_last, 'I0')
         self.assertEqual(len(scan.positioner), 27)
-        # FIXME: fails with len(data[any[) due to MCA data handling
-        # self.assertEqual(len(scan.data['eta']), 41)
-        # self.assertEqual(scan.data['eta'][0], 11.0978)
-        # self.assertEqual(scan.data['I0'][0], 402.0)
-        # self.assertEqual(scan.data['eta'][-1], 11.0918)
-        # self.assertEqual(scan.data['I0'][-1], 282.0)
+        self.assertEqual(len(scan.data['eta']), 41)
+        self.assertEqual(scan.data['eta'][0], 43.628)
+        self.assertEqual(scan.data['I0'][0], 1224.0)
+        self.assertEqual(scan.data['eta'][-1], 44.0325)
+        self.assertEqual(scan.data['I0'][-1], 1222.0)
         scan = sfile.getScan(-1) 
         self.assertEqual(len(scan.positioner), 27)
-        self.assertEqual(scan.positioner['eta'], 46.0125)
-        self.assertEqual(scan.positioner['DCM'], 12.747328)
+        x = 'a2Theta'
+        y = 'slitmb'
+        self.assertEqual(scan.positioner.keys()[0], x)
+        self.assertEqual(scan.positioner.keys()[-1], y)
+        self.assertEqual(scan.positioner[x], 0.0)
+        self.assertEqual(scan.positioner[y], 2.4003)
         # TODO: test MCA data
         # TODO: apply file-specific tests (see README.txt)
 
@@ -219,8 +222,12 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.data[y][-1], 255.0)
         scan = sfile.getScan(-1)
         self.assertEqual(len(scan.positioner), 47)
-        self.assertEqual(scan.positioner['a1t'], 3.03)
-        self.assertEqual(scan.positioner['en'], 12.0)
+        x = 'a1t'
+        y = 'mx'
+        self.assertEqual(scan.positioner.keys()[0], x)
+        self.assertEqual(scan.positioner.keys()[-1], y)
+        self.assertEqual(scan.positioner[x], 3.03)
+        self.assertEqual(scan.positioner[y], 24.0)
         # TODO: apply file-specific tests (see README.txt)
 
     def test_CdSe(self):
