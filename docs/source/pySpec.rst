@@ -1,23 +1,23 @@
 .. _prjPySpec:
 
-:mod:`spec2nexus.prjPySpec`
-###########################
+:mod:`spec2nexus.pySpec`
+########################
 
 Library of classes to read the contents of a SPEC data file.
 
-.. index:: examples; prjPySpec
+.. index:: examples; pySpec
 
-How to use :mod:`spec2nexus.prjPySpec`
-**************************************
+How to use :mod:`spec2nexus.pySpec`
+***********************************
 
-:mod:`spec2nexus.prjPySpec` provides Python support to read 
+:mod:`spec2nexus.pySpec` provides Python support to read 
 the scans in a SPEC data file.  (It does not provide a command-line interface.)
-Here is a quick example how to use :mod:`~spec2nexus.prjPySpec`:
+Here is a quick example how to use :mod:`~spec2nexus.pySpec`:
 
 .. code-block:: guess
    :linenos:
    
-   from spec2nexus.prjPySpec import SpecDataFile
+   from spec2nexus.pySpec import SpecDataFile
    
    specfile = SpecDataFile('data/33id_spec.dat')
    print 'SPEC file name:', specfile.specFile
@@ -27,7 +27,7 @@ Here is a quick example how to use :mod:`~spec2nexus.prjPySpec`:
    for scanNum, scan in specfile.scans.items():
        print scanNum, scan.scanCmd
 
-For one example data file provided with :mod:`spec2nexus.prjPySpec`, the output starts with:
+For one example data file provided with :mod:`spec2nexus.pySpec`, the output starts with:
 
 .. code-block:: guess
    :linenos:
@@ -50,7 +50,7 @@ Here is an example how to read one scan:
 .. code-block:: guess
    :linenos:
    
-   from spec2nexus.prjPySpec import SpecDataFile
+   from spec2nexus.pySpec import SpecDataFile
    
    specfile = SpecDataFile('data/33id_spec.dat')
    specscan = specfile.getScan(5)
@@ -239,7 +239,7 @@ These assumptions are used to parse SPEC data files:
 Control lines (keys) defined by SPEC
 ====================================
 
-Here is a list of keys (command words) from the comments in the *file.mac* (SPEC v6) macro source file:
+Here is a list [#]_ of keys (command words) from the comments in the *file.mac* (SPEC v6) macro source file:
 
 ===============  ===================================================================================
 command word     description
@@ -273,6 +273,8 @@ command word     description
 #@CTIME p l r    MCA count times (preset_time, elapsed_live_time, elapsed_real_time)
 #@ROI n f l      MCA ROI channel information (ROI_name, first_chan, last_chan)
 ===============  ===================================================================================
+
+.. [#] Compare with :ref:`supplied_plugins`
 
 .. index:: examples; SPEC control lines
 
@@ -329,42 +331,8 @@ This is an example of a 91-channel MCA data array with trivial (zero) values:
 Supported header keys (command words)
 =====================================
 
-This is the table of SPEC data file keys recognized in file header blocks
-and handled by :mod:`~spec2nexus.prjPySpec`:
-
-====   ========================================================
-key    description
-====   ========================================================
-#F     original data file name (starts a file header block)
-#D     date/time stamp
-#C     comment
-#E     the UNIX epoch (seconds from 00:00 GMT 1/1/70)
-#O     positioner names (numbered rows: #O0, #O1, ...)
-#H     UNICAT metadata names (numbered rows: #H0, #H1, ...)
-====   ========================================================
-
-
-Supported scan keys (command words)
-===================================
-
-This is the table of SPEC data file keys recognized in scan blocks
-and handled by :mod:`~spec2nexus.prjPySpec`:
-
-====   ===========================================================
-key    description
-====   ===========================================================
-#S     scan (starts a scan block)
-#C     comment
-#D     date/time stamp
-#G     diffractometer geometry (numbered rows: #G0, #G1, ...)
-#L     data column labels
-#M     counting against this constant monitor count (see #T)
-#N     number of data columns
-#P     positioner values at start of scan
-#Q     hkl at start of scan (numbered rows: #P0, #P1, ...)
-#V     UNICAT metadata values (numbered rows: #V0, #V1, ...)
-#T     counting against this constant number of seconds (see #M)
-====   ===========================================================
+The SPEC data file keys recognized by :mod:`~spec2nexus.pySpec`
+are listed in :ref:`supplied_plugins`.
 
 
 ----
@@ -378,9 +346,9 @@ classes
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.prjPySpec.SpecDataFile
-   ~spec2nexus.prjPySpec.SpecDataFileHeader
-   ~spec2nexus.prjPySpec.SpecDataFileScan
+   ~spec2nexus.pySpec.SpecDataFile
+   ~spec2nexus.pySpec.SpecDataFileHeader
+   ~spec2nexus.pySpec.SpecDataFileScan
 
 methods
 =======
@@ -388,7 +356,8 @@ methods
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.prjPySpec.strip_first_word
+   ~spec2nexus.pySpec.strip_first_word
+   ~spec2nexus.pySpec.is_spec_file
 
 exceptions
 ==========
@@ -396,11 +365,11 @@ exceptions
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.prjPySpec.SpecDataFileNotFound
-   ~spec2nexus.prjPySpec.SpecDataFileCouldNotOpen
-   ~spec2nexus.prjPySpec.SpecDataFileNotFound
-
-
+   ~spec2nexus.pySpec.SpecDataFileNotFound
+   ~spec2nexus.pySpec.SpecDataFileCouldNotOpen
+   ~spec2nexus.pySpec.SpecDataFileNotFound
+   ~spec2nexus.pySpec.DuplicateSpecScanNumber
+   ~spec2nexus.pySpec.UnknownSpecFilePart
 
 dependencies
 ============
@@ -415,7 +384,6 @@ dependencies
 documentation
 =============
 
-.. automodule:: spec2nexus.prjPySpec
+.. automodule:: spec2nexus.pySpec
     :members: 
     :synopsis: Classes to read the contents of a SPEC data file.
- 

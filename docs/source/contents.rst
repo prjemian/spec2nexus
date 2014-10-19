@@ -9,8 +9,9 @@ Contents
    spec2nexus
    h5toText
    extractSpecScan
-   prjPySpec
+   pySpec
    eznx
+   plugin
    utils
    install
    example_data
