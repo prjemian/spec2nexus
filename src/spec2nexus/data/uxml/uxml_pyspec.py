@@ -31,6 +31,9 @@ from spec2nexus.plugin import ControlLineHandler, strip_first_word
 from lxml import etree
 
 
+DEFAULT_XML_ROOT_TAG = 'pySpec_uxml'
+
+
 class UXML_metadata(ControlLineHandler):
     '''**#UXML** -- XML metadata in scan header'''
 
@@ -39,6 +42,7 @@ class UXML_metadata(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'UXML'):
             spec_obj.UXML = []
+
         line = strip_first_word(text)
         spec_obj.UXML.append( line )
         spec_obj.addPostProcessor('UXML_metadata', uxml_metadata_postprocessing)
@@ -52,12 +56,11 @@ def uxml_metadata_postprocessing(scan):
     '''
     xml_text = '\n'.join(scan.UXML)
     try:
-        root = etree.fromstring(xml_text)
-        # TODO: read root_tag from supplied UXML lines
+        root = etree.fromstring(xml_text)   # perhaps root tag was provided
+        # read root_tag from supplied UXML lines
     except etree.XMLSyntaxError:
-        # provisional support until UXML lines provide a root tag
-        root_tag = 'pySpec_uxml'
-        xml_text = '<%s>\n' % root_tag + xml_text + '\n</%s>' % root_tag
+        # provide default root tag
+        xml_text = '<%s>\n' % DEFAULT_XML_ROOT_TAG + xml_text + '\n</%s>' % DEFAULT_XML_ROOT_TAG
         root = etree.fromstring(xml_text)
 
     pass    # TODO: what to do next?
