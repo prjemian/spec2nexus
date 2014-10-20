@@ -18,9 +18,9 @@ Provides a set of classes to read the contents of a SPEC data file.
 :author: Pete Jemian
 :email: jemian@anl.gov
 
-:meth:`~spec2nexus.pySpec.SpecDataFile` is the only class users will need to call.
-All other :mod:`~spec2nexus.pySpec` classes are called from this class.
-The :meth:`~spec2nexus.pySpec.SpecDataFile.read` method is called automatically.
+:meth:`~spec2nexus.spec.SpecDataFile` is the only class users will need to call.
+All other :mod:`~spec2nexus.spec` classes are called from this class.
+The :meth:`~spec2nexus.spec.SpecDataFile.read` method is called automatically.
 
 The user should create a class instance for each spec data file,
 specifying the file reference (by path reference as needed)
@@ -82,8 +82,8 @@ different numbers of values.  Consult the geometry macro file for specifics.
 
 Get the first and last scan numbers from the file:
 
-    >>> from spec2nexus import pySpec
-    >>> spec_data = pySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> from spec2nexus import spec
+    >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
     >>> print spec_data.fileName
     path/to/my/spec_data.dat
     >>> print 'first scan: ', spec_data.getMinScanNumber()
@@ -93,8 +93,8 @@ Get the first and last scan numbers from the file:
 
 Get plottable data from scan number 10:
 
-    >>> from spec2nexus import pySpec
-    >>> spec_data = pySpec.SpecDataFile('path/to/my/spec_data.dat')
+    >>> from spec2nexus import spec
+    >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
     >>> scan10 = spec_data.getScan(10)
     >>> x_label = scan10.L[0]
     >>> y_label = scan10.L[-1]
@@ -104,10 +104,10 @@ Get plottable data from scan number 10:
 
 Try to read a file that does not exist:
 
-    >>> spec_data = pySpec.SpecDataFile('missing_file')
+    >>> spec_data = spec.SpecDataFile('missing_file')
     Traceback (most recent call last):
       ...
-    pySpec.SpecDataFileNotFound: file does not exist: missing_file
+    spec.SpecDataFileNotFound: file does not exist: missing_file
 
 .. rubric::  Classes and Methods
 
@@ -117,6 +117,7 @@ Try to read a file that does not exist:
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
+from spec2nexus.utils import get_all_plugins
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
@@ -180,21 +181,6 @@ def is_spec_file(filename):
     return True
 
 
-def strip_first_word(line):
-    """return everything after the first space on the line from the spec data file"""
-    pos = line.find(" ")
-    val = line[pos:]
-    return val.strip()
-
-
-def _get_all_plugins():
-    '''load all plugin modules'''
-    import plugin
-    manager = plugin.ControlLineHandlerManager()
-    manager.load_plugins()
-    return manager
-
-
 #-------------------------------------------------------------------------------------------
 
 
@@ -222,7 +208,7 @@ class SpecDataFile(object):
         self.fileName = filename
 
         if plugin_manager is None:
-            plugin_manager = _get_all_plugins()
+            plugin_manager = get_all_plugins()
         self.plugin_manager = plugin_manager
 
         self.read()

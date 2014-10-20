@@ -1,9 +1,9 @@
 '''
-unit tests for the pySpec module
+unit tests for the spec module
 '''
 
 import unittest
-import pySpec
+from spec2nexus import spec, utils
 import os
 
 
@@ -23,16 +23,16 @@ class Test(unittest.TestCase):
         return os.path.join(self.datapath, fname)
     
     def test_strip_first_word(self):
-        self.assertEqual(pySpec.strip_first_word('one two three'), 'two three')
+        self.assertEqual(utils.strip_first_word('one two three'), 'two three')
         
     def test_isSpecFileThis(self):
-        self.assertFalse(pySpec.is_spec_file('this_does_not_exist'))
-        self.assertFalse(pySpec.is_spec_file(self.basepath))
-        self.assertFalse(pySpec.is_spec_file(__file__))
-        self.assertTrue( pySpec.is_spec_file(self.abs_data_fname('03_05_UImg.dat')))
+        self.assertFalse(spec.is_spec_file('this_does_not_exist'))
+        self.assertFalse(spec.is_spec_file(self.basepath))
+        self.assertFalse(spec.is_spec_file(__file__))
+        self.assertTrue( spec.is_spec_file(self.abs_data_fname('03_05_UImg.dat')))
     
     def is_spec_file(self, fname):
-        return pySpec.is_spec_file(self.abs_data_fname(fname))
+        return spec.is_spec_file(self.abs_data_fname(fname))
         
     def test_isSpecFile(self):
         '''test all the known data files to see if they are SPEC'''
@@ -55,29 +55,29 @@ class Test(unittest.TestCase):
         self.assertFalse(self.is_spec_file('writer_1_3.h5'))
     
     def cannot_find_spec_data_file(self):
-        pySpec.SpecDataFile('cannot_find_this_file')
+        spec.SpecDataFile('cannot_find_this_file')
     
     def not_a_spec_data_file(self):
-        pySpec.SpecDataFile(__file__)
+        spec.SpecDataFile(__file__)
     
     def test_custom_exceptions(self):
-        self.assertRaises(Exception, pySpec.SpecDataFileNotFound())
-        self.assertRaises(Exception, pySpec.SpecDataFileCouldNotOpen())
-        self.assertRaises(Exception, pySpec.DuplicateSpecScanNumber())
-        self.assertRaises(Exception, pySpec.NotASpecDataFile())
-        self.assertRaises(Exception, pySpec.UnknownSpecFilePart())
+        self.assertRaises(Exception, spec.SpecDataFileNotFound())
+        self.assertRaises(Exception, spec.SpecDataFileCouldNotOpen())
+        self.assertRaises(Exception, spec.DuplicateSpecScanNumber())
+        self.assertRaises(Exception, spec.NotASpecDataFile())
+        self.assertRaises(Exception, spec.UnknownSpecFilePart())
 
     def spec_data_file(self):
-        pySpec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
+        spec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
 
     def test_file_initial_exceptions(self):
-        self.assertRaises(TypeError, pySpec.SpecDataFile)
-        self.assertRaises(pySpec.SpecDataFileNotFound, self.cannot_find_spec_data_file)
-        self.assertRaises(pySpec.NotASpecDataFile, self.not_a_spec_data_file)
+        self.assertRaises(TypeError, spec.SpecDataFile)
+        self.assertRaises(spec.SpecDataFileNotFound, self.cannot_find_spec_data_file)
+        self.assertRaises(spec.NotASpecDataFile, self.not_a_spec_data_file)
 
     def test_03_05_UImg(self):
         fname = self.abs_data_fname('03_05_UImg.dat')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 87)
@@ -104,7 +104,7 @@ class Test(unittest.TestCase):
 
     def test_130123B_2(self):
         fname = self.abs_data_fname('130123B_2.spc')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 144)
@@ -133,7 +133,7 @@ class Test(unittest.TestCase):
 
     def test_33bm_spec(self):
         fname = self.abs_data_fname('33bm_spec.dat')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 17)
@@ -166,7 +166,7 @@ class Test(unittest.TestCase):
 
     def test_33id_spec(self):
         fname = self.abs_data_fname('33id_spec.dat')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 106)
@@ -199,7 +199,7 @@ class Test(unittest.TestCase):
 
     def test_APS_spec_data(self):
         fname = self.abs_data_fname('APS_spec_data.dat')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 20)
@@ -232,7 +232,7 @@ class Test(unittest.TestCase):
 
     def test_CdSe(self):
         fname = self.abs_data_fname('CdSe')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 102)
@@ -265,7 +265,7 @@ class Test(unittest.TestCase):
 
     def test_lmn40(self):
         fname = self.abs_data_fname('lmn40.spe')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 2) # TODO: test more here!
         self.assertEqual(len(sfile.scans), 262)
@@ -298,7 +298,7 @@ class Test(unittest.TestCase):
 
     def test_YSZ011_ALDITO_Fe2O3_planar_fired_1(self):
         fname = self.abs_data_fname('YSZ011_ALDITO_Fe2O3_planar_fired_1.spc')
-        sfile = pySpec.SpecDataFile(fname)
+        sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 37)

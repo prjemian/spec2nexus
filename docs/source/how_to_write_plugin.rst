@@ -4,21 +4,21 @@
 How to write a custom plugin module
 ###################################
 
-A custom plugin module for :mod:`spec2nexus.pySpec` is provided in a python module (Python source code file).
+A custom plugin module for :mod:`spec2nexus.spec` is provided in a python module (Python source code file).
 In this custom plugin module are subclasses for each *new* control line to be supported.  An exception will 
 be raised if a custom plugin module tries to provide support for an existing control line.  
 
-Give the custom plugin module a name ending with ``_pyspec.py``.
+Give the custom plugin module a name ending with ``_spec2nexus.py``.
 Ensure this name is different than any other plugin module you will use
-(currently, avoid ``spec_common_pyspec.py``, ``uim_pyspec.py``, 
-and ``unicat_pyspec.py``) to avoid possible duplication.
+(currently, avoid ``spec_common_spec2nexus.py``, ``uim_spec2nexus.py``, 
+and ``unicat_spec2nexus.py``) to avoid possible duplication.
 
 The custom plugin module can be stored in any directory that is convenient.
 Define the environment variable ``SPEC2NEXUS_PLUGIN_PATH`` with the
 directory (directories, comma delimited) where your plugin file(s) reside.
 On linux, with the bash shell, this might be::
 
-    export SPEC2NEXUS_PLUGIN_PATH="/home/jemian/.pySpec_plugins, /tmp"
+    export SPEC2NEXUS_PLUGIN_PATH="/home/jemian/.spec2nexus_plugins, /tmp"
 
 The custom plugin module should contain, at minimum one subclass of  
 :class:`spec2nexus.plugin.ControlLineHandler`.  A custom plugin module
@@ -80,7 +80,7 @@ point numbers, this subclass could be written::
 When the scan parser encounters a **#U** line in a SPEC data file, it will call this
 :meth:`process()` code with the full text of the line and the object where this data 
 should be stored.  We will choose to store this (following the pattern of other data 
-names in :class:`spec2nexus.pySpec.SpecDataFileScan`) as ``scan_obj.U`` using a list.
+names in :class:`spec2nexus.spec.SpecDataFileScan`) as ``scan_obj.U`` using a list.
 
 It is up to the user what to do with the ``scan_obj.U`` data.
 
@@ -113,7 +113,7 @@ The postprocessing method is registered from the control line handler by calling
 :meth:`addPostProcessor` method of the ``spec_obj`` argument received by the 
 handler's :meth:`process` method.  A key name [#]_ is supplied when registering to avoid 
 registering this same code more than once.  The postprocessing function will be called 
-with the instance of :class:`spec2nexus.pySpec.SpecDataFileScan` as its only argument.
+with the instance of :class:`spec2nexus.spec.SpecDataFileScan` as its only argument.
 
 .. [#] The key name must be unique amongst all postprocessing functions.
    A good choice is the name of the postprocessing function itself.
@@ -222,7 +222,7 @@ can override the :meth:`match_key()` method.  Here is an example::
 Summary Requirements for custom plugin
 **************************************
 
-* file name must end in ``_pyspec.py``
+* file name must end in ``_spec2nexus.py``
 * file can go in any directory
 * add directory to ``SPEC2NEXUS_PLUGIN_PATH`` environment variable (comma-delimited for multiple directories)
 * multiple control line handlers can go in a single file
@@ -234,7 +234,7 @@ Summary Requirements for custom plugin
   
     * ``key`` is used to identify control line handlers
     * redefine existing supported control lines to replace supplied behavior (use caution!)
-    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.control_lines.spec_common_pyspec.SPEC_DataLine`
+    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.control_lines.spec_common_spec2nexus.SPEC_DataLine`
   
   * define :meth:`process` to handle the supplied text
   * (optional) define :meth:`match_key` to override the default regular expression to match the key
@@ -246,5 +246,5 @@ Summary Requirements for custom plugin
 
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
-   :meth:`spec2nexus.control_lines.spec_common_pyspec.SPEC_DataLine.match_key()`
+   :meth:`spec2nexus.control_lines.spec_common_spec2nexus.SPEC_DataLine.match_key()`
    method for an example.

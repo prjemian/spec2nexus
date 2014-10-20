@@ -9,7 +9,7 @@ Contents
    spec2nexus
    h5toText
    extractSpecScan
-   pySpec
+   spec
    eznx
    plugin
    utils

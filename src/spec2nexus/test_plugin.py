@@ -12,7 +12,7 @@ class Test(unittest.TestCase):
         os.environ['SPEC2NEXUS_PLUGIN_PATH'] = 'C://Users//Pete//Desktop, /tmp'
         self.basepath = os.path.abspath(os.path.dirname(__file__))
         self.datapath = os.path.join(self.basepath, 'data')
-        self.manager = plugin.ControlLineHandlerManager()
+        self.manager = plugin.PluginManager()
         self.manager.load_plugins()
 
 #     def tearDown(self):
