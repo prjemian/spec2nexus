@@ -24,7 +24,7 @@ Each handler is a subclass of spec2nexus.plugin.ControlLineHandler
 
 import re
 from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.pySpec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, strip_first_word
+from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, strip_first_word
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

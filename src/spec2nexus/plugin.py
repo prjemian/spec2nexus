@@ -22,13 +22,13 @@ import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 import pprint                       #@UnusedImport
 import re                           #@UnusedImport
-from pySpec import strip_first_word #@UnusedImport
+from spec2nexus.spec import strip_first_word #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
 PLUGIN_INTERNAL_SUBDIRECTORY = 'control_lines'
 PATH_DELIMITER = ','
-FILE_NAME_ENDING = '_pyspec.py'
+FILE_NAME_ENDING = '_spec2nexus.py'
 
 
 class DuplicateControlLinePlugin(Exception): 
@@ -85,9 +85,9 @@ class ControlLineHandler(object):
         Parse this text from the SPEC data file according to the control line key.
         
         A plugin will receive *text* and an object 
-        (:class:`~spec2nexus.pySpec.SpecDataFile`,
-        :class:`~spec2nexus.pySpec.SpecDataFileHeader`,
-        or :class:`~spec2nexus.pySpec.SpecDataFileScan`).
+        (:class:`~spec2nexus.spec.SpecDataFile`,
+        :class:`~spec2nexus.spec.SpecDataFileHeader`,
+        or :class:`~spec2nexus.spec.SpecDataFileScan`).
         The plugin will parse the text and store the content into the object.
         Any value returned by the plugin will be ignored.
         A plugin may raise an exception.  Unhandled exceptions can terminate a program.

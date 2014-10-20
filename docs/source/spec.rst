@@ -1,7 +1,7 @@
-.. _pySpec:
+.. _spec:
 
-:mod:`spec2nexus.pySpec`
-########################
+:mod:`spec2nexus.spec`
+######################
 
 Library of classes to read the contents of a SPEC data file.
 
@@ -12,23 +12,23 @@ Library of classes to read the contents of a SPEC data file.
 
    prjPySpec
 
-.. index:: examples; pySpec
+.. index:: examples; spec
 
-How to use :mod:`spec2nexus.pySpec`
-***********************************
+How to use :mod:`spec2nexus.spec`
+*********************************
 
 .. sidebar:: legacy code
 
-   This library replaces a previous version
+   This library replaces a previous version called :ref:`prjPySpec`.
 
-:mod:`spec2nexus.pySpec` provides Python support to read 
+:mod:`spec2nexus.spec` provides Python support to read 
 the scans in a SPEC data file.  (It does not provide a command-line interface.)
-Here is a quick example how to use :mod:`~spec2nexus.pySpec`:
+Here is a quick example how to use :mod:`~spec2nexus.spec`:
 
 .. code-block:: guess
    :linenos:
    
-   from spec2nexus.pySpec import SpecDataFile
+   from spec2nexus.spec import SpecDataFile
    
    specfile = SpecDataFile('data/33id_spec.dat')
    print 'SPEC file name:', specfile.specFile
@@ -38,7 +38,7 @@ Here is a quick example how to use :mod:`~spec2nexus.pySpec`:
    for scanNum, scan in specfile.scans.items():
        print scanNum, scan.scanCmd
 
-For one example data file provided with :mod:`spec2nexus.pySpec`, the output starts with:
+For one example data file provided with :mod:`spec2nexus.spec`, the output starts with:
 
 .. code-block:: guess
    :linenos:
@@ -61,7 +61,7 @@ Here is an example how to read one scan:
 .. code-block:: guess
    :linenos:
    
-   from spec2nexus.pySpec import SpecDataFile
+   from spec2nexus.spec import SpecDataFile
    
    specfile = SpecDataFile('data/33id_spec.dat')
    specscan = specfile.getScan(5)
@@ -342,7 +342,7 @@ This is an example of a 91-channel MCA data array with trivial (zero) values:
 Supported header keys (command words)
 =====================================
 
-The SPEC data file keys recognized by :mod:`~spec2nexus.pySpec`
+The SPEC data file keys recognized by :mod:`~spec2nexus.spec`
 are listed in :ref:`supplied_plugins`.
 
 
@@ -357,9 +357,9 @@ classes
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.pySpec.SpecDataFile
-   ~spec2nexus.pySpec.SpecDataFileHeader
-   ~spec2nexus.pySpec.SpecDataFileScan
+   ~spec2nexus.spec.SpecDataFile
+   ~spec2nexus.spec.SpecDataFileHeader
+   ~spec2nexus.spec.SpecDataFileScan
 
 methods
 =======
@@ -367,8 +367,8 @@ methods
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.pySpec.strip_first_word
-   ~spec2nexus.pySpec.is_spec_file
+   ~spec2nexus.spec.strip_first_word
+   ~spec2nexus.spec.is_spec_file
 
 exceptions
 ==========
@@ -376,11 +376,11 @@ exceptions
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.pySpec.SpecDataFileNotFound
-   ~spec2nexus.pySpec.SpecDataFileCouldNotOpen
-   ~spec2nexus.pySpec.SpecDataFileNotFound
-   ~spec2nexus.pySpec.DuplicateSpecScanNumber
-   ~spec2nexus.pySpec.UnknownSpecFilePart
+   ~spec2nexus.spec.SpecDataFileNotFound
+   ~spec2nexus.spec.SpecDataFileCouldNotOpen
+   ~spec2nexus.spec.SpecDataFileNotFound
+   ~spec2nexus.spec.DuplicateSpecScanNumber
+   ~spec2nexus.spec.UnknownSpecFilePart
 
 dependencies
 ============
@@ -395,6 +395,6 @@ dependencies
 documentation
 =============
 
-.. automodule:: spec2nexus.pySpec
+.. automodule:: spec2nexus.spec
     :members: 
     :synopsis: Classes to read the contents of a SPEC data file.
