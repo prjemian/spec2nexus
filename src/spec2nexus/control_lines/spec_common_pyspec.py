@@ -257,6 +257,29 @@ class SPEC_DataLine(ControlLineHandler):
 
 # MCA: multi-channel analyzer
 
+# From the ESRF: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
+'''
+#%BR% Each MCA related line holds the character "@".
+#%DL% MCA file syntax:
+#%DT% #@MCA %%16C 
+#%DD% Format string passed to data_dump() function. This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. "%%16C" is the default. It dumps data on 1 line, cut every 16 points:
+#%PRE%
+#@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+# 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+# 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+# 0 0 0 0 0 0 0 0 0 0 0 ...
+#%PRE% 
+# "%%16" would do the same without any backslash, "1" would dump 1 point per line, ...
+#%DT% #@CHANN 1024 0 1023 1 
+#%DD% number of data points, first MCA channel, last one, reduction factor.
+#%DT% #@CTIME 1 17 17 
+#%DD% Time preset, MCA elapsed live time, MCA elapsed real time.
+#%DT% #@CALIB  0 1 0
+#%DD% Calibration parameters as "a b c", in "E = a + b*ch + c*ch^2".
+#%DT% @A 0 0 0....
+#%DD% MCA data. Each value is the content of one channel, or an integrated value over several channels if a reduction was applied.
+'''
+
 class SPEC_MCA(ControlLineHandler):
     '''
     **#@MCA** -- declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
