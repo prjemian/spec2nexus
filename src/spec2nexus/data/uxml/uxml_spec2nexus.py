@@ -27,7 +27,8 @@ Excerpt::
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-from spec2nexus.plugin import ControlLineHandler, strip_first_word
+from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.utils import strip_first_word
 from lxml import etree
 
 

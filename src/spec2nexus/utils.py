@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''(internal library) common methods used **spec2nexus** modules'''
+'''(internal library) common methods used in **spec2nexus** modules'''
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -15,6 +15,55 @@
 import numpy as np
 import re
 import time
+
+
+def clean_name(key):
+    '''
+    create a name that is allowed by both HDF5 and NeXus rules
+    
+    :param str key: identifying string from SPEC data file
+    
+    :see: http://download.nexusformat.org/doc/html/datarules.html
+    
+    The "sanitized" name fits this regexp::
+    
+        [A-Za-z_][\w_]*
+    
+    An easier expression might be:  ``[\w_]*`` but this will not pass
+    the rule that valid NeXus group or field names cannot start with a digit.
+    '''
+    replacement = '_'
+    noncompliance = '[^\w_]'
+    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
+    if txt[0].isdigit():
+        txt = replacement + txt # can't start with a digit
+    return txt
+
+
+def get_all_plugins():
+    '''load all spec2nexus plugin modules'''
+    import plugin
+    manager = plugin.PluginManager()
+    manager.load_plugins()
+    return manager
+
+
+def iso8601(date):
+    '''
+    convert SPEC time (example: Wed Nov 03 13:39:34 2010) into ISO8601 string
+    
+    :param str date: time string from SPEC data file
+    
+    **Example**
+    
+    :SPEC:    Wed Nov 03 13:39:34 2010
+    :ISO8601: 2010-11-03T13:39:34
+    '''
+    spec_fmt = '%a %b %d %H:%M:%S %Y'
+    t = time.strptime(date, spec_fmt)
+    iso_fmt = '%Y-%m-%dT%H:%M:%S'
+    iso = time.strftime(iso_fmt, t)
+    return iso
 
 
 def reshape_data(scan_data, scan_shape):
@@ -59,42 +108,8 @@ def sanitize_name(group, key):      # TODO: group object is not used, deprecate 
     return txt
 
 
-def clean_name(key):
-    '''
-    create a name that is allowed by both HDF5 and NeXus rules
-    
-    :param str key: identifying string from SPEC data file
-    
-    :see: http://download.nexusformat.org/doc/html/datarules.html
-    
-    The "sanitized" name fits this regexp::
-    
-        [A-Za-z_][\w_]*
-    
-    An easier expression might be:  ``[\w_]*`` but this will not pass
-    the rule that valid NeXus group or field names cannot start with a digit.
-    '''
-    replacement = '_'
-    noncompliance = '[^\w_]'
-    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
-    if txt[0].isdigit():
-        txt = replacement + txt # can't start with a digit
-    return txt
-
-
-def iso8601(date):
-    '''
-    convert SPEC time (example: Wed Nov 03 13:39:34 2010) into ISO8601 string
-    
-    :param str date: time string from SPEC data file
-    
-    **Example**
-    
-    :SPEC:    Wed Nov 03 13:39:34 2010
-    :ISO8601: 2010-11-03T13:39:34
-    '''
-    spec_fmt = '%a %b %d %H:%M:%S %Y'
-    t = time.strptime(date, spec_fmt)
-    iso_fmt = '%Y-%m-%dT%H:%M:%S'
-    iso = time.strftime(iso_fmt, t)
-    return iso
+def strip_first_word(line):
+    '''return everything after the first space on the line from the spec data file'''
+    pos = line.find(" ")
+    val = line[pos:]
+    return val.strip()

@@ -22,7 +22,7 @@ import imp                          #@UnusedImport
 import inspect                      #@UnusedImport
 import pprint                       #@UnusedImport
 import re                           #@UnusedImport
-from spec2nexus.spec import strip_first_word #@UnusedImport
+from spec2nexus.utils import strip_first_word #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
@@ -96,7 +96,7 @@ class ControlLineHandler(object):
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
-class ControlLineHandlerManager(object):
+class PluginManager(object):
     '''
     Manage the set of SPEC data file control line plugins
     '''

@@ -117,6 +117,7 @@ Try to read a file that does not exist:
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
+from spec2nexus.utils import get_all_plugins
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
@@ -180,21 +181,6 @@ def is_spec_file(filename):
     return True
 
 
-def strip_first_word(line):
-    """return everything after the first space on the line from the spec data file"""
-    pos = line.find(" ")
-    val = line[pos:]
-    return val.strip()
-
-
-def _get_all_plugins():
-    '''load all plugin modules'''
-    import plugin
-    manager = plugin.ControlLineHandlerManager()
-    manager.load_plugins()
-    return manager
-
-
 #-------------------------------------------------------------------------------------------
 
 
@@ -222,7 +208,7 @@ class SpecDataFile(object):
         self.fileName = filename
 
         if plugin_manager is None:
-            plugin_manager = _get_all_plugins()
+            plugin_manager = get_all_plugins()
         self.plugin_manager = plugin_manager
 
         self.read()

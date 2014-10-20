@@ -19,7 +19,9 @@ in the scans using #H/#V pairs of labels/values.
 #-----------------------------------------------------------------------------
 
 
-from spec2nexus.plugin import ControlLineHandler, strip_first_word
+from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.utils import strip_first_word
+
 
 class UNICAT_MetadataMnemonics(ControlLineHandler):
     '''**#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)'''

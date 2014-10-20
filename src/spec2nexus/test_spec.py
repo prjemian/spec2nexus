@@ -3,7 +3,7 @@ unit tests for the spec module
 '''
 
 import unittest
-from spec2nexus import spec
+from spec2nexus import spec, utils
 import os
 
 
@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
         return os.path.join(self.datapath, fname)
     
     def test_strip_first_word(self):
-        self.assertEqual(spec.strip_first_word('one two three'), 'two three')
+        self.assertEqual(utils.strip_first_word('one two three'), 'two three')
         
     def test_isSpecFileThis(self):
         self.assertFalse(spec.is_spec_file('this_does_not_exist'))
