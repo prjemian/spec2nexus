@@ -17,7 +17,7 @@ Provides
 * :ref:`h5toText`          : command-line tool: Print the tree structure of an HDF5 file
 * :ref:`extractSpecScan`   : command-line tool: Save columns from SPEC data file scan(s) to TSV files
 * :ref:`pySpec`            : library: python binding to read SPEC [#]_ data files
-* **spec2nexus.prjPySpec** : library: legacy version of **pySpec**, frozen at version 2014.0623.0
+* :ref:`prjPySpec`         : library: legacy version of **pySpec**, frozen at version 2014.0623.0
 * :ref:`eznx`              : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
 
 .. [#] http://certif.com
