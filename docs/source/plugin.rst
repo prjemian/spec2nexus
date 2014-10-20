@@ -30,7 +30,6 @@ These plugin modules are supplied:
    ~spec2nexus.control_lines.unicat_pyspec
    ~spec2nexus.control_lines.uim_pyspec
 
-
 .. toctree::
    :maxdepth: 2
    :hidden:
