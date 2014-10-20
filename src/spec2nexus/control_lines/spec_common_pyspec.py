@@ -257,28 +257,7 @@ class SPEC_DataLine(ControlLineHandler):
 
 # MCA: multi-channel analyzer
 
-# From the ESRF: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
-'''
-#%BR% Each MCA related line holds the character "@".
-#%DL% MCA file syntax:
-#%DT% #@MCA %%16C 
-#%DD% Format string passed to data_dump() function. This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. "%%16C" is the default. It dumps data on 1 line, cut every 16 points:
-#%PRE%
-#@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-# 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-# 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-# 0 0 0 0 0 0 0 0 0 0 0 ...
-#%PRE% 
-# "%%16" would do the same without any backslash, "1" would dump 1 point per line, ...
-#%DT% #@CHANN 1024 0 1023 1 
-#%DD% number of data points, first MCA channel, last one, reduction factor.
-#%DT% #@CTIME 1 17 17 
-#%DD% Time preset, MCA elapsed live time, MCA elapsed real time.
-#%DT% #@CALIB  0 1 0
-#%DD% Calibration parameters as "a b c", in "E = a + b*ch + c*ch^2".
-#%DT% @A 0 0 0....
-#%DD% MCA data. Each value is the content of one channel, or an integrated value over several channels if a reduction was applied.
-'''
+# see ESRF BLISS group: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
 class SPEC_MCA(ControlLineHandler):
     '''
@@ -286,6 +265,21 @@ class SPEC_MCA(ControlLineHandler):
     '''
 
     key = '#@MCA'
+
+    '''
+    #@MCA 16C 
+    Format string passed to data_dump() function. 
+    This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. 
+    "%%16C" is the default. It dumps data on 1 line, cut every 16 points::
+    
+        @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+         0 0 0 0 0 0 0 0 0 0 0 ...
+    
+    "%%16" would do the same without any backslash
+    "1" would dump 1 point per line, ...
+    '''
     
     def process(self, text, spec_obj, *args, **kws):
         # #@MCA 16C
@@ -293,7 +287,12 @@ class SPEC_MCA(ControlLineHandler):
         pass        # not sure how to handle this, ignore it for now
 
 class SPEC_MCA_Array(ControlLineHandler):
-    '''**@A** -- MCA Array data'''
+    '''
+    **@A** -- MCA Array data
+    
+    MCA data. Each value is the content of one channel, or an 
+    integrated value over several channels if a reduction was applied.
+    '''
 
     key = '@A'
     # continued lines will be matched by SPEC_DataLine
@@ -308,7 +307,7 @@ class SPEC_MCA_Array(ControlLineHandler):
         spec_obj.addPostProcessor('scan data', data_lines_postprocessing)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
-    '''**#@CALIB** -- coefficients for :math:`x_i = a +bi + ci^2` for MCA data'''
+    '''**#@CALIB** -- coefficients for :math:`x_k = a +bk + ck^2` for MCA data, k is channel number'''
 
     key = '#@CALIB'
     
@@ -334,7 +333,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     def process(self, text, spec_obj, *args, **kws):
         # #@CHANN 1201 1110 1200 1
         s = strip_first_word(text).split()
-        number_saved, first_saved, last_saved = map(int, s[0:2])
+        number_saved, first_saved, last_saved = map(int, s[0:3])
         reduction_coef = float(s[-1])
 
         if not hasattr(spec_obj, 'MCA'):

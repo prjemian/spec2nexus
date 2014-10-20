@@ -5,10 +5,21 @@
 
 Library of classes to read the contents of a SPEC data file.
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :glob:
+
+   prjPySpec
+
 .. index:: examples; pySpec
 
 How to use :mod:`spec2nexus.pySpec`
 ***********************************
+
+.. sidebar:: legacy code
+
+   This library replaces a previous version
 
 :mod:`spec2nexus.pySpec` provides Python support to read 
 the scans in a SPEC data file.  (It does not provide a command-line interface.)
