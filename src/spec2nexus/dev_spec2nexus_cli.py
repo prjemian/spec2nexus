@@ -16,7 +16,7 @@
 
 import os
 import sys
-import cli
+from spec2nexus import spec2nexus_cli
 
 if __name__ == '__main__':
     # developer test items
@@ -31,4 +31,4 @@ if __name__ == '__main__':
     sys.argv.append(os.path.join('data', '33id_spec.dat'))
     sys.argv.append(os.path.join('data', '33bm_spec.dat'))
     sys.argv.append(os.path.join('data', 'lmn40.spe'))
-    cli.main()
+    spec2nexus_cli.main()
