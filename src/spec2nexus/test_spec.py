@@ -28,6 +28,8 @@ class Test(unittest.TestCase):
 
 #     def testName(self):
 #         pass
+
+        # TODO: apply principle of one test per one possibility
     
     def abs_data_fname(self, fname):
         return os.path.join(self.datapath, fname)
@@ -39,15 +41,13 @@ class Test(unittest.TestCase):
         self.assertFalse(spec.is_spec_file('this_does_not_exist'))
         self.assertFalse(spec.is_spec_file(self.basepath))
         self.assertFalse(spec.is_spec_file(__file__))
-        self.assertTrue( spec.is_spec_file(self.abs_data_fname('03_05_UImg.dat')))
+        self.assertTrue( spec.is_spec_file(self.abs_data_fname('APS_spec_data.dat')))
     
     def is_spec_file(self, fname):
         return spec.is_spec_file(self.abs_data_fname(fname))
         
     def test_isSpecFile(self):
         '''test all the known data files to see if they are SPEC'''
-        self.assertTrue( self.is_spec_file('03_05_UImg.dat'))
-        self.assertTrue( self.is_spec_file('130123B_2.spc'))
         self.assertTrue( self.is_spec_file('33bm_spec.dat'))
         self.assertTrue( self.is_spec_file('33id_spec.dat'))
         self.assertTrue( self.is_spec_file('APS_spec_data.dat'))
@@ -85,62 +85,6 @@ class Test(unittest.TestCase):
         self.assertRaises(spec.SpecDataFileNotFound, self.cannot_find_spec_data_file)
         self.assertRaises(spec.NotASpecDataFile, self.not_a_spec_data_file)
 
-    def test_03_05_UImg(self):
-        fname = self.abs_data_fname('03_05_UImg.dat')
-        sfile = spec.SpecDataFile(fname)
-        self.assertEqual(sfile.fileName, fname)
-        self.assertEqual(len(sfile.headers), 1)
-        self.assertEqual(len(sfile.scans), 87)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 87)
-        self.assertEqual(len(sfile.getScan(1).L), 18)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
-        cmd = 'ascan  mr 11.0978 11.0918  40 0.2'
-        self.assertEqual(scan.scanCmd, cmd)
-        self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
-        self.assertEqual(scan.column_first, 'mr')
-        self.assertEqual(scan.column_last, 'I0')
-        self.assertEqual(len(scan.data['mr']), 41)
-        self.assertEqual(scan.data['mr'][0], 11.0978)
-        self.assertEqual(scan.data['I0'][0], 402.0)
-        self.assertEqual(scan.data['mr'][-1], 11.0918)
-        self.assertEqual(scan.data['I0'][-1], 282.0)
-        scan = sfile.getScan(-1) 
-        self.assertEqual(len(scan.positioner), 54)
-        self.assertEqual(scan.positioner['mr'], 11.09584)
-        self.assertEqual(scan.positioner['en'], 17.0)
-        # TODO: apply file-specific tests (see README.txt)
-
-    def test_130123B_2(self):
-        fname = self.abs_data_fname('130123B_2.spc')
-        sfile = spec.SpecDataFile(fname)
-        self.assertEqual(sfile.fileName, fname)
-        self.assertEqual(len(sfile.headers), 1)
-        self.assertEqual(len(sfile.scans), 144)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 144)
-        self.assertEqual(len(sfile.getScan(1).L), 50)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
-        cmd = 'xascan  phi -3.7 -3.3  20 0.2 2 2'
-        self.assertEqual(scan.scanCmd, cmd)
-        self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
-        x = 'phi'
-        y = 'imroi1'
-        self.assertEqual(scan.column_first, x)
-        self.assertEqual(scan.column_last, y)
-        self.assertEqual(len(scan.data[x]), 31)
-        self.assertEqual(scan.data[x][0], -3.9)
-        self.assertEqual(scan.data[y][0], 0.0)
-        self.assertEqual(scan.data[x][-1], -3.1)
-        self.assertEqual(scan.data[y][-1], 15.0)
-        scan = sfile.getScan(-1)
-        self.assertEqual(len(scan.positioner), 26)
-        self.assertEqual(scan.positioner['DCM.theta'], 8.0503666)
-        self.assertEqual(scan.positioner['chi'], 112.236)
-        # TODO: apply file-specific tests (see README.txt)
-
     def test_33bm_spec(self):
         fname = self.abs_data_fname('33bm_spec.dat')
         sfile = spec.SpecDataFile(fname)
@@ -155,24 +99,25 @@ class Test(unittest.TestCase):
         cmd = 'ascan  th 19.022 19.222  60 -20000'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
-        x = 'theta'
-        y = 'signal'
-        self.assertEqual(scan.column_first, x)
-        self.assertEqual(scan.column_last, y)
-        self.assertEqual(len(scan.data[x]), 61)
-        self.assertEqual(scan.data[x][0], 19.022)
-        self.assertEqual(scan.data[y][0], 0.0)
-        self.assertEqual(scan.data[x][-1], 19.222)
-        self.assertEqual(scan.data[y][-1], 0.0)
-        scan = sfile.getScan(-1)
-        self.assertEqual(len(scan.positioner), 22)
-        x = 'yt3'
-        y = 'zt1'
-        self.assertEqual(scan.positioner.keys()[0], x)
-        self.assertEqual(scan.positioner.keys()[-1], y)
-        self.assertEqual(scan.positioner[x], 0.499275)
-        self.assertEqual(scan.positioner[y], -113.52071)
+#         x = 'theta'
+#         y = 'signal'
+#         self.assertEqual(scan.column_first, x)
+#         self.assertEqual(scan.column_last, y)
+#         self.assertEqual(len(scan.data[x]), 61)
+#         self.assertEqual(scan.data[x][0], 19.022)
+#         self.assertEqual(scan.data[y][0], 0.0)
+#         self.assertEqual(scan.data[x][-1], 19.222)
+#         self.assertEqual(scan.data[y][-1], 0.0)
+#         scan = sfile.getScan(-1)
+#         self.assertEqual(len(scan.positioner), 22)
+#         x = 'yt3'
+#         y = 'zt1'
+#         self.assertEqual(scan.positioner.keys()[0], x)
+#         self.assertEqual(scan.positioner.keys()[-1], y)
+#         self.assertEqual(scan.positioner[x], 0.499275)
+#         self.assertEqual(scan.positioner[y], -113.52071)
         # TODO: apply file-specific tests (see README.txt)
+        # test hklscan (#14), hklmesh (#17)
 
     def test_33id_spec(self):
         fname = self.abs_data_fname('33id_spec.dat')
@@ -204,8 +149,8 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.positioner.keys()[-1], y)
         self.assertEqual(scan.positioner[x], 0.0)
         self.assertEqual(scan.positioner[y], 2.4003)
-        # TODO: test MCA data
-        # TODO: apply file-specific tests (see README.txt)
+        # TODO: test MCA data (#1 but MCA data is all zero, need better test file)
+        # test mesh (#22), Escan (#105)
 
     def test_APS_spec_data(self):
         fname = self.abs_data_fname('APS_spec_data.dat')
@@ -239,6 +184,7 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.positioner[x], 3.03)
         self.assertEqual(scan.positioner[y], 24.0)
         # TODO: apply file-specific tests (see README.txt)
+        # uascan (#5), UNICAT metadata (#5)
 
     def test_CdSe(self):
         fname = self.abs_data_fname('CdSe')
@@ -272,6 +218,7 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.positioner[x], -2.83)
         self.assertEqual(scan.positioner[y], 0.6)
         # TODO: apply file-specific tests (see README.txt)
+        # 1-D scans (ascan), problem with scan abort on lines 5918-9, in scan 92
 
     def test_lmn40(self):
         fname = self.abs_data_fname('lmn40.spe')
@@ -305,6 +252,8 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.positioner[x], -2.05)
         self.assertEqual(scan.positioner[y], 0.0)
         # TODO: apply file-specific tests (see README.txt)
+        # two #E lines, has two header sections
+        # number of scans != maxScanNumber, something missing?
 
     def test_YSZ011_ALDITO_Fe2O3_planar_fired_1(self):
         fname = self.abs_data_fname('YSZ011_ALDITO_Fe2O3_planar_fired_1.spc')
@@ -320,24 +269,25 @@ class Test(unittest.TestCase):
         cmd = 'ascan  th 26.7108 27.1107  60 0.05'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
-        x = 'theta'
-        y = 'imroi1'
-        self.assertEqual(scan.column_first, x)
-        self.assertEqual(scan.column_last, y)
-        self.assertEqual(len(scan.data[x]), 60)
-        self.assertEqual(scan.data[x][0], 26.714)
-        self.assertEqual(scan.data[y][0], 6.0)
-        self.assertEqual(scan.data[x][-1], 27.1075)
-        self.assertEqual(scan.data[y][-1], 7.0)
-        scan = sfile.getScan(-1)
-        self.assertEqual(len(scan.positioner), 26)
-        x = 'yt2'
-        y = 'wst'
-        self.assertEqual(scan.positioner.keys()[0], x)
-        self.assertEqual(scan.positioner.keys()[-1], y)
-        self.assertEqual(scan.positioner[x], -6.25e-05)
-        self.assertEqual(scan.positioner[y], 2.9999031)
+#         x = 'theta'
+#         y = 'imroi1'
+#         self.assertEqual(scan.column_first, x)
+#         self.assertEqual(scan.column_last, y)
+#         self.assertEqual(len(scan.data[x]), 60)
+#         self.assertEqual(scan.data[x][0], 26.714)
+#         self.assertEqual(scan.data[y][0], 6.0)
+#         self.assertEqual(scan.data[x][-1], 27.1075)
+#         self.assertEqual(scan.data[y][-1], 7.0)
+#         scan = sfile.getScan(-1)
+#         self.assertEqual(len(scan.positioner), 26)
+#         x = 'yt2'
+#         y = 'wst'
+#         self.assertEqual(scan.positioner.keys()[0], x)
+#         self.assertEqual(scan.positioner.keys()[-1], y)
+#         self.assertEqual(scan.positioner[x], -6.25e-05)
+#         self.assertEqual(scan.positioner[y], 2.9999031)
         # TODO: apply file-specific tests (see README.txt)
+        # 1-D scans, text in #V35.2 metadata (powderMotor="theta" others are float), also has #UIM control lines
 
 
 if __name__ == "__main__":
