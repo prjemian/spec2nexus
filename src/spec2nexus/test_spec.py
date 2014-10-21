@@ -153,6 +153,7 @@ class Test(unittest.TestCase):
         # test mesh (#22), Escan (#105)
 
     def test_APS_spec_data(self):
+        '''UNICAT metadata'''
         fname = self.abs_data_fname('APS_spec_data.dat')
         sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)
@@ -292,4 +293,7 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    #unittest.main()
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+    unittest.TextTestRunner(verbosity=2).run(suite)

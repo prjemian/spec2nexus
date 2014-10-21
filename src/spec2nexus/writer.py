@@ -19,6 +19,7 @@ import numpy as np
 import eznx
 import spec2nexus
 import utils
+import h5py
 
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
@@ -53,8 +54,10 @@ class Writer(object):
         In general, the tree structure of the NeXus HDF5 file is::
         
             hdf5_file: NXroot
+                @entry="S1"
                 # attributes
                 S1:NXentry
+                    @data="data"
                     # attributes and metadata fields
                     data:NXdata
                         @signal=<name of signal field>
@@ -69,21 +72,26 @@ class Writer(object):
         :param [int] scanlist: list of scan numbers to be read
         '''
         root = eznx.makeFile(hdf_file, **self.root_attributes())
+        pick_first_entry = True
         for key in scan_list:
             nxentry = eznx.makeGroup(root, 'S'+str(key), 'NXentry')
             self.save_scan(nxentry, self.spec.getScan(key))
+            if pick_first_entry:
+                pick_first_entry = False
+                eznx.addAttributes(root, entry='S'+str(key))
         root.close()    # be CERTAIN to close the file
     
     def root_attributes(self):
         '''*internal*: returns the attributes to be written to the root element as a dict'''
         header0 = self.spec.headers[0]
         dd = dict(
-            prjPySpec_version = spec2nexus.__version__,
+            spec2nexus_version = spec2nexus.__version__,
             SPEC_file = self.spec.specFile,
             SPEC_epoch = header0.epoch,
             SPEC_date = utils.iso8601(header0.date),
             SPEC_comments = '\n'.join(header0.comments),
             SPEC_num_headers = len(self.spec.headers),
+            h5py_version = h5py.__version__
             )
         try:
             c = header0.comments[0]
@@ -95,48 +103,14 @@ class Writer(object):
     
     def save_scan(self, nxentry, scan):
         '''*internal*: save the data from each SPEC scan to its own NXentry group'''
+        scan.interpret()        # ensure interpretation is complete
+        eznx.addAttributes(nxentry, data="data")
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
-        eznx.write_dataset(nxentry, "date", utils.iso8601(scan.date)  )
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
-        eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
-        eznx.write_dataset(nxentry, "comments", '\n'.join(scan.comments))
-
-        desc = 'SPEC scan data'
-        nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', description=desc)
-        self.save_data(nxdata, scan)
-        
-        desc='SPEC positioners (#P & #O lines)'
-        group = eznx.makeGroup(nxentry, 'positioners', CONTAINER_CLASS, description=desc)
-        self.save_dict(group, scan.positioner)
-
-        if len(scan.metadata) > 0:
-            desc='SPEC metadata (UNICAT-style #H & #V lines)'
-            group = eznx.makeGroup(nxentry, 'metadata', CONTAINER_CLASS, description=desc)
-            self.save_dict(group, scan.metadata)
-
-        if len(scan.G) > 0:
-            # e.g.: SPECD/four.mac
-            # http://certif.com/spec_manual/fourc_4_9.html
-            desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
-            group = eznx.makeGroup(nxentry, 'G', CONTAINER_CLASS, description=desc)
-            dd = {}
-            for item, value in scan.G.items():
-                dd[item] = map(float, value.split())
-            self.save_dict(group, dd)
-
-        if scan.T != '':
-            desc = 'SPEC scan with constant counting time'
-            eznx.write_dataset(nxentry, "counting_basis", desc)
-            eznx.write_dataset(nxentry, "T", float(scan.T), units='s', description = desc)
-        elif scan.M != '':
-            desc = 'SPEC scan with constant monitor count'
-            eznx.write_dataset(nxentry, "counting_basis", desc)
-            eznx.write_dataset(nxentry, "M", float(scan.M), units='counts', description = desc)
-
-        if scan.Q != '':
-            desc = 'hkl at start of scan'
-            eznx.write_dataset(nxentry, "Q", map(float,scan.Q.split()), description = desc)
+        for func in scan.h5writers.values():
+            # ask the plugins to save their part
+            func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
         '''*internal*: store a dictionary'''

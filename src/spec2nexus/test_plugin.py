@@ -17,7 +17,7 @@ import plugin
 import os
 
 
-class Test(unittest.TestCase):
+class TestPlugin(unittest.TestCase):
 
     def setUp(self):
         os.environ['SPEC2NEXUS_PLUGIN_PATH'] = 'C://Users//Pete//Desktop, /tmp'
@@ -61,4 +61,7 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    #unittest.main()
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestPlugin)
+    unittest.TextTestRunner(verbosity=2).run(suite)

@@ -92,6 +92,32 @@ class ControlLineHandler(object):
         '''
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
+    
+    def postprocess(self, *args, **kw):
+        '''
+        call this to handle any data after the scan has been read and parsed
+        
+        queue this by calling::
+        
+            scan.addPostProcessor('unique_label', self.postprocess)
+        
+        in the process() method.
+        '''
+        
+        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
+    
+    def writer(self, *args, **kw):
+        '''
+        write in-memory structure to HDF5+NeXus data file
+        
+        queue this by calling::
+        
+            scan.addWriter('unique_label', self.writer)
+        
+        in the process() method.
+        '''
+        
+        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
 class PluginManager(object):

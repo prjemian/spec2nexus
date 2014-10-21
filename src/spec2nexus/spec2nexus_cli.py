@@ -29,8 +29,8 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.abspath(path))
 
 import spec2nexus
-import prjPySpec
-from spec2nexus import prjPySpec2eznx
+import spec
+import spec2nexus.writer
 
 
 hdf5_extension = '.hdf5'
@@ -175,7 +175,7 @@ def main():
 
         if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
             print 'reading SPEC data file: '+spec_data_file_name
-        spec_data = prjPySpec.SpecDataFile(spec_data_file_name)
+        spec_data = spec.SpecDataFile(spec_data_file_name)
     
         scan_list = pick_scans(spec_data.scans.keys(), user_parms.scan_list)
         if user_parms.reporting_level in (REPORTING_VERBOSE):
@@ -185,7 +185,7 @@ def main():
         basename = os.path.splitext(spec_data_file_name)[0]
         nexus_output_file_name = basename + user_parms.hdf5_extension
         if user_parms.force_write or not os.path.exists(nexus_output_file_name):
-            out = prjPySpec2eznx.Writer(spec_data)
+            out = spec2nexus.writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
             if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
                 print 'wrote NeXus HDF5 file: ' + nexus_output_file_name
