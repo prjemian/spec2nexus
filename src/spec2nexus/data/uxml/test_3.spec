@@ -348,7 +348,7 @@
 #UXML   <dataset name="detector_readout_time" type="float" units="ms">3.6</dataset>
 #UXML </group>
 #UXML <group name="ad_file_info" NX_class="NXcollection" prefix="S33-PILATUS1:">
-#UXML   <dataset name="file_format">TIFF</file_format>
+#UXML   <dataset name="file_format">TIFF</dataset>
 #UXML   <dataset name="file_path">/home/33id/data/schlepuetz/20141020/test/images/test_3/S001/</dataset>
 #UXML   <dataset name="file_name">test_3_S001_00009</dataset>
 #UXML   <dataset name="file_number" type="int">90</dataset>
