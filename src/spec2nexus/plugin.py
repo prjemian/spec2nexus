@@ -71,11 +71,9 @@ class ControlLineHandler(object):
         does the text match to this handler's unique identifying key?
         '''
         t = re.match(self.key, text)
-        if t is not None:
-            # test regexp match to avoid false positives
-            if t.regs[0][1] != 0:   # FIXME: this looks fragile
-                return True
-        return False
+        # test regexp match to avoid false positives
+        # ensures that beginning and end are different positions
+        return t and t.regs[0][1] != t.regs[0][0]
 
     def __str__(self):
         return str(self.__name__)
