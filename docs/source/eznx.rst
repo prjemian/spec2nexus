@@ -92,7 +92,7 @@ APIs provided:
 .. toctree::
    :maxdepth: 1
    
-   prjPySpec2eznx.rst
+   writer.rst
 
 ----
 

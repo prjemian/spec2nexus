@@ -60,10 +60,11 @@ command-line options
 .. note:: Where's the source code to spec2nexus?
 
    In the source code, the *spec2nexus* program
-   is started from file **cli.py** (in the :meth:`spec2nexus.cli.main`
+   is started from file **spec2nexus_cli.py** 
+   (in the :meth:`spec2nexus.spec2nexus_cli.main`
    method, for those who look at the source code)::
    
-      $ python cli.py specfile.dat
+      $ python spec2nexus_cli.py specfile.dat
      
    You're not really going to call that from the source directory, are you?
    It will work, *if* you have put that source directory on your PYTHONPATH.
@@ -73,7 +74,7 @@ command-line options
 source code documentation
 *************************
 
-.. automodule:: spec2nexus.cli
+.. automodule:: spec2nexus.spec2nexus_cli
     :members: 
     :synopsis: Converts SPEC data files and scans into NeXus HDF5 files
     

@@ -367,7 +367,7 @@ methods
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.spec.strip_first_word
+   ~spec2nexus.utils.strip_first_word
    ~spec2nexus.spec.is_spec_file
 
 exceptions

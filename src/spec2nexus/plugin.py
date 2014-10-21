@@ -3,6 +3,19 @@
 
 '''
 define the plug-in architecture
+
+Create a subclass of :class:`spec2nexus.plugin.ControlLineHandler`
+for each SPEC control line.  In each subclass, it is necessary to:
+
+* define a string value for the ``key`` (class attribute)
+* override the definition of :meth:`process`
+
+It is optional to:
+
+* override the definition of :meth:`match_key`
+* override the definition of :meth:`postprocess`
+* override the definition of :meth:`writer`
+
 '''
 
 #-----------------------------------------------------------------------------
@@ -48,16 +61,10 @@ class DuplicatePlugin(Exception):
 
 class ControlLineHandler(object):
     '''
-    Handle a single control line in a SPEC data file
-    
-    Create a subclass of ControlLineHandler for each different control line.
-    
-    * The subclass must define a value for the ``key`` which is
-      unique across all :class:`ControlLineHandler` classes.
-    * The subclass must override the definition of :meth:`process` and
-      return either None or a ??? dictionary ???
-    
+    Plugin to handle a single control line in a SPEC data file
+
     :param str key: regular expression to match a control line key, up to the first space
+    :returns: None
     '''
     
     key = None
@@ -68,7 +75,13 @@ class ControlLineHandler(object):
     
     def match_key(self, text):
         '''
-        does the text match to this handler's unique identifying key?
+        test if this plugin's key matches the supplied text
+        
+        The default test is to apply a regular expression match
+        using ``self.key`` as the regular expression to match.
+
+        If this method is to be used, then override this method in the 
+        plugin or a :class:`NotImplementedError` exception will be raised.
         '''
         t = re.match(self.key, text)
         # test regexp match to avoid false positives
@@ -82,26 +95,34 @@ class ControlLineHandler(object):
         '''
         Parse this text from the SPEC data file according to the control line key.
         
-        A plugin will receive *text* and an object 
-        (:class:`~spec2nexus.spec.SpecDataFile`,
-        :class:`~spec2nexus.spec.SpecDataFileHeader`,
-        or :class:`~spec2nexus.spec.SpecDataFileScan`).
+        A plugin will receive *text* and one of these objects: 
+        * :class:`~spec2nexus.spec.SpecDataFile`
+        * :class:`~spec2nexus.spec.SpecDataFileHeader`
+        * :class:`~spec2nexus.spec.SpecDataFileScan`
+        
         The plugin will parse the text and store the content into the object.
-        Any value returned by the plugin will be ignored.
-        A plugin may raise an exception.  Unhandled exceptions can terminate a program.
+
+        All plugins **must** override this method 
+        or a :class:`NotImplementedError` exception will be raised.
         '''
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
     
     def postprocess(self, *args, **kw):
         '''
-        call this to handle any data after the scan has been read and parsed
+        apply additional interpretation after all control lines have been read
+
+        queue this method by calling::
         
-        queue this by calling::
+            scan.addPostProcessor('unique label', self.postprocess)
         
-            scan.addPostProcessor('unique_label', self.postprocess)
-        
-        in the process() method.
+        in the :meth:`process` method.  It will be called
+        called after all control lines in a scan have been read.
+
+        .. tip:  One suggestion for the unique label is ``self.key``.
+
+        If this method is to be used, then override this method in the 
+        plugin or a :class:`NotImplementedError` exception will be raised.
         '''
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
@@ -114,7 +135,13 @@ class ControlLineHandler(object):
         
             scan.addWriter('unique_label', self.writer)
         
-        in the process() method.
+        in the process() method.  It will be called
+        called as the HDF5 file is being constructed.
+
+        .. tip:  One suggestion for the unique label is ``self.key``.
+
+        If this method is to be used, then override this method in the 
+        plugin or a :class:`NotImplementedError` exception will be raised.
         '''
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
