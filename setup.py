@@ -38,7 +38,7 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        platforms='any',
        install_requires = spec2nexus.__install_requires__,
        package_dir = {'': 'src'},
-       packages = ['spec2nexus', ],
+       packages = ['spec2nexus', 'spec2nexus.control_lines', ],
        #packages=find_packages(),
        package_data = {
                        'spec2nexus': ['data/*'],
