@@ -55,7 +55,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
                     scan.metadata[label] = float(val)
                 except ValueError:
                     scan.metadata[label] = val
-        scan.addH5writer('unicat_metadata', self.writer)
+        scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''

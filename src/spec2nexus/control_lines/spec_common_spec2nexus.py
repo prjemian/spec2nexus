@@ -26,7 +26,8 @@ import re
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word
-from spec2nexus import eznx
+from spec2nexus import eznx, utils
+from twisted.python.reflect import isinst
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -67,6 +68,12 @@ class SPEC_Date(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         scan.date = strip_first_word(text)
+        if isinstance(scan, SpecDataFileScan):
+            scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        eznx.write_dataset(h5parent, "date", utils.iso8601(scan.date)  )
 
 
 class SPEC_Comment(ControlLineHandler):
@@ -76,6 +83,12 @@ class SPEC_Comment(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         scan.comments.append( strip_first_word(text) )
+        if isinstance(scan, SpecDataFileScan):
+            scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        eznx.write_dataset(h5parent, "comments", '\n'.join(scan.comments))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,7 +105,7 @@ class SPEC_Geometry(ControlLineHandler):
         subkey = text.split()[0].lstrip('#')
         scan.G[subkey] = strip_first_word(text)
         if len(scan.G) > 0:
-            scan.addH5writer('G_writer', self.writer)
+            scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
@@ -151,6 +164,13 @@ class SPEC_Monitor(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         scan.M, dname = strip_first_word(text).split()
         scan.monitor_name = dname.lstrip('(').rstrip(')')
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        desc = 'SPEC scan with constant monitor count'
+        eznx.write_dataset(h5parent, "counting_basis", desc)
+        eznx.write_dataset(h5parent, "M", float(scan.M), units='counts', description = desc)
 
 class SPEC_NumColumns(ControlLineHandler):
     '''
@@ -223,7 +243,7 @@ class SPEC_HKL(ControlLineHandler):
         s = strip_first_word(text)
         if len(s) > 0:
             scan.Q = map(float, s.split())
-            scan.addH5writer('Q_writer', self.writer)
+            scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
@@ -262,6 +282,13 @@ class SPEC_CountTime(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         scan.T = strip_first_word(text).split()[0]
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        desc = 'SPEC scan with constant counting time'
+        eznx.write_dataset(h5parent, "counting_basis", desc)
+        eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
 
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''**#X** -- Temperature'''
@@ -473,3 +500,11 @@ def data_lines_postprocessing(scan):
                 # only keep complete rows
                 for label, val in buf.items():
                     scan.data[label].append(val)
+    scan.addH5writer('scan data', data_lines_writer)
+
+
+def data_lines_writer(h5parent, writer, scan, *args, **kws):
+    '''Describe how to store scan data in an HDF5 NeXus file'''
+    desc = 'SPEC scan data'
+    nxdata = eznx.makeGroup(h5parent, 'data', 'NXdata', description=desc)
+    writer.save_data(nxdata, scan)

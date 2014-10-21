@@ -54,8 +54,10 @@ class Writer(object):
         In general, the tree structure of the NeXus HDF5 file is::
         
             hdf5_file: NXroot
+                @entry="S1"
                 # attributes
                 S1:NXentry
+                    @data="data"
                     # attributes and metadata fields
                     data:NXdata
                         @signal=<name of signal field>
@@ -70,9 +72,13 @@ class Writer(object):
         :param [int] scanlist: list of scan numbers to be read
         '''
         root = eznx.makeFile(hdf_file, **self.root_attributes())
+        pick_first_entry = True
         for key in scan_list:
             nxentry = eznx.makeGroup(root, 'S'+str(key), 'NXentry')
             self.save_scan(nxentry, self.spec.getScan(key))
+            if pick_first_entry:
+                pick_first_entry = False
+                eznx.addAttributes(root, entry='S'+str(key))
         root.close()    # be CERTAIN to close the file
     
     def root_attributes(self):
@@ -97,27 +103,11 @@ class Writer(object):
     
     def save_scan(self, nxentry, scan):
         '''*internal*: save the data from each SPEC scan to its own NXentry group'''
+        eznx.addAttributes(nxentry, data="data")
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
-        eznx.write_dataset(nxentry, "date", utils.iso8601(scan.date)  )
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
-        eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
-        eznx.write_dataset(nxentry, "comments", '\n'.join(scan.comments))
-
-        desc = 'SPEC scan data'
-        nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', description=desc)
-        self.save_data(nxdata, scan)
-
-        if scan.M != '':
-            desc = 'SPEC scan with constant monitor count'
-            eznx.write_dataset(nxentry, "counting_basis", desc)
-            eznx.write_dataset(nxentry, "M", float(scan.M), units='counts', description = desc)
-        elif scan.T != '':
-            desc = 'SPEC scan with constant counting time'
-            eznx.write_dataset(nxentry, "counting_basis", desc)
-            eznx.write_dataset(nxentry, "T", float(scan.T), units='s', description = desc)
-            
-        for func in scan.h5writers.values():
+        for func in scan.h5writers.values():        # ask the plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
