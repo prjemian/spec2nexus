@@ -118,6 +118,7 @@ import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
 from spec2nexus.utils import get_all_plugins
+from lxml import etree
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
@@ -453,6 +454,21 @@ class SpecDataFileScan(object):
 
 #-------------------------------------------------------------------------------------------
 
+def prettify(someXML):
+    #for more on lxml/XSLT see: http://lxml.de/xpathxslt.html#xslt-result-objects
+    xslt_tree = etree.XML('''\
+        <!-- XSLT taken from Comment 4 by Michael Kay found here:
+        http://www.dpawson.co.uk/xsl/sect2/pretty.html#d8621e19 -->
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+          <xsl:strip-space elements="*"/>
+          <xsl:template match="/">
+            <xsl:copy-of select="."/>
+          </xsl:template>
+        </xsl:stylesheet>''')
+    transform = etree.XSLT(xslt_tree)
+    result = transform(someXML)
+    return unicode(result)
 
 def developer_test(spec_file_name = None):
     """
@@ -478,9 +494,8 @@ def developer_test(spec_file_name = None):
     scan = test.scans[1]
     scan.interpret()
     print scan.UXML_root
-    from lxml import etree
-    tree_str = etree.tostring(scan.UXML_root, pretty_print=True, xml_declaration=True)
-    print tree_str
+    
+    print prettify(scan.UXML_root)
     if False:
         # tell us about the test file
         print 'file', test.fileName
