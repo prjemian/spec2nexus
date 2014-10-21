@@ -3,6 +3,8 @@
 
 '''
 **#UIM** : Image header information from EPICS areaDetector
+
+:deprecated: in favor of UXML
 '''
 
 #-----------------------------------------------------------------------------

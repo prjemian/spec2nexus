@@ -58,7 +58,7 @@ Compatible with Python 2.7+
 
 import os
 import sys
-import prjPySpec
+import spec
 
 
 #-------------------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ def main():
 
     print "program: " + sys.argv[0]
     # now open the file and read it
-    specData = prjPySpec.SpecDataFile(cmdArgs.spec_file)
+    specData = spec.SpecDataFile(cmdArgs.spec_file)
     print "read: " + cmdArgs.spec_file
     
     for scanNum in cmdArgs.scan:

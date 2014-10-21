@@ -118,6 +118,7 @@ import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
 from spec2nexus.utils import get_all_plugins
+from lxml import etree
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
@@ -229,8 +230,7 @@ class SpecDataFile(object):
         headers = []
         for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
             if len(part) == 0: continue         # just in case
-            text = part.splitlines()[0].strip()
-            key = self.plugin_manager.getKey(text)
+            key = self.plugin_manager.getKey(part.splitlines()[0].strip())
             if key != '#E':
                 headers.append('#E ' + part)        # new header is starting
         del buf                                 # Dispose of the input buffer memory (necessary?)
@@ -380,6 +380,7 @@ class SpecDataFileScan(object):
         # (and perhaps others) are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
         self.__lazy_interpret__ = True
+        self.interpreted = False
     
     def __str__(self):
         return self.S
@@ -387,13 +388,15 @@ class SpecDataFileScan(object):
     def __getattribute__(self, attr):
         if attr in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES:
             if self.__lazy_interpret__:
-                self.__lazy_interpret__ = False     # set now to avoid recursion
                 self.interpret()
         return object.__getattribute__(self, attr)
         
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
+        if self.interpreted:    # do not do this twice
+            return
+        self.__lazy_interpret__ = False     # set now to avoid recursion
         lines = self.raw.splitlines()
         for i, line in enumerate(lines, start=1):
             if len(line) == 0:
@@ -411,6 +414,8 @@ class SpecDataFileScan(object):
         # call any post-processing hook functions from the plugins
         for func in self.postprocessors.values():
             func(self)
+        
+        self.interpreted = True
     
     def addPostProcessor(self, label, func):
         '''
@@ -449,6 +454,21 @@ class SpecDataFileScan(object):
 
 #-------------------------------------------------------------------------------------------
 
+def prettify(someXML):
+    #for more on lxml/XSLT see: http://lxml.de/xpathxslt.html#xslt-result-objects
+    xslt_tree = etree.XML('''\
+        <!-- XSLT taken from Comment 4 by Michael Kay found here:
+        http://www.dpawson.co.uk/xsl/sect2/pretty.html#d8621e19 -->
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+          <xsl:strip-space elements="*"/>
+          <xsl:template match="/">
+            <xsl:copy-of select="."/>
+          </xsl:template>
+        </xsl:stylesheet>''')
+    transform = etree.XSLT(xslt_tree)
+    result = transform(someXML)
+    return unicode(result)
 
 def developer_test(spec_file_name = None):
     """
@@ -471,50 +491,42 @@ def developer_test(spec_file_name = None):
     print '-'*70
     # now open the file and read it
     test = SpecDataFile(spec_file_name)
-    # tell us about the test file
-    print 'file', test.fileName
-    print 'headers', len(test.headers)
-    print 'scans', len(test.scans)
-    #print 'positioners in first scan:'; print test.scans[0].positioner
-    for scan in test.scans.values():
-        # print scan.scanNum, scan.date, scan.column_first, scan.positioner[scan.column_first], 'eV', 1e3*scan.metadata['DCM_energy']
-        print scan.scanNum, scan.scanCmd
-    print 'first scan: ', test.getMinScanNumber()
-    print 'last scan: ', test.getMaxScanNumber()
-    print 'positioners in last scan:'
-    last_scan = test.getScan(-1)
-    print last_scan.positioner
-    pLabel = last_scan.column_first
-    dLabel = last_scan.column_last
-    if len(pLabel) > 0:
-        print last_scan.data[pLabel]
-        print len(last_scan.data[pLabel])
-        print pLabel, dLabel
-        for i in range(len(last_scan.data[pLabel])):
-            print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
-    print 'labels in scan 1:', test.getScan(1).L
-    if test.getScan(5) is not None:
-        print 'command line of scan 5:', test.getScan(5).scanCmd
-    print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
+    scan = test.scans[1]
+    scan.interpret()
+    print scan.UXML_root
+    
+    print prettify(scan.UXML_root)
+    if False:
+        # tell us about the test file
+        print 'file', test.fileName
+        print 'headers', len(test.headers)
+        print 'scans', len(test.scans)
+        #print 'positioners in first scan:'; print test.scans[0].positioner
+        for scan in test.scans.values():
+            # print scan.scanNum, scan.date, scan.column_first, scan.positioner[scan.column_first], 'eV', 1e3*scan.metadata['DCM_energy']
+            print scan.scanNum, scan.scanCmd
+        print 'first scan: ', test.getMinScanNumber()
+        print 'last scan: ', test.getMaxScanNumber()
+        print 'positioners in last scan:'
+        last_scan = test.getScan(-1)
+        print last_scan.positioner
+        pLabel = last_scan.column_first
+        dLabel = last_scan.column_last
+        if len(pLabel) > 0:
+            print last_scan.data[pLabel]
+            print len(last_scan.data[pLabel])
+            print pLabel, dLabel
+            for i in range(len(last_scan.data[pLabel])):
+                print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
+        print 'labels in scan 1:', test.getScan(1).L
+        if test.getScan(5) is not None:
+            print 'command line of scan 5:', test.getScan(5).scanCmd
+        print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
+    pass
 
 
 if __name__ == "__main__":
-    fname = 'test_1.spec'
+    fname = 'test_3.spec'
     spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
     os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
-    #developer_test(os.path.join(spec_dir, fname))
-    
-#     path = os.path.join(os.path.dirname(__file__), 'data')
-#     spec_dir = os.path.abspath(path)
-#     for fname in ['APS_spec_data.dat', 
-#                   '03_05_UImg.dat', 
-#                   '33id_spec.dat', 
-#                   'CdSe',
-#                   '33bm_spec.dat',
-#                   'lmn40.spe',
-#                   'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc',
-#                   '130123B_2.spc',
-#                   ]:
-#         developer_test(os.path.join(spec_dir, fname))
-#         print '#'*60
-    developer_test()
+    developer_test(os.path.join(spec_dir, fname))

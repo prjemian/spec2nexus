@@ -32,7 +32,7 @@ from spec2nexus.utils import strip_first_word
 from lxml import etree
 
 
-DEFAULT_XML_ROOT_TAG = 'pySpec_uxml'
+DEFAULT_XML_ROOT_TAG = 'spec_uxml'
 
 
 class UXML_metadata(ControlLineHandler):
@@ -64,4 +64,4 @@ def uxml_metadata_postprocessing(scan):
         xml_text = '<%s>\n' % DEFAULT_XML_ROOT_TAG + xml_text + '\n</%s>' % DEFAULT_XML_ROOT_TAG
         root = etree.fromstring(xml_text)
 
-    pass    # TODO: what to do next?
+    scan.UXML_root = root
