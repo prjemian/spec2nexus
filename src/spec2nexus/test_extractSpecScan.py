@@ -34,10 +34,10 @@ class Test(unittest.TestCase):
                 os.remove(full_name)
                 print "removed test file:", full_name
 
-    def test_usage(self):
-        sys.argv = [sys.argv[0], ]
-        sys.argv.append('-h')
-        self.assertRaises(SystemExit, extractSpecScan.main)
+#     def test_usage(self):
+#         sys.argv = [sys.argv[0], ]
+#         sys.argv.append('-h')
+#         self.assertRaises(SystemExit, extractSpecScan.main)
 
 #     def test_version(self):
 #         sys.argv = [sys.argv[0], ]
@@ -75,4 +75,7 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    #unittest.main()
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+    unittest.TextTestRunner(verbosity=2).run(suite)
