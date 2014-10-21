@@ -94,12 +94,12 @@ class SPEC_Geometry(ControlLineHandler):
         if len(scan.G) > 0:
             scan.addH5writer('G_writer', self.writer)
     
-    def writer(self, h5parent, writer, default_nxclass, scan, *args, **kws):
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
         # e.g.: SPECD/four.mac
         # http://certif.com/spec_manual/fourc_4_9.html
         desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
-        group = eznx.makeGroup(h5parent, 'G', default_nxclass, description=desc)
+        group = eznx.makeGroup(h5parent, 'G', nxclass, description=desc)
         dd = {}
         for item, value in scan.G.items():
             dd[item] = map(float, value.split())
@@ -207,7 +207,7 @@ class SPEC_Positioners(ControlLineHandler):
         if len(scan.positioner) > 0:
             scan.addH5writer(self.key, self.writer)
     
-    def writer(self, h5parent, writer, nxclass, scan, *args, **kws):
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
         desc='SPEC positioners (#P & #O lines)'
         group = eznx.makeGroup(h5parent, 'positioners', nxclass, description=desc)
@@ -225,7 +225,7 @@ class SPEC_HKL(ControlLineHandler):
             scan.Q = map(float, s.split())
             scan.addH5writer('Q_writer', self.writer)
     
-    def writer(self, h5parent, writer, default_nxclass, scan, *args, **kws):
+    def writer(self, h5parent, writer, scan, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
         desc = 'hkl at start of scan'
         eznx.write_dataset(h5parent, "Q", scan.Q, description = desc)

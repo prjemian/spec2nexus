@@ -118,7 +118,7 @@ class Writer(object):
             eznx.write_dataset(nxentry, "T", float(scan.T), units='s', description = desc)
             
         for func in scan.h5writers.values():
-            func(nxentry, self, CONTAINER_CLASS, scan)
+            func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
         '''*internal*: store a dictionary'''

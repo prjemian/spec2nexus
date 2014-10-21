@@ -57,7 +57,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
                     scan.metadata[label] = val
         scan.addH5writer('unicat_metadata', self.writer)
     
-    def writer(self, h5parent, writer, nxclass, scan, *args, **kws):
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
         if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
             desc='SPEC metadata (UNICAT-style #H & #V lines)'
