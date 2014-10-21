@@ -30,7 +30,7 @@ class TestWriter(unittest.TestCase):
     def tearDown(self):
         for tname in (self.hname,):
             if os.path.exists(tname):
-                #os.remove(tname)
+                os.remove(tname)
                 #print "removed test file:", tname
                 pass
 

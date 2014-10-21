@@ -103,11 +103,13 @@ class Writer(object):
     
     def save_scan(self, nxentry, scan):
         '''*internal*: save the data from each SPEC scan to its own NXentry group'''
+        scan.interpret()        # ensure interpretation is complete
         eznx.addAttributes(nxentry, data="data")
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
-        for func in scan.h5writers.values():        # ask the plugins to save their part
+        for func in scan.h5writers.values():
+            # ask the plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
