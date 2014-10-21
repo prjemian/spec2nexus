@@ -110,33 +110,17 @@ class Writer(object):
         group = eznx.makeGroup(nxentry, 'positioners', CONTAINER_CLASS, description=desc)
         self.save_dict(group, scan.positioner)
 
-        if len(scan.metadata) > 0:
-            desc='SPEC metadata (UNICAT-style #H & #V lines)'
-            group = eznx.makeGroup(nxentry, 'metadata', CONTAINER_CLASS, description=desc)
-            self.save_dict(group, scan.metadata)
-
-        if len(scan.G) > 0:
-            # e.g.: SPECD/four.mac
-            # http://certif.com/spec_manual/fourc_4_9.html
-            desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
-            group = eznx.makeGroup(nxentry, 'G', CONTAINER_CLASS, description=desc)
-            dd = {}
-            for item, value in scan.G.items():
-                dd[item] = map(float, value.split())
-            self.save_dict(group, dd)
-
-        if scan.T != '':
-            desc = 'SPEC scan with constant counting time'
-            eznx.write_dataset(nxentry, "counting_basis", desc)
-            eznx.write_dataset(nxentry, "T", float(scan.T), units='s', description = desc)
-        elif scan.M != '':
+        if scan.M != '':
             desc = 'SPEC scan with constant monitor count'
             eznx.write_dataset(nxentry, "counting_basis", desc)
             eznx.write_dataset(nxentry, "M", float(scan.M), units='counts', description = desc)
-
-        if scan.Q != '':
-            desc = 'hkl at start of scan'
-            eznx.write_dataset(nxentry, "Q", map(float,scan.Q.split()), description = desc)
+        elif scan.T != '':
+            desc = 'SPEC scan with constant counting time'
+            eznx.write_dataset(nxentry, "counting_basis", desc)
+            eznx.write_dataset(nxentry, "T", float(scan.T), units='s', description = desc)
+            
+        for func in scan.h5writers.values():
+            func(nxentry, self, CONTAINER_CLASS, scan)
 
     def save_dict(self, group, data):
         '''*internal*: store a dictionary'''

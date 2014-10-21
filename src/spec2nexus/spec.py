@@ -375,6 +375,7 @@ class SpecDataFileScan(object):
         self.column_first = ''
         self.column_last = ''
         self.postprocessors = {}
+        self.h5writers = {}
     
         # the attributes defined in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES
         # (and perhaps others) are set only after a call to self.interpret()
@@ -428,6 +429,18 @@ class SpecDataFileScan(object):
         '''
         if label not in self.postprocessors:
             self.postprocessors[label] = func
+    
+    def addH5writer(self, label, func):
+        '''
+        add a function to be processed when writing the scan data
+        
+        :param str label: unique label by which this writer will be known
+        :param obj func: function reference of writer
+        
+        The writers will be called when the HDF5 files is to be written.
+        '''
+        if label not in self.h5writers:
+            self.h5writers[label] = func
     
     def _interpret_data_row(self, row_text):
         buf = {}

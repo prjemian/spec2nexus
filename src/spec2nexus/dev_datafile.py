@@ -7,7 +7,7 @@
 import h5toText
 import os
 import prjPySpec
-import prjPySpec2eznx
+from spec2nexus import writer
 
 
 if __name__ == '__main__':
@@ -19,6 +19,6 @@ if __name__ == '__main__':
     file1 = prefix + '.spe'
     hfile = prefix + '.hdf5'
     specfile = prjPySpec.SpecDataFile(file1)
-    writer = prjPySpec2eznx.Writer(specfile)
+    writer = writer.Writer(specfile)
     writer.save(hfile, sorted(specfile.getScanNumbers()))
     h5toText.do_filelist([hfile, ], None)

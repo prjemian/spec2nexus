@@ -21,7 +21,7 @@ in the scans using #H/#V pairs of labels/values.
 
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word
-
+from spec2nexus import eznx
 
 class UNICAT_MetadataMnemonics(ControlLineHandler):
     '''**#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)'''
@@ -46,7 +46,7 @@ def unicat_metadata_postprocessing(scan):
     '''
     interpret the UNICAT metadata (mostly floating point) from the scan header
     
-    :param SpecDataFileScan scan: data from a single SPEC scan
+    :param SpecDataFileScan scan: data from a single SPEC scan (instance of SpecDataFileScan)
     '''
     scan.metadata = {}
     for row, values in enumerate(scan.V):
@@ -56,3 +56,12 @@ def unicat_metadata_postprocessing(scan):
                 scan.metadata[label] = float(val)
             except ValueError:
                 scan.metadata[label] = val
+    scan.addH5writer('unicat_metadata', unicat_metadata_writer)
+
+
+def unicat_metadata_writer(h5parent, writer, default_nxclass, scan):
+    '''Describe how to store this data in an HDF5 NeXus file'''
+    if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
+        desc='SPEC metadata (UNICAT-style #H & #V lines)'
+        group = eznx.makeGroup(h5parent, 'metadata', default_nxclass, description=desc)
+        writer.save_dict(group, scan.metadata)

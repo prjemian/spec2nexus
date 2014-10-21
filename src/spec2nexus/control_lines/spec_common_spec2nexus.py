@@ -26,6 +26,7 @@ import re
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word
+from spec2nexus import eznx
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -50,12 +51,12 @@ class SPEC_Epoch(ControlLineHandler):
 
     key = '#E'
     
-    def process(self, buf, spec_obj, *args, **kws):
-        header = SpecDataFileHeader(buf, parent=spec_obj)
+    def process(self, buf, scan, *args, **kws):
+        header = SpecDataFileHeader(buf, parent=scan)
         line = buf.splitlines()[0].strip()
         header.epoch = int(strip_first_word(line))
         header.interpret()                  # parse the full header
-        spec_obj.headers.append(header)
+        scan.headers.append(header)
         
 
 
@@ -64,8 +65,8 @@ class SPEC_Date(ControlLineHandler):
 
     key = '#D'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.date = strip_first_word(text)
+    def process(self, text, scan, *args, **kws):
+        scan.date = strip_first_word(text)
 
 
 class SPEC_Comment(ControlLineHandler):
@@ -73,8 +74,8 @@ class SPEC_Comment(ControlLineHandler):
 
     key = '#C'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.comments.append( strip_first_word(text) )
+    def process(self, text, scan, *args, **kws):
+        scan.comments.append( strip_first_word(text) )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -87,24 +88,39 @@ class SPEC_Geometry(ControlLineHandler):
 
     key = '#G\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
-        spec_obj.G[subkey] = strip_first_word(text)
+        scan.G[subkey] = strip_first_word(text)
+        if len(scan.G) > 0:
+            scan.addPostProcessor('G_writer', G_writer)
+
+
+def G_writer(h5parent, writer, default_nxclass, scan):
+    '''Describe how to store this data in an HDF5 NeXus file'''
+    # e.g.: SPECD/four.mac
+    # http://certif.com/spec_manual/fourc_4_9.html
+    desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
+    group = eznx.makeGroup(h5parent, 'G', default_nxclass, description=desc)
+    dd = {}
+    for item, value in scan.G.items():
+        dd[item] = map(float, value.split())
+    scan.save_dict(group, dd)
+
 
 class SPEC_NormalizingFactor(ControlLineHandler):
     '''**#I** -- intensity normalizing factor'''
 
     key = '#I'
 
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.I = float(strip_first_word(text))
+    def process(self, text, scan, *args, **kws):
+        scan.I = float(strip_first_word(text))
 
 class SPEC_CounterNames(ControlLineHandler):
     '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
 
     key = '#J\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         pass    # ignore this for now
 
 class SPEC_CounterMnemonics(ControlLineHandler):
@@ -112,7 +128,7 @@ class SPEC_CounterMnemonics(ControlLineHandler):
 
     key = '#j\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         pass    # ignore this for now
 
 class SPEC_Labels(ControlLineHandler):
@@ -120,11 +136,11 @@ class SPEC_Labels(ControlLineHandler):
 
     key = '#L'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         # Some folks use more than two spaces!  Use regular expression(re) module
-        spec_obj.L = re.split("  +", strip_first_word(text))
-        spec_obj.column_first = spec_obj.L[0]
-        spec_obj.column_last = spec_obj.L[-1]
+        scan.L = re.split("  +", strip_first_word(text))
+        scan.column_first = scan.L[0]
+        scan.column_last = scan.L[-1]
 
 class SPEC_Monitor(ControlLineHandler):
     '''
@@ -133,9 +149,9 @@ class SPEC_Monitor(ControlLineHandler):
 
     key = '#M'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.M, dname = strip_first_word(text).split()
-        spec_obj.monitor_name = dname.lstrip('(').rstrip(')')
+    def process(self, text, scan, *args, **kws):
+        scan.M, dname = strip_first_word(text).split()
+        scan.monitor_name = dname.lstrip('(').rstrip(')')
 
 class SPEC_NumColumns(ControlLineHandler):
     '''
@@ -145,43 +161,53 @@ class SPEC_NumColumns(ControlLineHandler):
     key = '#N'
     # TODO: Needs an example data file to test (issue #8)
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.N = map(int, strip_first_word(text).split())
+    def process(self, text, scan, *args, **kws):
+        scan.N = map(int, strip_first_word(text).split())
 
 class SPEC_PositionerNames(ControlLineHandler):
     '''**#O** -- positioner names (numbered rows: #O0, #O1, ...)'''
 
     key = '#O\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.O.append( strip_first_word(text).split() )
+    def process(self, text, scan, *args, **kws):
+        scan.O.append( strip_first_word(text).split() )
 
 class SPEC_PositionerMnemonics(ControlLineHandler):
     '''**#o** -- positioner mnemonics (ignored for now)'''
 
     key = '#o\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         pass    # ignore this for now
+
 
 class SPEC_Positioners(ControlLineHandler):
     '''**#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)'''
 
     key = '#P\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.P.append( strip_first_word(text) )
-        spec_obj.addPostProcessor('motor_positions', motor_positions_postprocessing)
+    def process(self, text, scan, *args, **kws):
+        scan.P.append( strip_first_word(text) )
+        scan.addPostProcessor('motor_positions', motor_positions_postprocessing)
+
 
 class SPEC_HKL(ControlLineHandler):
     '''**#Q** -- :math:`Q` (:math:`hkl`) at start of scan'''
 
     key = '#Q'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         s = strip_first_word(text)
         if len(s) > 0:
-            spec_obj.Q = map(float, s.split())
+            scan.Q = map(float, s.split())
+            scan.addH5writer('Q_writer', Q_writer)
+
+
+def Q_writer(h5parent, writer, default_nxclass, scan):
+    '''Describe how to store this data in an HDF5 NeXus file'''
+    desc = 'hkl at start of scan'
+    eznx.write_dataset(h5parent, "Q", scan.Q, description = desc)
+
 
 class SPEC_Scan(ControlLineHandler):
     '''
@@ -193,17 +219,17 @@ class SPEC_Scan(ControlLineHandler):
 
     key = '#S'
     
-    def process(self, part, spec_obj, *args, **kws):
-        scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
+    def process(self, part, scan, *args, **kws):
+        scan = SpecDataFileScan(scan.headers[-1], part, parent=scan)
         text = part.splitlines()[0].strip()
         scan.S = strip_first_word(text)
         pos = scan.S.find(' ')
         scan.scanNum = int(scan.S[0:pos])
         scan.scanCmd = strip_first_word(scan.S[pos+1:])
-        if scan.scanNum in spec_obj.scans:
-            msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
+        if scan.scanNum in scan.scans:
+            msg = str(scan.scanNum) + ' in ' + scan.fileName
             raise DuplicateSpecScanNumber(msg)
-        spec_obj.scans[scan.scanNum] = scan
+        scan.scans[scan.scanNum] = scan
 
 class SPEC_CountTime(ControlLineHandler):
     '''
@@ -212,8 +238,8 @@ class SPEC_CountTime(ControlLineHandler):
 
     key = '#T'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.T = strip_first_word(text).split()[0]
+    def process(self, text, scan, *args, **kws):
+        scan.T = strip_first_word(text).split()[0]
 
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''**#X** -- Temperature'''
@@ -221,7 +247,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     key = '#X'
     # TODO: Needs an example data file to test
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         try:
             x = float( strip_first_word(text) )
         except ValueError:
@@ -229,7 +255,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
             # #X       setpoint       The temperature setpoint. 
             # def Fheader '_cols++;printf("#X %gKohm (%gC)\n",TEMP_SP,DEGC_SP)'
             x = strip_first_word(text)  # might have trailing text: 12.345kZ
-        spec_obj.X = x
+        scan.X = x
 
 class SPEC_DataLine(ControlLineHandler):
     '''**(scan data)** -- scan data line'''
@@ -238,11 +264,11 @@ class SPEC_DataLine(ControlLineHandler):
     # use custom key match since regexp for floats is tedious!
     key = r'scan data'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.data_lines.append(text)
+    def process(self, text, scan, *args, **kws):
+        scan.data_lines.append(text)
         
         # defer processing since comments and MCA data may intersperse the scan data
-        spec_obj.addPostProcessor('scan data', data_lines_postprocessing)
+        scan.addPostProcessor('scan data', data_lines_postprocessing)
     
     def match_key(self, text):
         '''
@@ -282,7 +308,7 @@ class SPEC_MCA(ControlLineHandler):
     "1" would dump 1 point per line, ...
     '''
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         # #@MCA 16C
         # Isn't this only informative to how the data is presented in the file?
         pass        # not sure how to handle this, ignore it for now
@@ -302,48 +328,48 @@ class SPEC_MCA_Array(ControlLineHandler):
     # TODO: need more examples of MCA spectra in SPEC files to improve this
     # Are there any other MCA spectra (such as @B) possible?
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         # acquire like numerical data, handle in postprocessing
-        spec_obj.data_lines.append(text)
-        spec_obj.addPostProcessor('scan data', data_lines_postprocessing)
+        scan.data_lines.append(text)
+        scan.addPostProcessor('scan data', data_lines_postprocessing)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
     '''**#@CALIB** -- coefficients for :math:`x_k = a +bk + ck^2` for MCA data, k is channel number'''
 
     key = '#@CALIB'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         # #@CALIB a b c
         s = strip_first_word(text).split()
         a, b, c = map(float, s)
         
-        if not hasattr(spec_obj, 'MCA'):
-            spec_obj.MCA = {}
-        if 'CALIB' not in spec_obj.MCA:
-            spec_obj.MCA['CALIB'] = {}
+        if not hasattr(scan, 'MCA'):
+            scan.MCA = {}
+        if 'CALIB' not in scan.MCA:
+            scan.MCA['CALIB'] = {}
 
-        spec_obj.MCA['CALIB']['a'] = a
-        spec_obj.MCA['CALIB']['b'] = b
-        spec_obj.MCA['CALIB']['c'] = c
+        scan.MCA['CALIB']['a'] = a
+        scan.MCA['CALIB']['b'] = b
+        scan.MCA['CALIB']['c'] = c
 
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
     '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction_coef)'''
 
     key = '#@CHANN'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         # #@CHANN 1201 1110 1200 1
         s = strip_first_word(text).split()
         number_saved, first_saved, last_saved = map(int, s[0:3])
         reduction_coef = float(s[-1])
 
-        if not hasattr(spec_obj, 'MCA'):
-            spec_obj.MCA = {}
+        if not hasattr(scan, 'MCA'):
+            scan.MCA = {}
 
-        spec_obj.MCA['number_saved'] = number_saved
-        spec_obj.MCA['first_saved'] = first_saved
-        spec_obj.MCA['last_saved'] = last_saved
-        spec_obj.MCA['reduction_coef'] = reduction_coef
+        scan.MCA['number_saved'] = number_saved
+        scan.MCA['first_saved'] = first_saved
+        scan.MCA['last_saved'] = last_saved
+        scan.MCA['reduction_coef'] = reduction_coef
 
 
 class SPEC_MCA_CountTime(ControlLineHandler):
@@ -351,16 +377,16 @@ class SPEC_MCA_CountTime(ControlLineHandler):
 
     key = '#@CTIME'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         s = strip_first_word(text).split()
         preset_time, elapsed_live_time, elapsed_real_time = map(float, s)
 
-        if not hasattr(spec_obj, 'MCA'):
-            spec_obj.MCA = {}
+        if not hasattr(scan, 'MCA'):
+            scan.MCA = {}
 
-        spec_obj.MCA['preset_time'] = preset_time
-        spec_obj.MCA['elapsed_live_time'] = elapsed_live_time
-        spec_obj.MCA['elapsed_real_time'] = elapsed_real_time
+        scan.MCA['preset_time'] = preset_time
+        scan.MCA['elapsed_live_time'] = elapsed_live_time
+        scan.MCA['elapsed_real_time'] = elapsed_real_time
 
 
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
@@ -368,19 +394,19 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
 
     key = '#@ROI'
     
-    def process(self, text, spec_obj, *args, **kws):
+    def process(self, text, scan, *args, **kws):
         s = strip_first_word(text).split()
         ROI_name = s[0]
         first_chan, last_chan = map(int, s[1:])
 
-        if not hasattr(spec_obj, 'MCA'):
-            spec_obj.MCA = {}
-        if 'ROI' not in spec_obj.MCA:
-            spec_obj.MCA['ROI'] = {}
+        if not hasattr(scan, 'MCA'):
+            scan.MCA = {}
+        if 'ROI' not in scan.MCA:
+            scan.MCA['ROI'] = {}
 
-        spec_obj.MCA['ROI'][ROI_name] = {}
-        spec_obj.MCA['ROI'][ROI_name]['first_chan'] = first_chan
-        spec_obj.MCA['ROI'][ROI_name]['last_chan'] = last_chan
+        scan.MCA['ROI'][ROI_name] = {}
+        scan.MCA['ROI'][ROI_name]['first_chan'] = first_chan
+        scan.MCA['ROI'][ROI_name]['last_chan'] = last_chan
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
