@@ -8,9 +8,11 @@ Production
 **********
 
 :2014.1101.0: major changes in SPEC file support
-   * declared **prjPySpec** module as legacy, code is frozen at *2014.0623.0* release
-   * added **spec** module to replace **prjPySpec**
-   * **spec** based on plugins for each control line, users can add plugins
+
+    * declared **prjPySpec** module as legacy, code is frozen at *2014.0623.0* release
+    * added **spec** module to replace **prjPySpec**
+    * **spec** based on plugins for each control line, users can add plugins
+
 :2014.0623.0: updated argparse settings
 :2014.0622.2: added extractSpecScan.py to the suite from the USAXS project
 :2014.0410.0: restore scan.fileName variable to keep interface the same for some legacy clients
@@ -23,9 +25,11 @@ Production
 :2014.0320.2: tree_api_parse will go back into nexpy project, remove docs of it here
 :2014.0320.1: allow readthedocs to build Sphinx without extra package requirements
 :2014.0320.0:
+
     * new home page at http://spec2nexus.readthedocs.org, easier to publish there
     * move common methods from __init__.py so docs will build at readthedocs.org
     * new test case fails existing SPEC reader, ignore blank lines
+
 :2014.03.11: documentation
 :2014.03.09: h5toText: option to suppress printing of attributes, put URLs in command-line usage documentation, better test of is_spec_file()
 :2014.03.08: fixed string writer and content display bug in eznx, added h5toText.py, prjPySpec docs improved again
