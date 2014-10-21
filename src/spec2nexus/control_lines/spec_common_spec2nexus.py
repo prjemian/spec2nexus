@@ -92,19 +92,18 @@ class SPEC_Geometry(ControlLineHandler):
         subkey = text.split()[0].lstrip('#')
         scan.G[subkey] = strip_first_word(text)
         if len(scan.G) > 0:
-            scan.addH5writer('G_writer', G_writer)
-
-
-def G_writer(h5parent, writer, default_nxclass, scan):
-    '''Describe how to store this data in an HDF5 NeXus file'''
-    # e.g.: SPECD/four.mac
-    # http://certif.com/spec_manual/fourc_4_9.html
-    desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
-    group = eznx.makeGroup(h5parent, 'G', default_nxclass, description=desc)
-    dd = {}
-    for item, value in scan.G.items():
-        dd[item] = map(float, value.split())
-    writer.save_dict(group, dd)
+            scan.addH5writer('G_writer', self.writer)
+    
+    def writer(self, h5parent, writer, default_nxclass, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        # e.g.: SPECD/four.mac
+        # http://certif.com/spec_manual/fourc_4_9.html
+        desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
+        group = eznx.makeGroup(h5parent, 'G', default_nxclass, description=desc)
+        dd = {}
+        for item, value in scan.G.items():
+            dd[item] = map(float, value.split())
+        writer.save_dict(group, dd)
 
 
 class SPEC_NormalizingFactor(ControlLineHandler):
@@ -188,7 +187,31 @@ class SPEC_Positioners(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         scan.P.append( strip_first_word(text) )
-        scan.addPostProcessor('motor_positions', motor_positions_postprocessing)
+        scan.addPostProcessor('motor_positions', self.postprocess)
+    
+    def postprocess(self, scan, *args, **kws):
+        '''
+        interpret the motor positions from the scan header
+        
+        :param SpecDataFileScan scan: data from a single SPEC scan
+        '''
+        scan.positioner = {}
+        for row, values in enumerate(scan.P):
+            for col, val in enumerate(values.split()):
+                if row >= len(scan.header.O):
+                    pass
+                if col >= len(scan.header.O[row]):
+                    pass
+                mne = scan.header.O[row][col]
+                scan.positioner[mne] = float(val)
+        if len(scan.positioner) > 0:
+            scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, nxclass, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        desc='SPEC positioners (#P & #O lines)'
+        group = eznx.makeGroup(h5parent, 'positioners', nxclass, description=desc)
+        writer.save_dict(group, scan.positioner)
 
 
 class SPEC_HKL(ControlLineHandler):
@@ -200,13 +223,12 @@ class SPEC_HKL(ControlLineHandler):
         s = strip_first_word(text)
         if len(s) > 0:
             scan.Q = map(float, s.split())
-            scan.addH5writer('Q_writer', Q_writer)
-
-
-def Q_writer(h5parent, writer, default_nxclass, scan):
-    '''Describe how to store this data in an HDF5 NeXus file'''
-    desc = 'hkl at start of scan'
-    eznx.write_dataset(h5parent, "Q", scan.Q, description = desc)
+            scan.addH5writer('Q_writer', self.writer)
+    
+    def writer(self, h5parent, writer, default_nxclass, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        desc = 'hkl at start of scan'
+        eznx.write_dataset(h5parent, "Q", scan.Q, description = desc)
 
 
 class SPEC_Scan(ControlLineHandler):
@@ -263,13 +285,6 @@ class SPEC_DataLine(ControlLineHandler):
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
     key = r'scan data'
-    
-    def process(self, text, scan, *args, **kws):
-        scan.data_lines.append(text)
-        
-        # defer processing since comments and MCA data may intersperse the scan data
-        scan.addPostProcessor('scan data', data_lines_postprocessing)
-    
     def match_key(self, text):
         '''
         Easier to try conversion to number than construct complicated regexp
@@ -279,6 +294,16 @@ class SPEC_DataLine(ControlLineHandler):
             return True
         except ValueError:
             return False
+    
+    def process(self, text, scan, *args, **kws):
+        scan.data_lines.append(text)
+        
+        # defer processing since comments and MCA data may intersperse the scan data
+        scan.addPostProcessor('scan data', self.postprocess)
+    
+    def postprocess(self, scan, *args, **kws):
+        data_lines_postprocessing(scan)
+    
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -331,7 +356,10 @@ class SPEC_MCA_Array(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         # acquire like numerical data, handle in postprocessing
         scan.data_lines.append(text)
-        scan.addPostProcessor('scan data', data_lines_postprocessing)
+        scan.addPostProcessor('scan data', self.postprocess)
+    
+    def postprocess(self, scan, *args, **kws):
+        data_lines_postprocessing(scan)
 
 class SPEC_MCA_Calibration(ControlLineHandler):
     '''**#@CALIB** -- coefficients for :math:`x_k = a +bk + ck^2` for MCA data, k is channel number'''
@@ -445,20 +473,3 @@ def data_lines_postprocessing(scan):
                 # only keep complete rows
                 for label, val in buf.items():
                     scan.data[label].append(val)
-
-
-def motor_positions_postprocessing(scan):
-    '''
-    interpret the motor positions from the scan header
-    
-    :param SpecDataFileScan scan: data from a single SPEC scan
-    '''
-    scan.positioner = {}
-    for row, values in enumerate(scan.P):
-        for col, val in enumerate(values.split()):
-            if row >= len(scan.header.O):
-                pass
-            if col >= len(scan.header.O[row]):
-                pass
-            mne = scan.header.O[row][col]
-            scan.positioner[mne] = float(val)

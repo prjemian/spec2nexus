@@ -107,10 +107,6 @@ class Writer(object):
         desc = 'SPEC scan data'
         nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', description=desc)
         self.save_data(nxdata, scan)
-        
-        desc='SPEC positioners (#P & #O lines)'
-        group = eznx.makeGroup(nxentry, 'positioners', CONTAINER_CLASS, description=desc)
-        self.save_dict(group, scan.positioner)
 
         if scan.M != '':
             desc = 'SPEC scan with constant monitor count'

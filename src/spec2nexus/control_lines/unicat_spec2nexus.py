@@ -37,31 +37,29 @@ class UNICAT_MetadataValues(ControlLineHandler):
 
     key = '#V\d+'
     
-    def process(self, text, spec_obj, *args, **kws):
-        spec_obj.V.append( strip_first_word(text) )
-        spec_obj.addPostProcessor('unicat_metadata', unicat_metadata_postprocessing)
-
-
-def unicat_metadata_postprocessing(scan):
-    '''
-    interpret the UNICAT metadata (mostly floating point) from the scan header
+    def process(self, text, scan, *args, **kws):
+        scan.V.append( strip_first_word(text) )
+        scan.addPostProcessor('unicat_metadata', self.postprocess)
     
-    :param SpecDataFileScan scan: data from a single SPEC scan (instance of SpecDataFileScan)
-    '''
-    scan.metadata = {}
-    for row, values in enumerate(scan.V):
-        for col, val in enumerate(values.split()):
-            label = scan.header.H[row][col]
-            try:
-                scan.metadata[label] = float(val)
-            except ValueError:
-                scan.metadata[label] = val
-    scan.addH5writer('unicat_metadata', unicat_metadata_writer)
-
-
-def unicat_metadata_writer(h5parent, writer, default_nxclass, scan):
-    '''Describe how to store this data in an HDF5 NeXus file'''
-    if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
-        desc='SPEC metadata (UNICAT-style #H & #V lines)'
-        group = eznx.makeGroup(h5parent, 'metadata', default_nxclass, description=desc)
-        writer.save_dict(group, scan.metadata)
+    def postprocess(self, scan, *args, **kws):
+        '''
+        interpret the UNICAT metadata (mostly floating point) from the scan header
+        
+        :param SpecDataFileScan scan: data from a single SPEC scan (instance of SpecDataFileScan)
+        '''
+        scan.metadata = {}
+        for row, values in enumerate(scan.V):
+            for col, val in enumerate(values.split()):
+                label = scan.header.H[row][col]
+                try:
+                    scan.metadata[label] = float(val)
+                except ValueError:
+                    scan.metadata[label] = val
+        scan.addH5writer('unicat_metadata', self.writer)
+    
+    def writer(self, h5parent, writer, nxclass, scan, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
+            desc='SPEC metadata (UNICAT-style #H & #V lines)'
+            group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)
+            writer.save_dict(group, scan.metadata)
