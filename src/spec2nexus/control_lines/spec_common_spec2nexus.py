@@ -92,7 +92,7 @@ class SPEC_Geometry(ControlLineHandler):
         subkey = text.split()[0].lstrip('#')
         scan.G[subkey] = strip_first_word(text)
         if len(scan.G) > 0:
-            scan.addPostProcessor('G_writer', G_writer)
+            scan.addH5writer('G_writer', G_writer)
 
 
 def G_writer(h5parent, writer, default_nxclass, scan):
@@ -104,7 +104,7 @@ def G_writer(h5parent, writer, default_nxclass, scan):
     dd = {}
     for item, value in scan.G.items():
         dd[item] = map(float, value.split())
-    scan.save_dict(group, dd)
+    writer.save_dict(group, dd)
 
 
 class SPEC_NormalizingFactor(ControlLineHandler):
@@ -219,17 +219,17 @@ class SPEC_Scan(ControlLineHandler):
 
     key = '#S'
     
-    def process(self, part, scan, *args, **kws):
-        scan = SpecDataFileScan(scan.headers[-1], part, parent=scan)
+    def process(self, part, spec_obj, *args, **kws):
+        scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
         text = part.splitlines()[0].strip()
         scan.S = strip_first_word(text)
         pos = scan.S.find(' ')
         scan.scanNum = int(scan.S[0:pos])
         scan.scanCmd = strip_first_word(scan.S[pos+1:])
-        if scan.scanNum in scan.scans:
-            msg = str(scan.scanNum) + ' in ' + scan.fileName
+        if scan.scanNum in spec_obj.scans:
+            msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
             raise DuplicateSpecScanNumber(msg)
-        scan.scans[scan.scanNum] = scan
+        spec_obj.scans[scan.scanNum] = scan
 
 class SPEC_CountTime(ControlLineHandler):
     '''

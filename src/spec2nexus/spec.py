@@ -404,7 +404,7 @@ class SpecDataFileScan(object):
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line.lstrip())
             if key is None:
-                s = '<' + line + '>'
+                __s__ = '<' + line + '>'
                 raise UnknownSpecFilePart("line %d: unknown key, text: %s" % (i, line))
             elif key == '#S':
                 pass        # avoid recursion

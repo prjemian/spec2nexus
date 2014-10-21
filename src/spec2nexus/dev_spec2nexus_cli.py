@@ -13,6 +13,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+# TODO: convert to unittest module
 
 import os
 import sys
