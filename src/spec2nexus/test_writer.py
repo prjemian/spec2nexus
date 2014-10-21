@@ -18,8 +18,7 @@ import spec
 import writer
 
 
-class Test(unittest.TestCase):
-
+class TestWriter(unittest.TestCase):
 
     def setUp(self):
         self.basepath = os.path.abspath(os.path.dirname(__file__))
@@ -31,19 +30,29 @@ class Test(unittest.TestCase):
     def tearDown(self):
         for tname in (self.hname,):
             if os.path.exists(tname):
-                os.remove(tname)
+                #os.remove(tname)
                 #print "removed test file:", tname
+                pass
 
-    def testName(self):
+    def testWriter(self):
+        '''test the writer.Writer class'''
         spec_data = spec.SpecDataFile(self.fname)
         out = writer.Writer(spec_data)
         scan_list = [1, 5, 7]
         out.save(self.hname, scan_list)
-        # TODO: make a test of other things in the Writer
+        # TODO: make tests of other things in the Writer
         dd = out.root_attributes()
         self.assertTrue(isinstance(dd, dict))
+
+#     sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
+#     sys.argv.append(os.path.join('data', '33id_spec.dat'))
+#     sys.argv.append(os.path.join('data', '33bm_spec.dat'))
+#     sys.argv.append(os.path.join('data', 'lmn40.spe'))
 
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    #unittest.main()
+    
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestWriter)
+    unittest.TextTestRunner(verbosity=2).run(suite)
