@@ -200,8 +200,11 @@ class Writer(object):
             # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
             data_shape = [len(axis1), len(axis2)]
             for label in column_labels:
-                axis = np.array( scan.data.get(label) )
-                self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
+                if label not in nxdata:
+                    axis = np.array( scan.data.get(label) )
+                    self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
+                else:
+                    pass
 
             signal = utils.clean_name(scan.column_last)
             axes = ':'.join([label1, label2])
