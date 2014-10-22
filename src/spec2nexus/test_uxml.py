@@ -16,7 +16,6 @@ import unittest
 import os
 import spec
 import writer
-import sys
 
 
 class Test(unittest.TestCase):
@@ -35,7 +34,6 @@ class Test(unittest.TestCase):
                 #os.remove(tname)
                 #print "removed test file:", tname
                 pass
-
 
     def testName(self):
         spec_data = spec.SpecDataFile(self.fname)
