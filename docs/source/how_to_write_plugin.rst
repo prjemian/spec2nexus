@@ -234,7 +234,7 @@ Summary Requirements for custom plugin
   
     * ``key`` is used to identify control line handlers
     * redefine existing supported control lines to replace supplied behavior (use caution!)
-    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.control_lines.spec_common_spec2nexus.SPEC_DataLine`
+    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine`
   
   * define :meth:`process` to handle the supplied text
   * (optional) define :meth:`match_key` to override the default regular expression to match the key
@@ -246,5 +246,5 @@ Summary Requirements for custom plugin
 
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
-   :meth:`spec2nexus.control_lines.spec_common_spec2nexus.SPEC_DataLine.match_key()`
+   :meth:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine.match_key()`
    method for an example.

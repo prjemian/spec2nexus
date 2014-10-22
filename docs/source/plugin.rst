@@ -26,9 +26,9 @@ These plugin modules are supplied:
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.control_lines.spec_common_spec2nexus
-   ~spec2nexus.control_lines.unicat_spec2nexus
-   ~spec2nexus.control_lines.uim_spec2nexus
+   ~spec2nexus.plugins.spec_common_spec2nexus
+   ~spec2nexus.plugins.unicat_spec2nexus
+   ~spec2nexus.plugins.uim_spec2nexus
 
 .. toctree::
    :maxdepth: 2
