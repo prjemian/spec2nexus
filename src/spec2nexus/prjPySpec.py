@@ -423,9 +423,9 @@ class SpecDataFileScan(object):
         for row, values in enumerate(self.P):
             for col, val in enumerate(values.split()):
                 if row >= len(self.header.O):
-                    pass
+                    continue    # ignore data from any added positioner rows
                 if col >= len(self.header.O[row]):
-                    pass
+                    continue    # ignore data from any added positioner columns
                 mne = self.header.O[row][col]
                 self.positioner[mne] = float(val)
         # interpret the UNICAT metadata (mostly floating point) from the scan header
