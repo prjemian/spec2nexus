@@ -47,7 +47,7 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        entry_points={
             # create & install scripts in <python>/bin
             'console_scripts': [
-                'spec2nexus=spec2nexus.spec2nexus_cli:main',
+                'spec2nexus=spec2nexus.nexus:main',
                 'h5toText=spec2nexus.h5toText:main',
                 'extractSpecScan=spec2nexus.extractSpecScan:main',
 			],
