@@ -122,8 +122,6 @@ Try to read a file that does not exist:
 """
 
 
-# TODO:   add a plug-in architecture to parse metadata (issue #2)
-
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
@@ -310,7 +308,6 @@ class SpecDataFileHeader(object):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = line[0:line.find(' ')].strip()
-            # TODO: handle these keys with plugins
             if (line.startswith('#C')):
                 self.comments.append(strip_first_word(line))
             elif (line.startswith('#D')):
@@ -374,7 +371,6 @@ class SpecDataFileScan(object):
         i = 0
         for line in lines:
             i += 1
-            # TODO: handle these keys with plugins
             if len(line) == 0:
                 continue            # ignore blank lines
             if (line.startswith('#')):
