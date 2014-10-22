@@ -3,6 +3,11 @@
 :mod:`spec2nexus.writer`
 ########################
 
+How to use :mod:`spec2nexus.writer`
+***********************************
+
+.. TODO:
+
 source code documentation
 *************************
 

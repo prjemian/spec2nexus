@@ -245,7 +245,7 @@ These assumptions are used to parse SPEC data files:
 .. [#]  It is very unusual to have more than one file header block in a SPEC data file.
 
 
-.. _control_line_list:
+.. _plugin_list:
 
 Control lines (keys) defined by SPEC
 ====================================
@@ -296,7 +296,7 @@ Example of Control Lines
 
 The command word of a control line may have a number at the end, 
 indicating it is part of a sequence, such as these control lines 
-(see :ref:`control_line_list` for how to interpret):
+(see :ref:`plugin_list` for how to interpret):
 
 .. code-block:: guess
    :linenos:
@@ -392,8 +392,15 @@ dependencies
    re
    sys
 
-documentation
-=============
+.. _spec_scan_internal_structure:
+
+internal structure of :class:`spec2nexus.spec.SpecDataFileScan`
+===============================================================
+
+.. TODO:
+
+source code documentation
+=========================
 
 .. automodule:: spec2nexus.spec
     :members: 

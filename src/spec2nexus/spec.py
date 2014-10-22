@@ -346,7 +346,7 @@ LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
 
 class SpecDataFileScan(object):
     """contents of a spec data file scan (#S) section"""
-    
+
     def __init__(self, header, buf, parent=None):
         self.parent = parent        # instance of SpecDataFile
         self.comments = []

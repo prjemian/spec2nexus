@@ -40,6 +40,12 @@ These plugin modules are supplied:
 Writing a custom plugin
 ***********************
 
+While **spec2nexus** provides a comprehensive set of plugins
+to handle the common SPEC control lines, custom control lines
+are used at many facilities to write additional scan data
+and scan metadata into the SPEC data file.  Custom plugins
+are written to process these additions.
+
 .. toctree::
    :maxdepth: 2
    :glob:
@@ -55,37 +61,36 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
 .. autosummary::
    :nosignatures:
 
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_File
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Epoch
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Date
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Comment
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Geometry
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_NormalizingFactor
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_CounterNames
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_CounterMnemonics
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Labels
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Monitor
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_NumColumns
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_PositionerNames
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_PositionerMnemonics
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Positioners
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_HKL
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_Scan
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_CountTime
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_TemperatureSetPoint
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_DataLine
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA_Array
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA_Calibration
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA_ChannelInformation
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA_CountTime
-   ~spec2nexus.control_lines.spec_common_spec2nexus.SPEC_MCA_RegionOfInterest
-   ~spec2nexus.control_lines.unicat_spec2nexus.UNICAT_MetadataMnemonics
-   ~spec2nexus.control_lines.unicat_spec2nexus.UNICAT_MetadataValues
-   ~spec2nexus.control_lines.uim_spec2nexus.UIM_generic
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_File
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Epoch
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Date
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Comment
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Geometry
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_NormalizingFactor
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_CounterNames
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_CounterMnemonics
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Labels
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Monitor
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_NumColumns
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_PositionerNames
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_PositionerMnemonics
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Positioners
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_HKL
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Scan
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_CountTime
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_TemperatureSetPoint
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_Array
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_Calibration
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_ChannelInformation
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_CountTime
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_RegionOfInterest
+   ~spec2nexus.plugins.unicat_spec2nexus.UNICAT_MetadataMnemonics
+   ~spec2nexus.plugins.unicat_spec2nexus.UNICAT_MetadataValues
+   ~spec2nexus.plugins.uim_spec2nexus.UIM_generic
 
-.. [#] Compare this list with :ref:`control_line_list`
-
+.. [#] Compare this list with :ref:`plugin_list`
 
 source code documentation
 *************************
