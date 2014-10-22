@@ -163,7 +163,7 @@ def write_dataset(parent, name, data, **attr):
         dset = parent[name]
         dset[:] = data
         addAttributes(dset, **attr)
-    except KeyError:
+    except (KeyError, TypeError):
         dset = makeDataset(parent, name, data, **attr)
     return dset
 
