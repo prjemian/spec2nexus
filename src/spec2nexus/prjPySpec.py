@@ -293,7 +293,7 @@ class SpecDataFileHeader(object):
         self.date = ''
         self.epoch = 0
         self.errMsg = ''
-        #self.file = None        # TODO: removal of this may change the interface for clients!
+        #self.file = None
         self.H = []
         self.O = []
         self.raw = buf
@@ -321,7 +321,6 @@ class SpecDataFileHeader(object):
             elif (line.startswith('#O')):
                 self.O.append(strip_first_word(line).split())
             else:
-                # TODO: do something with this (perhaps log it)
                 self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
 
 
@@ -405,7 +404,6 @@ class SpecDataFileScan(object):
                 elif (line.startswith('#V')):
                     self.V.append(strip_first_word(line))
                 else:
-                    # TODO: do something with this (perhaps log it)
                     self.errMsg = "line %d: unknown key, text: %s" % (i, line)
             elif len(line) < 2:
                 self.errMsg = "problem with scan header line " + str(i) + ' text: ' + line
@@ -468,7 +466,6 @@ class SpecDataFileScan(object):
             try:
                 buf[label] = float(val)
             except ValueError:
-                # TODO: need to report and/or handle this problem
                 break
         return buf
 
