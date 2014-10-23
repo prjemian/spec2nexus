@@ -315,7 +315,10 @@ class SpecDataFileHeader(object):
         self.comments = []
         self.date = ''
         self.epoch = 0
-        #self.file = None        # TODO: removal of this may change the interface for clients!
+        if parent is None:
+            self.file = None
+        else:
+            self.file = parent.fileName
         self.H = []
         self.O = []
         self.raw = buf
@@ -446,11 +449,7 @@ class SpecDataFileScan(object):
         buf = {}
         for col, val in enumerate(row_text.split()):
             label = self.L[col]
-            try:
-                buf[label] = float(val)
-            except ValueError:
-                # TODO: need to report and/or handle this problem
-                break
+            buf[label] = float(val)
         return buf
 
     def _unique_key(self, label, keylist):
