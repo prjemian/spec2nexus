@@ -64,6 +64,14 @@ import spec
 #-------------------------------------------------------------------------------------------
 
 
+REPORTING_QUIET    = 'quiet'
+REPORTING_STANDARD = 'standard'
+REPORTING_VERBOSE  = 'verbose'
+
+
+#-------------------------------------------------------------------------------------------
+
+
 def makeOutputFileName(specFile, scanNum):
     '''
     return an output file name based on specFile and scanNum
@@ -126,6 +134,24 @@ def get_user_parameters():
                         required=True,
                         help=msg)
 
+    group = parser.add_mutually_exclusive_group()
+    group.set_defaults(reporting_level=REPORTING_STANDARD)
+    msg =  'suppress all program output (except errors)'
+    msg += ', do not use with -v option'
+    group.add_argument('-q', 
+                       '--quiet', 
+                       dest='reporting_level',
+                       action='store_const',
+                       const=REPORTING_QUIET,
+                       help=msg)
+    msg =  'print more program output'
+    msg += ', do not use with -q option'
+    group.add_argument('--verbose', 
+                       dest='reporting_level',
+                       action='store_const',
+                       const=REPORTING_VERBOSE,
+                       help=msg)
+
     args = parser.parse_args()
     
     if args.version:
@@ -165,10 +191,12 @@ def main():
     '''
     cmdArgs = get_user_parameters()
 
-    print "program: " + sys.argv[0]
+    if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+        print "program: " + sys.argv[0]
     # now open the file and read it
     specData = spec.SpecDataFile(cmdArgs.spec_file)
-    print "read: " + cmdArgs.spec_file
+    if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+        print "read: " + cmdArgs.spec_file
     
     for scanNum in cmdArgs.scan:
         outFile = makeOutputFileName(cmdArgs.spec_file, scanNum)
@@ -181,9 +209,10 @@ def main():
                 # report all columns in order specified on command-line
                 column_numbers.append( scan.L.index(label) )
             else:
-                msg = 'column label "' + label + '" not found in scan #'
-                msg += str(scanNum) + ' ... skipping'
-                print msg       # report all mismatched column labels
+                if cmdArgs.reporting_level in (REPORTING_VERBOSE):
+                    msg = 'column label "' + label + '" not found in scan #'
+                    msg += str(scanNum) + ' ... skipping'
+                    print msg       # report all mismatched column labels
     
         if len(column_numbers) == len(cmdArgs.column):   # must be perfect matches
             txt = []
@@ -196,7 +225,8 @@ def main():
             fp = open(outFile, 'w')
             fp.write('\n'.join(txt))
             fp.close()
-            print "wrote: " + outFile
+            if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+                print "wrote: " + outFile
 
 
 if __name__ == "__main__":

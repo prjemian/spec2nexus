@@ -315,7 +315,10 @@ class SpecDataFileHeader(object):
         self.comments = []
         self.date = ''
         self.epoch = 0
-        #self.file = None        # TODO: removal of this may change the interface for clients!
+        if parent is None:
+            self.file = None
+        else:
+            self.file = parent.fileName
         self.H = []
         self.O = []
         self.raw = buf
@@ -346,7 +349,7 @@ LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
 
 class SpecDataFileScan(object):
     """contents of a spec data file scan (#S) section"""
-    
+
     def __init__(self, header, buf, parent=None):
         self.parent = parent        # instance of SpecDataFile
         self.comments = []
@@ -381,7 +384,7 @@ class SpecDataFileScan(object):
         # (and perhaps others) are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
         self.__lazy_interpret__ = True
-        self.interpreted = False
+        self.__interpreted__ = False
     
     def __str__(self):
         return self.S
@@ -395,7 +398,7 @@ class SpecDataFileScan(object):
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
-        if self.interpreted:    # do not do this twice
+        if self.__interpreted__:    # do not do this twice
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
         lines = self.raw.splitlines()
@@ -416,7 +419,7 @@ class SpecDataFileScan(object):
         for func in self.postprocessors.values():
             func(self)
         
-        self.interpreted = True
+        self.__interpreted__ = True
     
     def addPostProcessor(self, label, func):
         '''
@@ -446,11 +449,7 @@ class SpecDataFileScan(object):
         buf = {}
         for col, val in enumerate(row_text.split()):
             label = self.L[col]
-            try:
-                buf[label] = float(val)
-            except ValueError:
-                # TODO: need to report and/or handle this problem
-                break
+            buf[label] = float(val)
         return buf
 
     def _unique_key(self, label, keylist):

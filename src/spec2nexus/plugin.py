@@ -39,7 +39,7 @@ from spec2nexus.utils import strip_first_word #@UnusedImport
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
-PLUGIN_INTERNAL_SUBDIRECTORY = 'control_lines'
+PLUGIN_INTERNAL_SUBDIRECTORY = 'plugins'
 PATH_DELIMITER = ','
 FILE_NAME_ENDING = '_spec2nexus.py'
 

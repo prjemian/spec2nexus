@@ -51,5 +51,3 @@ class UIM_generic(ControlLineHandler):
             spec_obj.UIM = []
 
         spec_obj.UIM.append( text )
-
-# TODO: this support could do more

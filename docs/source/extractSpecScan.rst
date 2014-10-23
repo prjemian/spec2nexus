@@ -6,6 +6,9 @@ extractSpecScan
 ..
   TODO: structure this document like spec2nexus and h5toText
 
+How to use **extractSpecScan**
+******************************
+
 ..
   ----
 

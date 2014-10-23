@@ -122,8 +122,6 @@ Try to read a file that does not exist:
 """
 
 
-# TODO:   add a plug-in architecture to parse metadata (issue #2)
-
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
@@ -295,7 +293,7 @@ class SpecDataFileHeader(object):
         self.date = ''
         self.epoch = 0
         self.errMsg = ''
-        #self.file = None        # TODO: removal of this may change the interface for clients!
+        #self.file = None
         self.H = []
         self.O = []
         self.raw = buf
@@ -310,7 +308,6 @@ class SpecDataFileHeader(object):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = line[0:line.find(' ')].strip()
-            # TODO: handle these keys with plugins
             if (line.startswith('#C')):
                 self.comments.append(strip_first_word(line))
             elif (line.startswith('#D')):
@@ -324,7 +321,6 @@ class SpecDataFileHeader(object):
             elif (line.startswith('#O')):
                 self.O.append(strip_first_word(line).split())
             else:
-                # TODO: do something with this (perhaps log it)
                 self.errMsg = "line %d: unknown key (%s) detected" % (i, key)
 
 
@@ -374,7 +370,6 @@ class SpecDataFileScan(object):
         i = 0
         for line in lines:
             i += 1
-            # TODO: handle these keys with plugins
             if len(line) == 0:
                 continue            # ignore blank lines
             if (line.startswith('#')):
@@ -409,7 +404,6 @@ class SpecDataFileScan(object):
                 elif (line.startswith('#V')):
                     self.V.append(strip_first_word(line))
                 else:
-                    # TODO: do something with this (perhaps log it)
                     self.errMsg = "line %d: unknown key, text: %s" % (i, line)
             elif len(line) < 2:
                 self.errMsg = "problem with scan header line " + str(i) + ' text: ' + line
@@ -423,9 +417,9 @@ class SpecDataFileScan(object):
         for row, values in enumerate(self.P):
             for col, val in enumerate(values.split()):
                 if row >= len(self.header.O):
-                    pass
+                    continue    # ignore data from any added positioner rows
                 if col >= len(self.header.O[row]):
-                    pass
+                    continue    # ignore data from any added positioner columns
                 mne = self.header.O[row][col]
                 self.positioner[mne] = float(val)
         # interpret the UNICAT metadata (mostly floating point) from the scan header
@@ -472,7 +466,6 @@ class SpecDataFileScan(object):
             try:
                 buf[label] = float(val)
             except ValueError:
-                # TODO: need to report and/or handle this problem
                 break
         return buf
 

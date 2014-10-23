@@ -4,6 +4,6 @@
 SPEC standard plugin
 ####################
 
-.. automodule:: spec2nexus.control_lines.spec_common_spec2nexus
+.. automodule:: spec2nexus.plugins.spec_common_spec2nexus
     :members: 
     :synopsis: SPEC standard data file support.

@@ -2,13 +2,10 @@
 # -*- coding: utf-8 -*-
 
 '''
-SPEC standard data file support
+SPEC data file standard control lines
 
-Also serves as an example of a Control Line plugin file.
-Can define handlers for one or more Control Lines.
-Each handler is a subclass of spec2nexus.plugin.ControlLineHandler
-
-:see: SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
+:see: SPEC manual, *Standard Data File Format*,
+   http://www.certif.com/spec_manual/user_1_4_1.html
 '''
 
 #-----------------------------------------------------------------------------
@@ -27,7 +24,6 @@ from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word
 from spec2nexus import eznx, utils
-from twisted.python.reflect import isinst
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -136,7 +132,7 @@ class SPEC_CounterNames(ControlLineHandler):
         pass    # ignore this for now
 
 class SPEC_CounterMnemonics(ControlLineHandler):
-    '''**#j** -- mnemonics of counter (% = 0,1,2,... with eight counters per row) (ignored for now)'''
+    '''**#j** -- mnemonics of counter  (ignored for now)'''
 
     key = '#j\d+'
     
@@ -307,7 +303,14 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
         scan.X = x
 
 class SPEC_DataLine(ControlLineHandler):
-    '''**(scan data)** -- scan data line'''
+    '''
+    **(scan data)** -- scan data line
+    
+    Since the scan data could include interspersed MCA data or
+    even describe 2-D or 3-D data, this method reads the data lines and
+    buffers them for post-processing in 
+    :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`.
+    '''
 
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
@@ -371,6 +374,10 @@ class SPEC_MCA_Array(ControlLineHandler):
     
     MCA data. Each value is the content of one channel, or an 
     integrated value over several channels if a reduction was applied.
+
+    Since the MCA Array data is interspersed with scan data, 
+    this method reads the data lines and buffers them for post-processing in 
+    :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`.
     '''
 
     key = '@A'
