@@ -24,7 +24,6 @@ from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word
 from spec2nexus import eznx, utils
-from twisted.python.reflect import isinst
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
