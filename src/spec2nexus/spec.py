@@ -384,7 +384,7 @@ class SpecDataFileScan(object):
         # (and perhaps others) are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
         self.__lazy_interpret__ = True
-        self.interpreted = False
+        self.__interpreted__ = False
     
     def __str__(self):
         return self.S
@@ -398,7 +398,7 @@ class SpecDataFileScan(object):
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
-        if self.interpreted:    # do not do this twice
+        if self.__interpreted__:    # do not do this twice
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
         lines = self.raw.splitlines()
@@ -419,7 +419,7 @@ class SpecDataFileScan(object):
         for func in self.postprocessors.values():
             func(self)
         
-        self.interpreted = True
+        self.__interpreted__ = True
     
     def addPostProcessor(self, label, func):
         '''
