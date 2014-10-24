@@ -19,25 +19,39 @@ import writer
 from spec2nexus.spec import SpecDataFileScan
 from lxml import etree
 
-class TestProcess(unittest.TestCase):
+SPEC_DATA_FILE_LINES = '''
+#UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
+#UXML   <dataset name="enable" unique_id="find_me">Enable</dataset>
+#UXML   <hardlink name="found_you" target_id="find_me"/>
+#UXML   <dataset name="lock">Lock</dataset>
+#UXML   <dataset name="type">Ti</dataset>
+#UXML   <dataset name="thickness" type="float" units="micron">251.000</dataset>
+#UXML   <dataset name="attenuator_transmission" type="float">3.55764458e-02</dataset>
+#UXML   <dataset name="status">Out</dataset>
+#UXML </group>
+	'''
+
+class TestPlugin(unittest.TestCase):
 
     def setUp(self):
         self.basepath = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(self.basepath, 'uxml')
-        os.environ['SPEC2NEXUS_PLUGIN_PATH'] = path
+        self.uxml_path = os.path.join(self.basepath, 'uxml')
+        os.environ['SPEC2NEXUS_PLUGIN_PATH'] = self.uxml_path
 	if 'PYTHONPATH' not in os.environ:
 	    os.environ['PYTHONPATH'] = ''
-	os.environ['PYTHONPATH'] += ':' + path
-	self.scan = SpecDataFileScan(None, '')
+	os.environ['PYTHONPATH'] += ':' + self.uxml_path
+	self.pythonpath = os.environ['PYTHONPATH']
 
     def tearDown(self):
         pass
 
-    def test_process(self):
+    def test_01_process(self):
         '''test the :meth:`process` method'''
+	self.scan = SpecDataFileScan(None, '')
         self.assertTrue(isinstance(self.scan, SpecDataFileScan))
 
 	# test create instance
+	os.environ['PYTHONPATH'] = self.pythonpath
 	from uxml_spec2nexus import UXML_metadata
 	uxml = UXML_metadata()
         self.assertTrue(isinstance(uxml, UXML_metadata))
@@ -57,19 +71,8 @@ class TestProcess(unittest.TestCase):
 
 	# test that UXML lines are parsed
 	# TODO: must test bad UXML as well
-	spec_data_file_lines = '''
-#UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
-#UXML   <dataset name="enable" unique_id="find_me">Enable</dataset>
-#UXML   <hardlink name="found_you" target_id="find_me"/>
-#UXML   <dataset name="lock">Lock</dataset>
-#UXML   <dataset name="type">Ti</dataset>
-#UXML   <dataset name="thickness" type="float" units="micron">251.000</dataset>
-#UXML   <dataset name="attenuator_transmission" type="float">3.55764458e-02</dataset>
-#UXML   <dataset name="status">Out</dataset>
-#UXML </group>
-	'''
 	self.scan = SpecDataFileScan(None, '')
-	for line in spec_data_file_lines.strip().splitlines():
+	for line in SPEC_DATA_FILE_LINES.strip().splitlines():
 	    txt = line.strip()
 	    if len(txt) > 0:
 	        uxml.process(txt, self.scan)
@@ -79,6 +82,16 @@ class TestProcess(unittest.TestCase):
 	self.assertTrue(hasattr(self.scan, 'h5writers'))
 	self.assertFalse('UXML_metadata' in self.scan.h5writers)
 	self.assertFalse(hasattr(self.scan, 'UXML_root'))
+
+        '''test the :meth:`postprocess` method'''
+	self.scan = SpecDataFileScan(None, '')
+	os.environ['PYTHONPATH'] = self.pythonpath
+	from uxml_spec2nexus import UXML_metadata
+	uxml = UXML_metadata()
+	for line in SPEC_DATA_FILE_LINES.strip().splitlines():
+	    txt = line.strip()
+	    if len(txt) > 0:
+	        uxml.process(txt, self.scan)
 
 	uxml.postprocess(self.scan)
 	self.assertTrue('UXML_metadata' in self.scan.h5writers)
@@ -94,6 +107,19 @@ class TestProcess(unittest.TestCase):
 	self.assertEquals('dataset', node.tag)
 	self.assertEquals('enable', node.get('name'))
 	self.assertEquals('find_me', node.get('unique_id'))
+
+        '''test the :meth:`writer` method'''
+	self.scan = SpecDataFileScan(None, '')
+	os.environ['PYTHONPATH'] = self.pythonpath
+	from uxml_spec2nexus import UXML_metadata
+	uxml = UXML_metadata()
+	for line in SPEC_DATA_FILE_LINES.strip().splitlines():
+	    txt = line.strip()
+	    if len(txt) > 0:
+	        uxml.process(txt, self.scan)
+	uxml.postprocess(self.scan)
+
+	self.assertTrue(hasattr(self.scan, 'UXML_root'), 'need to test writer()')
 
 
 class TestData(unittest.TestCase):
@@ -126,4 +152,8 @@ class TestData(unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    #unittest.main()
+    
+    for test_classes in (TestPlugin, TestData):
+        suite = unittest.TestLoader().loadTestsFromTestCase(test_classes)
+        unittest.TextTestRunner(verbosity=2).run(suite)
