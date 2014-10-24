@@ -43,6 +43,7 @@ optional arguments:
 argument                       description
 =============================  ==========================================================================
 -h, --help                     show this help message and exit
+-v, --version                  show the version and exit
 --nolabels                     do not write column labels to output file (default: write labels)
 -s SCAN [SCAN ...]             scan number(s) to be extracted, must be integers
 --scan SCAN [SCAN ...]         same as *-s* option
@@ -59,6 +60,15 @@ Compatible with Python 2.7+
 import os
 import sys
 import spec
+import spec2nexus
+
+
+#-------------------------------------------------------------------------------------------
+
+
+REPORTING_QUIET    = 'quiet'
+REPORTING_STANDARD = 'standard'
+REPORTING_VERBOSE  = 'verbose'
 
 
 #-------------------------------------------------------------------------------------------
@@ -99,15 +109,15 @@ def get_user_parameters():
 
     parser.add_argument('-v',
                         '--version', 
-                        action='store_true',
+                        action='version',
                         help='print version number and exit',
-                        default=False)
+                        version=spec2nexus.__version__)
     msg = 'do not write column labels to output file (default: write labels)'
     parser.add_argument('--nolabels', 
                         action='store_true',
                         help=msg,
                         default=False)
-    parser.add_argument('spec_file', 
+    parser.add_argument('spec_file',
                         action='store', 
                         help="SPEC data file name(s)")
     msg = "scan number(s) to be extracted (must specify at least one)"
@@ -121,19 +131,29 @@ def get_user_parameters():
     msg = "column label(s) to be extracted (must specify at least one)"
     parser.add_argument('-c',
                         '--column', 
-                        action='store', 
+                        action='store',
                         nargs='+', 
                         required=True,
                         help=msg)
 
+    group = parser.add_mutually_exclusive_group()
+    group.set_defaults(reporting_level=REPORTING_STANDARD)
+    msg =  'suppress all program output (except errors)'
+    msg += ', do not use with --verbose option'
+    group.add_argument('--quiet', 
+                       dest='reporting_level',
+                       action='store_const',
+                       const=REPORTING_QUIET,
+                       help=msg)
+    msg =  'print more program output'
+    msg += ', do not use with --quiet option'
+    group.add_argument('--verbose', 
+                       dest='reporting_level',
+                       action='store_const',
+                       const=REPORTING_VERBOSE,
+                       help=msg)
+
     args = parser.parse_args()
-    
-    if args.version:
-        import spec2nexus
-        prog = sys.argv[0]
-        # prog = os.path.split(prog)[1]
-        print ', '.join((prog, 'version ' + spec2nexus.__version__))
-        sys.exit(0)
     
     args.print_labels = not args.nolabels
     del args.nolabels
@@ -165,10 +185,12 @@ def main():
     '''
     cmdArgs = get_user_parameters()
 
-    print "program: " + sys.argv[0]
+    if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+        print "program: " + sys.argv[0]
     # now open the file and read it
     specData = spec.SpecDataFile(cmdArgs.spec_file)
-    print "read: " + cmdArgs.spec_file
+    if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+        print "read: " + cmdArgs.spec_file
     
     for scanNum in cmdArgs.scan:
         outFile = makeOutputFileName(cmdArgs.spec_file, scanNum)
@@ -181,9 +203,10 @@ def main():
                 # report all columns in order specified on command-line
                 column_numbers.append( scan.L.index(label) )
             else:
-                msg = 'column label "' + label + '" not found in scan #'
-                msg += str(scanNum) + ' ... skipping'
-                print msg       # report all mismatched column labels
+                if cmdArgs.reporting_level in (REPORTING_VERBOSE):
+                    msg = 'column label "' + label + '" not found in scan #'
+                    msg += str(scanNum) + ' ... skipping'
+                    print msg       # report all mismatched column labels
     
         if len(column_numbers) == len(cmdArgs.column):   # must be perfect matches
             txt = []
@@ -196,8 +219,19 @@ def main():
             fp = open(outFile, 'w')
             fp.write('\n'.join(txt))
             fp.close()
-            print "wrote: " + outFile
+            if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
+                print "wrote: " + outFile
 
 
 if __name__ == "__main__":
+    if False:
+      sys.argv.append('data/APS_spec_data.dat')
+      sys.argv.append('-s')
+      sys.argv.append('1')
+      sys.argv.append('6')
+      sys.argv.append('-c')
+      sys.argv.append('mr')
+      sys.argv.append('USAXS_PD')
+      sys.argv.append('I0')
+      sys.argv.append('seconds')
     main()

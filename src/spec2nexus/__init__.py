@@ -50,4 +50,3 @@ __classifiers__ = [
      'Topic :: Software Development',
      'Topic :: Utilities',
    ]
-

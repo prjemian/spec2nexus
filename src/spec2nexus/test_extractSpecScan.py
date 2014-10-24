@@ -32,7 +32,8 @@ class Test(unittest.TestCase):
             full_name = os.path.join(self.datapath, fname)
             if os.path.exists(full_name):
                 os.remove(full_name)
-                print "removed test file:", full_name
+                #print "removed test file:", full_name
+                pass
 
 #     def test_usage(self):
 #         sys.argv = [sys.argv[0], ]
@@ -47,6 +48,7 @@ class Test(unittest.TestCase):
     def test_CdSe(self):
         fname = os.path.join(self.datapath, 'CdSe')
         sys.argv = [sys.argv[0], fname, ]
+        sys.argv.append('-q')
         sys.argv.append('-s')
         sys.argv.append('92')
         sys.argv.append('95')

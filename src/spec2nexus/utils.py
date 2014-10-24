@@ -81,33 +81,6 @@ def reshape_data(scan_data, scan_shape):
     return data.reshape(scan_shape)
 
 
-def sanitize_name(group, key):      # TODO: group object is not used, deprecate to clean_name() below
-    '''make name that is allowed by HDF5 and NeXus rules
-    
-    :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
-    :param str group: unused
-    :param str key: identifying string from SPEC data file
-    
-    :see: http://download.nexusformat.org/doc/html/datarules.html
-    
-    sanitized name fits this regexp::
-    
-        [A-Za-z_][\w_]*
-    
-    An easier expression might be:  ``[\w_]*`` but this will not pass
-    the rule that valid names cannot start with a digit.
-    '''
-    # see: http://download.nexusformat.org/doc/html/datarules.html
-    # clean name fits this regexp:  [A-Za-z_][\w_]*
-    # easier:  [\w_]* but cannot start with a digit
-    replacement = '_'
-    noncompliance = '[^\w_]'
-    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
-    if txt[0].isdigit():
-        txt = replacement + txt # can't start with a digit
-    return txt
-
-
 def strip_first_word(line):
     '''return everything after the first space on the line from the spec data file'''
     pos = line.find(" ")

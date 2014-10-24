@@ -245,7 +245,7 @@ These assumptions are used to parse SPEC data files:
 .. [#]  It is very unusual to have more than one file header block in a SPEC data file.
 
 
-.. _control_line_list:
+.. _plugin_list:
 
 Control lines (keys) defined by SPEC
 ====================================
@@ -296,7 +296,7 @@ Example of Control Lines
 
 The command word of a control line may have a number at the end, 
 indicating it is part of a sequence, such as these control lines 
-(see :ref:`control_line_list` for how to interpret):
+(see :ref:`plugin_list` for how to interpret):
 
 .. code-block:: guess
    :linenos:
@@ -392,8 +392,61 @@ dependencies
    re
    sys
 
-documentation
-=============
+.. _spec_scan_internal_structure:
+
+internal structure of :class:`spec2nexus.spec.SpecDataFileScan`
+===============================================================
+
+The internal variables of a Python class are called *attributes*.
+It may be convenient, for some, to think of them as *variables*.
+
+scan attributes
++++++++++++++++
+
+:parent:   *obj* - instance of :class:`spec2nexus.spec.SpecDataFile`
+:scanNum:  *int* - SPEC scan number
+:scanCmd:  *str* - SPEC command line
+:raw:      *str* - text of scan, as reported in SPEC data file
+
+scan attributes (variables) set after call to plugins
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+These attributes are only set *after* the scan's :meth:`interpret` method is called.
+This method is called automatically when trying to read any of the following scan attributes:
+
+:comments:     *[str]* - list of all comments reported in this scan
+:data:  *{label,[number]}* - written by :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`
+:data_lines:      *[str]* - raw data (and possibly MCA) lines with comment lines removed 
+:date:    	  *str* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Date`
+:G:      *{key,[number]}* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Geometry`
+:I:    	  *float* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_NormalizingFactor`
+:header:  	  *obj* - instance of :class:`spec2nexus.spec.SpecDataFileHeader`
+:L:    	  *[str]* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Labels`
+:M: 		  *str* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Monitor`
+:positioner:  *{key,number}* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Positioners.postprocess`
+:N:    	  *[int]* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_NumColumns`
+:P:    	  *[str]* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Positioners`
+:Q:    	  *[number]* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_HKL`
+:S: 		  *str* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Scan`
+:T: 		  *str* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_CountTime`
+:V:      *{key,number|str}* - written by :class:`spec2nexus.plugins.unicat_spec2nexus.UNICAT_MetadataValues`
+:column_first:    *str* - label of first (ordinate) data column
+:column_last:     *str* - label of last (abscissa) data column
+
+internal use only - do not modify
++++++++++++++++++++++++++++++++++
+
+These scan attributes are for internal use only and are not part of the public interface.  
+Do not modify them or write code that depends on them.
+
+:postprocessors:     *{key,obj}* - dictionary of postprocessing methods
+:h5writers:          *{key,obj}* - dictionary of methods that write HDF5 structure
+:__lazy_interpret__:  *bool* - Is *lazy* (on-demand) call to :meth:`interpret` needed?
+:__interpreted__:     *bool* - Has :meth:`interpret` been called?
+
+
+source code documentation
+=========================
 
 .. automodule:: spec2nexus.spec
     :members: 
