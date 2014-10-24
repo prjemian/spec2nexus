@@ -80,13 +80,13 @@ class UXML_metadata(ControlLineHandler):
 
     key = '#UXML'
     
-    def process(self, text, spec_obj, *args, **kws):
-        if not hasattr(spec_obj, 'UXML'):
-            spec_obj.UXML = []
+    def process(self, text, scan, *args, **kws):
+        if not hasattr(scan, 'UXML'):
+            scan.UXML = []
 
         line = strip_first_word(text)
-        spec_obj.UXML.append( line )
-        spec_obj.addPostProcessor('UXML_metadata', self.postprocess)
+        scan.UXML.append( line )
+        scan.addPostProcessor('UXML_metadata', self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
         '''
@@ -105,7 +105,7 @@ class UXML_metadata(ControlLineHandler):
     
         scan.UXML_root = root
         # TODO: validate against the schema
-        scan.addH5writer(self.key, self.writer)
+        scan.addH5writer('UXML_metadata', self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
