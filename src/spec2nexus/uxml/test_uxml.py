@@ -102,11 +102,13 @@ class TestPlugin(unittest.TestCase):
 		root = self.scan.UXML_root
 		self.assertFalse(isinstance(root, str))
 		self.assertTrue(isinstance(root, etree._Element))
-		self.assertEquals('group', root.tag)
-		self.assertEquals('attenuator1', root.get('name'))
-		self.assertEquals('NXattenuator', root.get('NX_class'))
-		self.assertEquals(7, len(root))
+		self.assertEquals('UXML', root.tag)
 		node = root[0]
+		self.assertEquals('group', node.tag)
+		self.assertEquals('attenuator1', node.get('name'))
+		self.assertEquals('NXattenuator', node.get('NX_class'))
+		self.assertEquals(7, len(node))
+		node = node[0]
 		self.assertEquals('dataset', node.tag)
 		self.assertEquals('enable', node.get('name'))
 		self.assertEquals('find_me', node.get('unique_id'))
@@ -135,7 +137,7 @@ class TestData(unittest.TestCase):
 	def tearDown(self):
 		for tname in (self.hname,):
 			if os.path.exists(tname):
-				#os.remove(tname)
+				os.remove(tname)
 				#print "removed test file:", tname
 				pass
 
@@ -148,6 +150,9 @@ class TestData(unittest.TestCase):
 		# TODO: make tests of other things in the Writer
 		dd = out.root_attributes()
 		self.assertTrue(isinstance(dd, dict))
+		
+		#scan = spec_data.scans[1]
+		#print etree.tostring(scan.UXML_root)
 
 
 if __name__ == "__main__":
