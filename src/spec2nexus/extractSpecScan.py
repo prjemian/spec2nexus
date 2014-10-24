@@ -224,13 +224,14 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.argv.append('data/APS_spec_data.dat')
-    sys.argv.append('-s')
-    sys.argv.append('1')
-    sys.argv.append('6')
-    sys.argv.append('-c')
-    sys.argv.append('mr')
-    sys.argv.append('USAXS_PD')
-    sys.argv.append('I0')
-    sys.argv.append('seconds')
+    if False:
+      sys.argv.append('data/APS_spec_data.dat')
+      sys.argv.append('-s')
+      sys.argv.append('1')
+      sys.argv.append('6')
+      sys.argv.append('-c')
+      sys.argv.append('mr')
+      sys.argv.append('USAXS_PD')
+      sys.argv.append('I0')
+      sys.argv.append('seconds')
     main()
