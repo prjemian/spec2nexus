@@ -371,8 +371,11 @@ class SpecDataFileScan(object):
         if parent is not None:
             # avoid changing the interface for clients
             self.specFile = parent.fileName
+        elif self.header is not None:
+	    if self.header.parent is not None:
+                self.specFile = self.header.parent.fileName
         else:
-            self.specFile = self.header.parent.fileName
+            self.specFile = None
         self.T = ''
         self.V = []
         self.column_first = ''
