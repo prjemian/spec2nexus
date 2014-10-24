@@ -440,7 +440,7 @@ class SpecDataFileScan(object):
         :param str label: unique label by which this writer will be known
         :param obj func: function reference of writer
         
-        The writers will be called when the HDF5 files is to be written.
+        The writers will be called when the HDF5 file is to be written.
         '''
         if label not in self.h5writers:
             self.h5writers[label] = func

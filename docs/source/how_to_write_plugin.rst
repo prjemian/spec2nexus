@@ -102,6 +102,8 @@ ignores processing by doing nothing::
        def process(self, text, spec_obj, *args, **kws):
            pass
 
+.. _howto_postprocessing:
+
 Postprocessing
 **************
 
@@ -114,6 +116,13 @@ The postprocessing method is registered from the control line handler by calling
 handler's :meth:`process` method.  A key name [#]_ is supplied when registering to avoid 
 registering this same code more than once.  The postprocessing function will be called 
 with the instance of :class:`spec2nexus.spec.SpecDataFileScan` as its only argument.
+
+An important role of the postprocessing is to store the result in the scan object.
+It is important not to modify other data in the scan object.  Pick an attribute
+named similarly to the plugin (e.g., MCA configuration uses the **MCA** attribute, 
+UNICAT metadata uses the **metadata** attribute, ...)  This attribute will define
+where and how the data from the plugin is available.  The :meth:`writer` method
+(see :ref:`howto_writer <below>`) is one example of a user of this attribute.
 
 .. [#] The key name must be unique amongst all postprocessing functions.
    A good choice is the name of the postprocessing function itself.
@@ -181,12 +190,75 @@ Gathering all parts of the examples above, the custom plugin module is::
        def process(self, text, spec_obj, *args, **kws):
            pass
 
-.. _custom_hdf5_writer_function:
+.. _howto_writer:
 
 Custom HDF5 writer
 ******************
 
-.. TODO:
+A custom HDF5 writer method defines how the data from the 
+:ref:`howto_postprocessing <plugin>`
+will be written to the HDF5+NeXus data file.  The writer will
+be called with several arguments:
+
+**h5parent**: *obj* : the HDF5 group that will hold this plugin's data 
+**writer**:   *obj* : instance of :class:`spec2nexus.writer.Writer` that manages the content of the HDF5 file
+**scan**:     *obj* : instance of :class:`spec2nexus.spec.SpecDataFileScan` containing this scan's data
+**nxclass**:  *str* : (optional) name of NeXus base class to be created
+
+Since the file is being written according to the NeXus data standard [#]_,
+use the NeXus base classes [#]_ as references for how to structure the data
+written by the custom HDF5 writer.  
+
+One responsibility of a custom HDF5 writer method is to create
+*unique* names for every object written in the *h5parent* group.
+Usually, this will be a *NXentry* [#]_ group.  You can determine the
+NeXus base class of this group using code such as this::
+
+   >>> print h5parent.attrs['NX_class']
+   <<< NXentry
+
+If your custom HDF5 writer
+must create group and you are uncertain which base class to select, 
+it is recommended to use a **NXcollection** [#]_ (an unvalidated catch-all
+base class) which can store any content.
+But, you are encouraged to find one of the other NeXus base classes that
+best fits your data.  Look at the source code of the supplied plugins
+for examples.
+
+.. [#] http://nexusformat.org
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
+
+The writer uses the :mod:`spec2nexus.eznx` module to create and write
+the various parts of the HDF5 file.
+
+Here is an example :meth:`writer` method from the
+:mod:`spec2nexus.plugins.unicat_spec2nexus` module::
+
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
+            desc='SPEC metadata (UNICAT-style #H & #V lines)'
+            group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)
+            writer.save_dict(group, scan.metadata)
+
+
+..  from the source code
+
+   queue this by calling::
+   
+      scan.addWriter('unique_label', self.writer)
+   
+   in the process() method.  It will be called
+   called as the HDF5 file is being constructed.
+   
+   .. tip:  One suggestion for the unique label is ``self.key``.
+   
+   If this method is to be used, then override this method in the 
+   plugin or a :class:`NotImplementedError` exception will be raised.
+
+
 
 .. _custom_key_match_function:
 
