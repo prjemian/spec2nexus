@@ -122,7 +122,7 @@ It is important not to modify other data in the scan object.  Pick an attribute
 named similarly to the plugin (e.g., MCA configuration uses the **MCA** attribute, 
 UNICAT metadata uses the **metadata** attribute, ...)  This attribute will define
 where and how the data from the plugin is available.  The :meth:`writer` method
-(see :ref:`howto_writer <below>`) is one example of a user of this attribute.
+(see :ref:`below <howto_writer>`) is one example of a user of this attribute.
 
 .. [#] The key name must be unique amongst all postprocessing functions.
    A good choice is the name of the postprocessing function itself.
@@ -196,13 +196,16 @@ Custom HDF5 writer
 ******************
 
 A custom HDF5 writer method defines how the data from the 
-:ref:`howto_postprocessing <plugin>`
+:ref:`plugin <howto_postprocessing>`
 will be written to the HDF5+NeXus data file.  The writer will
 be called with several arguments:
 
 **h5parent**: *obj* : the HDF5 group that will hold this plugin's data 
+
 **writer**:   *obj* : instance of :class:`spec2nexus.writer.Writer` that manages the content of the HDF5 file
+
 **scan**:     *obj* : instance of :class:`spec2nexus.spec.SpecDataFileScan` containing this scan's data
+
 **nxclass**:  *str* : (optional) name of NeXus base class to be created
 
 Since the file is being written according to the NeXus data standard [#]_,
