@@ -76,6 +76,36 @@ DEFAULT_XML_ROOT_TAG = 'UXML'
 UXML_SUPPLIES_ROOT_TAG = False
 
 
+class Dataset(object):
+    '''HDF5/NeXus dataset specification'''
+
+    def __init__(self, xml_node):
+        self.name = xml_node.get('name')
+        ds = eznx.makeDataset(None, self.name, 'test')
+        pass
+
+
+class Group(object):
+    '''HDF5/NeXus group specification'''
+
+    def __init__(self, xml_node):
+        self.name = xml_node.get('name')
+        self.NX_class = xml_node.get('NX_class')
+#         import h5py
+#         group = h5py.Group()
+#         group.create_group(self.name)
+        #openGroup(None, self.name, self.NX_class)
+        pass
+
+
+class Hardlink(object):
+    '''HDF5/NeXus hard link specification'''
+
+    def __init__(self, xml_node):
+        self.name = xml_node.get('name')
+        self.target_id = xml_node.get('target_id')
+
+
 class UXML_metadata(ControlLineHandler):
     '''**#UXML** -- XML metadata in scan header'''
 
@@ -114,3 +144,7 @@ class UXML_metadata(ControlLineHandler):
         #eznx.write_dataset(h5parent, "counting_basis", desc)
         #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
         # TODO: parse the XML and store
+        selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
+        for item in scan.UXML_root:
+            obj = selector[item.tag](item)
+            print item.tag, item.get('name'), obj, obj.name
