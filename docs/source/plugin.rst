@@ -27,9 +27,10 @@ These plugin modules are supplied:
    :nosignatures:
 
    ~spec2nexus.plugins.spec_common_spec2nexus
-   ~spec2nexus.plugins.spec_common_spec2nexus
    ~spec2nexus.plugins.unicat_spec2nexus
    ~spec2nexus.plugins.uim_spec2nexus
+   ~spec2nexus.plugins.unicat_spec2nexus
+   ~spec2nexus.plugins.spec_common_spec2nexus
 
 .. toctree::
    :maxdepth: 2
