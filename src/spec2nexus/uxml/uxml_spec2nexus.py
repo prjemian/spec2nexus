@@ -72,7 +72,8 @@ from spec2nexus import eznx, utils
 from lxml import etree
 
 
-DEFAULT_XML_ROOT_TAG = 'spec_uxml'
+DEFAULT_XML_ROOT_TAG = 'UXML'
+UXML_SUPPLIES_ROOT_TAG = False
 
 
 class UXML_metadata(ControlLineHandler):
@@ -95,10 +96,10 @@ class UXML_metadata(ControlLineHandler):
         :param SpecDataFileScan scan: data from a single SPEC scan
         '''
         xml_text = '\n'.join(scan.UXML)
-        try:
-            root = etree.fromstring(xml_text)   # perhaps root tag was provided
+        if UXML_SUPPLIES_ROOT_TAG:
+            root = etree.fromstring(xml_text)
             # read root_tag from supplied UXML lines
-        except etree.XMLSyntaxError:
+        else:
             # provide default root tag
             xml_text = '<%s>\n' % DEFAULT_XML_ROOT_TAG + xml_text + '\n</%s>' % DEFAULT_XML_ROOT_TAG
             root = etree.fromstring(xml_text)
