@@ -12,6 +12,8 @@ unit tests for the UXML control lines
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
 import unittest
 import os
 from spec2nexus import spec

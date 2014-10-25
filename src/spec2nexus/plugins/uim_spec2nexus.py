@@ -7,6 +7,8 @@
 :deprecated: in favor of UXML
 '''
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

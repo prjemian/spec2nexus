@@ -56,6 +56,7 @@ class Test(unittest.TestCase):
         sys.argv.append('T_sample_LS340')
         sys.argv.append('HRMpzt1')
         # aborted scan #92
+        # TODO: should not raise this ValueError but instead, handle it fail-safe
         self.assertRaises(ValueError, extractSpecScan.main)
         
         sys.argv = [sys.argv[0], fname, ]

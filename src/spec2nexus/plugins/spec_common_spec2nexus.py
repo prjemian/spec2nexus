@@ -26,6 +26,8 @@ from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word, iso8601
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # header block

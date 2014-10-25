@@ -8,6 +8,8 @@ Handles the UNICAT control lines which write additional metadata
 in the scans using #H/#V pairs of labels/values.
 '''
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
