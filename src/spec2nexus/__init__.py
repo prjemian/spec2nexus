@@ -12,7 +12,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__   = '2014.1020.draft'
+__version__   = '2014.1025.0'
 __release__   = __version__
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
