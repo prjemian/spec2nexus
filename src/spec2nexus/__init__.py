@@ -28,7 +28,7 @@ __url__          = u'http://spec2nexus.readthedocs.org'
 __download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
 
-__install_requires__ = ('h5py','numpy', )
+__install_requires__ = ('h5py','numpy', 'lxml' )
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',
