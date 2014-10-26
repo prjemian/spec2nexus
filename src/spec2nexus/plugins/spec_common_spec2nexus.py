@@ -36,6 +36,8 @@ class SPEC_File(ControlLineHandler):
     '''
     **#F** -- original data file name (starts a file header block)
     
+    Module :mod:`spec2nexus.spec` is responsible for handling this control line.
+        
     IN-MEMORY REPRESENTATION
     
     * (SpecDataFile).fileName
@@ -43,7 +45,7 @@ class SPEC_File(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * /@SPEC_file
+    * file root-level attribute: *SPEC_file*
     '''
 
     key = '#F'
@@ -58,6 +60,15 @@ class SPEC_Epoch(ControlLineHandler):
     
     In SPEC data files, the ``#E`` control line indicates the 
     start of a *header* block.
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFile).
+    * (SpecDataFileHeader).
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * 
     '''
 
     key = '#E'
@@ -72,7 +83,18 @@ class SPEC_Epoch(ControlLineHandler):
 
 
 class SPEC_Date(ControlLineHandler):
-    '''**#D** -- date/time stamp'''
+    '''
+    **#D** -- date/time stamp
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFile).
+    * (SpecDataFileHeader).
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * 
+    '''
 
     key = '#D'
     
@@ -87,7 +109,18 @@ class SPEC_Date(ControlLineHandler):
 
 
 class SPEC_Comment(ControlLineHandler):
-    '''**#C** -- any comment either in the scan header or somewhere in the scan'''
+    '''
+    **#C** -- any comment either in the scan header or somewhere in the scan
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFile).
+    * (SpecDataFileHeader).
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * 
+    '''
 
     key = '#C'
     
@@ -104,9 +137,50 @@ class SPEC_Comment(ControlLineHandler):
 
 # scan block
 
+
+class SPEC_Scan(ControlLineHandler):
+    '''
+    **#S** -- SPEC scan
+    
+    In SPEC data files, the ``#S`` control line indicates the 
+    start of a *scan* block.
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFile).
+    * (SpecDataFileScan).
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * /NXentry group named 'S%d` scan_number
+    '''
+
+    key = '#S'
+    
+    def process(self, part, spec_obj, *args, **kws):
+        scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
+        text = part.splitlines()[0].strip()
+        scan.S = strip_first_word(text)
+        pos = scan.S.find(' ')
+        scan.scanNum = int(scan.S[0:pos])
+        scan.scanCmd = strip_first_word(scan.S[pos+1:])
+        if scan.scanNum in spec_obj.scans:
+            msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
+            raise DuplicateSpecScanNumber(msg)
+        spec_obj.scans[scan.scanNum] = scan
+
+
 class SPEC_Geometry(ControlLineHandler):
     '''
     **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan).
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * 
     '''
 
     key = '#G\d+'
@@ -260,28 +334,6 @@ class SPEC_HKL(ControlLineHandler):
         desc = 'hkl at start of scan'
         write_dataset(h5parent, "Q", scan.Q, description = desc)
 
-
-class SPEC_Scan(ControlLineHandler):
-    '''
-    **#S** -- SPEC scan
-    
-    In SPEC data files, the ``#S`` control line indicates the 
-    start of a *scan* block.
-    '''
-
-    key = '#S'
-    
-    def process(self, part, spec_obj, *args, **kws):
-        scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
-        text = part.splitlines()[0].strip()
-        scan.S = strip_first_word(text)
-        pos = scan.S.find(' ')
-        scan.scanNum = int(scan.S[0:pos])
-        scan.scanCmd = strip_first_word(scan.S[pos+1:])
-        if scan.scanNum in spec_obj.scans:
-            msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
-            raise DuplicateSpecScanNumber(msg)
-        spec_obj.scans[scan.scanNum] = scan
 
 class SPEC_CountTime(ControlLineHandler):
     '''
