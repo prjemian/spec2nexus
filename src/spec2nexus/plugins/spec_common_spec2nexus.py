@@ -40,12 +40,12 @@ class SPEC_File(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile).fileName
-    * (SpecDataFileHeader).file
+    * (SpecDataFile): **fileName**
+    * (SpecDataFileHeader) : **file**
     
     HDF5/NeXus REPRESENTATION
     
-    * file root-level attribute: *SPEC_file*
+    * file root-level attribute: **SPEC_file**
     '''
 
     key = '#F'
@@ -63,8 +63,8 @@ class SPEC_Epoch(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile).
-    * (SpecDataFileHeader).
+    * (SpecDataFile): 
+    * (SpecDataFileHeader): 
     
     HDF5/NeXus REPRESENTATION
     
@@ -88,8 +88,8 @@ class SPEC_Date(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile).
-    * (SpecDataFileHeader).
+    * (SpecDataFile): 
+    * (SpecDataFileHeader): 
     
     HDF5/NeXus REPRESENTATION
     
@@ -114,8 +114,8 @@ class SPEC_Comment(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile).
-    * (SpecDataFileHeader).
+    * (SpecDataFile): 
+    * (SpecDataFileHeader): 
     
     HDF5/NeXus REPRESENTATION
     
@@ -143,16 +143,23 @@ class SPEC_Scan(ControlLineHandler):
     **#S** -- SPEC scan
     
     In SPEC data files, the ``#S`` control line indicates the 
-    start of a *scan* block.
+    start of a *scan* block.  Each scan will be written to a 
+    separate **NXentry** group in the HDF5 file.
+    
+    **NXentry**:
+        "The top-level NeXus group which contains all the data 
+        and associated information that comprise a single measurement."
+        
+        -- http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile).
-    * (SpecDataFileScan).
+    * (SpecDataFile): 
+    * (SpecDataFileHeader): 
     
     HDF5/NeXus REPRESENTATION
     
-    * /NXentry group named 'S%d` scan_number
+    * */NXentry* group named 'S%d` scan_number at root level, such as **/S1**
     '''
 
     key = '#S'
@@ -176,7 +183,7 @@ class SPEC_Geometry(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFileScan).
+    * (SpecDataFileScan): 
     
     HDF5/NeXus REPRESENTATION
     
@@ -372,10 +379,12 @@ class SPEC_DataLine(ControlLineHandler):
     '''
     **(scan data)** -- scan data line
     
-    Since the scan data could include interspersed MCA data or
-    even describe 2-D or 3-D data, this method reads the data lines and
+    Scan data could include interspersed MCA data or
+    even describe 2-D or 3-D data.  T
+    his method reads the data lines and
     buffers them for post-processing in 
     :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`.
+    
     '''
 
     # key = r'[+-]?\d*\.?\d?'
