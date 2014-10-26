@@ -33,7 +33,18 @@ from spec2nexus.utils import strip_first_word, iso8601
 # header block
 
 class SPEC_File(ControlLineHandler):
-    '''**#F** -- original data file name (starts a file header block)'''
+    '''
+    **#F** -- original data file name (starts a file header block)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFile).fileName
+    * (SpecDataFileHeader).file
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * /@SPEC_file
+    '''
 
     key = '#F'
     
