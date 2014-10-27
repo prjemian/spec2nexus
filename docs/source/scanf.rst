@@ -1,4 +1,4 @@
-.. _spec:
+.. _scanf:
 
 :mod:`spec2nexus.scanf`
 #######################
