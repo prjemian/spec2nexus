@@ -8,7 +8,6 @@ Handles the UNICAT control lines which write additional metadata
 in the scans using #H/#V pairs of labels/values.
 '''
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -26,7 +25,21 @@ from spec2nexus.utils import strip_first_word
 from spec2nexus import eznx
 
 class UNICAT_MetadataMnemonics(ControlLineHandler):
-    '''**#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)'''
+    '''
+    **#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader) : **H** : labels
+    * (SpecDataFileScan): **V** : values
+    * (SpecDataFileScan): **metadata** : {labels: values}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **metadata** below the 
+      *NXentry* group, such as **/entry/metadata**
+
+    '''
 
     key = '#H\d+'
     

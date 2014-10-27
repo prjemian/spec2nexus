@@ -37,7 +37,7 @@ class SPEC_File(ControlLineHandler):
     **#F** -- original data file name (starts a file header block)
     
     Module :mod:`spec2nexus.spec` is responsible for handling this control line.
-        
+    
     IN-MEMORY REPRESENTATION
     
     * (SpecDataFile): **fileName**
@@ -63,12 +63,11 @@ class SPEC_Epoch(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile): 
-    * (SpecDataFileHeader): 
+    * (SpecDataFileHeader): **epoch** *int*
     
     HDF5/NeXus REPRESENTATION
     
-    * 
+    * file root-level attribute: **SPEC_epoch** *int*
     '''
 
     key = '#E'
@@ -88,12 +87,11 @@ class SPEC_Date(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile): 
-    * (SpecDataFileHeader): 
+    * (SpecDataFileHeader): **date** *str*, ISO8601 format
     
     HDF5/NeXus REPRESENTATION
     
-    * 
+    * file root-level attribute: **SPEC_date** *str* (value for 1st header block is used)
     '''
 
     key = '#D'
@@ -114,8 +112,8 @@ class SPEC_Comment(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFile): 
     * (SpecDataFileHeader): 
+    * (SpecDataFileScan): 
     
     HDF5/NeXus REPRESENTATION
     
@@ -159,7 +157,9 @@ class SPEC_Scan(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * */NXentry* group named 'S%d` scan_number at root level, such as **/S1**
+    * */NXentry* group named 'S%d` scan_number at root 
+      level, such as **/S1**
+
     '''
 
     key = '#S'
@@ -183,11 +183,11 @@ class SPEC_Geometry(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFileScan): 
+    * (SpecDataFileScan): **G**
     
     HDF5/NeXus REPRESENTATION
     
-    * 
+    * **G** below the *NXentry* group, such as */entry/G*
     '''
 
     key = '#G\d+'

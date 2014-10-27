@@ -107,7 +107,19 @@ class Hardlink(object):
 
 
 class UXML_metadata(ControlLineHandler):
-    '''**#UXML** -- XML metadata in scan header'''
+    '''
+    **#UXML** -- XML metadata in scan header
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **UXML** : XML document root
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * various items below the *NXentry* parent group,
+      as indicated in the UXML
+
+    '''
 
     key = '#UXML'
     
