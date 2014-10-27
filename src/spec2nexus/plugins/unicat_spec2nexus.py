@@ -31,13 +31,14 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
     IN-MEMORY REPRESENTATION
     
     * (SpecDataFileHeader) : **H** : labels
-    * (SpecDataFileScan): **V** : values
     * (SpecDataFileScan): **metadata** : {labels: values}
     
     HDF5/NeXus REPRESENTATION
     
     * *NXcollection* group named **metadata** below the 
       *NXentry* group, such as **/entry/metadata**
+      
+      * datasets created from dictionary <scan>.metadata
 
     '''
 
@@ -48,7 +49,22 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
 
 
 class UNICAT_MetadataValues(ControlLineHandler):
-    '''**#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)'''
+    '''
+    **#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **V** : values
+    * (SpecDataFileScan): **metadata** : {labels: values}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **metadata** below the 
+      *NXentry* group, such as **/entry/metadata**
+      
+      * datasets created from dictionary <scan>.metadata
+
+    '''
 
     key = '#V\d+'
     
