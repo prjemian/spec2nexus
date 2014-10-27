@@ -31,7 +31,6 @@ __all__ = ["scanf"]
 DEBUG = False
 
 
-
 # As you can probably see it is relatively easy to add more format types
 scanf_translate = [
     (re.compile(_token), _pattern, _cast) for _token, _pattern, _cast in [
@@ -40,7 +39,12 @@ scanf_translate = [
     ("%(\d)[di]", "([+-]?\d{%s})", int),
     ("%[di]", "([+-]?\d+)", int),
     ("%u", "(\d+)", int),
-    ("%[fgeE]", "(\d+\.\d+)", float),
+    
+    #("%[fgeE]", "(\d+\.\d+)", float),
+    # re for float is much trickier!
+    ("%[f]", "([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
+    ("%[geE]", "([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)", float),
+
     ("%s", "(\S+)", lambda x:x),
     ("%([xX])", "(0%s[\dA-Za-f]+)", lambda x:int(x, 16)),
     ("%o", "(0[0-7]*)", lambda x:int(x, 7)),

@@ -29,6 +29,14 @@ class Test(unittest.TestCase):
         a, b = scanf(fmt, cmd)
         self.assertEqual(degc_sp, a)
         self.assertEqual(t_sp, b)
+        
+        self.assertEqual((123.456e-1,), scanf('%g', '123.456e-1'))
+        self.assertEqual((123.456,), scanf('%f', '123.456e-1'))
+        self.assertEqual((20,), scanf('%g', '20'))
+        self.assertEqual((0,), scanf('%g', '0.'))
+        self.assertEqual((0,), scanf('%g', '.0'))
+        self.assertEqual((0,), scanf('%g', '.0e-21'))
+        self.assertEqual(None, scanf('%g', '.'))
 
 
 if __name__ == "__main__":
