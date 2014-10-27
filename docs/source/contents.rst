@@ -2,10 +2,14 @@ Contents
 ########
 
 .. toctree::
+   :hidden:
+   
+   overview
+
+.. toctree::
    :maxdepth: 2
    :glob:
    
-   overview
    spec2nexus
    h5toText
    extractSpecScan
