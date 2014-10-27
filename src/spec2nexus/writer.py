@@ -158,6 +158,16 @@ class Writer(object):
             channels = range(1, len(scan.data['_mca_'][0])+1)
             data = scan.data['_mca_']
             self.write_ds(nxdata, '_mca_', data, axes=axes)
+            a, b, c = 0, 0, 0
+            if hasattr(scan, 'MCA'):
+                mca = scan['MCA']
+                if 'CALIB' in mca:
+                    a = mca['CALIB'].get('a', 0)
+                    b = mca['CALIB'].get('b', 0)
+                    c = mca['CALIB'].get('c', 0)
+            if a == b and b == c and a == 0:
+                a, b, c = 1, 0, 0
+            _mca_x_ = a + channels * (b + channels * c)
             self.write_ds(nxdata, '_mca_channel_', channels, units = 'channel')
     
     def mesh(self, nxdata, scan):
