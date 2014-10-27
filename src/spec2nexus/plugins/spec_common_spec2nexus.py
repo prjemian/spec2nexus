@@ -26,8 +26,6 @@ from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word, iso8601
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # header block
@@ -78,7 +76,6 @@ class SPEC_Epoch(ControlLineHandler):
         header.epoch = int(strip_first_word(line))
         header.interpret()                  # parse the full header
         scan.headers.append(header)
-        
 
 
 class SPEC_Date(ControlLineHandler):
@@ -119,6 +116,8 @@ class SPEC_Comment(ControlLineHandler):
     
     * 
     '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#C'
     
@@ -190,6 +189,8 @@ class SPEC_Geometry(ControlLineHandler):
     * **G** below the *NXentry* group, such as */entry/G*
     '''
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
     key = '#G\d+'
     
     def process(self, text, scan, *args, **kws):
@@ -213,10 +214,13 @@ class SPEC_Geometry(ControlLineHandler):
 class SPEC_NormalizingFactor(ControlLineHandler):
     '''**#I** -- intensity normalizing factor'''
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
     key = '#I'
 
     def process(self, text, scan, *args, **kws):
         scan.I = float(strip_first_word(text))
+
 
 class SPEC_CounterNames(ControlLineHandler):
     '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
@@ -226,6 +230,7 @@ class SPEC_CounterNames(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         pass    # ignore this for now
 
+
 class SPEC_CounterMnemonics(ControlLineHandler):
     '''**#j** -- mnemonics of counter  (ignored for now)'''
 
@@ -234,8 +239,24 @@ class SPEC_CounterMnemonics(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         pass    # ignore this for now
 
+
 class SPEC_Labels(ControlLineHandler):
-    '''**#L** -- data column labels'''
+    '''
+    **#L** -- data column labels
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **L** : labels
+    * (SpecDataFileScan): **data** : {labels: values}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXdata* group named **data** below the 
+      *NXentry* group, such as **/entry/data**
+      
+      * datasets with names supplied in **L**, array values collected in **data_lines**
+
+    '''
 
     key = '#L'
     
@@ -245,10 +266,13 @@ class SPEC_Labels(ControlLineHandler):
         scan.column_first = scan.L[0]
         scan.column_last = scan.L[-1]
 
+
 class SPEC_Monitor(ControlLineHandler):
     '''
     **#M** -- counting against this constant monitor count (see #T)
     '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#M'
     
@@ -263,10 +287,13 @@ class SPEC_Monitor(ControlLineHandler):
         write_dataset(h5parent, "counting_basis", desc)
         write_dataset(h5parent, "M", float(scan.M), units='counts', description = desc)
 
+
 class SPEC_NumColumns(ControlLineHandler):
     '''
     **#N** -- number of columns of data [ num2 sets per row ]
     '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#N'
     # TODO: Needs an example data file to test (issue #8)
@@ -274,13 +301,30 @@ class SPEC_NumColumns(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         scan.N = map(int, strip_first_word(text).split())
 
+
 class SPEC_PositionerNames(ControlLineHandler):
-    '''**#O** -- positioner names (numbered rows: #O0, #O1, ...)'''
+    '''
+    **#O** -- positioner names (numbered rows: #O0, #O1, ...)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader) : **O** : label
+    * (SpecDataFileScan): **positioner** : {label: value}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **positioners** below the 
+      *NXentry* group, such as **/entry/positioners**
+      
+      * datasets created from dictionary <scan>.positioner
+
+    '''
 
     key = '#O\d+'
     
     def process(self, text, scan, *args, **kws):
         scan.O.append( strip_first_word(text).split() )
+
 
 class SPEC_PositionerMnemonics(ControlLineHandler):
     '''**#o** -- positioner mnemonics (ignored for now)'''
@@ -292,7 +336,22 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
 
 
 class SPEC_Positioners(ControlLineHandler):
-    '''**#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)'''
+    '''
+    **#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader) : **O** : label
+    * (SpecDataFileScan): **positioner** : {label: value}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **positioners** below the 
+      *NXentry* group, such as **/entry/positioners**
+      
+      * datasets created from dictionary <scan>.positioner
+
+    '''
 
     key = '#P\d+'
     
@@ -326,7 +385,11 @@ class SPEC_Positioners(ControlLineHandler):
 
 
 class SPEC_HKL(ControlLineHandler):
-    '''**#Q** -- :math:`Q` (:math:`hkl`) at start of scan'''
+    '''
+    **#Q** -- :math:`Q` (:math:`hkl`) at start of scan
+    '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#Q'
     
@@ -347,6 +410,8 @@ class SPEC_CountTime(ControlLineHandler):
     **#T** -- counting against this constant number of seconds (see #M)
     '''
 
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+
     key = '#T'
     
     def process(self, text, scan, *args, **kws):
@@ -359,8 +424,13 @@ class SPEC_CountTime(ControlLineHandler):
         write_dataset(h5parent, "counting_basis", desc)
         write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
 
+
 class SPEC_TemperatureSetPoint(ControlLineHandler):
-    '''**#X** -- Temperature'''
+    '''
+    **#X** -- Temperature
+    '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#X'
     # TODO: Needs an example data file to test
@@ -375,6 +445,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
             x = strip_first_word(text)  # might have trailing text: 12.345kZ
         scan.X = x
 
+
 class SPEC_DataLine(ControlLineHandler):
     '''
     **(scan data)** -- scan data line
@@ -385,6 +456,18 @@ class SPEC_DataLine(ControlLineHandler):
     buffers them for post-processing in 
     :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`.
     
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **data_lines** : values
+    * (SpecDataFileScan): **data** : {labels: values}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXdata* group named **data** below the 
+      *NXentry* group, such as **/entry/data**
+      
+      * datasets with names supplied in **L**, array values collected in **data_lines**
+
     '''
 
     # key = r'[+-]?\d*\.?\d?'
@@ -418,30 +501,35 @@ class SPEC_DataLine(ControlLineHandler):
 
 class SPEC_MCA(ControlLineHandler):
     '''
-    **#@MCA** -- declares this scan contains MCA data (array_dump() format, as in ``"%16C"``)
+    **#@MCA** -- MCA data formatting declaration (ignored for now)
+    
+    declares this scan contains MCA data (SPEC's array_dump() format, such as ``"#@MCA 16C"``)
+    
+    From documentation provided by the ESRF BLISS group: 
+    (http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac)
+    
+        #@MCA 16C 
+        Format string passed to data_dump() function. 
+        This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. 
+        "%%16C" is the default. It dumps data on 1 line, cut every 16 points::
+        
+            @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+             0 0 0 0 0 0 0 0 0 0 0 ...
+        
+        "%%16" would do the same without any backslash
+        "1" would dump 1 point per line, ...
+
     '''
 
     key = '#@MCA'
-
-    '''
-    #@MCA 16C 
-    Format string passed to data_dump() function. 
-    This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. 
-    "%%16C" is the default. It dumps data on 1 line, cut every 16 points::
-    
-        @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-         0 0 0 0 0 0 0 0 0 0 0 ...
-    
-    "%%16" would do the same without any backslash
-    "1" would dump 1 point per line, ...
-    '''
     
     def process(self, text, scan, *args, **kws):
         # #@MCA 16C
         # Isn't this only informative to how the data is presented in the file?
         pass        # not sure how to handle this, ignore it for now
+
 
 class SPEC_MCA_Array(ControlLineHandler):
     '''
@@ -453,7 +541,25 @@ class SPEC_MCA_Array(ControlLineHandler):
     Since the MCA Array data is interspersed with scan data, 
     this method reads the data lines and buffers them for post-processing in 
     :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`.
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **data_lines** : values
+    * (SpecDataFileScan): **data** : {labels: values}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXdata* group named **data** below the 
+      *NXentry* group, such as **/entry/data**
+      
+      * **_mca_** : *float* MCA data reported on *@A* lines
+      * **_mca_channel_**: *int* MCA channel numbers, provided as HDF5 dimension scale for **_mca_** dataset
+
     '''
+    # TODO: could provide scaled _mca_channel_ using #@CALIB coefficients
+    # if a == b and b == c and a == 0:
+    #     a, b, c = 1, 0, 0
+    # _mca_x_ = a + _mca_channel_ * (b + _mca_channel_ * c)
 
     key = '@A'
     # continued lines will be matched by SPEC_DataLine
@@ -470,8 +576,15 @@ class SPEC_MCA_Array(ControlLineHandler):
     def postprocess(self, scan, *args, **kws):
         data_lines_postprocessing(scan)
 
+
 class SPEC_MCA_Calibration(ControlLineHandler):
-    '''**#@CALIB** -- coefficients for :math:`x_k = a +bk + ck^2` for MCA data, k is channel number'''
+    '''
+    **#@CALIB** -- coefficients to compute a scale based on the MCA channel number
+    
+    :math:`x_k = a +bk + ck^2` for MCA data, :math:`k` is channel number
+    '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#@CALIB'
     
@@ -489,8 +602,15 @@ class SPEC_MCA_Calibration(ControlLineHandler):
         scan.MCA['CALIB']['b'] = b
         scan.MCA['CALIB']['c'] = c
 
+
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
-    '''**#@CHANN** -- MCA channel information (number_saved, first_saved, last_saved, reduction_coef)'''
+    '''
+    **#@CHANN** -- MCA channel information 
+    
+    number_saved, first_saved, last_saved, reduction_coef
+    '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#@CHANN'
     
@@ -510,7 +630,11 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
 
 
 class SPEC_MCA_CountTime(ControlLineHandler):
-    '''**#@CTIME** -- MCA count times (preset_time, elapsed_live_time, elapsed_real_time)'''
+    '''
+    **#@CTIME** -- MCA count times
+    
+    preset_time, elapsed_live_time, elapsed_real_time
+    '''
 
     key = '#@CTIME'
     
@@ -527,7 +651,13 @@ class SPEC_MCA_CountTime(ControlLineHandler):
 
 
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
-    '''**#@ROI** -- MCA ROI channel information (ROI_name, first_chan, last_chan)'''
+    '''
+    **#@ROI** -- MCA ROI (Region Of Interest) channel information
+    
+    ROI_name, first_chan, last_chan
+    '''
+
+# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#@ROI'
     
