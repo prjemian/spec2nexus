@@ -21,10 +21,11 @@ SPEC data file standard control lines
 
 
 import re
-from spec2nexus.eznx import write_dataset, makeGroup
+from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word, iso8601
+from spec2nexus.scanf import scanf
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -109,15 +110,17 @@ class SPEC_Comment(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFileHeader): 
-    * (SpecDataFileScan): 
+    * (SpecDataFileHeader): **comments**
+    * (SpecDataFileScan):  **comments**
     
     HDF5/NeXus REPRESENTATION
     
-    * 
+    * file root-level attribute: **SPEC_comments** : 
+      string array of all comments from first header block
+    * dataset named **comments** under */NXentry* group, such as */S1/comments* : 
+      string array of all comments from this scan block
+    
     '''
-
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#C'
     
@@ -157,7 +160,7 @@ class SPEC_Scan(ControlLineHandler):
     HDF5/NeXus REPRESENTATION
     
     * */NXentry* group named 'S%d` scan_number at root 
-      level, such as **/S1**
+      level, such as */S1*
 
     '''
 
@@ -186,10 +189,14 @@ class SPEC_Geometry(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * **G** below the *NXentry* group, such as */entry/G*
-    '''
+    * *NXcollection* group named **G** in the *NXentry* group, such as */S1/G*
+      
+      * Datasets created from dictionary <scan>.G 
+        (indexed by number from the scan block, such as ``G0``, ``G1``, ...).
+        Meaning of contents for each index are defined by geometry-specific 
+        SPEC diffractometer support.
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#G\d+'
     
@@ -212,14 +219,27 @@ class SPEC_Geometry(ControlLineHandler):
 
 
 class SPEC_NormalizingFactor(ControlLineHandler):
-    '''**#I** -- intensity normalizing factor'''
-
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
+    **#I** -- intensity normalizing factor
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **I**
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **intensity_factor** in the *NXentry* group, such as */S1/intensity_factor*
+    '''
 
     key = '#I'
 
     def process(self, text, scan, *args, **kws):
         scan.I = float(strip_first_word(text))
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr('I', scan):
+            writer.write_dataset(h5parent, "intensity_factor", scan.I)
 
 
 class SPEC_CounterNames(ControlLineHandler):
@@ -251,8 +271,7 @@ class SPEC_Labels(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** below the 
-      *NXentry* group, such as **/entry/data**
+    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
       
       * datasets with names supplied in **L**, array values collected in **data_lines**
 
@@ -270,9 +289,18 @@ class SPEC_Labels(ControlLineHandler):
 class SPEC_Monitor(ControlLineHandler):
     '''
     **#M** -- counting against this constant monitor count (see #T)
-    '''
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **M**
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **M** in the *NXentry* group, such as */S1/M*
+    * Dataset named **counting_basis** in the *NXentry* group with 
+      value *SPEC scan with constant monitor count*, such as */S1/counting_basis*
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#M'
     
@@ -291,9 +319,15 @@ class SPEC_Monitor(ControlLineHandler):
 class SPEC_NumColumns(ControlLineHandler):
     '''
     **#N** -- number of columns of data [ num2 sets per row ]
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **N** : [int]
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * not written to file
     '''
-
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#N'
     # TODO: Needs an example data file to test (issue #8)
@@ -313,8 +347,7 @@ class SPEC_PositionerNames(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **positioners** below the 
-      *NXentry* group, such as **/entry/positioners**
+    * *NXcollection* group named **positioners** in the *NXentry* group, such as */S1/positioners*
       
       * datasets created from dictionary <scan>.positioner
 
@@ -346,8 +379,7 @@ class SPEC_Positioners(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **positioners** below the 
-      *NXentry* group, such as **/entry/positioners**
+    * *NXcollection* group named **positioners** in the *NXentry* group, such as */S1/positioners*
       
       * datasets created from dictionary <scan>.positioner
 
@@ -387,9 +419,15 @@ class SPEC_Positioners(ControlLineHandler):
 class SPEC_HKL(ControlLineHandler):
     '''
     **#Q** -- :math:`Q` (:math:`hkl`) at start of scan
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **Q**
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **Q** in the *NXentry* group, such as */S1/M*
     '''
-
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#Q'
     
@@ -408,9 +446,18 @@ class SPEC_HKL(ControlLineHandler):
 class SPEC_CountTime(ControlLineHandler):
     '''
     **#T** -- counting against this constant number of seconds (see #M)
-    '''
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **T**
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **T** in the *NXentry* group, such as */S1/T*
+    * Dataset named **counting_basis** in the *NXentry* group with 
+      value *SPEC scan with constant counting time*, such as */S1/counting_basis*
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#T'
     
@@ -428,22 +475,51 @@ class SPEC_CountTime(ControlLineHandler):
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''
     **#X** -- Temperature
+    
+    The default declaration of the #X control line uses::
+    
+        # #X       setpoint       The temperature setpoint. 
+        # def Fheader '_cols++;printf("#X %gKohm (%gC)\n",TEMP_SP,DEGC_SP)'
+    
+    The supplied macro alters this slightly (replacing %g with %f)
+    and uses a scanf implementation with this format::
+    
+        fmt = "#X %fKohm (%fC)"
+        
+    Depending on the circumstances, this might be a good candidate to override
+    with a custom *ControlLineHandler* that parses the data as written.
+    If the conversion process fails for any reason, the *#X* line is ignored.
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **TEMP_SP**
+    * (SpecDataFileScan): **DEGC_SP**
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **TEMP_SP** in the *NXentry* group, such as */S1/TEMP_SP*
+    * Dataset named **DEGC_SP** in the *NXentry* group, such as */S1/DEGC_SP*
     '''
-
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
     key = '#X'
     # TODO: Needs an example data file to test
     
     def process(self, text, scan, *args, **kws):
+        fmt = "#X %fKohm (%fC)"
         try:
-            x = float( strip_first_word(text) )
-        except ValueError:
-            # FIXME: resolve how to store this
-            # #X       setpoint       The temperature setpoint. 
-            # def Fheader '_cols++;printf("#X %gKohm (%gC)\n",TEMP_SP,DEGC_SP)'
-            x = strip_first_word(text)  # might have trailing text: 12.345kZ
-        scan.X = x
+            # This looks fragile!
+            scan.TEMP_SP, scan.DEGC_SP = scanf(fmt, text)
+            scan.addH5writer(self.key, self.writer)
+        except:
+            pass
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        # consider putting this info under NXsample or NXentry/metadata
+        if hasattr('TEMP_SP', scan):
+            write_dataset(h5parent, "TEMP_SP", scan.TEMP_SP, description='temperature set point')
+        if hasattr('DEGC_SP', scan):
+            write_dataset(h5parent, "DEGC_SP", scan.DEGC_SP, units='C', description='temperature set point (C)')
 
 
 class SPEC_DataLine(ControlLineHandler):
@@ -463,8 +539,7 @@ class SPEC_DataLine(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** below the 
-      *NXentry* group, such as **/entry/data**
+    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
       
       * datasets with names supplied in **L**, array values collected in **data_lines**
 
@@ -499,6 +574,7 @@ class SPEC_DataLine(ControlLineHandler):
 
 # see ESRF BLISS group: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
+
 class SPEC_MCA(ControlLineHandler):
     '''
     **#@MCA** -- MCA data formatting declaration (ignored for now)
@@ -513,9 +589,9 @@ class SPEC_MCA(ControlLineHandler):
         This format string is held by the global variable "MCA_FMT" and can then been adapted to particular needs. 
         "%%16C" is the default. It dumps data on 1 line, cut every 16 points::
         
-            @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
+            @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\
+             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\
+             0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\
              0 0 0 0 0 0 0 0 0 0 0 ...
         
         "%%16" would do the same without any backslash
@@ -549,17 +625,14 @@ class SPEC_MCA_Array(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** below the 
-      *NXentry* group, such as **/entry/data**
+    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
       
-      * **_mca_** : *float* MCA data reported on *@A* lines
-      * **_mca_channel_**: *int* MCA channel numbers, provided as HDF5 dimension scale for **_mca_** dataset
+      * Dataset **_mca_** : *float* MCA data reported on *@A* lines
+      * Dataset **_mca_channel_**: provided as HDF5 dimension scale for **_mca_** dataset
+          * if CALIB data specified: *float* scaled MCA channels -- :math:`x_k = a +bk + ck^2`
+          * if CALIB data not specified: *int* MCA channel numbers
 
     '''
-    # TODO: could provide scaled _mca_channel_ using #@CALIB coefficients
-    # if a == b and b == c and a == 0:
-    #     a, b, c = 1, 0, 0
-    # _mca_x_ = a + _mca_channel_ * (b + _mca_channel_ * c)
 
     key = '@A'
     # continued lines will be matched by SPEC_DataLine
@@ -582,9 +655,21 @@ class SPEC_MCA_Calibration(ControlLineHandler):
     **#@CALIB** -- coefficients to compute a scale based on the MCA channel number
     
     :math:`x_k = a +bk + ck^2` for MCA data, :math:`k` is channel number
-    '''
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **MCA['CALIB']** = ``dict(a, b, c)``
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * defines a dimension scale for MCA data
+    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+      
+      * Dataset **calib_a** : *float*
+      * Dataset **calib_b** : *float*
+      * Dataset **calib_c** : *float*
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#@CALIB'
     
@@ -601,6 +686,17 @@ class SPEC_MCA_Calibration(ControlLineHandler):
         scan.MCA['CALIB']['a'] = a
         scan.MCA['CALIB']['b'] = b
         scan.MCA['CALIB']['c'] = c
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr('MCA', scan):
+            if 'CALIB' in scan.MCA:
+                mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
+                calib_dict = scan.MCA['CALIB']
+                for key in ('a b c'.split()):
+                    if key in calib_dict:
+                        write_dataset(mca_group, 'calib_' + key, calib_dict[key])
 
 
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
@@ -608,9 +704,21 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     **#@CHANN** -- MCA channel information 
     
     number_saved, first_saved, last_saved, reduction_coef
-    '''
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **MCA['CALIB']** = ``dict(number_saved, first_saved, last_saved, reduction_coef)``
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+      
+      * Dataset **number_saved** : *int* number of channels saved
+      * Dataset **first_saved** : *int* first channel saved
+      * Dataset **first_saved** : *int* last channel saved
+      * Dataset **reduction_coef** : *float* reduction coefficient
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#@CHANN'
     
@@ -627,6 +735,16 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
         scan.MCA['first_saved'] = first_saved
         scan.MCA['last_saved'] = last_saved
         scan.MCA['reduction_coef'] = reduction_coef
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr('MCA', scan):
+            mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
+            mca = scan.MCA
+            for key in ('number_saved  first_saved  last_saved  reduction_coef'.split()):
+                if key in mca:
+                    write_dataset(mca_group, key, mca[key])
 
 
 class SPEC_MCA_CountTime(ControlLineHandler):
@@ -634,6 +752,19 @@ class SPEC_MCA_CountTime(ControlLineHandler):
     **#@CTIME** -- MCA count times
     
     preset_time, elapsed_live_time, elapsed_real_time
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **MCA['CALIB']** = ``dict(preset_time, elapsed_live_time, elapsed_real_time)``
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+      
+      * Dataset **preset_time** : *float*
+      * Dataset **elapsed_live_time** : *float*
+      * Dataset **elapsed_real_time** : *float*
+
     '''
 
     key = '#@CTIME'
@@ -648,6 +779,16 @@ class SPEC_MCA_CountTime(ControlLineHandler):
         scan.MCA['preset_time'] = preset_time
         scan.MCA['elapsed_live_time'] = elapsed_live_time
         scan.MCA['elapsed_real_time'] = elapsed_real_time
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr('MCA', scan):
+            mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
+            mca = scan.MCA
+            for key in ('preset_time  elapsed_live_time  elapsed_real_time'.split()):
+                if key in mca:
+                    write_dataset(mca_group, key, mca[key], units='s')
 
 
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
@@ -655,9 +796,20 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     **#@ROI** -- MCA ROI (Region Of Interest) channel information
     
     ROI_name, first_chan, last_chan
-    '''
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **MCA['ROI']** = {ROI_name:dict(first_chan, last_chan)}
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group **ROI** in 
+      in *NXcollection* group named **MCA** 
+      in the *NXentry* group, such as */S1/MCA/ROI*
+      
+      * Dataset **{ROI_name}** : *int* [first_chan, last_chan]
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+    '''
 
     key = '#@ROI'
     
@@ -674,6 +826,18 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
         scan.MCA['ROI'][ROI_name] = {}
         scan.MCA['ROI'][ROI_name]['first_chan'] = first_chan
         scan.MCA['ROI'][ROI_name]['last_chan'] = last_chan
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if hasattr('MCA', scan):
+            if hasattr('ROI', scan.MCA):
+                mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
+                roi_group = openGroup(mca_group, 'ROI', nxclass, description='Regions Of Interest')
+                roi_dict = scan.MCA['ROI']
+                for key, roi in roi_dict.items():
+                    dataset = [roi['first_chan'], roi['last_chan']]
+                    desc = 'first_chan, last_chan'
+                    write_dataset(roi_group, key, dataset, description=desc, units='channel')
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
