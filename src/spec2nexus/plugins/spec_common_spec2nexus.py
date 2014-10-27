@@ -476,19 +476,18 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''
     **#X** -- Temperature
     
-    The default declaration of the #X control line uses::
+    The default declaration of the #X control line is written::
     
-        # #X       setpoint       The temperature setpoint. 
-        # def Fheader '_cols++;printf("#X %gKohm (%gC)\n",TEMP_SP,DEGC_SP)'
+         def Fheader '_cols++;printf("#X %gKohm (%gC)\\n",TEMP_SP,DEGC_SP)'
     
     The supplied macro alters this slightly (replacing %g with %f)
-    and uses a scanf implementation with this format::
+    and uses the :meth:`spec2nexus.scanf.scanf` implementation with this format::
     
         fmt = "#X %fKohm (%fC)"
         
     Depending on the circumstances, this might be a good candidate to override
     with a custom *ControlLineHandler* that parses the data as written.
-    If the conversion process fails for any reason, the *#X* line is ignored.
+    If the conversion process fails for any reason in this implementation, the *#X* line is ignored.
     
     IN-MEMORY REPRESENTATION
     

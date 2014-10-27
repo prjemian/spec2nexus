@@ -13,6 +13,7 @@ Contents
    eznx
    plugin
    utils
+   scanf
    install
    example_data
    changes
