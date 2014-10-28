@@ -7,11 +7,11 @@ Change History
 Production
 **********
 
-:2014.1101.0: major changes in SPEC file support
+:2014.1027.1: major changes in SPEC file support: **custom plugins**
 
+    * **spec** based on plugins for each control line, users can add plugins
     * declared **prjPySpec** module as legacy, code is frozen at *2014.0623.0* release
     * added **spec** module to replace **prjPySpec**
-    * **spec** based on plugins for each control line, users can add plugins
 
 :2014.0623.0: updated argparse settings
 :2014.0622.2: added extractSpecScan.py to the suite from the USAXS project
