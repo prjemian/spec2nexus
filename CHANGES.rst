@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2014.1028.0: quietly ignore unrecognized scan content *for now*
 :2014.1027.1: major changes in SPEC file support: **custom plugins**
 
     * **spec** based on plugins for each control line, users can add plugins
