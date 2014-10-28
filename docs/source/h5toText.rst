@@ -22,7 +22,7 @@ the usage message::
 
 the version number::
 
-   [linux,511]$ h5toText -V
+   [linux,511]$ h5toText -v
    2014.03.07
 
 the help message::
@@ -40,7 +40,7 @@ the help message::
      -n NUM_DISPLAYED  limit number of displayed array items to NUM_DISPLAYED
                        (must be 3 or more or 'None'), default = None
      -a                Do not print attributes
-     -V, --version     show program's version number and exit
+     -v, --version     show program's version number and exit
 
 
 Example

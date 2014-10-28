@@ -23,7 +23,7 @@ show installed version
 
 Verify the version of the installed spec2nexus::
 
-   $ spec2nexus  -V
+   $ spec2nexus  -v
    2014.03.02
 
 command-line options
@@ -33,8 +33,8 @@ command-line options
     :linenos:
 
       $ spec2nexus.py -h
-      usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-V] [-s SCAN_LIST] [-t]
-                        [-q | -v]
+      usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-v] [-s SCAN_LIST] [-t]
+                        [--quiet | --verbose]
                         infile [infile ...]
       
       spec2nexus: Convert SPEC data file into a NeXus HDF5 file.
@@ -48,13 +48,13 @@ command-line options
                               NeXus HDF5 output file extension, default = .hdf5
         -f, --force-overwrite
                               overwrite output file if it exists
-        -V, --version         show program's version number and exit
+        -v, --version         show program's version number and exit
         -s SCAN_LIST, --scan SCAN_LIST
                               specify which scans to save, such as: -s all or -s 1
                               or -s 1,2,3-5 (no spaces!), default = all
-        -q, --quiet           suppress all program output (except errors), do not
-                              use with -v option
-        -v, --verbose         print more program output, do not use with -q option
+        --quiet 	      suppress all program output (except errors),
+ 			      do not use with --verbose option
+        --verbose	      print more program output, do not use with --quiet option
 
 
 .. note:: Where's the source code to spec2nexus?

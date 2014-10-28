@@ -70,7 +70,7 @@ def get_user_parameters():
                         dest='force_write',
                         help='overwrite output file if it exists',
                         default=False)
-    parser.add_argument('-V', 
+    parser.add_argument('-v', 
                         '--version', 
                         action='version', 
                         version=spec2nexus.__version__)
@@ -94,17 +94,15 @@ def get_user_parameters():
     group = parser.add_mutually_exclusive_group()
     group.set_defaults(reporting_level=REPORTING_STANDARD)
     msg =  'suppress all program output (except errors)'
-    msg += ', do not use with -v option'
-    group.add_argument('-q', 
-                       '--quiet', 
+    msg += ', do not use with --verbose option'
+    group.add_argument('--quiet', 
                        dest='reporting_level',
                        action='store_const',
                        const=REPORTING_QUIET,
                        help=msg)
     msg =  'print more program output'
-    msg += ', do not use with -q option'
-    group.add_argument('-v', 
-                       '--verbose', 
+    msg += ', do not use with --quiet option'
+    group.add_argument('--verbose', 
                        dest='reporting_level',
                        action='store_const',
                        const=REPORTING_VERBOSE,

@@ -357,7 +357,7 @@ def main():
                         default=True,
                         dest='show_attributes',
                         help='Do not print attributes')
-    parser.add_argument('-V', 
+    parser.add_argument('-v', 
                         '--version', 
                         action='version', 
                         version=spec2nexus.__version__)

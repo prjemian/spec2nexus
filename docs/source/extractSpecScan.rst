@@ -50,9 +50,9 @@ the help message::
      -c COLUMN [COLUMN ...], --column COLUMN [COLUMN ...]
                            column label(s) to be extracted (must specify at least
                            one)
-     --quiet               suppress all program output (except errors), do not
-                           use with -v option
-     --verbose             print more program output, do not use with -q option
+     --quiet               suppress all program output (except errors),
+                           do not use with --verbose option
+     --verbose             print more program output, do not use with --quiet option
 
 
 Example
