@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''
-Command line tool to print the structure of an HDF5 file
+'''Command line tool to print the structure of an HDF5 file'''
 
-(http://prjemian.github.io/spec2nexus/h5toText.html)
-'''
-
+__url__ = 'http://spec2nexus.readthedocs.org/en/latest/h5toText.html'
 
 import os       #@UnusedImport
 import sys      #@UnusedImport
@@ -337,8 +334,9 @@ def main():
     NUM_DISPLAYED_DEFAULT = 5
     NUM_DISPLAYED_MIN = 3
     import argparse
-    doc = __doc__.strip()
-    doc += ' v' + spec2nexus.__version__
+    doc = __doc__.strip().splitlines()[0]
+    doc += '\n  URL: ' + __url__
+    doc += '\n  v' + spec2nexus.__version__
     parser = argparse.ArgumentParser(prog='h5toText', description=doc)
     parser.add_argument('infile', 
                         action='store', 

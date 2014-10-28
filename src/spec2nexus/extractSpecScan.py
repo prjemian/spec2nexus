@@ -56,6 +56,7 @@ argument                       description
 Compatible with Python 2.7+
 '''
 
+__url__ = 'http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html'
 
 import os
 import sys
@@ -105,6 +106,8 @@ def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     import argparse
     doc = __doc__.strip().splitlines()[0]
+    doc += '\n  URL: ' + __url__
+    doc += '\n  v' + spec2nexus.__version__
     parser = argparse.ArgumentParser(prog='extractSpecScan', description=doc)
 
     parser.add_argument('-v',
