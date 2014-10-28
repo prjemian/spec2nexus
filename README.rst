@@ -11,7 +11,6 @@ Converts SPEC data files and scans into NeXus HDF5 files
 :git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
 :Ohloh:     http://ohloh.net/p/spec2nexus
-:old_docs:  http://prjemian.github.io/spec2nexus
 
 Provides
 ########
