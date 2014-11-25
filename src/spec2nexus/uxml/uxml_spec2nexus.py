@@ -159,4 +159,4 @@ class UXML_metadata(ControlLineHandler):
         selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
         for item in scan.UXML_root:
             obj = selector[item.tag](item)
-            print item.tag, item.get('name'), obj, obj.name
+            #print item.tag, item.get('name'), obj, obj.name
