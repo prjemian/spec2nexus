@@ -2,6 +2,8 @@
 spec2nexus documentation
 ########################
 
+:version: |version|
+
 Converts SPEC data files and scans into NeXus HDF5 files::
 
     $ spec2nexus  path/to/file/specfile.dat
