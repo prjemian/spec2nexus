@@ -238,26 +238,103 @@ class SPEC_NormalizingFactor(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        if hasattr('I', scan):
+        if hasattr(scan, 'I'):
             writer.write_dataset(h5parent, "intensity_factor", scan.I)
 
 
 class SPEC_CounterNames(ControlLineHandler):
-    '''**#J** -- names of counters (each separated by two spaces) (ignored for now)'''
+    '''
+    **#J** -- names of counters (each separated by two spaces) (new with SPEC v6)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader): **J** : mnemonics
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
+      
+      * datasets with names supplied as SPEC counter mnemonics, string values supplied as SPEC counter names
+
+    '''
 
     key = '#J\d+'
     
-    def process(self, text, scan, *args, **kws):
-        pass    # ignore this for now
+    def process(self, text, header, *args, **kws):
+        if not hasattr(header, 'J'):
+            header.J = []
+        header.J.append( strip_first_word(text).split() )
+        header.addPostProcessor('counter cross-referencing', self.postprocess)
+    
+    def postprocess(self, header, *args, **kws):
+        counter_xref_postprocessing(header)
+        header.addH5writer('counter cross-referencing', self.writer)
+    
+    def writer(self, h5parent, writer, header, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if not hasattr(header, 'counter_xref'):
+            header.counter_xref = {}          # mnemonic:name
+        desc = 'cross-reference SPEC counter mnemonics and names'
+        comment = 'keys are SPEC counter mnemonics, values are SPEC counter names'
+        if nxclass is None:
+            nxclass = 'NXcollection'
+        group = makeGroup(h5parent, "counter_cross_reference", nxclass, 
+                          description=desc, comment=comment)
+        for key, value in sorted(header.counter_xref.items()):
+            write_dataset(group, key, value)
 
 
 class SPEC_CounterMnemonics(ControlLineHandler):
-    '''**#j** -- mnemonics of counter  (ignored for now)'''
+    '''
+    **#j** -- mnemonics of counter  (new with SPEC v6)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader): **j** : mnemonics
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
+      
+      * datasets with names supplied as SPEC counter mnemonics, string values supplied as SPEC counter names
+
+    '''
 
     key = '#j\d+'
     
-    def process(self, text, scan, *args, **kws):
-        pass    # ignore this for now
+    def process(self, text, header, *args, **kws):
+        if not hasattr(header, 'j'):
+            header.j = []
+        header.j.append( strip_first_word(text).split() )
+        header.addPostProcessor('counter cross-referencing', self.postprocess)
+    
+    def postprocess(self, header, *args, **kws):
+        counter_xref_postprocessing(header)
+        header.addH5writer('counter cross-referencing', self.writer)
+    
+    def writer(self, h5parent, writer, header, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if not hasattr(header, 'counter_xref'):
+            header.counter_xref = {}          # mnemonic:name
+        desc = 'cross-reference SPEC counter mnemonics and names'
+        comment = 'keys are SPEC counter mnemonics, values are SPEC counter names'
+        if nxclass is None:
+            nxclass = 'NXcollection'
+        group = makeGroup(h5parent, "counter_cross_reference", nxclass, 
+                          description=desc, comment=comment)
+        for key, value in sorted(header.counter_xref.items()):
+            write_dataset(group, key, value)
+
+
+def counter_xref_postprocessing(header):
+    if not hasattr(header, 'j') or not hasattr(header, 'J'):
+        return
+    if not hasattr(header, 'counter_xref'):
+        header.counter_xref = {}          # mnemonic:name
+    for row_number, mne_row in enumerate(header.j):
+        name_row = header.J[row_number]
+        for column_number, mne in enumerate(mne_row):
+            header.counter_xref[mne] = name_row[column_number]
 
 
 class SPEC_Labels(ControlLineHandler):
@@ -351,21 +428,69 @@ class SPEC_PositionerNames(ControlLineHandler):
       
       * datasets created from dictionary <scan>.positioner
 
+    * *NXcollection* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
+      
+      * datasets with names supplied as SPEC positioner mnemonics, string values supplied as SPEC positioner names
+
     '''
 
     key = '#O\d+'
     
-    def process(self, text, scan, *args, **kws):
-        scan.O.append( strip_first_word(text).split() )
+    def process(self, text, header, *args, **kws):
+        header.O.append( strip_first_word(text).split() )
 
 
 class SPEC_PositionerMnemonics(ControlLineHandler):
-    '''**#o** -- positioner mnemonics (ignored for now)'''
+    '''
+    **#o** -- positioner mnemonics (new with SPEC v6)
+    
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileHeader): **o** : mnemonics
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * *NXcollection* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
+      
+      * datasets with names supplied as SPEC positioner mnemonics, string values supplied as SPEC positioner names
+
+    '''
 
     key = '#o\d+'
     
-    def process(self, text, scan, *args, **kws):
-        pass    # ignore this for now
+    def process(self, text, header, *args, **kws):
+        if not hasattr(header, 'o'):
+            header.o = []
+        header.o.append( strip_first_word(text).split() )
+        header.addPostProcessor('positioner cross-referencing', self.postprocess)
+    
+    def postprocess(self, header, *args, **kws):
+        positioner_xref_postprocessing(header)
+        header.addH5writer('positioner cross-referencing', self.writer)
+    
+    def writer(self, h5parent, writer, header, nxclass=None, *args, **kws):
+        '''Describe how to store this data in an HDF5 NeXus file'''
+        if not hasattr(header, 'positioner_xref'):
+            header.counter_xref = {}          # mnemonic:name
+        desc = 'cross-reference SPEC positioner mnemonics and names'
+        comment = 'keys are SPEC positioner mnemonics, values are SPEC positioner names'
+        if nxclass is None:
+            nxclass = 'NXcollection'
+        group = makeGroup(h5parent, "positioner_cross_reference", nxclass, 
+                          description=desc, comment=comment)
+        for key, value in sorted(header.positioner_xref.items()):
+            write_dataset(group, key, value)
+
+
+def positioner_xref_postprocessing(header):
+    if not hasattr(header, 'o') or not hasattr(header, 'O'):
+        return
+    if not hasattr(header, 'positioner_xref'):
+        header.positioner_xref = {}          # mnemonic:name
+    for row_number, mne_row in enumerate(header.o):
+        name_row = header.O[row_number]
+        for column_number, mne in enumerate(mne_row):
+            header.positioner_xref[mne] = name_row[column_number]
 
 
 class SPEC_Positioners(ControlLineHandler):
@@ -515,9 +640,9 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
         # consider putting this info under NXsample or NXentry/metadata
-        if hasattr('TEMP_SP', scan):
+        if hasattr(scan, 'TEMP_SP'):
             write_dataset(h5parent, "TEMP_SP", scan.TEMP_SP, description='temperature set point')
-        if hasattr('DEGC_SP', scan):
+        if hasattr(scan, 'DEGC_SP'):
             write_dataset(h5parent, "DEGC_SP", scan.DEGC_SP, units='C', description='temperature set point (C)')
 
 
@@ -689,7 +814,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        if hasattr('MCA', scan):
+        if hasattr(scan, 'MCA'):
             if 'CALIB' in scan.MCA:
                 mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
                 calib_dict = scan.MCA['CALIB']
@@ -738,7 +863,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        if hasattr('MCA', scan):
+        if hasattr(scan, 'MCA'):
             mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
             mca = scan.MCA
             for key in ('number_saved  first_saved  last_saved  reduction_coef'.split()):
@@ -782,7 +907,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        if hasattr('MCA', scan):
+        if hasattr(scan, 'MCA'):
             mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
             mca = scan.MCA
             for key in ('preset_time  elapsed_live_time  elapsed_real_time'.split()):
@@ -828,8 +953,8 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        if hasattr('MCA', scan):
-            if hasattr('ROI', scan.MCA):
+        if hasattr(scan, 'MCA'):
+            if hasattr(scan.MCA, 'ROI'):
                 mca_group = openGroup(h5parent, 'MCA', nxclass, description='MCA metadata')
                 roi_group = openGroup(mca_group, 'ROI', nxclass, description='Regions Of Interest')
                 roi_dict = scan.MCA['ROI']

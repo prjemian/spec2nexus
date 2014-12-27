@@ -36,7 +36,7 @@ class Writer(object):
     '''
     writes out scans from SPEC data file to NeXus HDF5 file
     
-    :param obj spec_data: instance of :class:`~spec2nexus.prjPySpec.SpecDataFile`
+    :param obj spec_data: instance of :class:`~spec2nexus.spec.SpecDataFile`
     '''
 
     def __init__(self, spec_data):
@@ -108,8 +108,11 @@ class Writer(object):
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
+        for func in scan.header.h5writers.values():
+            # ask the header plugins to save their part
+            func(nxentry, self, scan.header, nxclass=CONTAINER_CLASS)
         for func in scan.h5writers.values():
-            # ask the plugins to save their part
+            # ask the scan plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
@@ -155,12 +158,12 @@ class Writer(object):
         '''*internal*: parse for optional MCA spectra'''
         if '_mca_' in scan.data:        # check for it
             axes = primary_axis_label + ':' + '_mca_channel_'
-            channels = range(1, len(scan.data['_mca_'][0])+1)
+            channels = np.arange(1, len(scan.data['_mca_'][0])+1, dtype=int)
             data = scan.data['_mca_']
             self.write_ds(nxdata, '_mca_', data, axes=axes)
             a, b, c = 0, 0, 0
             if hasattr(scan, 'MCA'):
-                mca = scan['MCA']
+                mca = scan.MCA
                 if 'CALIB' in mca:
                     a = mca['CALIB'].get('a', 0)
                     b = mca['CALIB'].get('b', 0)
