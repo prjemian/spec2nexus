@@ -141,7 +141,7 @@ def makeDataset(parent, name, data = None, **attr):
     :param dict attr: optional dictionary of attributes
     :return: h5py dataset object
     '''
-    if data == None:
+    if data is None:
         obj = parent.create_dataset(name)
     else:
         if isinstance(data, float) or isinstance(data, int) or isinstance(data, str):

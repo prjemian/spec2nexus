@@ -322,6 +322,8 @@ class SpecDataFileHeader(object):
         self.H = []
         self.O = []
         self.raw = buf
+        self.postprocessors = {}
+        self.h5writers = {}
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
@@ -336,6 +338,34 @@ class SpecDataFileHeader(object):
             else:
                 # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)
+
+        # call any post-processing hook functions from the plugins
+        for func in self.postprocessors.values():
+            func(self)
+    
+    def addPostProcessor(self, label, func):
+        '''
+        add a function to be processed after interpreting all lines from a header
+        
+        :param str label: unique label by which this postprocessor will be known
+        :param obj func: function reference of postprocessor
+        
+        The postprocessors will be called at the end of header interpretation.
+        '''
+        if label not in self.postprocessors:
+            self.postprocessors[label] = func
+    
+    def addH5writer(self, label, func):
+        '''
+        add a function to be processed when writing the scan header
+        
+        :param str label: unique label by which this writer will be known
+        :param obj func: function reference of writer
+        
+        The writers will be called when the HDF5 file is to be written.
+        '''
+        if label not in self.h5writers:
+            self.h5writers[label] = func
 
 
 #-------------------------------------------------------------------------------------------
@@ -372,7 +402,7 @@ class SpecDataFileScan(object):
             # avoid changing the interface for clients
             self.specFile = parent.fileName
         elif self.header is not None:
-	    if self.header.parent is not None:
+            if self.header.parent is not None:
                 self.specFile = self.header.parent.fileName
         else:
             self.specFile = None
