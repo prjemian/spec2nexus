@@ -124,6 +124,13 @@ class TestPlugin(unittest.TestCase):
 		uxml.postprocess(self.scan)
 	
 		self.assertTrue(hasattr(self.scan, 'UXML_root'), 'need to test writer()')
+		root = self.scan.UXML_root
+		schema_file = os.path.join(self.uxml_path, 'uxml.xsd')
+		self.assertTrue(os.path.exists(schema_file))
+		schema_doc = etree.parse(schema_file)
+		schema = etree.XMLSchema(schema_doc)
+		result = schema.validate(root)
+		self.assertTrue(result)
 
 
 class TestData(unittest.TestCase):
