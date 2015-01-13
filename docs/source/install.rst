@@ -3,12 +3,7 @@ Installation
 
 Released versions of spec2nexus are available on `PyPI 
 <https://pypi.python.org/pypi/spec2nexus>`_. If you have the `Python Setup Tools 
-<https://pypi.python.org/pypi/setuptools>`_ installed, then you can install 
-using either::
-
-    $ pip install spec2nexus
-
-or:: 
+<https://pypi.python.org/pypi/setuptools>`_ installed, then you can install::
 
     $ easy_install spec2nexus 
 
