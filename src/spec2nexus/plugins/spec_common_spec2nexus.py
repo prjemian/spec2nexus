@@ -1,6 +1,16 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
+#-----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2015, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+#-----------------------------------------------------------------------------
+
 '''
 SPEC data file standard control lines
 
@@ -8,16 +18,6 @@ SPEC data file standard control lines
    http://www.certif.com/spec_manual/user_1_4_1.html
 
 '''
-
-#-----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
 
 
 import re
