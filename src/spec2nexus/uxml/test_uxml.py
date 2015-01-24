@@ -5,7 +5,7 @@ unit tests for the UXML control lines
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014, Pete R. Jemian
+# :copyright: (c) 2014-2015, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -15,7 +15,6 @@ unit tests for the UXML control lines
 
 import unittest
 import os
-from spec2nexus import spec
 from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
 from lxml import etree

@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2015.0113.0: dropped requirement of *lxml* package
 :2014.1228.1: build mne:name cross-references for counters and positioners
 :2014.1228.0: show version in documentation
 :2014.1028.0: quietly ignore unrecognized scan content *for now*

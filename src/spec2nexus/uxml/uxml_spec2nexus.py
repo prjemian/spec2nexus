@@ -59,7 +59,7 @@ Excerpt::
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014, Pete R. Jemian
+# :copyright: (c) 2014-2015, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -68,7 +68,7 @@ Excerpt::
 
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word
-from spec2nexus import eznx, utils
+from spec2nexus import eznx
 from lxml import etree
 
 
