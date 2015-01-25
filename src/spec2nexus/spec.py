@@ -442,9 +442,7 @@ class SpecDataFileScan(object):
                 __s__ = '<' + line + '>'
                 msg = "scan %d, line %d: unknown key, ignored text: %s" % (self.scanNum, i, line)
                 #raise UnknownSpecFilePart(msg)
-            elif key == '#S':
-                pass        # avoid recursion
-            else:
+            elif key != '#S':        # avoid recursion
                 # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)
 
