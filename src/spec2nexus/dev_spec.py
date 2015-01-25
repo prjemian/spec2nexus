@@ -35,21 +35,22 @@ def developer_test(spec_file_name = None):
         spec_dir = os.path.abspath(path)
         #spec_file_name = os.path.join(spec_dir, 'APS_spec_data.dat')
         #spec_file_name = os.path.join(spec_dir, '03_05_UImg.dat')
-        spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
+        #spec_file_name = os.path.join(spec_dir, '33id_spec.dat')
         #spec_file_name = os.path.join(spec_dir, '33bm_spec.dat')
         #spec_file_name = os.path.join(spec_dir, 'CdSe')
         #spec_file_name = os.path.join(spec_dir, 'lmn40.spe')
         #spec_file_name = os.path.join(spec_dir, 'YSZ011_ALDITO_Fe2O3_planar_fired_1.spc')
         #spec_file_name = os.path.join(spec_dir, '130123B_2.spc')
+        spec_file_name = os.path.join(spec_dir, 'user6idd.dat')
         os.chdir(spec_dir)
     print '-'*70
     # now open the file and read it
     test = spec.SpecDataFile(spec_file_name)
-    scan = test.scans[1]
+    scan = test.scans[2]
     scan.interpret()
-    print scan.UXML_root
-    
-    print prettify(scan.UXML_root)
+    #print scan.UXML_root
+    #print prettify(scan.UXML_root)
+
     if False:
         # tell us about the test file
         print 'file', test.fileName
@@ -73,9 +74,9 @@ def developer_test(spec_file_name = None):
             for i in range(len(last_scan.data[pLabel])):
                 print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
         print 'labels in scan 1:', test.getScan(1).L
-        if test.getScan(5) is not None:
+        if test.getScan(1) is not None:
             print 'command line of scan 5:', test.getScan(5).scanCmd
-        print '\n'.join(test.getScanCommands([5, 10, 15, 29, 40, 75]))
+        print '\n'.join(test.getScanCommands([1, 2]))
     pass
 
 
@@ -83,4 +84,6 @@ if __name__ == "__main__":
     fname = 'test_3.spec'
     spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
     os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
-    developer_test(os.path.join(spec_dir, fname))
+    full_name = os.path.join(spec_dir, fname)
+    full_name = None
+    developer_test(full_name)
