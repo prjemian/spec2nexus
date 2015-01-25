@@ -12,11 +12,11 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__   = '2015.0113.0'
+__version__   = '2015.0125.0'
 __release__   = __version__
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
-__copyright__ = '2014, Pete R. Jemian'
+__copyright__ = '2015, Pete R. Jemian'
 
 __package_name__ = 'spec2nexus'
 __license_url__  = 'http://creativecommons.org/licenses/by/4.0/deed.en_US'

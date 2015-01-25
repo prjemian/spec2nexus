@@ -170,9 +170,8 @@ class SPEC_Scan(ControlLineHandler):
         scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
         text = part.splitlines()[0].strip()
         scan.S = strip_first_word(text)
-        pos = scan.S.find(' ')
-        scan.scanNum = int(scan.S[0:pos])
-        scan.scanCmd = strip_first_word(scan.S[pos+1:])
+        scan.scanNum = int(scan.S.split()[0])
+        scan.scanCmd = strip_first_word(scan.S)
         if scan.scanNum in spec_obj.scans:
             msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
             raise DuplicateSpecScanNumber(msg)
@@ -359,6 +358,15 @@ class SPEC_Labels(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         # Some folks use more than two spaces!  Use regular expression(re) module
         scan.L = re.split("  +", strip_first_word(text))
+
+        if len(scan.L) == 1 and hasattr(scan, 'N') and scan.N[0] > 1:
+            # BUT: some folks only use a single-space as a separator!
+            # perhaps #L was written with single-space separators.?
+            # Unusual for scan to have only 1 column, but possible
+            labels = strip_first_word(text).split()
+            if len(labels) == scan.N[0]:
+                scan.L = labels
+
         scan.column_first = scan.L[0]
         scan.column_last = scan.L[-1]
 
@@ -599,7 +607,7 @@ class SPEC_CountTime(ControlLineHandler):
 
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''
-    **#X** -- Temperature
+    **#X** -- Temperature Set Point (desired temperature)
     
     The default declaration of the #X control line is written::
     
@@ -626,16 +634,18 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     '''
 
     key = '#X'
-    # TODO: Needs an example data file to test
     
     def process(self, text, scan, *args, **kws):
-        fmt = "#X %fKohm (%fC)"
-        try:
-            # This looks fragile!
-            scan.TEMP_SP, scan.DEGC_SP = scanf(fmt, text)
-            scan.addH5writer(self.key, self.writer)
-        except:
-            pass
+        # Try a list of formats until one succeeds
+        format_list = ["#X %fKohm (%fC)", 
+                       # "#X %g %g",        # note: %g specifier is not available
+                       "#X %f %f",
+                       ]
+        for fmt in format_list:
+            result = scanf(fmt, text)
+            if result is not None:
+                scan.TEMP_SP, scan.DEGC_SP = result
+                scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
