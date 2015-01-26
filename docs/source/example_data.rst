@@ -24,3 +24,4 @@ https://github.com/prjemian/spec2nexus/tree/master/src/spec2nexus/data
 * :download:`lmn40.spe <../../src/spec2nexus/data/lmn40.spe>`
 * :download:`writer_1_3.h5 <../../src/spec2nexus/data/writer_1_3.h5>`
 * :download:`YSZ011_ALDITO_Fe2O3_planar_fired_1.spc <../../src/spec2nexus/data/YSZ011_ALDITO_Fe2O3_planar_fired_1.spc>`
+* :download:`user6idd.dat <../../src/spec2nexus/data/user6idd.dat>`
