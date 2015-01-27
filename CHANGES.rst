@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2015.0127.0: ignore bad data lines
 :2015.0125.0: change handling of #L & #X, refactor detection of scanNum and scanCmd
 :2015.0113.0: dropped requirement of *lxml* package
 :2014.1228.1: build mne:name cross-references for counters and positioners
