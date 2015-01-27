@@ -131,7 +131,7 @@ class SPEC_Comment(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        write_dataset(h5parent, "comments", '\n'.join(scan.comments))
+        write_dataset(h5parent, "comments", '\n'.join(map(str, scan.comments)))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1005,11 +1005,14 @@ def data_lines_postprocessing(scan):
             mca_spectrum = map(float, values[2:].split())
             scan.data['_mca_'].append(mca_spectrum)
         else:
-            buf = scan._interpret_data_row(values)
-            if len(buf) == num_columns:
-                # only keep complete rows
-                for label, val in buf.items():
-                    scan.data[label].append(val)
+            try:
+                buf = scan._interpret_data_row(values)
+                if len(buf) == num_columns:
+                    # only keep complete rows
+                    for label, val in buf.items():
+                        scan.data[label].append(val)
+            except ValueError, exc:
+                pass    # ignore bad data lines (could save it as such ...)
     scan.addH5writer('scan data', data_lines_writer)
 
 
