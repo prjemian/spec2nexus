@@ -87,7 +87,7 @@ class H5toText(object):
                 elif isHdf5Dataset(value):
                     s += self._renderDataset(value, itemname, indentation+"  ")
                     if isHdf5ExternalLink(linkref):
-                        # classref defined means external data is available
+                        # When "classref" is defined, then external data is available
                         fmt = '%s    %s = %s'
                         s += [ fmt % (indentation, '@file', linkref.filename) ]
                         s += [ fmt % (indentation, '@path', linkref.path) ]
@@ -134,6 +134,10 @@ class H5toText(object):
             s += [ "%s%s:%s%s" % (indentation, name, txType, value) ]
             s += self._renderAttributes(dset, indentation)
             # dset.dtype.kind == 'S', nchar = dset.dtype.itemsize
+        elif dset.dtype.kind == 'O':
+            value = " = %s" % str(dset.value)
+            s += [ "%s%s:%s%s" % (indentation, name, txType, value) ]
+            s += self._renderAttributes(dset, indentation)
         elif shape == (1,):
             value = " = %s" % str(dset[0])
             s += [ "%s%s:%s%s%s" % (indentation, name, txType, 
@@ -164,10 +168,10 @@ class H5toText(object):
         ''' get the storage (data) type of the dataset '''
         t = str(obj.dtype)
         # dset.dtype.kind == 'S', nchar = dset.dtype.itemsize
-        if obj.dtype.kind == 'S':
+        if obj.dtype.kind == 'S':        # fixed-length string
             t = 'char[%s]' % obj.dtype.itemsize
-        elif obj.dtype.kind == 'O':
-            t = '<O data object not rendered>'
+        elif obj.dtype.kind == 'O':      # variable-length string
+            t = 'CHAR'
         if self.isNeXus:
             t = 'NX_' + t.upper()
         return t

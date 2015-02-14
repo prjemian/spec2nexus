@@ -26,8 +26,9 @@ sys.argv = [sys.argv[0],]
 # sys.argv.append('-a')
 # sys.argv.append('-n')
 # sys.argv.append('6')
-sys.argv.append(os.path.join(testpath, 'data', 'writer_1_3.h5'))
+# sys.argv.append(os.path.join(testpath, 'data', 'writer_1_3.h5'))
 sys.argv.append(os.path.join(testpath, 'data', 'Data_Q.h5'))
+# sys.argv.append(os.path.join(os.environ['HOMEPATH'], 'Desktop', 'thau_1.nxs.hdf'))
 
 
 # Show how to get the help/usage text
