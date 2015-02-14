@@ -7,13 +7,14 @@ Change History
 Production
 **********
 
-:2015.0127.0: ignore bad data lines
-:2015.0125.0: change handling of #L & #X, refactor detection of scanNum and scanCmd
+:2015.0214.0: h5toText: handle HDF5 'O' data type (variable length strings)
+:2015.0127.0: spec: ignore bad data lines
+:2015.0125.0: spec: change handling of #L & #X, refactor detection of scanNum and scanCmd
 :2015.0113.0: dropped requirement of *lxml* package
-:2014.1228.1: build mne:name cross-references for counters and positioners
+:2014.1228.1: spec: build mne:name cross-references for counters and positioners
 :2014.1228.0: show version in documentation
-:2014.1028.0: quietly ignore unrecognized scan content *for now*
-:2014.1027.1: major changes in SPEC file support: **custom plugins**
+:2014.1028.0: spec: quietly ignore unrecognized scan content *for now*
+:2014.1027.1: spec: major changes in SPEC file support: **custom plugins**
 
     * **spec** based on plugins for each control line, users can add plugins
     * declared **prjPySpec** module as legacy, code is frozen at *2014.0623.0* release
