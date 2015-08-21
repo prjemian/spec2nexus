@@ -115,14 +115,17 @@ def get_user_parameters():
                         action='version',
                         help='print version number and exit',
                         version=spec2nexus.__version__)
+
     msg = 'do not write column labels to output file (default: write labels)'
     parser.add_argument('--nolabels', 
                         action='store_true',
                         help=msg,
                         default=False)
+
     parser.add_argument('spec_file',
                         action='store', 
                         help="SPEC data file name(s)")
+
     msg = "scan number(s) to be extracted (must specify at least one)"
     parser.add_argument('-s',
                         '--scan', 
@@ -131,6 +134,7 @@ def get_user_parameters():
                         type=int,
                         required=True,
                         help=msg)
+    
     msg = "column label(s) to be extracted (must specify at least one)"
     parser.add_argument('-c',
                         '--column', 
@@ -138,9 +142,28 @@ def get_user_parameters():
                         nargs='+', 
                         required=True,
                         help=msg)
+    
+    msg = "report scan Geometry (#G) header information"
+    parser.add_argument('-G',
+                        action='store_true',
+                        default=False,
+                        help=msg)
+    
+    msg = "report scan (UNICAT-style #H & #V) header information"
+    parser.add_argument('-H',
+                        action='store_true',
+                        default=False,
+                        help=msg)
+    
+    msg = "report scan Q (#Q) header information"
+    parser.add_argument('-Q',
+                        action='store_true',
+                        default=False,
+                        help=msg)
 
     group = parser.add_mutually_exclusive_group()
     group.set_defaults(reporting_level=REPORTING_STANDARD)
+    
     msg =  'suppress all program output (except errors)'
     msg += ', do not use with --verbose option'
     group.add_argument('--quiet', 
@@ -148,6 +171,7 @@ def get_user_parameters():
                        action='store_const',
                        const=REPORTING_QUIET,
                        help=msg)
+    
     msg =  'print more program output'
     msg += ', do not use with --quiet option'
     group.add_argument('--verbose', 
@@ -218,8 +242,28 @@ def main():
             data = [scan.data[item] for item in cmdArgs.column]
             for data_row in zip(*data):
                 txt.append( '\t'.join(map(str, data_row)) )
+                
+            header_data = []
+            if cmdArgs.G:
+                for k, v in sorted(scan.G.items()):
+                    # use tab separation to make it easy to pull into spreadsheet columns
+                    header_data.append('#G\t%s\t%s' % (k, '\t'.join(v.split(' '))))
+            if cmdArgs.Q:
+                if len(scan.Q) > 0:
+                    header_data.append('#Q\t%s' % '\t'.join(map(str, scan.Q)))
+            if cmdArgs.H:
+                for k, v in sorted(scan.metadata.items()):
+                    header_data.append('#H&#V\t%s\t%s' % (k, v))
+            if len(header_data):
+                header_data.insert(0, '#')
+                header_data.insert(0, '# data from scan heading')
+                header_data.append('#')
+                header_data.append('# scan data:')
+                header_data.append('#')
         
             fp = open(outFile, 'w')
+            if len(header_data):
+                fp.write('\n'.join(header_data) + '\n')
             fp.write('\n'.join(txt))
             fp.close()
             if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
@@ -228,13 +272,12 @@ def main():
 
 if __name__ == "__main__":
     if False:
-      sys.argv.append('data/APS_spec_data.dat')
-      sys.argv.append('-s')
-      sys.argv.append('1')
-      sys.argv.append('6')
-      sys.argv.append('-c')
-      sys.argv.append('mr')
-      sys.argv.append('USAXS_PD')
-      sys.argv.append('I0')
-      sys.argv.append('seconds')
+        args = 'data/APS_spec_data.dat -s 1 6   -c mr USAXS_PD I0 seconds'
+        args = 'data/33id_spec.dat     -s 1 6   -c H K L signal elastic I0 seconds'
+        for _ in args.split():
+            sys.argv.append(_)
+        
+        sys.argv.append('-G')
+        sys.argv.append('-H')
+        sys.argv.append('-Q')
     main()

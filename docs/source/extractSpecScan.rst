@@ -53,6 +53,9 @@ the help message::
      --quiet               suppress all program output (except errors),
                            do not use with --verbose option
      --verbose             print more program output, do not use with --quiet option
+     -G                    report scan Geometry (#G) header information
+     -H                    report scan (UNICAT-style #H & #V) header information
+     -Q                    report scan Q (#Q) header information
 
 
 Example
