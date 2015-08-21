@@ -149,14 +149,20 @@ def get_user_parameters():
                         default=False,
                         help=msg)
     
-    msg = "report scan (UNICAT-style #H & #V) header information"
-    parser.add_argument('-H',
+    msg = "report scan Positioners (#O & #P) header information"
+    parser.add_argument('-P',
                         action='store_true',
                         default=False,
                         help=msg)
     
     msg = "report scan Q (#Q) header information"
     parser.add_argument('-Q',
+                        action='store_true',
+                        default=False,
+                        help=msg)
+    
+    msg = "report scan (UNICAT-style #H & #V) header information"
+    parser.add_argument('-V',
                         action='store_true',
                         default=False,
                         help=msg)
@@ -248,12 +254,15 @@ def main():
                 for k, v in sorted(scan.G.items()):
                     # use tab separation to make it easy to pull into spreadsheet columns
                     header_data.append('#G\t%s\t%s' % (k, '\t'.join(v.split(' '))))
+            if cmdArgs.P:
+                for k, v in sorted(scan.positioner.items()):
+                    header_data.append('#P\t%s\t%s' % (k, str(v)))  # str(v) vs. %g or other
             if cmdArgs.Q:
                 if len(scan.Q) > 0:
                     header_data.append('#Q\t%s' % '\t'.join(map(str, scan.Q)))
-            if cmdArgs.H:
+            if cmdArgs.V:
                 for k, v in sorted(scan.metadata.items()):
-                    header_data.append('#H&#V\t%s\t%s' % (k, v))
+                    header_data.append('#V\t%s\t%s' % (k, v))
             if len(header_data):
                 header_data.insert(0, '#')
                 header_data.insert(0, '# data from scan heading')
@@ -278,6 +287,7 @@ if __name__ == "__main__":
             sys.argv.append(_)
         
         sys.argv.append('-G')
-        sys.argv.append('-H')
+        sys.argv.append('-V')
         sys.argv.append('-Q')
+        sys.argv.append('-P')
     main()

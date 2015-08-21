@@ -19,7 +19,7 @@ the usage message::
 
    [linux,511]$ extractSpecScan
    usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
-                          [COLUMN ...] [--quiet | --verbose]
+                          [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
                           spec_file
    extractSpecScan: error: too few arguments
 
@@ -31,7 +31,7 @@ the version number::
 the help message::
 
    usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
-                          [COLUMN ...] [--quiet | --verbose]
+                          [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
                           spec_file
    
    Save columns from SPEC data file scan(s) to TSV files
@@ -54,8 +54,9 @@ the help message::
                            do not use with --verbose option
      --verbose             print more program output, do not use with --quiet option
      -G                    report scan Geometry (#G) header information
-     -H                    report scan (UNICAT-style #H & #V) header information
+     -P                    report scan Positioner (#P) header information
      -Q                    report scan Q (#Q) header information
+     -V                    report scan (UNICAT-style #H & #V) header information
 
 
 Example
