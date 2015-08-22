@@ -26,7 +26,7 @@ the usage message::
 the version number::
 
    [linux,511]$ extractSpecScan -v
-   2014.1011.0
+   2015.0822.0
 
 the help message::
 
