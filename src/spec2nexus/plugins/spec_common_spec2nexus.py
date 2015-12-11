@@ -173,6 +173,19 @@ class SPEC_Scan(ControlLineHandler):
         scan.scanNum = int(scan.S.split()[0])
         scan.scanCmd = strip_first_word(scan.S)
         if scan.scanNum in spec_obj.scans:
+            # Before raising an exception, 
+            #    Check for duplicate and create alternate name
+            #    write as "%d.%d" % (scan.scanNum, index) 
+            #    where index is the lowest integer in 
+            #    range(1,really big) that is not already in use.
+            # really_big < len(total number of scans in data file)
+            # Will a non-integer scanNum break anything?
+            for i in range(1, len(scan.parent.scans)):
+                new_scanNum = "%d.%d" % (scan.scanNum, i)
+                if new_scanNum not in spec_obj.scans:
+                    scan.scanNum = new_scanNum
+                    break
+        if scan.scanNum in spec_obj.scans:
             msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
             raise DuplicateSpecScanNumber(msg)
         spec_obj.scans[scan.scanNum] = scan
