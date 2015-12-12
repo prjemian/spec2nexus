@@ -14,7 +14,7 @@ file						            type	    description
 33bm_spec.dat                           SPEC scans  1-D & 2-D scans (includes hklscan & hklmesh)
 33id_spec.dat                           SPEC scans  1-D & 2-D scans (includes mesh & Escan scans & MCA data)
 APS_spec_data.dat                       SPEC scans  1-D scans (ascan & uascan), includes lots of metadata and comments
-CdOsO                                   SPEC scans  1-D scans (ascan), two #E (2, 3659, 3692, 3800) and two #S 1 (35, 3725)
+CdOsO                                   SPEC scans  1-D scans (ascan), four #E (2, 3659, 3692, 3800) and two #S 1 (35, 3725)
 CdSe                                    SPEC scans  1-D scans (ascan), problem with scan abort on lines 5918-9, in scan 92
 compression.h5                          NeXus HDF5  2-D compressed image, also demonstrates problem to be resolved in code
 Data_Q.h5                               NeXus HDF5  2-D image at /entry/data/{I,Q}, test file and variable-length strings
