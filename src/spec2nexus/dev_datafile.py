@@ -6,7 +6,6 @@
 
 import h5toText
 import os
-import prjPySpec
 import writer
 import spec
 
@@ -19,7 +18,10 @@ if __name__ == '__main__':
     prefix = os.path.abspath(os.path.join(pwd, 'data', 'lmn40'))
     file1 = prefix + '.spe'
     hfile = prefix + '.hdf5'
-    specfile = prjPySpec.SpecDataFile(file1)
+    # CdOsO has two header sections and two #S 1 scans
+    prefix = os.path.abspath(os.path.join(pwd, 'data', 'CdOsO'))
+    file1 = prefix
+    hfile = prefix + '.hdf5'
 
     # writer interface has changed, must use new spec module to proceed
     specfile = spec.SpecDataFile(file1)

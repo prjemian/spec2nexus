@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2015.1221.0: read scans with repeated scan numbers (issue #4)
 :2015.0822.0: extractSpecScan: add option to report scan heading data, such as positioners and Q
 :2015.0214.0: h5toText: handle HDF5 'O' data type (variable length strings)
 :2015.0127.0: spec: ignore bad data lines

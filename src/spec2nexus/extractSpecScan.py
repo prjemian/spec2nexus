@@ -80,7 +80,7 @@ def makeOutputFileName(specFile, scanNum):
     return an output file name based on specFile and scanNum
     
     :param str specFile: name of existing SPEC data file to be read
-    :param int scanNum: number of chosen SPEC scan
+    :param str scanNum: number of chosen SPEC scan
 
     append scanNum to specFile to get output file name 
     (before file extension if present)
@@ -90,15 +90,17 @@ def makeOutputFileName(specFile, scanNum):
     
     Examples:
     
-    ===========  =======   ==============
-    specFile     scanNum   outFile
-    ===========  =======   ==============
-    CeCoIn5      scan 5    CeCoIn5_5.dat
-    CeCoIn5.dat  scan 77   CeCoIn5_77.dat
-    ===========  =======   ==============
+    ===========  ========   ===============
+    specFile     scanNum    outFile
+    ===========  ========   ===============
+    CeCoIn5      scan 5     CeCoIn5_5.dat
+    CeCoIn5.dat  scan 77    CeCoIn5_77.dat
+    CeCoIn5.dat  scan 5.1   CeCoIn5_5_1.dat
+    ===========  ========   ===============
     '''
     name_parts = os.path.splitext(specFile)
-    outFile = name_parts[0] + '_' + str(scanNum) + name_parts[1]
+    scan_number = str(scanNum).replace('.', '_')
+    outFile = name_parts[0] + '_' + scan_number + name_parts[1]
     return outFile
 
 
@@ -131,7 +133,7 @@ def get_user_parameters():
                         '--scan', 
                         action='store', 
                         nargs='+', 
-                        type=int,
+                        #type=int,
                         required=True,
                         help=msg)
     
@@ -264,11 +266,15 @@ def main():
                 for k, v in sorted(scan.metadata.items()):
                     header_data.append('#V\t%s\t%s' % (k, v))
             if len(header_data):
-                header_data.insert(0, '#')
                 header_data.insert(0, '# data from scan heading')
+                header_data.insert(0, '#')
                 header_data.append('#')
                 header_data.append('# scan data:')
                 header_data.append('#')
+
+            # at the top of every file now
+            header_data.insert(0, '# scan: ' + str(scanNum))
+            header_data.insert(0, '# file: ' + str(cmdArgs.spec_file))
         
             fp = open(outFile, 'w')
             if len(header_data):
@@ -280,14 +286,4 @@ def main():
 
 
 if __name__ == "__main__":
-    if False:
-        args = 'data/APS_spec_data.dat -s 1 6   -c mr USAXS_PD I0 seconds'
-        args = 'data/33id_spec.dat     -s 1 6   -c H K L signal elastic I0 seconds'
-        for _ in args.split():
-            sys.argv.append(_)
-        
-        sys.argv.append('-G')
-        sys.argv.append('-V')
-        sys.argv.append('-Q')
-        sys.argv.append('-P')
     main()
