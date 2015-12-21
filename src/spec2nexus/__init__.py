@@ -12,8 +12,8 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-__version__   = '2015.1221.0'
-__release__   = __version__
+#__version__   = '2015.1221.0'
+#__release__   = __version__
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
 __copyright__ = '2014-2015, Pete R. Jemian'
@@ -25,7 +25,7 @@ __description__  = 'Converts SPEC data files and scans into NeXus HDF5 files'
 __author_name__  = __author__
 __author_email__ = __email__
 __url__          = u'http://spec2nexus.readthedocs.org'
-__download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
+#__download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
 
 __install_requires__ = ('h5py','numpy', )
@@ -50,3 +50,7 @@ __classifiers__ = [
      'Topic :: Software Development',
      'Topic :: Utilities',
    ]
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
