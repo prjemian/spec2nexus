@@ -284,21 +284,23 @@ class SpecDataFile(object):
         return None
     
     def getScanNumbers(self):
-        '''return a list of all scan numbers'''
-        return self.scans.keys()
+        '''return a sorted list of all scan numbers'''
+        def my_cmp(x, y):
+            return cmp(float(x), float(y))
+        return sorted(self.scans.keys(), my_cmp)
     
     def getMinScanNumber(self):
         '''return the lowest numbered scan'''
-        return min(self.getScanNumbers())
+        return self.getScanNumbers()[0]
     
     def getMaxScanNumber(self):
         '''return the highest numbered scan'''
-        return max(self.getScanNumbers())
+        return self.getScanNumbers()[-1]
     
     def getScanCommands(self, scan_list=None):
         '''return all the scan commands as a list, with scan number'''
         if scan_list is None:
-            scan_list = sorted(self.getScanNumbers())
+            scan_list = self.getScanNumbers()
         return ['#S ' + str(key) + ' ' + self.scans[key].scanCmd for key in scan_list if key in self.scans]
 
 
@@ -440,7 +442,7 @@ class SpecDataFileScan(object):
             key = self.parent.plugin_manager.getKey(line.lstrip())
             if key is None:
                 __s__ = '<' + line + '>'
-                _msg = "scan %d, line %d: unknown key, ignored text: %s" % (self.scanNum, i, line)
+                _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), i, line)
                 #raise UnknownSpecFilePart(_msg)
             elif key != '#S':        # avoid recursion
                 # most of the work is done here
