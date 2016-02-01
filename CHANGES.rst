@@ -7,9 +7,12 @@ Change History
 Production
 **********
 
+:2016.0131.0: support new NeXus method for default/signal/axes/_indices, 
+              `issue #43 <https://github.com/prjemian/spec2nexus/issues/43>`_
 :2016.0130.0: fixed `issue #44 <https://github.com/prjemian/spec2nexus/issues/44>`_
 :2015.1221.1: added versioneer support (`issue #40 <https://github.com/prjemian/spec2nexus/issues/40>`_)
-:2015.1221.0: read scans with repeated scan numbers (`issue #39 <https://github.com/prjemian/spec2nexus/issues/39>`_)
+:2015.1221.0: read scans with repeated scan numbers
+              (`issue #39 <https://github.com/prjemian/spec2nexus/issues/39>`_)
 :2015.0822.0: extractSpecScan: add option to report scan heading data, such as positioners and Q
 :2015.0214.0: h5toText: handle HDF5 'O' data type (variable length strings)
 :2015.0127.0: spec: ignore bad data lines

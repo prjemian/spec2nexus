@@ -273,7 +273,7 @@ class SpecDataFile(object):
         '''return the scan number indicated, None if not found'''
         if int(float(scan_number)) < 1:
             # relative list index (integer only), convert to actual scan number
-            keylist = sorted(self.scans.keys())
+            keylist = sorted(self.getScanNumbers())
             key = len(keylist) + int(scan_number)
             if 0 <= key < len(keylist):
                 scan_number = keylist[key]

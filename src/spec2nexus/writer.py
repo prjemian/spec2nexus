@@ -54,17 +54,19 @@ class Writer(object):
         In general, the tree structure of the NeXus HDF5 file is::
         
             hdf5_file: NXroot
-                @entry="S1"
+                @default="S1"
                 # attributes
                 S1:NXentry
-                    @data="data"
+                    @default="data"
                     # attributes and metadata fields
                     data:NXdata
                         @signal=<name of signal field>
                         @axes=<name(s) of axes of signal>
+                        @<axis>_indices=<list of indices in "axis1">
                         <signal_is_the_last_column>:NX_NUMBER[number of points] = ... data ...
                             @signal=1
                             @axes='<axis_is_name_of_first_column>'
+                            @<axis>_indices=<list of indices in "axis1" used as dimension scales of the "signal">
                         <axis_is_name_of_first_column>:NX_NUMBER[number of points] = ... data ...
                         # other columns from the scan
         
@@ -78,7 +80,7 @@ class Writer(object):
             self.save_scan(nxentry, self.spec.getScan(key))
             if pick_first_entry:
                 pick_first_entry = False
-                eznx.addAttributes(root, entry='S'+str(key))
+                eznx.addAttributes(root, default='S'+str(key))
         root.close()    # be CERTAIN to close the file
     
     def root_attributes(self):
@@ -104,7 +106,7 @@ class Writer(object):
     def save_scan(self, nxentry, scan):
         '''*internal*: save the data from each SPEC scan to its own NXentry group'''
         scan.interpret()        # ensure interpretation is complete
-        eznx.addAttributes(nxentry, data="data")
+        eznx.addAttributes(nxentry, default="data")
         eznx.write_dataset(nxentry, "title", str(scan))
         eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
@@ -141,8 +143,22 @@ class Writer(object):
         # these locations suggested to NIAC, easier to parse than attached to dataset!
         if len(signal) == 0:
             pass
+        
+        # Syntax of axes attribute (http://wiki.nexusformat.org/2014_axes_and_uncertainties):
+        #  @axes="H:K"       INCOREECT
+        #  @axes="H", "K"    CORRECT
+        if axes.find(':') >= 0:
+            axes = axes.split(':')
         eznx.addAttributes(nxdata, signal=signal, axes=axes)
-        eznx.addAttributes(nxdata[signal], signal=1, axes=axes)
+        #eznx.addAttributes(nxdata[signal], signal=1, axes=axes)    # deprecated now
+        # assume here that "axis_name" has rank=1
+        # TODO: test that scan.data[axis_name] has rank=1
+        indices = [0,]     # 0-based reference
+        if isinstance(axes, str):
+            eznx.addAttributes(nxdata, **{axes+'_indices': indices})
+        else:
+            for axis_name in axes:
+                eznx.addAttributes(nxdata, **{axis_name+'_indices': indices})
     
     def oneD(self, nxdata, scan):
         '''*internal*: generic data parser for 1-D column data, returns signal and axis'''
@@ -151,7 +167,7 @@ class Writer(object):
 
         signal = utils.clean_name(scan.column_last)      # primary Y axis
         axis = utils.clean_name(scan.column_first)       # primary X axis
-        self.mca_spectra(nxdata, scan, axis)                 # records any MCA data
+        self.mca_spectra(nxdata, scan, axis)             # records any MCA data
         return signal, axis
     
     def mca_spectra(self, nxdata, scan, primary_axis_label):
