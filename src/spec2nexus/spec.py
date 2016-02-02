@@ -86,9 +86,9 @@ Get the first and last scan numbers from the file:
     >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
     >>> print spec_data.fileName
     path/to/my/spec_data.dat
-    >>> print 'first scan: ', spec_data.getMinScanNumber()
+    >>> print 'first scan: ', spec_data.getFirstScanNumber()
     1
-    >>> print 'last scan: ', spec_data.getMaxScanNumber()
+    >>> print 'last scan: ', spec_data.getLastScanNumber()
     22
 
 Get plottable data from scan number 10:
@@ -117,6 +117,7 @@ Try to read a file that does not exist:
 import re       #@UnusedImport
 import os       #@UnusedImport
 import sys      #@UnusedImport
+import time
 from spec2nexus.utils import get_all_plugins
 
 
@@ -284,10 +285,17 @@ class SpecDataFile(object):
         return None
     
     def getScanNumbers(self):
-        '''return a sorted list of all scan numbers'''
+        '''return a list of all scan numbers sorted by scan number'''
         def my_cmp(x, y):
             return cmp(float(x), float(y))
         return sorted(self.scans.keys(), my_cmp)
+    
+    def getScanNumbersChronological(self):
+        '''return a list of all scan numbers sorted by date'''
+        def my_cmp(x, y):
+            return cmp(time.strptime(x.date), time.strptime(y.date))
+        scans = sorted(self.scans.values(), my_cmp)
+        return [_.scanNum for _ in scans]
     
     def getMinScanNumber(self):
         '''return the lowest numbered scan'''
@@ -296,6 +304,14 @@ class SpecDataFile(object):
     def getMaxScanNumber(self):
         '''return the highest numbered scan'''
         return self.getScanNumbers()[-1]
+    
+    def getFirstScanNumber(self):
+        '''return the first scan'''
+        return self.getScanNumbersChronological()[0]
+    
+    def getLastScanNumber(self):
+        '''return the last scan'''
+        return self.getScanNumbersChronological()[-1]
     
     def getScanCommands(self, scan_list=None):
         '''return all the scan commands as a list, with scan number'''

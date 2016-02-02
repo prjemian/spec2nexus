@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2016.0201.0: added spec.getScanNumbersChronological(), spec.getFirstScanNumber(), and spec.getLastScanNumber()
 :2016.0131.0: support new NeXus method for default/signal/axes/_indices, 
               `issue #43 <https://github.com/prjemian/spec2nexus/issues/43>`_
 :2016.0130.0: fixed `issue #44 <https://github.com/prjemian/spec2nexus/issues/44>`_
