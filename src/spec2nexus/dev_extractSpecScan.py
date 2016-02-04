@@ -19,7 +19,9 @@ import extractSpecScan
 
 #args = 'data/APS_spec_data.dat -s 1 6   -c mr USAXS_PD I0 seconds'
 #args = 'data/33id_spec.dat     -s 1 6   -c H K L signal elastic I0 seconds'
-args = 'data/CdOsO     -s 1 1.1 48   -c HerixE H K L T_control_LS340  T_sample_LS340 ICO-C  PIN-D  PIN-C Seconds'
+#args = 'data/CdOsO     -s 1 1.1 48   -c HerixE H K L T_control_LS340  T_sample_LS340 ICO-C  PIN-D  PIN-C Seconds'
+args = 'data/02_03_setup.dat     -s 46   -c ar  ay  dy  Epoch  seconds  I0  USAXS_PD'
+# args = 'data/02_03_setup.dat     -s 47   -c mr seconds  I0  USAXS_PD'
 for _ in args.split():
     sys.argv.append(_)
 

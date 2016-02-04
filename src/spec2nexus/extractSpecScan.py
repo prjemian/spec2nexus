@@ -247,9 +247,13 @@ def main():
             txt = []
             if cmdArgs.print_labels:
                 txt.append( '# ' + '\t'.join(cmdArgs.column) )
-            data = [scan.data[item] for item in cmdArgs.column]
-            for data_row in zip(*data):
-                txt.append( '\t'.join(map(str, data_row)) )
+            if len(scan.data) > 0:
+                data = [scan.data[item] for item in cmdArgs.column]
+                for data_row in zip(*data):
+                    txt.append( '\t'.join(map(str, data_row)) )
+            else:
+                # issue #45: no data lines in scan
+                txt.append( '# <no SPEC data points in this scan>' )
                 
             header_data = []
             if cmdArgs.G:
