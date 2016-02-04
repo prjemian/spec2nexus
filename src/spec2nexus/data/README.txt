@@ -11,6 +11,7 @@ They are used to test various components of the interface.
 ======================================  ==========  ==========================================================================
 file						            type	    description
 ======================================  ==========  ==========================================================================
+02_03_setup.dat                         SPEC scans  1-D scans, some have no data lines (data are stored in HDF5 file)
 33bm_spec.dat                           SPEC scans  1-D & 2-D scans (includes hklscan & hklmesh)
 33id_spec.dat                           SPEC scans  1-D & 2-D scans (includes mesh & Escan scans & MCA data)
 APS_spec_data.dat                       SPEC scans  1-D scans (ascan & uascan), includes lots of metadata and comments
