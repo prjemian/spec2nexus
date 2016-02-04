@@ -81,6 +81,26 @@ class Writer(object):
             if pick_first_entry:
                 pick_first_entry = False
                 eznx.addAttributes(root, default='S'+str(key))
+            if 'data' not in nxentry:
+                # resolve issue #45 here
+                # NXentry MUST have a NXdata group with data for default plot
+                nxdata = eznx.makeGroup(nxentry, 
+                                        'data', 
+                                        'NXdata',
+                                        signal='no_y_data',
+                                        axes='no_x_data',
+                                        no_x_data_indices=[0,],
+                                        )
+                eznx.makeDataset(nxdata, 
+                                 "no_x_data", 
+                                 (0, 1), 
+                                 units='none',
+                                 long_name='no data points in this scan')
+                eznx.makeDataset(nxdata, 
+                                 "no_y_data", 
+                                 (0, 1), 
+                                 units='none',
+                                 long_name='no data points in this scan')
         root.close()    # be CERTAIN to close the file
     
     def root_attributes(self):
