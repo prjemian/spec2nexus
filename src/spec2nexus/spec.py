@@ -280,6 +280,7 @@ class SpecDataFile(object):
                 scan_number = keylist[key]
             else:
                 return None
+        scan_number = str(scan_number)
         if scan_number in self.scans:
             return self.scans[scan_number]
         return None
