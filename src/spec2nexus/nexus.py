@@ -25,9 +25,9 @@ if __name__ == "__main__":
     path = os.path.join('..', os.path.dirname(__file__))
     sys.path.insert(0, os.path.abspath(path))
 
-import spec2nexus
+from spec2nexus import __version__
 import spec
-import spec2nexus.writer
+import writer
 
 
 hdf5_extension = '.hdf5'
@@ -48,7 +48,7 @@ def get_user_parameters():
     import argparse
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
-    doc += '\n  v' + spec2nexus.__version__
+    doc += '\n  v' + __version__
     parser = argparse.ArgumentParser(prog='spec2nexus', description=doc)
     parser.add_argument('infile', 
                         action='store', 
@@ -71,7 +71,7 @@ def get_user_parameters():
     parser.add_argument('-v', 
                         '--version', 
                         action='version', 
-                        version=spec2nexus.__version__)
+                        version=__version__)
     msg =  'specify which scans to save'
     msg += ', such as: -s all  or  -s 1  or  -s 1,2,3-5  (no spaces!)'
     msg += ', default = %s' % SCAN_LIST_ALL
@@ -143,7 +143,7 @@ def pick_scans(all_scans, opt_scan_list):
     if opt_scan_list == SCAN_LIST_ALL:
         scan_list = all_scans
     else:
-        scan_list = opt_scan_list
+        scan_list = map(str, opt_scan_list)
         for item in scan_list:
             if item not in all_scans:
                 scan_list.remove(item)
@@ -173,15 +173,15 @@ def main():
             print 'reading SPEC data file: '+spec_data_file_name
         spec_data = spec.SpecDataFile(spec_data_file_name)
     
-        scan_list = pick_scans(spec_data.scans.keys(), user_parms.scan_list)
+        scan_list = pick_scans(spec_data.getScanNumbers(), user_parms.scan_list)
         if user_parms.reporting_level in (REPORTING_VERBOSE):
             print '  discovered', len(spec_data.scans.keys()), ' scans'
-            print '  converting scans: '  +  ', '.join(map(str, scan_list))
+            print '  converting scan number(s): '  +  ', '.join(map(str, scan_list))
 
         basename = os.path.splitext(spec_data_file_name)[0]
         nexus_output_file_name = basename + user_parms.hdf5_extension
         if user_parms.force_write or not os.path.exists(nexus_output_file_name):
-            out = spec2nexus.writer.Writer(spec_data)
+            out = writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
             if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
                 print 'wrote NeXus HDF5 file: ' + nexus_output_file_name
