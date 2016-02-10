@@ -7,8 +7,8 @@ Change History
 Production
 **********
 
-:2016.0204.0: handle case when no data points in scan (`issue #45 <https://github.com/prjemian/spec2nexus/issues/45>`_), 
-              spec.getScan() ensures argument is used as ``str`` (`issue #46 <https://github.com/prjemian/spec2nexus/issues/46>`_)
+:2016.0204.0: (`#45 <https://github.com/prjemian/spec2nexus/issues/45>`_) handle case when no data points in scan , 
+              (`#46 <https://github.com/prjemian/spec2nexus/issues/46>`_) spec.getScan() ensures argument is used as ``str``
 :2016.0201.0: added spec.getScanNumbersChronological(), spec.getFirstScanNumber(), and spec.getLastScanNumber()
 :2016.0131.0: support new NeXus method for default/signal/axes/_indices, 
               `issue #43 <https://github.com/prjemian/spec2nexus/issues/43>`_
