@@ -17,6 +17,7 @@ Here is a simple example to write a NeXus data file using eznx:
    :linenos:
    :language: guess
 
+
 The output of this code is an HDF5 file (binary).
 It has this structure:
 
