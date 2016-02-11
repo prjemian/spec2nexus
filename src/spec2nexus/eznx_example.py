@@ -31,16 +31,17 @@ I_v_TTH_DATA = '''
 tthData, countsData = zip(*[map(float,_.split()) for _ in I_v_TTH_DATA.strip().splitlines()])
 
 f = eznx.makeFile(HDF5_FILE)  # create the HDF5 NeXus file
+f.attrs['default'] = 'entry'
 
-nxentry = eznx.makeGroup(f, 'entry', 'NXentry')
+nxentry = eznx.makeGroup(f, 'entry', 'NXentry', default='data')
 nxinstrument = eznx.makeGroup(nxentry, 'instrument', 'NXinstrument')
 nxdetector = eznx.makeGroup(nxinstrument, 'detector', 'NXdetector')
 
 tth = eznx.makeDataset(nxdetector, "two_theta", tthData, units='degrees')
-counts = eznx.makeDataset(nxdetector, "counts", countsData, 
-                   units='counts', signal=1, axes='two_theta')
+counts = eznx.makeDataset(nxdetector, "counts", countsData, units='counts')
 
-nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata')
+nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', 
+                        signal=1, axes='two_theta', two_theta_indices=0)
 eznx.makeLink(nxdetector, tth, nxdata.name+'/two_theta')
 eznx.makeLink(nxdetector, counts, nxdata.name+'/counts')
 
