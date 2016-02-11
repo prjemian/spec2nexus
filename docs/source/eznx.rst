@@ -25,15 +25,15 @@ It has this structure:
     :linenos:
 
 	eznx_example.hdf5:NeXus data file
-     @default = entry
+	  @default = entry
 	  entry:NXentry
 	    @NX_class = NXentry
-       @default = data
+	    @default = data
 	    data:NXdata
 	      @NX_class = NXdata
-         @signal = counts
-         @axes = two_theta
-         @two_theta_indices = 0
+	      @signal = counts
+	      @axes = two_theta
+	      @two_theta_indices = 0
 	      counts --> /entry/instrument/detector/counts
 	      two_theta --> /entry/instrument/detector/two_theta
 	    instrument:NXinstrument
