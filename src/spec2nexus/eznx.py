@@ -35,14 +35,14 @@
 ::
 
     In [1]: from spec2nexus import eznx
-    In [2]: root = eznx.makeFile('test.h5', creator='eznx')
+    In [2]: root = eznx.makeFile('test.h5', creator='eznx', default='entry')
     In [3]: nxentry = eznx.makeGroup(root, 'entry', 'NXentry')
-    In [4]: eznx.write_dataset(nxentry, 'title', 'simple test data')
+    In [4]: eznx.write_dataset(nxentry, 'title', 'simple test data', default='data')
     Out[4]: <HDF5 dataset "title": shape (), type "|O8">
-    In [5]: nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata')
+    In [5]: nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', signal='counts', axes='tth', tth_indices=[0,])
     In [6]: eznx.write_dataset(nxdata, 'tth', [10.0, 10.1, 10.2, 10.3], units='degrees')
     Out[6]: <HDF5 dataset "tth": shape (4,), type "<f8">
-    In [7]: eznx.write_dataset(nxdata, 'counts', [1, 50, 1000, 5], signal=1, axes='tth', units='counts')
+    In [7]: eznx.write_dataset(nxdata, 'counts', [1, 50, 1000, 5], units='counts')
     Out[7]: <HDF5 dataset "counts": shape (4,), type "<i8">
     In [8]: root.close()
 
@@ -52,14 +52,18 @@ The resulting (binary) data file has this structure::
 
     test.h5:NeXus data file
       @creator = eznx
+      @default = 'entry'
       entry:NXentry
         @NX_class = NXentry
+        @default = 'data'
         title:NX_data = simple test data
         data:NXdata
           @NX_class = NXdata
+          @signal = 'counts'
+          @axes = 'tth'
+          @axes_indices = [0,]
           counts:NX_INT64[4] = [1, 50, 1000, 5]
             @units = counts
-            @signal = 1
             @axes = tth
           tth:NX_FLOAT64[4] = [10.0, 10.1, 10.199999999999999, 10.300000000000001]
             @units = degrees
@@ -122,7 +126,7 @@ def openGroup(parent, name, nx_class, **attr):
     '''
     try:
         group = parent[name]
-        addAttributes(parent, **attr)
+        addAttributes(group, **attr)
     except KeyError:
         group = makeGroup(parent, name, nx_class, **attr)
     return group
