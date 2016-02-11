@@ -29,7 +29,7 @@ Verify the version of the installed spec2nexus::
 command-line options
 ********************
 
-.. code-block:: guess
+.. code-block:: text
     :linenos:
 
       $ spec2nexus.py -h

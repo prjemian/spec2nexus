@@ -20,14 +20,19 @@ Here is a simple example to write a NeXus data file using eznx:
 The output of this code is an HDF5 file (binary).
 It has this structure:
 
-.. code-block:: guess
+.. code-block:: text
     :linenos:
 
 	eznx_example.hdf5:NeXus data file
+     @default = entry
 	  entry:NXentry
 	    @NX_class = NXentry
+       @default = data
 	    data:NXdata
 	      @NX_class = NXdata
+         @signal = counts
+         @axes = two_theta
+         @two_theta_indices = 0
 	      counts --> /entry/instrument/detector/counts
 	      two_theta --> /entry/instrument/detector/two_theta
 	    instrument:NXinstrument
@@ -36,8 +41,6 @@ It has this structure:
 	        @NX_class = NXdetector
 	        counts:NX_FLOAT64[11] = __array
 	          @units = counts
-	          @signal = 1
-	          @axes = two_theta
 	          @target = /entry/instrument/detector/counts
 	          __array = [1037.0, 2857.0, 23819.0, '...', 1321.0]
 	        two_theta:NX_FLOAT64[11] = __array
@@ -52,11 +55,13 @@ The output of this code is an HDF5 file (binary).
 It has this general structure (indentation shows HDF5 groups, 
 @ signs describe attributes of the preceding item):
 
-.. code-block:: guess
+.. code-block:: text
     :linenos:
 
       hdf5_file:NeXus data file
+         @default = S1
          S1:NXentry     (one NXentry for each scan)
+            @default = data
             title = #S
             T or M: #T or #M
             comments: #C for entire scan
@@ -69,11 +74,12 @@ It has this general structure (indentation shows HDF5 groups,
                ...
             data:NXdata
                @description = SPEC scan data (content from #L and data lines)
+               @signal = I0
+               @axes = mr
+               @mr_indices = 0
                Epoch:NX_FLOAT64[]
                I0:NX_FLOAT64[]         (last data column)
                  @spec_name = I0
-                 @signal = 1
-                 @axes = mr
                mr:NX_FLOAT64[]         (first data column)
                ...
             metadata:NXcollection

@@ -50,20 +50,23 @@ Here's an example from a test data file
 (**writer_1_3.h5** from the NeXus documentation [#]_):
 
 
-.. code-block:: guess
+.. code-block:: text
     :linenos:
 
       [linux,512]$ h5toText data/writer_1_3.h5
       data/writer_1_3.h5 : NeXus data file
+        @default = Scan
         Scan:NXentry
           @NX_class = NXentry
+          @default = data
           data:NXdata
             @NX_class = NXdata
+            @signal = counts
+            @axes = two_theta
+            @two_theta_indices = 0
             counts:NX_INT32[31] = __array
               __array = [1037, 1318, 1704, '...', 1321]
               @units = counts
-              @signal = 1
-              @axes = two_theta
             two_theta:NX_FLOAT64[31] = __array
               __array = [17.926079999999999, 17.925909999999998, 17.925750000000001, '...', 17.92108]
               @units = degrees
