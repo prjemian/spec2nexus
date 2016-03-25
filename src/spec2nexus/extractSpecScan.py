@@ -61,7 +61,6 @@ __url__ = 'http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html'
 import os
 import sys
 import spec
-import spec2nexus
 
 
 #-------------------------------------------------------------------------------------------
@@ -107,16 +106,17 @@ def makeOutputFileName(specFile, scanNum):
 def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     import argparse
+    import __init__
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
-    doc += '\n  v' + spec2nexus.__version__
+    doc += '\n  v' + __init__.__version__
     parser = argparse.ArgumentParser(prog='extractSpecScan', description=doc)
 
     parser.add_argument('-v',
                         '--version', 
                         action='version',
                         help='print version number and exit',
-                        version=spec2nexus.__version__)
+                        version=__init__.__version__)
 
     msg = 'do not write column labels to output file (default: write labels)'
     parser.add_argument('--nolabels', 

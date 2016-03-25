@@ -19,7 +19,6 @@ import os       #@UnusedImport
 import sys      #@UnusedImport
 import h5py
 import numpy
-import spec2nexus
 
 
 class H5toText(object):
@@ -345,12 +344,13 @@ def do_filelist(filelist, limit=5, show_attributes=True):
 
 def main():
     '''standard command-line interface'''
+    import __init__
     NUM_DISPLAYED_DEFAULT = 5
     NUM_DISPLAYED_MIN = 3
     import argparse
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
-    doc += '\n  v' + spec2nexus.__version__
+    doc += '\n  v' + __init__.__version__
     parser = argparse.ArgumentParser(prog='h5toText', description=doc)
     parser.add_argument('infile', 
                         action='store', 
@@ -372,7 +372,7 @@ def main():
     parser.add_argument('-v', 
                         '--version', 
                         action='version', 
-                        version=spec2nexus.__version__)
+                        version=__init__.__version__)
     cmd_args = parser.parse_args()
 
     if cmd_args.num_displayed.lower() == "none":
