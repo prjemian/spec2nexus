@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2016.0216.0: `issue #36 <https://github.com/prjemian/spec2nexus/issues/36>`_: identify NIAC2014-compliant NeXus files
 :2016.0210.0: bugfix: eznx.makeGroup() now correctly sets attributes on new group + documentation for NIAC2014 attributes
 :2016.0204.0: (`#45 <https://github.com/prjemian/spec2nexus/issues/45>`_) handle case when no data points in scan , 
               (`#46 <https://github.com/prjemian/spec2nexus/issues/46>`_) spec.getScan() ensures argument is used as ``str``
