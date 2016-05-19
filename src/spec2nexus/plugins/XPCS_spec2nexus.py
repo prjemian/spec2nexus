@@ -18,7 +18,7 @@ class XPCS_VA(ControlLineHandler):
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         ''' Describe how to write VA data'''
         desc = "XPCS VA parameters"
-        group = makeGroup(h5parent, 'VA', nxclass,descriuption=desc)
+        group = makeGroup(h5parent, 'VA', nxclass,description=desc)
         dd = {}
         for item, value in scan.VA.items():
             dd[item] = map(str, value.split())
@@ -41,7 +41,7 @@ class XPCS_VD(ControlLineHandler):
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         ''' Describe how to write VD data'''
         desc = "XPCS VD parameters"
-        group = makeGroup(h5parent, 'VD', nxclass, descriuption=desc)
+        group = makeGroup(h5parent, 'VD', nxclass, description=desc)
         dd = {}
         for item, value in scan.VD.items():
             dd[item] = map(str, value.split())
@@ -64,7 +64,7 @@ class XPCS_VE(ControlLineHandler):
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         ''' Describe how to write VE data'''
         desc = "XPCS VE parameters"
-        group = makeGroup(h5parent, 'VE', nxclass,descriuption=desc)
+        group = makeGroup(h5parent, 'VE', nxclass,description=desc)
         dd = {}
         for item, value in scan.VE.items():
             dd[item] = map(str, value.split())
