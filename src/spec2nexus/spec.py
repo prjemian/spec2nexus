@@ -227,9 +227,9 @@ class SpecDataFile(object):
 
         #------------------------------------------------------
         # identify all header blocks: split buf on #E control lines
-        headers = []
+        headers = []                            # caution: some files may have EOL = \r\n
         for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
-            if len(part) == 0: continue         # just in case
+            if len(part.strip()) == 0: continue         # just in case DOS EOL
             key = self.plugin_manager.getKey(part.splitlines()[0].strip())
             if key != '#E':
                 headers.append('#E ' + part)        # new header is starting
@@ -268,7 +268,11 @@ class SpecDataFile(object):
         if not is_spec_file(spec_file_name):
             msg = 'Not a spec data file: ' + str(spec_file_name)
             raise NotASpecDataFile(msg)
-        return buf
+
+        # caution: some files may have EOL = \r\n
+        # convert all '\r\n' to '\n', then all '\r' to '\n'
+
+        return buf.replace('\r\n', '\n').replace('\r', '\n')
     
     def getScan(self, scan_number=0):
         '''return the scan number indicated, None if not found'''

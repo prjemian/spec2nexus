@@ -22,6 +22,8 @@ import extractSpecScan
 #args = 'data/CdOsO     -s 1 1.1 48   -c HerixE H K L T_control_LS340  T_sample_LS340 ICO-C  PIN-D  PIN-C Seconds'
 args = 'data/02_03_setup.dat     -s 46   -c ar  ay  dy  Epoch  seconds  I0  USAXS_PD'
 # args = 'data/02_03_setup.dat     -s 47   -c mr seconds  I0  USAXS_PD'
+args = 'data/xpcs_plugin_sample.spec  -s 7   -c img_n  Epoch  ccdc'
+
 for _ in args.split():
     sys.argv.append(_)
 
