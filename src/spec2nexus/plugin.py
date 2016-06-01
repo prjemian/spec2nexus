@@ -77,13 +77,18 @@ class ControlLineHandler(object):
         '''
         test if this plugin's key matches the supplied text
         
+        :param str text: first word on the line, 
+            up to but not including the first whitespace
+        
         The default test is to apply a regular expression match
         using ``self.key`` as the regular expression to match.
 
         If this method is to be used, then override this method in the 
         plugin or a :class:`NotImplementedError` exception will be raised.
         '''
-        t = re.match(self.key, text)
+        # ensure that #X and #XPCS do not both match #X
+        full_pattern = '^' + self.key + '$'
+        t = re.match(full_pattern, text)
         # test regexp match to avoid false positives
         # ensures that beginning and end are different positions
         return t and t.regs[0][1] != t.regs[0][0]
