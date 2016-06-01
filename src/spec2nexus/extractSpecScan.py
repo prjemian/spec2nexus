@@ -267,8 +267,11 @@ def main():
                 if len(scan.Q) > 0:
                     header_data.append('#Q\t%s' % '\t'.join(map(str, scan.Q)))
             if cmdArgs.V:
-                for k, v in sorted(scan.metadata.items()):
-                    header_data.append('#V\t%s\t%s' % (k, v))
+                try:
+                    for k, v in sorted(scan.metadata.items()):
+                        header_data.append('#V\t%s\t%s' % (k, v))
+                except AttributeError:
+                    pass    # no metadata
             if len(header_data):
                 header_data.insert(0, '# data from scan heading')
                 header_data.insert(0, '#')
