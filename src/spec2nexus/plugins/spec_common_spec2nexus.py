@@ -782,7 +782,7 @@ class SPEC_MCA_Array(ControlLineHandler):
 
     '''
 
-    key = '@A'
+    key = r'@A\d*'
     # continued lines will be matched by SPEC_DataLine
     # process these lines only after all lines have been read
 
