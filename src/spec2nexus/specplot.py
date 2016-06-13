@@ -106,7 +106,7 @@ def xy_plot(x, y,
               xtitle=None, ytitle=None, 
               xlog=False, ylog=False,
               timestamp_str=None):
-    '''
+    r'''
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
     
     :param [float] x: horizontal axis data
@@ -120,11 +120,11 @@ def xy_plot(x, y,
     :param bool ylog: should Y axis be log (default: False=linear)
     :param str timestamp_str: date to use on plot (default: now)
 
-    .. tip:: use of this module as a background task
+    .. tip:: use this module as a background task
     
         MatPlotLib has several interfaces for plotting. 
         Since this module runs as part of a background job 
-        generating lots of plots, the standard plt code is 
+        generating lots of plots, MatPlotLib's standard ``plt`` code is 
         not the right model.  It warns after 20 plots and 
         will eventually run out of memory.  
         

@@ -14,12 +14,12 @@
 #--------------------------------------------------------------------
 # tips if too many processes have been started:
 # kill -9 `psg bash | awk '/specplot_shell_script.sh/ {print $2}' -`
-# kill -9 `psg python | awk '/specplotsAllScans.py/ {print $2}' -`
+# kill -9 `psg python | awk '/specplot_gallery.py/ {print $2}' -`
 #--------------------------------------------------------------------
 
 SHELL_DIR=/some/directory
 LOGFILE=$SHELL_DIR/specplot_files.log
-PROGRAM=/APSshare/anaconda/x86_64/bin/specplot_files
+PROGRAM=/APSshare/anaconda/x86_64/bin/specplot_gallery
 
 #--------------------------------------------------------------------
 #
@@ -40,6 +40,6 @@ FILE_LIST=`/bin/ls -1 $SPEC_DATA_PATTERN`
 #--------------------------------------------------------------------
 
 cd $SHELL_DIR
-echo "#= $$ --Start--- `/bin/date`" 								>> $LOGFILE 2>&1
-$PROGRAM $FILE_LIST													>> $LOGFILE 2>&1
-echo "#= $$ --Done---------------------------------- `/bin/date`" 	>> $LOGFILE 2>&1
+echo "#= $$ --Start--- `/bin/date`" >> $LOGFILE 2>&1
+$PROGRAM $FILE_LIST >> $LOGFILE 2>&1
+echo "#= $$ --Done---------------------------------- `/bin/date`" >> $LOGFILE 2>&1

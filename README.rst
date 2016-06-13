@@ -5,7 +5,7 @@ Converts SPEC data files and scans into NeXus HDF5 files
 
 :author:    Pete R. Jemian
 :email:     prjemian@gmail.com
-:copyright: 2014-2015, Pete R. Jemian
+:copyright: 2014-2016, Pete R. Jemian
 :license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
 :URL:       http://spec2nexus.readthedocs.io
 :git:       https://github.com/prjemian/spec2nexus
@@ -21,6 +21,8 @@ Provides
 * **pySpec**          : library: python binding to read SPEC [#]_ data files
 * **prjPySpec**       : library: legacy version of **pySpec**, frozen at version 2014.0623.0
 * **eznx**            : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
+* **specplot**        : command-line tool: plot a SPEC scan to an image file
+* **specplot_gallery** : command-line tool: call **specplot** for all scans in a list of files, makes a web gallery
 
 .. [#] http://certif.com
 .. [#] http://nexusformat.org
