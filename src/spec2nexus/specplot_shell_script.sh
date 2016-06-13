@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: might be useful to make this Python code (could run on any Python platform then)
+
 # crawl directories for SPEC data files and build default plots for all scans
 
 #--------------------------------------------------------------------

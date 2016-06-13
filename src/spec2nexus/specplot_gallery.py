@@ -2,6 +2,17 @@
 
 '''
 read a list of SPEC data file and plot images of all scans
+
+The images are stored in files in a directory structure
+that is organized chronologically,
+such as: ``yyyy/mm/spec_file/s1.png``.
+The root of the directory is either specified by the 
+command line ``-d`` option or  defaults to the current 
+working directory.  The ``yyyy/mm`` (year and month) are 
+taken from the ``#D`` line of the SPEC data file.
+The ``spec_file`` is the file name with file extension 
+and directory name removed.  The image file names are
+derived from the scan numbers.
 '''
 
 
@@ -37,7 +48,7 @@ class PlotSpecFileScans(object):
     :param str plotDir: name of base directory to store output image thumbnails
     '''
     
-    # TODO: refactor code below
+    # TODO: refactor code below to be object
     
     def __init__(self, filelist, plotDir = None):
         self.filelist = filelist
@@ -64,6 +75,7 @@ class MtimeCache(object):
         self.cache = self.read()
 
     def read(self):
+        '''read the cache from storage'''
         cache = {}
         if os.path.exists(self.cache_file):
             for line in open(self.cache_file, 'r').readlines():
@@ -73,16 +85,13 @@ class MtimeCache(object):
         return cache
 
     def write(self):
+        '''write the cache to storage'''
         f = open(self.cache_file, 'w')
         for key, val in sorted(self.cache.items()):
             f.write('%s\t%f\n' % (key, val))
         f.close()
-
-    def update(self, key, value):
-        self.cache[key] = value
-        self.write()
     
-    def get_mtime(self, fname):
+    def get(self, fname):
         '''
         get the file modified time from the cache
         
@@ -102,10 +111,11 @@ class MtimeCache(object):
         :return bool: True if file is newer than the cache (or new to the cache)
         '''
         mtime_file = get_file_mtime(fname)
-        mtime_cache = self.get_mtime(fname)
+        mtime_cache = self.get(fname)
         if mtime_cache is None or mtime_file > mtime_cache:
             logger('SPEC data file updated: ' + fname)
-            self.update(fname, mtime_file)
+            self.cache[fname] = mtime_file
+            self.write()
             return True
         return False
 
@@ -127,7 +137,7 @@ def plotAllSpecFileScans(specFile):
         return
 
     # Don't replot if the plot newer than the data file modification time.
-    mtime_specFile = mtime_cache.get_mtime(specFile)
+    mtime_specFile = mtime_cache.get(specFile)
     png_directory = get_PngDir(specFile)
     if os.path.exists(png_directory):
         mtime_pngdir = get_file_mtime(png_directory)
@@ -138,6 +148,8 @@ def plotAllSpecFileScans(specFile):
     if mtime_pngdir > mtime_specFile:
         # do nothing if plot directory was last updated _after_ the specFile
         # This assumes people don't modify the png_directory
+        # TODO: could traverse the mtime_pngdir and update all images created before file mtime
+        #    requires parsing the image directory tree, yikes!
         return
 
     try:
@@ -353,7 +365,7 @@ def logger(message):
 
     :param str message: text to be logged
     '''
-    now = timestamp()
+    now = str(datetime.datetime.now())
     name = os.path.basename(sys.argv[0])
     pid = os.getpid()
     text = "(%d,%s,%s) %s" % (pid, name, now, message)
@@ -393,8 +405,11 @@ def main():
 
 
 def developer_main():
+    path = '__plots__'
+    if not os.path.exists(path):
+        os.mkdir(path)
     sys.argv.append('-d')
-    sys.argv.append('/tmp')
+    sys.argv.append(path)
     sys.argv.append('data/02_03_setup.dat')
     sys.argv.append('data/03_06_JanTest.dat')
     sys.argv.append('data/lmn40.spe')
