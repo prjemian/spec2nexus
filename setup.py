@@ -53,7 +53,7 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
                 'h5toText=spec2nexus.h5toText:main',
                 'extractSpecScan=spec2nexus.extractSpecScan:main',
                 'specplot=spec2nexus.specplot:main',
-                'specplot_files=spec2nexus.specplot_files:main',
+                'specplot_gallery=spec2nexus.specplot_gallery:main',
 			],
             #'gui_scripts': [],
        },
