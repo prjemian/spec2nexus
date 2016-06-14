@@ -411,8 +411,8 @@ def developer_main():
     sys.argv.append('-d')
     sys.argv.append(path)
     sys.argv.append('data/02_03_setup.dat')
-    sys.argv.append('data/03_06_JanTest.dat')
-    sys.argv.append('data/lmn40.spe')
+#     sys.argv.append('data/03_06_JanTest.dat')
+#     sys.argv.append('data/lmn40.spe')
     main()
 
 

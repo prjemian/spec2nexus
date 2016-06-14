@@ -235,17 +235,23 @@ def xy_plot(x, y,
     FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
 
 
-def process(specFile, scanNumber, plotFile):
-    # TODO: refactor the registry ode here
+def register_handlers():
+    # TODO: refactor the registry code here
     registry = Registry()
-    ascan_handler = PlotHandler()
-    registry.add(ascan_handler)
+    registry.add(PlotHandler())
+    return registry
+
+
+def process(specFile, scanNumber, plotFile):
+    # TODO: refactor the registry code here
+    registry = register_handlers()
 
     specData = openSpecFile(specFile)
     scan = findScan(specData, scanNumber)
+    ascan = registry.get('ascan')
     
-    ascan_handler.set_scan(scan)
-    ascan_handler.image(plotFile)
+    ascan.set_scan(scan)
+    ascan.image(plotFile)
 
 
 def main():
@@ -260,8 +266,8 @@ def main():
 
 
 if __name__ == '__main__':
-    import sys
-    s = 'data/02_03_setup.dat 1 __plots__/image.png'
-    for item in s.split():
-        sys.argv.append(item)
+#     import sys
+#     s = 'data/02_03_setup.dat 1 __plots__/image.png'
+#     for item in s.split():
+#         sys.argv.append(item)
     main()
