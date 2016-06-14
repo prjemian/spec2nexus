@@ -14,6 +14,8 @@ Contents
    h5toText
    extractSpecScan
    spec
+   specplot
+   specplot_gallery
    eznx
    plugin
    utils

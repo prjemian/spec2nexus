@@ -301,5 +301,12 @@ class Mock(object):
         else:
             return Mock()
 
-for mod_name in spec2nexus.__install_requires__:
+mocks = list(spec2nexus.__install_requires__)
+mocks.append('matplotlib')
+mocks.append('matplotlib.backends')
+mocks.append('matplotlib.backends.backend_agg')
+mocks.append('numpy')
+mocks.append('numpy.ma')
+
+for mod_name in mocks:
     sys.modules[mod_name] = Mock()

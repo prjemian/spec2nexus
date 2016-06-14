@@ -24,9 +24,9 @@ __author_name__  = __author__
 __author_email__ = __email__
 __url__          = u'http://spec2nexus.readthedocs.org'
 #__download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
-__keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
+__keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5', 'MatPlotLib']
 
-__install_requires__ = ('h5py','numpy', )
+__install_requires__ = ('h5py','numpy', 'MatPlotLib', )
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',
