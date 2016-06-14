@@ -449,7 +449,12 @@ class SpecDataFileScan(object):
             if self.__lazy_interpret__:
                 self.interpret()
         return object.__getattribute__(self, attr)
-        
+    
+    def get_macro_name(self):
+        '''
+        name of the SPEC macro used for this scan
+        '''
+        return self.scanCmd.split()[0]
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""

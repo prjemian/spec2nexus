@@ -19,6 +19,7 @@ derived from the scan numbers.
 import datetime
 import logging
 import os
+import shutil
 import sys
 
 try:
@@ -147,10 +148,9 @@ def plotAllSpecFileScans(specFile):
     # compare mtime of data file with mtime of PNG directory
     if mtime_pngdir > mtime_specFile:
         # do nothing if plot directory was last updated _after_ the specFile
-        # This assumes people don't modify the png_directory
-        # TODO: could traverse the mtime_pngdir and update all images created before file mtime
-        #    requires parsing the image directory tree, yikes!
         return
+
+    plotter = specplot.Plotter()
 
     try:
         logger('SPEC data file: ' + specFile)
@@ -174,6 +174,8 @@ def plotAllSpecFileScans(specFile):
     HREF_FORMAT += "<img src=\"%s\" width=\"150\" height=\"75\" alt=\"%s\"/>"
     HREF_FORMAT += "</a>"
 
+    shutil.copy(specFile, png_directory)
+
     for scan_number in sd.getScanNumbers():
         # TODO: was the data in _this_ scan changed since the last time the SPEC file was modified?
         #  Check the scan's date/time stamp and also if the plot exists.
@@ -187,12 +189,10 @@ def plotAllSpecFileScans(specFile):
         href = HREF_FORMAT % (basePlotFile, basePlotFile, altText)
         plotList.append(href)
         #print "specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile)
-        cmd = scan.scanCmd.strip()
-        cmd = cmd[:cmd.find(' ')]
         if needToMakePlot(fullPlotFile, mtime_specFile):
             try:
                 logger('  creating SPEC data scan image: ' + basePlotFile)
-                specplot.makeScanImage(scan, fullPlotFile)
+                plotter.plot_scan(scan, fullPlotFile)
                 newFileList.append(fullPlotFile)
             except:
                 exc = sys.exc_info()[1]
@@ -417,5 +417,5 @@ def developer_main():
 
 
 if __name__ == '__main__':
-    developer_main()
-    # main()
+#     developer_main()
+    main()
