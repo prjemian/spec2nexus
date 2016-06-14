@@ -354,6 +354,8 @@ class SpecDataFileHeader(object):
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line)
             if key is None:
+                # TODO: log message instead of raise exception
+                # https://github.com/prjemian/spec2nexus/issues/57
                 raise UnknownSpecFilePart("line %d: unknown header line: %s" % (i, line))
             elif key == '#E':
                 pass    # avoid recursion
