@@ -52,6 +52,28 @@ class Registry(object):
 class MacroPlotHandler(object):
     '''
     superclass to handle plotting of data collected using a specific SPEC macro
+    
+    The *macro* key (``self.macro``) must be set to the *exact* name
+    of the SPEC scan macro as recorded in the data file.  The *macro* key
+    must be unique amongst all instances of :class:`MacroPlotHandler`
+    so the software can pick the correct instance for plotting.
+    
+    Override any of these methods to customize the handling:
+    
+    ========================== ==================================================
+    method                     returns (as a string)
+    ========================== ==================================================
+    :ref:`~get_data_file_name` the name of the file with the actual data
+    :ref:`~get_plot_data`      retrieve default data from spec data file
+    :ref:`~get_macro`          the name of the SPEC scan macro used
+    :ref:`~get_plot_title`     the name for the top of the plot
+    :ref:`~get_plot_subtitle`  optional smaller text below the title
+    :ref:`~get_x_title`        text for the independent (horizontal) axis
+    :ref:`~get_y_title`        text for the dependent (vertical) axis
+    :ref:`~get_x_log`          True: axis is logarithmic, False: axis is linear
+    :ref:`~get_y_log`          True: axis is logarithmic, False: axis is linear
+    :ref:`~get_timestamp_str`  text representing when the scan was recorded
+    ========================== ==================================================
     '''
     
     macro = None    # must define in subclass
@@ -126,6 +148,7 @@ class MacroPlotHandler(object):
         return (x, y)
     
     def get_macro(self):
+        ' '
         return self.scan.get_macro_name()
     
     def get_plot_title(self):
@@ -169,7 +192,9 @@ class Plotter(object):
         '''
         macro = scan.get_macro_name()
         if not self.registry.exists(macro):
-            raise UndefinedMacroNameError(macro)
+            # raise UndefinedMacroNameError(macro)
+            # try a little harder: if no handler exists, try the default one anyway
+            self.registry.add(Macro_1D_Scan_HandlerFactory(macro))
 
         handler = self.registry.get(macro)
         handler.set_scan(scan)
@@ -177,15 +202,37 @@ class Plotter(object):
 
     def register_handlers(self):
         '''
-        sublcass Plotter() and override this method to add more handlers
+        subclass Plotter() and override this method to add more handlers
         '''
         registry = Registry()
-        registry.add(AscanHandler())
+        # this will happen by default, it's a demo of the default handling
+        # ascan = Macro_1D_Scan_HandlerFactory('ascan')
+        # registry.add(ascan)
         return registry
 
 
-class AscanHandler(MacroPlotHandler):
-    macro = 'ascan'
+class Macro_1D_Scan_HandlerFactory(MacroPlotHandler):
+    '''
+    creates an instance of :class:`MacroPlotHandler` with a defined macro name
+    
+    Use this convenience class to simplify the support of many common
+    SPEC scan macros that result in a 1-D scan where the plot should
+    be generated from the last column *v.* the first column.
+    
+    .. rubric:: Usage
+    
+    ::
+    
+        ascan = Macro_1D_Scan_HandlerFactory('ascan')
+    
+    To support a 2-D (or higher) scan, such as a mesh or image, make
+    a subclass of :class:`MacroPlotHandler` and override the appropriate
+    methods.
+    '''
+    
+    def __init__(self, macro):
+        MacroPlotHandler.__init__(self)
+        self.macro = macro
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -280,6 +327,8 @@ def main():
 
 if __name__ == '__main__':
     import sys
+    if not os.path.exists('__plots__'):
+        os.mkdir('__plots__')
     s = 'data/02_03_setup.dat 1 __plots__/image.png'
     for item in s.split():
         sys.argv.append(item)
