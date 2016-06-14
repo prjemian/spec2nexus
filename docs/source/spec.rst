@@ -338,6 +338,18 @@ This is an example of a 91-channel MCA data array with trivial (zero) values:
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
     0 0 0 0 0 0 0 0 0 0 0 
 
+Several MCA spectra may be written to a scan.  In this case, a number 
+follows **@A** indicating which spectrum, such as in this example with
+four spectra:
+
+.. code-block:: guess
+   :linenos:
+
+	@A1 0 0 0 0 0 0 35 0 0 35
+	@A2 0 0 0 0 0 0 0 35 0 35
+	@A3 0 0 35 35 0 0 0 0 0 0
+	@A4 0 0 0 0 0 35 35 0 35 0
+
 
 Supported header keys (command words)
 =====================================
