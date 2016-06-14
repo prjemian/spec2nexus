@@ -21,6 +21,8 @@ Provides
 * :ref:`spec`              : library: python binding to read SPEC [#]_ data files
 * :ref:`prjPySpec`         : library: legacy version of **pySpec**, frozen at version 2014.0623.0
 * :ref:`eznx`              : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
+* :ref:`specplot`          : command-line tool: plot a SPEC scan to an image file
+* :ref:`specplot_gallery`  : command-line tool: call **specplot** for all scans in a list of files, makes a web gallery
 
 .. [#] http://certif.com
 .. [#] http://nexusformat.org

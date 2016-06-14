@@ -66,9 +66,26 @@ To install in an alternate location::
 Required Libraries
 ##################
 
-========  =============================
-Library   URL
-========  =============================
-h5py      http://www.h5py.org
-numpy     http://numpy.scipy.org/
-========  =============================
+These libraries are required to write NeXus data files.
+They are not required to read SPEC data files.
+
+=============  =============================
+Library        URL
+=============  =============================
+h5py           http://www.h5py.org
+numpy          http://numpy.scipy.org/
+=============  =============================
+
+Optional Libraries
+##################
+
+These libraries are used by the :ref:`specplot <specplot>`
+and  :ref:`specplot_gallery <specplot_gallery>` modules
+of the *spec2nexus* package but are not required
+just to read SPEC data files or write NeXus data files.
+
+=============  =============================
+Library        URL
+=============  =============================
+MatPlotLib     http://matplotlib.org/
+=============  =============================
