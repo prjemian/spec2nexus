@@ -22,20 +22,11 @@ import os
 import shutil
 import sys
 
-try:
-    # better reporting of SEGFAULT
-    # http://faulthandler.readthedocs.org
-    import faulthandler
-    faulthandler.enable()
-    print "#= %d --faulthandler" % os.getpid() + "-"*10 + " module enabled"
-except ImportError, exc:
-    print "#= %d --faulthandler" % os.getpid() + "-"*10 + " module not imported"
-
+import spec
 import specplot
 
 
-MTIME_CACHE_FILE = 'mtime_cache.txt'    # goes in path: SPECPLOTS_DIR/MTIME_CACHE_FILE
-SPECPLOTS_DIR = None
+MTIME_CACHE_FILE = 'mtime_cache.txt'
 
 
 class DirectoryNotFoundError(ValueError): pass
@@ -48,16 +39,142 @@ class PlotSpecFileScans(object):
     :param [str] filelist: list of SPEC data files to be checked
     :param str plotDir: name of base directory to store output image thumbnails
     '''
-    
-    # TODO: refactor code below to be object
-    
+
     def __init__(self, filelist, plotDir = None):
         self.filelist = filelist
         self.plotDir = plotDir or os.getcwd()
-        pass
+        self.plotter = specplot.Plotter()
+
+        for specFile in filelist:
+            self.plot_all_scans(specFile)
+    
+    def _mtime_checkup_(self, specFile):
+        '''
+        check the mtime of various files to see if the plot needs to be made
+        '''
+        if not os.path.exists(specFile):
+            return
+    
+        # decide here if SPEC file needs to be opened for possible replot of scan data
+        mtime_cache = Cache_File_Mtime(self.plotDir)
+        if not mtime_cache.was_file_updated(specFile):
+            return
+    
+        # Don't replot if the plot newer than the data file modification time.
+        mtime_specFile = mtime_cache.get(specFile)
+        png_directory = self.get_PngDir(specFile)
+        if os.path.exists(png_directory):
+            mtime_pngdir = get_file_mtime(png_directory)
+        else:
+            mtime_pngdir = 0
+    
+        # compare mtime of data file with mtime of PNG directory
+        if mtime_pngdir > mtime_specFile:
+            # do nothing if plot directory was last updated _after_ the specFile
+            return
+        
+        return (mtime_specFile, mtime_cache, mtime_pngdir, png_directory)
+    
+    def plot_all_scans(self, specFile):
+        '''
+        plot all the recognized scans from the file named ``specFile``
+        '''
+        if not spec.is_spec_file(specFile):
+            return
+
+        answer = self._mtime_checkup_(specFile)
+        if answer is None:
+            return
+        mtime_specFile, mtime_cache, mtime_pngdir, png_directory = answer
+
+        try:
+            logger('SPEC data file: ' + specFile)
+            logger('  updating plots in directory: ' + png_directory)
+            logger('    mtime_specFile: ' + str(mtime_specFile))
+            logger('    mtime_pngdir:   ' + str(mtime_pngdir))
+            sd = specplot.openSpecFile(specFile)
+        except:
+            return    # could not open file, be silent about it
+        if len(sd.headers) == 0:    # no scan header found, again, silence
+            return
+    
+        plotList = []
+        newFileList = [] # list of all new files created
+    
+        if not os.path.exists(png_directory):
+            os.makedirs(png_directory)
+            logger('creating directory: ' + png_directory)
+        
+        shutil.copy(specFile, png_directory)
+    
+        for scan_number in sd.getScanNumbers():
+            # TODO: was the data in _this_ scan changed since the last time the SPEC file was modified?
+            #  Check the scan's date/time stamp and also if the plot exists.
+            #  For a scan N, the plot may exist if the scan was in progress at the last update.
+            #  For sure, if a plot for N+1 exists, no need to remake plot for scan N.  Thus:
+            #    Always remake if plot for scan N+1 does not exist
+            scan = sd.getScan(scan_number)
+            basePlotFile = 's' + str(scan.scanNum) + '.png'
+            fullPlotFile = os.path.join(png_directory, basePlotFile)
+            altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
+            href = self.href_format(basePlotFile, altText)
+            plotList.append(href)
+            #print "specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile)
+            if needToMakePlot(fullPlotFile, mtime_specFile):
+                try:
+                    logger('  creating SPEC data scan image: ' + basePlotFile)
+                    self.plotter.plot_scan(scan, fullPlotFile)
+                    newFileList.append(fullPlotFile)
+                except:
+                    exc = sys.exc_info()[1]
+                    msg = "ERROR: '%s' %s #%s" % (exc, specFile, scan.scanNum)
+                    # print msg
+                    plotList.pop()     # rewrite the default link
+                    plotList.append("<!-- " + msg + " -->")
+                    altText = str(exc) + ': ' + str(scan.scanNum) + ' ' + scan.scanCmd
+                    href = self.href_format(basePlotFile, altText)
+                    plotList.append(href)
+    
+        htmlFile = os.path.join(png_directory, "index.html")
+        if len(newFileList) or not os.path.exists(htmlFile):
+            logger('  creating/updating index.html file')
+            html = build_index_html(specFile, plotList)
+            f = open(htmlFile, "w")
+            f.write(html)
+            f.close()
+            newFileList.append(htmlFile)
+            
+        # touch to update the mtime on the png_directory
+        os.utime(png_directory, None)
+    
+    def get_PngDir(self, specFile):
+        '''
+        return the PNG directory based on the specFile
+        
+        :param str specFile: name of SPEC data file (relative or absolute)
+        '''
+        data_file_root_name = os.path.splitext(os.path.split(specFile)[1])[0]
+        date_str = get_SpecFileDate(specFile)
+        if date_str is None:
+            return
+        return self.getBaseDir(data_file_root_name, date_str)
+
+    def getBaseDir(self, basename, date):
+        '''
+        find the path based on the date in the spec file
+        '''
+        return os.path.join(self.plotDir, datePath(date), basename)
+    
+    def href_format(self, basePlotFile, altText):
+        href = '<a href="' + basePlotFile + '">'
+        href += '<img src="' + basePlotFile + '"'
+        href += ' width="150" height="75"'
+        href += ' alt="' + altText + '"/>'
+        href += '</a>'
+        return href
 
 
-class MtimeCache(object):
+class Cache_File_Mtime(object):
     '''
     maintain a list of all known data file modification times
     
@@ -89,7 +206,8 @@ class MtimeCache(object):
         '''write the cache to storage'''
         f = open(self.cache_file, 'w')
         for key, val in sorted(self.cache.items()):
-            f.write('%s\t%f\n' % (key, val))
+            t = str(key) + '\t' + str(val) + '\n'
+            f.write(t)
         f.close()
     
     def get(self, fname):
@@ -123,109 +241,6 @@ class MtimeCache(object):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def plotAllSpecFileScans(specFile):
-    '''
-    make standard plots for all scans in the specFile
-    
-    :param str specFile: name of SPEC data file (relative or absolute)
-    '''
-    if not os.path.exists(specFile):
-        return
-
-    # decide here if SPEC file needs to be opened for possible replot of scan data
-    mtime_cache = MtimeCache(SPECPLOTS_DIR)
-    if not mtime_cache.was_file_updated(specFile):
-        return
-
-    # Don't replot if the plot newer than the data file modification time.
-    mtime_specFile = mtime_cache.get(specFile)
-    png_directory = get_PngDir(specFile)
-    if os.path.exists(png_directory):
-        mtime_pngdir = get_file_mtime(png_directory)
-    else:
-        mtime_pngdir = 0
-
-    # compare mtime of data file with mtime of PNG directory
-    if mtime_pngdir > mtime_specFile:
-        # do nothing if plot directory was last updated _after_ the specFile
-        return
-
-    plotter = specplot.Plotter()
-
-    try:
-        logger('SPEC data file: ' + specFile)
-        logger('  updating plots in directory: ' + png_directory)
-        logger('    mtime_specFile: ' + str(mtime_specFile))
-        logger('    mtime_pngdir:   ' + str(mtime_pngdir))
-        sd = specplot.openSpecFile(specFile)
-    except:
-        return    # could not open file, be silent about it
-    if len(sd.headers) == 0:    # no scan header found, again, silence
-        return
-
-    plotList = []
-    newFileList = [] # list of all new files created
-
-    if not os.path.exists(png_directory):
-        os.makedirs(png_directory)
-        logger('creating directory: ' + png_directory)
-
-    HREF_FORMAT = "<a href=\"%s\">"
-    HREF_FORMAT += "<img src=\"%s\" width=\"150\" height=\"75\" alt=\"%s\"/>"
-    HREF_FORMAT += "</a>"
-
-    shutil.copy(specFile, png_directory)
-
-    for scan_number in sd.getScanNumbers():
-        # TODO: was the data in _this_ scan changed since the last time the SPEC file was modified?
-        #  Check the scan's date/time stamp and also if the plot exists.
-        #  For a scan N, the plot may exist if the scan was in progress at the last update.
-        #  For sure, if a plot for N+1 exists, no need to remake plot for scan N.  Thus:
-        #    Always remake if plot for scan N+1 does not exist
-        scan = sd.getScan(scan_number)
-        basePlotFile = "s%s.png" % scan.scanNum
-        fullPlotFile = os.path.join(png_directory, basePlotFile)
-        altText = "#%s: %s" % (scan.scanNum, scan.scanCmd)
-        href = HREF_FORMAT % (basePlotFile, basePlotFile, altText)
-        plotList.append(href)
-        #print "specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile)
-        if needToMakePlot(fullPlotFile, mtime_specFile):
-            try:
-                logger('  creating SPEC data scan image: ' + basePlotFile)
-                plotter.plot_scan(scan, fullPlotFile)
-                newFileList.append(fullPlotFile)
-            except:
-                exc = sys.exc_info()[1]
-                msg = "ERROR: '%s' %s #%s" % (exc, specFile, scan.scanNum)
-                # print msg
-                plotList.pop()     # rewrite the default link
-                plotList.append("<!-- " + msg + " -->")
-                altText = "%s: #%s %s" % (exc, scan.scanNum, scan.scanCmd)
-                href = HREF_FORMAT % (basePlotFile, basePlotFile, altText)
-                plotList.append(href)
-
-    htmlFile = os.path.join(png_directory, "index.html")
-    if len(newFileList) or not os.path.exists(htmlFile):
-        logger('  creating/updating index.html file')
-        html = build_index_html(specFile, plotList)
-        f = open(htmlFile, "w")
-        f.write(html)
-        f.close()
-        newFileList.append(htmlFile)
-        
-    # touch to update the mtime on the png_directory
-    os.utime(png_directory, None)
-
-
-def getBaseName(specFile):
-    '''
-    get the base plot name from the spec file name (no path or extension)
-    
-    :param str specFile: name of SPEC data file (relative or absolute)
-    '''
-    return os.path.splitext(os.path.basename(specFile))[0]
-
-
 def datePath(date):
     '''
     convert the date into a path: yyyy/mm
@@ -237,19 +252,6 @@ def datePath(date):
     yyyy = "%04d" % dateStr.tm_year
     mm = "%02d" % dateStr.tm_mon
     return os.path.join(yyyy, mm)
-
-
-def get_PngDir(specFile):
-    '''
-    return the PNG directory based on the specFile
-    
-    :param str specFile: name of SPEC data file (relative or absolute)
-    '''
-    data_file_root_name = os.path.splitext(os.path.split(specFile)[1])[0]
-    date_str = get_SpecFileDate(specFile)
-    if date_str is None:
-        return
-    return getBaseDir(data_file_root_name, date_str)
 
 
 def get_SpecFileDate(specFile):
@@ -276,16 +278,6 @@ def get_SpecFileDate(specFile):
     f.close()
 
     return line[2:].strip()  # 'Thu Jun 19 12:21:55 2014'
-
-
-def getBaseDir(basename, date):
-    '''
-    find the path based on the date in the spec file
-    '''
-    global SPECPLOTS_DIR
-
-    path = SPECPLOTS_DIR
-    return os.path.join(path, datePath(date), basename)
 
 
 def get_file_mtime(filename):
@@ -380,27 +372,26 @@ def main():
     global SPECPLOTS_DIR
 
     doc = __doc__.strip().splitlines()[0]
-    parser = argparse.ArgumentParser(description=doc)
+    p = argparse.ArgumentParser(description=doc)
     
-    parser.add_argument('specFiles',  
+    p.add_argument('specFiles',  
                         nargs='+',  
                         help="SPEC data file name(s)")
     
     pwd = os.getcwd()
     msg = 'base directory for output'
     msg += ' (default:' + pwd + ')'
-    parser.add_argument('-d', '--dir', help=msg)
+    p.add_argument('-d', '--dir', help=msg)
 
-    results = parser.parse_args()
-    SPECPLOTS_DIR = results.dir or pwd
+    args = p.parse_args()
 
-    log_file = os.path.join(SPECPLOTS_DIR, 'specplot_files_processing.log')
+    specplots_dir = args.dir or pwd
+
+    log_file = os.path.join(specplots_dir, 'specplot_files_processing.log')
     logging.basicConfig(filename=log_file, level=logging.INFO)
 
     logger('>'*10 + ' starting')
-    for specFile in results.specFiles:
-        #logger('checking SPEC data file: ' + specFile)
-        plotAllSpecFileScans(specFile)
+    PlotSpecFileScans(args.specFiles, specplots_dir)
     logger('<'*10 + ' finished')
 
 
@@ -410,7 +401,8 @@ def developer_main():
         os.mkdir(path)
     sys.argv.append('-d')
     sys.argv.append(path)
-    sys.argv.append('data/02_03_setup.dat')
+    sys.argv.append('data/writer_1_3.h5')
+#     sys.argv.append('data/02_03_setup.dat')
 #     sys.argv.append('data/03_06_JanTest.dat')
 #     sys.argv.append('data/lmn40.spe')
     main()
