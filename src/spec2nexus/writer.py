@@ -24,9 +24,9 @@ import h5py
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
 #CONTAINER_CLASS = 'NXlog'          # information that is recorded against time
-#CONTAINER_CLASS = 'NXnote'         # store additional information in a NeXus file
+CONTAINER_CLASS = 'NXnote'         # any additional freeform information not covered by the other base classes
 #CONTAINER_CLASS = 'NXparameters'   # Container for parameters, usually used in processing or analysis
-CONTAINER_CLASS = 'NXcollection'    # Use NXcollection to gather together any set of terms
+#CONTAINER_CLASS = 'NXcollection'    # Use NXcollection to gather together any set of terms
         
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
