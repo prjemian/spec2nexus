@@ -13,74 +13,144 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import spec             # read SPEC data files
 
 
-def retrieve_specScanData(scan):
-    '''retrieve default data from spec data file'''
-    x = scan.data[scan.column_first]
-    y = scan.data[scan.column_last]
-    return (x, y)
+__registry__ = None
 
 
-def makeScanImage(scan, plotFile):
+class UnexpectedObjectType(Exception): pass
+
+
+class Registry(object):
     '''
-    make an image from the SPEC scan object
+    register all the plot handlers
+    '''
     
-    :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
-    :param str plotFile: name of image file to write
-    '''
-    scanCmd = scan.scanCmd.split()[0]
-    if scanCmd == 'some_custom_scan_macro':  # future feature
-        # make simple image file of the data
-        pass
-    elif scanCmd in ('custom_scan', 'other_scan'):  # future feature
-        # make simple image file of the data
-        pass
-    else:
+    def __init__(self):
+        global __registry__
+        if __registry__ is None:    # singleton
+            __registry__ = {}
+        self.db = __registry__
+    
+    def add(self, value):
+        if not isinstance(value, PlotHandler):
+            raise UnexpectedObjectType('handler not a subclass of PlotHandler')
+        self.db[value.macro] = value
+    
+    def exists(self, key):
+        return key in self.db
+    
+    def get(self, key):
+        if not self.exists(key):
+            raise KeyError('not found: ' + key)
+        return self.db[key]
+
+
+class PlotHandler(object):
+    
+    macro = 'ascan'
+    # TODO: not quite right, needs a superclass that picks the right handler
+    
+    def __init__(self):
+        self.scan = None
+    
+    def set_scan(self, scan):
+        '''
+        assign the SPEC scan object
+        
+        :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
+        '''
+        if isinstance(scan, spec.SpecDataFileScan):
+            raise UnexpectedObjectType('scan object not a SpecDataFileScan')
+        self.scan = scan
+    
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
         # plot last column v. first column
-        plotData = retrieve_specScanData(scan)
-        if len(plotData) > 0:
+        x = self.scan.data[self.scan.column_first]
+        y = self.scan.data[self.scan.column_last]
+        return (x, y)
+    
+    def get_macro(self):
+        return self.scan.scanCmd.split()[0]
+    
+    def is_plottable(self, plotData):
+        '''
+        is there enough data to make a plot?
+        '''
+        return self.get_macro() == self.macro and len(plotData) > 0
+    
+    def get_data_file_name(self):
+        '''
+        the name of the file with the actual data
+        
+        Usually, this is the SPEC data file
+        but it *could* be something else
+        '''
+        return self.scan.header.parent.fileName
+        
+    def image(self, plotFile):
+        '''
+        make an image, if permissable, from the SPEC scan object
+        
+        :param str plotFile: name of image file to write
+        '''
+        plotData = self.get_plot_data()
+        if self.is_plottable(plotData):
             # only proceed if mtime of SPEC data file is newer than plotFile
-            mtime_sdf = os.path.getmtime(scan.header.parent.fileName)
+            mtime_sdf = os.path.getmtime(self.get_data_file_name())
             if os.path.exists(plotFile):
                 mtime_pf = os.path.getmtime(plotFile)
             else:
                 mtime_pf = 0
             if mtime_sdf > mtime_pf:
-                # TODO: check if this scan _needs_ to be updated
-                mpl__process_plotData(scan, plotData, plotFile)
-
-
-def mpl__process_plotData(scan, plotData, plotFile):
-    '''
-    make MatPlotLib line chart image from raw SPEC or FlyScan data
+                self.make_image(plotData, plotFile)
     
-    :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
-    :param obj plotData: tuple of x, y data: x & y are lists of numbers, same length
-    :param str plotFile: name of image file to write
-    '''
-    x, y = plotData
-    scan_macro = scan.scanCmd.split()[0]
-    if scan_macro in ('some_custom_log_lin_scan'):  # future feature
-        xlog = False
-        ylog = True
-        xtitle = scan.column_first
-        ytitle = scan.column_last
-    elif scan_macro in ('some_custom_log_log_scan', ):  # future feature
-        xlog = True
-        ylog = True
-        xtitle = r'$|\vec{Q}|, 1/\AA$'
-        ytitle = r'USAXS $R(|\vec{Q}|)$, a.u.'
-    else:
-        xlog = False
-        ylog = False
-        xtitle = scan.column_first
-        ytitle = scan.column_last
-    title = scan.specFile
-    subtitle = "#%s: %s" % (scan.scanNum, scan.scanCmd)
-    xy_plot(x, y,  plotFile, 
-                       title=title,  subtitle=subtitle, 
-                       xtitle=xtitle,  ytitle=ytitle, 
-                       xlog=xlog, ylog=ylog,
-                       timestamp_str=scan.date)
+    def get_plot_title(self):
+        ' '
+        return self.scan.specFile
+    
+    def get_plot_subtitle(self):
+        ' '
+        return '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
+    
+    def get_x_title(self):
+        ' '
+        return self.scan.column_first
+    
+    def get_y_title(self):
+        ' '
+        return self.scan.column_last
+    
+    def get_x_log(self):
+        ' '
+        return False
+    
+    def get_y_log(self):
+        ' '
+        return False
+    
+    def get_timestamp_str(self):
+        ' '
+        return self.scan.date
+        
+    def make_image(self, plotData, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        x, y = plotData
+        xy_plot(x, y,  plotFile, 
+               title=self.get_plot_title(),
+               subtitle=self.get_plot_subtitle(),
+               xtitle=self.get_x_title(),
+               ytitle=self.get_y_title(),
+               xlog=self.get_x_log(),
+               ylog=self.get_y_log(),
+               timestamp_str=self.get_timestamp_str())
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def openSpecFile(specFile):
@@ -165,28 +235,33 @@ def xy_plot(x, y,
     FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
 
 
+def process(specFile, scanNumber, plotFile):
+    # TODO: refactor the registry ode here
+    registry = Registry()
+    ascan_handler = PlotHandler()
+    registry.add(ascan_handler)
+
+    specData = openSpecFile(specFile)
+    scan = findScan(specData, scanNumber)
+    
+    ascan_handler.set_scan(scan)
+    ascan_handler.image(plotFile)
+
+
 def main():
     import argparse
     doc = __doc__.strip().splitlines()[0]
-    parser = argparse.ArgumentParser(description=doc)
-    parser.add_argument('specFile',    help="SPEC data file name")
-    parser.add_argument('scan_number', help="scan number in SPEC file", type=str)
-    parser.add_argument('plotFile',    help="output plot file name")
-    results = parser.parse_args()
-
-    specData = openSpecFile(results.specFile)
-    scan = findScan(specData, results.scan_number)
-    makeScanImage(scan, results.plotFile)
+    p = argparse.ArgumentParser(description=doc)
+    p.add_argument('specFile',    help="SPEC data file name")
+    p.add_argument('scan_number', help="scan number in SPEC file", type=str)
+    p.add_argument('plotFile',    help="output plot file name")
+    args = p.parse_args()
+    process(args.specFile, args.scan_number, args.plotFile)
 
 
 if __name__ == '__main__':
+    import sys
+    s = 'data/02_03_setup.dat 1 __plots__/image.png'
+    for item in s.split():
+        sys.argv.append(item)
     main()
-
-
-########### SVN repository information ###################
-# $Date: 2016-06-06 16:32:15 -0500 (Mon, 06 Jun 2016) $
-# $Author: jemian $
-# $Revision: 1360 $
-# $URL: https://subversion.xray.aps.anl.gov/small_angle/USAXS/livedata/specplot.py $
-# $Id: specplot.py 1360 2016-06-06 21:32:15Z jemian $
-########### SVN repository information ###################
