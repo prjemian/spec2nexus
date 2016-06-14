@@ -16,7 +16,8 @@ import spec             # read SPEC data files
 __registry__ = None
 
 
-class UnexpectedObjectType(Exception): pass
+class UnexpectedObjectTypeError(Exception): pass
+class UndefinedMacroNameError(Exception): pass
 
 
 class Registry(object):
@@ -31,8 +32,12 @@ class Registry(object):
         self.db = __registry__
     
     def add(self, value):
-        if not isinstance(value, PlotHandler):
-            raise UnexpectedObjectType('handler not a subclass of PlotHandler')
+        if not isinstance(value, MacroPlotHandler):
+            msg = 'handler not a subclass of MacroPlotHandler'
+            raise UnexpectedObjectTypeError(msg)
+        if value.macro is None:
+            msg = 'subclass must define a str value for *macro*'
+            raise UndefinedMacroNameError(msg)
         self.db[value.macro] = value
     
     def exists(self, key):
@@ -44,10 +49,12 @@ class Registry(object):
         return self.db[key]
 
 
-class PlotHandler(object):
+class MacroPlotHandler(object):
+    '''
+    superclass to handle plotting of data collected using a specific SPEC macro
+    '''
     
-    macro = 'ascan'
-    # TODO: not quite right, needs a superclass that picks the right handler
+    macro = None    # must define in subclass
     
     def __init__(self):
         self.scan = None
@@ -59,33 +66,14 @@ class PlotHandler(object):
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         '''
         if isinstance(scan, spec.SpecDataFileScan):
-            raise UnexpectedObjectType('scan object not a SpecDataFileScan')
+            raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         self.scan = scan
-    
-    def get_plot_data(self):
-        '''retrieve default data from spec data file'''
-        # plot last column v. first column
-        x = self.scan.data[self.scan.column_first]
-        y = self.scan.data[self.scan.column_last]
-        return (x, y)
-    
-    def get_macro(self):
-        return self.scan.scanCmd.split()[0]
     
     def is_plottable(self, plotData):
         '''
         is there enough data to make a plot?
         '''
         return self.get_macro() == self.macro and len(plotData) > 0
-    
-    def get_data_file_name(self):
-        '''
-        the name of the file with the actual data
-        
-        Usually, this is the SPEC data file
-        but it *could* be something else
-        '''
-        return self.scan.header.parent.fileName
         
     def image(self, plotFile):
         '''
@@ -103,6 +91,42 @@ class PlotHandler(object):
                 mtime_pf = 0
             if mtime_sdf > mtime_pf:
                 self.make_image(plotData, plotFile)
+        
+    def make_image(self, plotData, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        x, y = plotData
+        xy_plot(x, y,  plotFile, 
+               title=self.get_plot_title(),
+               subtitle=self.get_plot_subtitle(),
+               xtitle=self.get_x_title(),
+               ytitle=self.get_y_title(),
+               xlog=self.get_x_log(),
+               ylog=self.get_y_log(),
+               timestamp_str=self.get_timestamp_str())
+    
+    def get_data_file_name(self):
+        '''
+        the name of the file with the actual data
+        
+        Usually, this is the SPEC data file
+        but it *could* be something else
+        '''
+        return self.scan.header.parent.fileName
+    
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        # plot last column v. first column
+        x = self.scan.data[self.scan.column_first]
+        y = self.scan.data[self.scan.column_last]
+        return (x, y)
+    
+    def get_macro(self):
+        return self.scan.get_macro_name()
     
     def get_plot_title(self):
         ' '
@@ -131,24 +155,37 @@ class PlotHandler(object):
     def get_timestamp_str(self):
         ' '
         return self.scan.date
-        
-    def make_image(self, plotData, plotFile):
-        '''
-        make MatPlotLib chart image from the SPEC scan
-        
-        :param obj plotData: object returned from :meth:`get_plot_data`
-        :param str plotFile: name of image file to write
-        '''
-        x, y = plotData
-        xy_plot(x, y,  plotFile, 
-               title=self.get_plot_title(),
-               subtitle=self.get_plot_subtitle(),
-               xtitle=self.get_x_title(),
-               ytitle=self.get_y_title(),
-               xlog=self.get_x_log(),
-               ylog=self.get_y_log(),
-               timestamp_str=self.get_timestamp_str())
 
+
+class Plotter(object):
+    '''
+    '''
+    
+    def __init__(self):
+        self.registry = self.register_handlers()
+    
+    def plot_scan(self, scan, plotFile):
+        '''
+        '''
+        macro = scan.get_macro_name()
+        if not self.registry.exists(macro):
+            raise UndefinedMacroNameError(macro)
+
+        handler = self.registry.get(macro)
+        handler.set_scan(scan)
+        handler.image(plotFile)
+
+    def register_handlers(self):
+        '''
+        sublcass Plotter() and override this method to add more handlers
+        '''
+        registry = Registry()
+        registry.add(AscanHandler())
+        return registry
+
+
+class AscanHandler(MacroPlotHandler):
+    macro = 'ascan'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -159,15 +196,6 @@ def openSpecFile(specFile):
     '''
     sd = spec.SpecDataFile(specFile)
     return sd
-
-
-def findScan(sd, n):
-    '''
-    return the first scan with scan number "n"
-    from the spec data file object or None
-    '''
-    scan = sd.getScan(str(n))
-    return scan
 
 
 def xy_plot(x, y, 
@@ -235,25 +263,6 @@ def xy_plot(x, y,
     FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
 
 
-def register_handlers():
-    # TODO: refactor the registry code here
-    registry = Registry()
-    registry.add(PlotHandler())
-    return registry
-
-
-def process(specFile, scanNumber, plotFile):
-    # TODO: refactor the registry code here
-    registry = register_handlers()
-
-    specData = openSpecFile(specFile)
-    scan = findScan(specData, scanNumber)
-    ascan = registry.get('ascan')
-    
-    ascan.set_scan(scan)
-    ascan.image(plotFile)
-
-
 def main():
     import argparse
     doc = __doc__.strip().splitlines()[0]
@@ -262,12 +271,16 @@ def main():
     p.add_argument('scan_number', help="scan number in SPEC file", type=str)
     p.add_argument('plotFile',    help="output plot file name")
     args = p.parse_args()
-    process(args.specFile, args.scan_number, args.plotFile)
+    
+    sfile = openSpecFile(args.specFile)
+    scan = sfile.getScan(args.scan_number)
+    plotter = Plotter()
+    plotter.plot_scan(scan, args.plotFile)
 
 
 if __name__ == '__main__':
-#     import sys
-#     s = 'data/02_03_setup.dat 1 __plots__/image.png'
-#     for item in s.split():
-#         sys.argv.append(item)
+    import sys
+    s = 'data/02_03_setup.dat 1 __plots__/image.png'
+    for item in s.split():
+        sys.argv.append(item)
     main()
