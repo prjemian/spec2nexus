@@ -7,7 +7,8 @@ Change History
 Production
 **********
 
-:2016.0615.0: `issue #56 <https://github.com/prjemian/spec2nexus/issues/56>`_: add *specplot* support,
+:2016.0615.0: `issue #57 <https://github.com/prjemian/spec2nexus/issues/57>`_: keep information from unrecognized control lines,
+              `issue #56 <https://github.com/prjemian/spec2nexus/issues/56>`_: add *specplot* support,
               `issue #55 <https://github.com/prjemian/spec2nexus/issues/55>`_: accept arbitrary number of MCA spectra
 :2016.0601.0: match complete keys, use unix EOL internally, do not fail if no metadata
 :2016.0216.0: `issue #36 <https://github.com/prjemian/spec2nexus/issues/36>`_: identify NIAC2014-compliant NeXus files
