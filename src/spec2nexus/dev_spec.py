@@ -46,7 +46,7 @@ def developer_test(spec_file_name = None):
     print '-'*70
     # now open the file and read it
     test = spec.SpecDataFile(spec_file_name)
-    scan = test.scans[2]
+    scan = test.getScan(1)
     scan.interpret()
     #print scan.UXML_root
     #print prettify(scan.UXML_root)
@@ -81,9 +81,10 @@ def developer_test(spec_file_name = None):
 
 
 if __name__ == "__main__":
-    fname = 'test_3.spec'
-    spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
-    os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
-    full_name = os.path.join(spec_dir, fname)
+    # fname = 'test_3.spec'
+    # spec_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', 'uxml', ))
+    # os.environ['SPEC2NEXUS_PLUGIN_PATH'] = spec_dir
+    # full_name = os.path.join(spec_dir, fname)
     full_name = None
+    full_name = 'data/xpcs_plugin_sample.spec'
     developer_test(full_name)
