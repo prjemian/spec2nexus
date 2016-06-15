@@ -1,3 +1,15 @@
+#!/usr/bin/env python 
+# -*- coding: utf-8 -*-
+
+#-----------------------------------------------------------------------------
+# :author:    John Hammonds
+# :email:     JPHammonds@anl.gov
+#-----------------------------------------------------------------------------
+
+'''
+SPEC data file control lines unique to the APS XPCS instrument
+'''
+
 from spec2nexus.plugin import ControlLineHandler, strip_first_word
 from spec2nexus.eznx import makeGroup
 from spec2nexus.spec import SpecDataFileHeader
