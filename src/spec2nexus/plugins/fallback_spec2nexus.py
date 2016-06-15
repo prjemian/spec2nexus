@@ -15,10 +15,10 @@
 Fallback handling for any SPEC data file control lines not recognized by other handlers
 '''
 
-
+from collections import OrderedDict
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.eznx import makeGroup
-from spec2nexus.spec import SpecDataFileHeader, UNRECOGNIZED_KEY
+from spec2nexus.spec import SpecDataFileHeader, UNRECOGNIZED_KEY, SpecDataFileScan
 
 class UnrecognizedControlLine(ControlLineHandler):
     '''unrecognized control line'''
@@ -30,13 +30,15 @@ class UnrecognizedControlLine(ControlLineHandler):
         if not hasattr(spec_obj, '_unrecognized'):
             spec_obj._unrecognized = []
         spec_obj._unrecognized.append(text)
-        if isinstance(spec_obj, SpecDataFileHeader):
+        if isinstance(spec_obj, SpecDataFileHeader) or isinstance(spec_obj, SpecDataFileScan):
             spec_obj.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''write the data in a NeXus group named ``unrecognized``'''
-        desc = "SPEC data file control lines not recognized by other handlers"
+        desc = "SPEC data file control lines not otherwise recognized"
         nxclass = 'NXnote'
         group = makeGroup(h5parent, 'unrecognized', nxclass, description=desc)
-        dd = {'u' + str(i): value for i, value in enumerate(scan._unrecognized)}
+        dd = OrderedDict()
+        for i, value in enumerate(scan._unrecognized):
+            dd['u' + str(i)] = value
         writer.save_dict(group, dd)

@@ -21,6 +21,7 @@ args = 'data/02_03_setup.dat  -f --verbose   -s 46'
 args = 'data/33id_spec.dat  -f --verbose   -s 1'
 args = 'data/spectra_example.dat  -f --verbose   -s 1'
 args = 'data/mca_spectra_example.dat  -f --verbose   -s 1'
+args = 'data/xpcs_plugin_sample.spec -f --verbose  -s 1'
 for _ in args.split():
     sys.argv.append(_)
 
