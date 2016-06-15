@@ -82,7 +82,6 @@ class Writer(object):
                 pick_first_entry = False
                 eznx.addAttributes(root, default='S'+str(key))
             if 'data' not in nxentry:
-                # resolve issue #45 here
                 # NXentry MUST have a NXdata group with data for default plot
                 nxdata = eznx.makeGroup(nxentry, 
                                         'data', 
