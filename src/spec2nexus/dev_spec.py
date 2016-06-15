@@ -43,7 +43,7 @@ def developer_test(spec_file_name = None):
         #spec_file_name = os.path.join(spec_dir, '130123B_2.spc')
         spec_file_name = os.path.join(spec_dir, 'user6idd.dat')
         os.chdir(spec_dir)
-    print '-'*70
+        print '-'*70
     # now open the file and read it
     test = spec.SpecDataFile(spec_file_name)
     scan = test.getScan(1)
