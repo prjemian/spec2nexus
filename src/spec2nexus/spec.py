@@ -122,6 +122,7 @@ from spec2nexus.utils import get_all_plugins
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
+UNRECOGNIZED_KEY = 'unrecognized control line'
 
 
 class SpecDataFileNotFound(IOError): 
@@ -349,14 +350,16 @@ class SpecDataFileHeader(object):
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
-        for i, line in enumerate(self.raw.splitlines(), start=1):
+        for _i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line)
             if key is None:
-                # TODO: log message instead of raise exception
+                # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
-                raise UnknownSpecFilePart("line %d: unknown header line: %s" % (i, line))
+                # raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))
+                key = UNRECOGNIZED_KEY
+                self.parent.plugin_manager.process(key, line, self)
             elif key == '#E':
                 pass    # avoid recursion
             else:
@@ -464,14 +467,18 @@ class SpecDataFileScan(object):
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
         lines = self.raw.splitlines()
-        for i, line in enumerate(lines, start=1):
+        for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line.lstrip())
             if key is None:
-                __s__ = '<' + line + '>'
-                _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), i, line)
+                # __s__ = '<' + line + '>'
+                # _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)
                 #raise UnknownSpecFilePart(_msg)
+                # log message instead of raise exception
+                # https://github.com/prjemian/spec2nexus/issues/57
+                key = UNRECOGNIZED_KEY
+                self.parent.plugin_manager.process(key, line, self)
             elif key != '#S':        # avoid recursion
                 # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)

@@ -230,12 +230,12 @@ class PluginManager(object):
             module_obj = imp.load_source(k, v)
             try:
                 member_list = inspect.getmembers(module_obj)
-                for k, class_obj in member_list:
+                for kk, class_obj in member_list:
                     if not inspect.isclass(class_obj):
                         continue
                     if not isControlLineHandler(class_obj):
                         continue
-                    if k is 'ControlLineHandler':
+                    if kk is 'ControlLineHandler':
                         continue
                     self.register(class_obj)
             except AttributeError:
