@@ -1009,15 +1009,24 @@ def data_lines_postprocessing(scan):
     # gather up any continuation lines
     dl = '\n'.join(scan.data_lines).replace('\\\n', ' ')
     if dl.find('@A') > -1:
-        # Can there be more than 1 MCA spectrum specified?
-        scan.data['_mca_'] = []
+        # There can be more than 1 MCA spectrum specified
+        # scan.data['_mca_'] = {}  keys: mca or mca1, mca2, ...
+        scan.data['_mca_'] = {}
 
     # interpret the data lines from the body of the scan
     for _, values in enumerate(dl.splitlines()):
         if values.startswith('@A'):
+            # which MCA spectrum is THIS one?
+            parts = values.split()
+            if parts[0] == '@A':                 # @A: mca
+                key = 'mca'
+            else:
+                key = 'mca' + parts[0][2:]       # @A1: mca1, @A2: mca2, ...
+            if key not in scan.data['_mca_']:
+                scan.data['_mca_'][key] = []
             # accumulate this spectrum
-            mca_spectrum = map(float, values[2:].split())
-            scan.data['_mca_'].append(mca_spectrum)
+            mca_spectrum = map(float, parts[1:])
+            scan.data['_mca_'][key].append(mca_spectrum)
         else:
             try:
                 buf = scan._interpret_data_row(values)
@@ -1025,7 +1034,7 @@ def data_lines_postprocessing(scan):
                     # only keep complete rows
                     for label, val in buf.items():
                         scan.data[label].append(val)
-            except ValueError, exc:
+            except ValueError, _exc:
                 pass    # ignore bad data lines (could save it as such ...)
     scan.addH5writer('scan data', data_lines_writer)
 

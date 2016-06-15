@@ -24,9 +24,9 @@ import h5py
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
 #CONTAINER_CLASS = 'NXlog'          # information that is recorded against time
-#CONTAINER_CLASS = 'NXnote'         # store additional information in a NeXus file
+CONTAINER_CLASS = 'NXnote'         # any additional freeform information not covered by the other base classes
 #CONTAINER_CLASS = 'NXparameters'   # Container for parameters, usually used in processing or analysis
-CONTAINER_CLASS = 'NXcollection'    # Use NXcollection to gather together any set of terms
+#CONTAINER_CLASS = 'NXcollection'    # Use NXcollection to gather together any set of terms
         
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -191,12 +191,9 @@ class Writer(object):
         return signal, axis
     
     def mca_spectra(self, nxdata, scan, primary_axis_label):
-        '''*internal*: parse for optional MCA spectra'''
-        if '_mca_' in scan.data:        # check for it
-            axes = primary_axis_label + ':' + '_mca_channel_'
-            channels = np.arange(1, len(scan.data['_mca_'][0])+1, dtype=int)
-            data = scan.data['_mca_']
-            self.write_ds(nxdata, '_mca_', data, axes=axes)
+        '''*internal*: parse for optional 2-D MCA spectra'''
+        if '_mca_' in scan.data:
+            # calibration for all spectra
             a, b, c = 0, 0, 0
             if hasattr(scan, 'MCA'):
                 mca = scan.MCA
@@ -206,8 +203,21 @@ class Writer(object):
                     c = mca['CALIB'].get('c', 0)
             if a == b and b == c and a == 0:
                 a, b, c = 1, 0, 0
-            _mca_x_ = a + channels * (b + channels * c)
-            self.write_ds(nxdata, '_mca_channel_', channels, units = 'channel')
+
+            # save each spectrum
+            for key, spectrum in sorted(scan.data['_mca_'].items()):
+                ds_name = '_' + key + '_'
+                axes = primary_axis_label + ':' + ds_name + 'channel_'
+                self.write_ds(nxdata, ds_name, spectrum, axes=axes, units = 'counts')
+                
+                # save calibrated channel data for each spectrum, in case spectra are different lengths
+                # _mca_     _mca_channel_
+                # _mca1_    _mca1_channel_
+                # _mca2_    _mca2_channel_
+                # ...
+                channels = np.arange(1, len(spectrum[0])+1, dtype=int)
+                _mca_x_ = a + channels * (b + channels * c)
+                self.write_ds(nxdata, ds_name + 'channel_', channels, units = 'channel')
     
     def mesh(self, nxdata, scan):
         '''*internal*: data parser for 2-D mesh and hklmesh'''
@@ -258,14 +268,17 @@ class Writer(object):
             signal = utils.clean_name(scan.column_last)
             axes = ':'.join([label1, label2])
 
-        if '_mca_' in scan.data:    # 3-D array
-            num_channels = len(scan.data['_mca_'][0])
-            data_shape.append(num_channels)
-            mca = np.array(scan.data['_mca_'])
-            data = utils.reshape_data(mca, data_shape)
-            channels = range(1, num_channels+1)
-            self.write_ds(nxdata, '_mca_', data, axes=axes+':'+'_mca_channel_')
-            self.write_ds(nxdata, '_mca_channel_', channels, units='channel')
+        if '_mca_' in scan.data:    # 3-D array(s)
+            # save each spectrum
+            for key, spectrum in sorted(scan.data['_mca_'].items()):
+                num_channels = len(spectrum[0])
+                data_shape.append(num_channels)
+                mca = np.array(spectrum)
+                data = utils.reshape_data(mca, data_shape)
+                channels = range(1, num_channels+1)
+                ds_name = '_' + key + '_'
+                self.write_ds(nxdata, ds_name, data, axes=axes+':'+ds_name+'channel_', units='counts')
+                self.write_ds(nxdata, ds_name+'channel_', channels, units='channel')
 
         return signal, axes
     
