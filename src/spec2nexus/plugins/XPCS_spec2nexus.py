@@ -1,6 +1,7 @@
 from spec2nexus.plugin import ControlLineHandler, strip_first_word
 from spec2nexus.eznx import makeGroup
 from spec2nexus.spec import SpecDataFileHeader
+from spec2nexus.spec import SpecDataFileScan
 
 class XPCS_VA(ControlLineHandler):
     '''**#VA**'''
@@ -69,3 +70,42 @@ class XPCS_VE(ControlLineHandler):
         for item, value in scan.VE.items():
             dd[item] = map(str, value.split())
         writer.save_dict(group, dd)
+
+class XPCS_XPCS(ControlLineHandler):
+    '''
+        #XPCS
+    '''
+    
+    key = '#XPCS'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        if not hasattr(spec_obj, 'XPCS'):
+            spec_obj.XPCS = {}
+        splitWord = strip_first_word(text).split()
+        spec_obj.XPCS[splitWord[0]] = splitWord[1:]
+        if isinstance(spec_obj, SpecDataFileScan):
+            spec_obj.addH5writer(self.key, self.writer)
+        
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        pass
+    
+
+class XPCS_CCD(ControlLineHandler):
+    '''
+        #CCD
+    '''
+    
+    key = '#CCD'
+    
+    def process(self, text, spec_obj, *args, **kws):
+        if not hasattr(spec_obj, 'CCD'):
+            spec_obj.CCD = {}
+        splitWord = strip_first_word(text).split()
+        spec_obj.CCD[splitWord[0]] = splitWord[1:]
+        if isinstance(spec_obj, SpecDataFileScan):
+            spec_obj.addH5writer(self.key, self.writer)
+        
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        pass
+    
+    
