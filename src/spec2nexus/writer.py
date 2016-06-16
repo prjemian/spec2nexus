@@ -58,6 +58,7 @@ class Writer(object):
                 # attributes
                 S1:NXentry
                     @default="data"
+                    definition="NXspecdata"
                     # attributes and metadata fields
                     data:NXdata
                         @signal=<name of signal field>
@@ -77,6 +78,10 @@ class Writer(object):
         pick_first_entry = True
         for key in scan_list:
             nxentry = eznx.makeGroup(root, 'S'+str(key), 'NXentry')
+            eznx.makeDataset(nxentry, 
+                             'definition', 
+                             'NXspecdata', 
+                             description='NeXus application definition')
             self.save_scan(nxentry, self.spec.getScan(key))
             if pick_first_entry:
                 pick_first_entry = False
@@ -112,7 +117,9 @@ class Writer(object):
             SPEC_date = utils.iso8601(header0.date),
             SPEC_comments = '\n'.join(header0.comments),
             SPEC_num_headers = len(self.spec.headers),
-            h5py_version = h5py.__version__
+            h5py_version = h5py.__version__,
+            HDF5_Version = h5py.version.hdf5_version,
+            numpy_version = h5py.version.numpy,
             )
         try:
             c = header0.comments[0]
