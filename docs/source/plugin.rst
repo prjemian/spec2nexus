@@ -12,8 +12,8 @@ One example is support for the :ref:`UNICAT-style <unicat_plugin>` of metadata
 provided in the scan header.
 
 Plugins are now used to handle all control lines in :mod:`spec2nexus.spec`.
-Any control line encountered but not recognized will raise a
-:class:`~spec2nexus.spec.UnknownSpecFilePart` exception.
+Any control line encountered but not recognized will be placed as text
+in a NeXus **NXnote** group named ``unrecognized``.
 
 
 .. _supplied_plugins:
