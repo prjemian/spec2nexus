@@ -63,16 +63,16 @@ class MacroPlotHandler(object):
     ========================== ==================================================
     method                     returns (as a string)
     ========================== ==================================================
-    :ref:`~get_data_file_name` the name of the file with the actual data
-    :ref:`~get_plot_data`      retrieve default data from spec data file
-    :ref:`~get_macro`          the name of the SPEC scan macro used
-    :ref:`~get_plot_title`     the name for the top of the plot
-    :ref:`~get_plot_subtitle`  optional smaller text below the title
-    :ref:`~get_x_title`        text for the independent (horizontal) axis
-    :ref:`~get_y_title`        text for the dependent (vertical) axis
-    :ref:`~get_x_log`          True: axis is logarithmic, False: axis is linear
-    :ref:`~get_y_log`          True: axis is logarithmic, False: axis is linear
-    :ref:`~get_timestamp_str`  text representing when the scan was recorded
+    :meth:`get_data_file_name` the name of the file with the actual data
+    :meth:`get_plot_data`      retrieve default data from spec data file
+    :meth:`get_macro`          the name of the SPEC scan macro used
+    :meth:`get_plot_title`     the name for the top of the plot
+    :meth:`get_plot_subtitle`  optional smaller text below the title
+    :meth:`get_x_title`        text for the independent (horizontal) axis
+    :meth:`get_y_title`        text for the dependent (vertical) axis
+    :meth:`get_x_log`          True: axis is logarithmic, False: axis is linear
+    :meth:`get_y_log`          True: axis is logarithmic, False: axis is linear
+    :meth:`get_timestamp_str`  text representing when the scan was recorded
     ========================== ==================================================
     '''
     

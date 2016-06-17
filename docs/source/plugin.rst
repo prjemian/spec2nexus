@@ -27,8 +27,10 @@ These plugin modules are supplied:
    :nosignatures:
    
    ~spec2nexus.plugins.spec_common_spec2nexus
+   ~spec2nexus.plugins.fallback_spec2nexus
    ~spec2nexus.plugins.unicat_spec2nexus
    ~spec2nexus.plugins.uim_spec2nexus
+   ~spec2nexus.plugins.XPCS_spec2nexus
 
 .. toctree::
    :maxdepth: 2
@@ -86,9 +88,13 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_ChannelInformation
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_CountTime
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA_RegionOfInterest
+   ~spec2nexus.plugins.fallback_spec2nexus.UnrecognizedControlLine
    ~spec2nexus.plugins.unicat_spec2nexus.UNICAT_MetadataMnemonics
    ~spec2nexus.plugins.unicat_spec2nexus.UNICAT_MetadataValues
    ~spec2nexus.plugins.uim_spec2nexus.UIM_generic
+   ~spec2nexus.plugins.XPCS_spec2nexus.XPCS_VA
+   ~spec2nexus.plugins.XPCS_spec2nexus.XPCS_VD
+   ~spec2nexus.plugins.XPCS_spec2nexus.XPCS_VE
 
 .. [#] Compare this list with :ref:`plugin_list`
 
