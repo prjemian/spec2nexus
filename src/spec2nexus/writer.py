@@ -75,13 +75,13 @@ class Writer(object):
         :param [int] scanlist: list of scan numbers to be read
         '''
         root = eznx.makeFile(hdf_file, **self.root_attributes())
-        eznx.makeDataset(root, 
-                         'definition', 
-                         'NXspecdata', 
-                         description='NeXus application definition')
         pick_first_entry = True
         for key in scan_list:
             nxentry = eznx.makeGroup(root, 'S'+str(key), 'NXentry')
+            eznx.makeDataset(nxentry, 
+                             'definition', 
+                             'NXspecdata', 
+                             description='NeXus application definition (status pending)')
             self.save_scan(nxentry, self.spec.getScan(key))
             if pick_first_entry:
                 pick_first_entry = False
