@@ -119,7 +119,7 @@ class Writer(object):
             SPEC_num_headers = len(self.spec.headers),
             h5py_version = h5py.__version__,
             HDF5_Version = h5py.version.hdf5_version,
-            numpy_version = h5py.version.numpy,
+            numpy_version = h5py.version.numpy.version.full_version,
             )
         try:
             c = header0.comments[0]
