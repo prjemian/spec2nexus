@@ -1,5 +1,5 @@
 '''
-Unit test for XPCS plugins
+Unit dev for XPCS plugins
 '''
 
 import unittest
@@ -14,6 +14,7 @@ class Test(unittest.TestCase):
         self.datapath = os.path.join(self.basepath, 'data')
         self.xpcsPluginSample = os.path.join(self.datapath, 
                                              'xpcs_plugin_sample.spec')
+        print self.xpcsPluginSample
 
 
     def tearDown(self):
@@ -73,8 +74,14 @@ class Test(unittest.TestCase):
         self.assertEqual(VE1[1],"se2t")
         self.assertEqual(VE1[2],"se2o")
         self.assertEqual(VE1[3],"se2i")
-
-
+        
+    def testXPCS(self):
+        print 'testXPCS'
+        sd = SpecDataFile(self.xpcsPluginSample)
+        scan = sd.scans['7']
+        print dir(scan)
+        print scan.XPCS
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
