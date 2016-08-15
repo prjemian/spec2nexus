@@ -7,6 +7,10 @@ Change History
 Production
 **********
 
+:2016.0615.1: `issue #57 <https://github.com/prjemian/spec2nexus/issues/57>`_: keep information from unrecognized control lines,
+              `issue #56 <https://github.com/prjemian/spec2nexus/issues/56>`_: add *specplot* support,
+              `issue #55 <https://github.com/prjemian/spec2nexus/issues/55>`_: accept arbitrary number of MCA spectra
+:2016.0601.0: match complete keys, use unix EOL internally, do not fail if no metadata
 :2016.0216.0: `issue #36 <https://github.com/prjemian/spec2nexus/issues/36>`_: identify NIAC2014-compliant NeXus files
 :2016.0210.0: bugfix: eznx.makeGroup() now correctly sets attributes on new group + documentation for NIAC2014 attributes
 :2016.0204.0: (`#45 <https://github.com/prjemian/spec2nexus/issues/45>`_) handle case when no data points in scan , 

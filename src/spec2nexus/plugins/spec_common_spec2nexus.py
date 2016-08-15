@@ -23,9 +23,11 @@ SPEC data file standard control lines
 import re
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.scanf import scanf
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
 from spec2nexus.utils import strip_first_word, iso8601
-from spec2nexus.scanf import scanf
+from spec2nexus.writer import CONTAINER_CLASS
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -202,7 +204,7 @@ class SPEC_Geometry(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **G** in the *NXentry* group, such as */S1/G*
+    * *NXnote* group named **G** in the *NXentry* group, such as */S1/G*
       
       * Datasets created from dictionary <scan>.G 
         (indexed by number from the scan block, such as ``G0``, ``G1``, ...).
@@ -265,7 +267,7 @@ class SPEC_CounterNames(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
+    * *NXnote* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
       
       * datasets with names supplied as SPEC counter mnemonics, string values supplied as SPEC counter names
 
@@ -290,7 +292,7 @@ class SPEC_CounterNames(ControlLineHandler):
         desc = 'cross-reference SPEC counter mnemonics and names'
         comment = 'keys are SPEC counter mnemonics, values are SPEC counter names'
         if nxclass is None:
-            nxclass = 'NXcollection'
+            nxclass = CONTAINER_CLASS
         group = makeGroup(h5parent, "counter_cross_reference", nxclass, 
                           description=desc, comment=comment)
         for key, value in sorted(header.counter_xref.items()):
@@ -307,7 +309,7 @@ class SPEC_CounterMnemonics(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
+    * *NXnote* group named **counter_cross_reference** in the *NXentry* group, such as */S1/counter_cross_reference*
       
       * datasets with names supplied as SPEC counter mnemonics, string values supplied as SPEC counter names
 
@@ -332,7 +334,7 @@ class SPEC_CounterMnemonics(ControlLineHandler):
         desc = 'cross-reference SPEC counter mnemonics and names'
         comment = 'keys are SPEC counter mnemonics, values are SPEC counter names'
         if nxclass is None:
-            nxclass = 'NXcollection'
+            nxclass = CONTAINER_CLASS
         group = makeGroup(h5parent, "counter_cross_reference", nxclass, 
                           description=desc, comment=comment)
         for key, value in sorted(header.counter_xref.items()):
@@ -446,11 +448,11 @@ class SPEC_PositionerNames(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **positioners** in the *NXentry* group, such as */S1/positioners*
+    * *NXnote* group named **positioners** in the *NXentry* group, such as */S1/positioners*
       
       * datasets created from dictionary <scan>.positioner
 
-    * *NXcollection* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
+    * *NXnote* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
       
       * datasets with names supplied as SPEC positioner mnemonics, string values supplied as SPEC positioner names
 
@@ -472,7 +474,7 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
+    * *NXnote* group named **positioner_cross_reference** in the *NXentry* group, such as */S1/positioner_cross_reference*
       
       * datasets with names supplied as SPEC positioner mnemonics, string values supplied as SPEC positioner names
 
@@ -497,7 +499,7 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
         desc = 'cross-reference SPEC positioner mnemonics and names'
         comment = 'keys are SPEC positioner mnemonics, values are SPEC positioner names'
         if nxclass is None:
-            nxclass = 'NXcollection'
+            nxclass = CONTAINER_CLASS
         group = makeGroup(h5parent, "positioner_cross_reference", nxclass, 
                           description=desc, comment=comment)
         for key, value in sorted(header.positioner_xref.items()):
@@ -526,7 +528,7 @@ class SPEC_Positioners(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **positioners** in the *NXentry* group, such as */S1/positioners*
+    * *NXnote* group named **positioners** in the *NXentry* group, such as */S1/positioners*
       
       * datasets created from dictionary <scan>.positioner
 
@@ -782,7 +784,7 @@ class SPEC_MCA_Array(ControlLineHandler):
 
     '''
 
-    key = '@A'
+    key = r'@A\d*'
     # continued lines will be matched by SPEC_DataLine
     # process these lines only after all lines have been read
 
@@ -811,7 +813,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
     HDF5/NeXus REPRESENTATION
     
     * defines a dimension scale for MCA data
-    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+    * *NXnote* group named **MCA** in the *NXentry* group, such as */S1/MCA*
       
       * Dataset **calib_a** : *float*
       * Dataset **calib_b** : *float*
@@ -859,7 +861,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+    * *NXnote* group named **MCA** in the *NXentry* group, such as */S1/MCA*
       
       * Dataset **number_saved** : *int* number of channels saved
       * Dataset **first_saved** : *int* first channel saved
@@ -907,7 +909,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **MCA** in the *NXentry* group, such as */S1/MCA*
+    * *NXnote* group named **MCA** in the *NXentry* group, such as */S1/MCA*
       
       * Dataset **preset_time** : *float*
       * Dataset **elapsed_live_time** : *float*
@@ -951,8 +953,8 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group **ROI** in 
-      in *NXcollection* group named **MCA** 
+    * *NXnote* group **ROI** in 
+      in *NXnote* group named **MCA** 
       in the *NXentry* group, such as */S1/MCA/ROI*
       
       * Dataset **{ROI_name}** : *int* [first_chan, last_chan]
@@ -1009,15 +1011,24 @@ def data_lines_postprocessing(scan):
     # gather up any continuation lines
     dl = '\n'.join(scan.data_lines).replace('\\\n', ' ')
     if dl.find('@A') > -1:
-        # Can there be more than 1 MCA spectrum specified?
-        scan.data['_mca_'] = []
+        # There can be more than 1 MCA spectrum specified
+        # scan.data['_mca_'] = {}  keys: mca or mca1, mca2, ...
+        scan.data['_mca_'] = {}
 
     # interpret the data lines from the body of the scan
     for _, values in enumerate(dl.splitlines()):
         if values.startswith('@A'):
+            # which MCA spectrum is THIS one?
+            parts = values.split()
+            if parts[0] == '@A':                 # @A: mca
+                key = 'mca'
+            else:
+                key = 'mca' + parts[0][2:]       # @A1: mca1, @A2: mca2, ...
+            if key not in scan.data['_mca_']:
+                scan.data['_mca_'][key] = []
             # accumulate this spectrum
-            mca_spectrum = map(float, values[2:].split())
-            scan.data['_mca_'].append(mca_spectrum)
+            mca_spectrum = map(float, parts[1:])
+            scan.data['_mca_'][key].append(mca_spectrum)
         else:
             try:
                 buf = scan._interpret_data_row(values)
@@ -1025,7 +1036,7 @@ def data_lines_postprocessing(scan):
                     # only keep complete rows
                     for label, val in buf.items():
                         scan.data[label].append(val)
-            except ValueError, exc:
+            except ValueError, _exc:
                 pass    # ignore bad data lines (could save it as such ...)
     scan.addH5writer('scan data', data_lines_writer)
 

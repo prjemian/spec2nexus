@@ -24,9 +24,9 @@ __author_name__  = __author__
 __author_email__ = __email__
 __url__          = u'http://spec2nexus.readthedocs.org'
 #__download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
-__keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5']
+__keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5', 'MatPlotLib']
 
-__install_requires__ = ('h5py','numpy', )
+__install_requires__ = ('h5py','numpy', 'MatPlotLib', )
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',
@@ -49,12 +49,15 @@ __classifiers__ = [
      'Topic :: Utilities',
    ]
 
-import os
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
-if on_rtd:
-    # special handling for readthedocs.org, remove distracting info
-    __version__ = __version__.split('+')[0]
+try:
+    import os
+    on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+    from ._version import get_versions
+    __version__ = get_versions()['version']
+    del get_versions
+    if on_rtd:
+        # special handling for readthedocs.org, remove distracting info
+        __version__ = __version__.split('+')[0]
+except ValueError:
+    __version__ = 'developer'
 __release__   = __version__

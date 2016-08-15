@@ -122,6 +122,7 @@ from spec2nexus.utils import get_all_plugins
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
+UNRECOGNIZED_KEY = 'unrecognized control line'
 
 
 class SpecDataFileNotFound(IOError): 
@@ -227,9 +228,9 @@ class SpecDataFile(object):
 
         #------------------------------------------------------
         # identify all header blocks: split buf on #E control lines
-        headers = []
+        headers = []                            # caution: some files may have EOL = \r\n
         for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
-            if len(part) == 0: continue         # just in case
+            if len(part.strip()) == 0: continue         # just in case DOS EOL
             key = self.plugin_manager.getKey(part.splitlines()[0].strip())
             if key != '#E':
                 headers.append('#E ' + part)        # new header is starting
@@ -268,7 +269,11 @@ class SpecDataFile(object):
         if not is_spec_file(spec_file_name):
             msg = 'Not a spec data file: ' + str(spec_file_name)
             raise NotASpecDataFile(msg)
-        return buf
+
+        # caution: some files may have EOL = \r\n
+        # convert all '\r\n' to '\n', then all '\r' to '\n'
+
+        return buf.replace('\r\n', '\n').replace('\r', '\n')
     
     def getScan(self, scan_number=0):
         '''return the scan number indicated, None if not found'''
@@ -345,12 +350,16 @@ class SpecDataFileHeader(object):
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
-        for i, line in enumerate(self.raw.splitlines(), start=1):
+        for _i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line)
             if key is None:
-                raise UnknownSpecFilePart("line %d: unknown header line: %s" % (i, line))
+                # log message instead of raise exception
+                # https://github.com/prjemian/spec2nexus/issues/57
+                # raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))
+                key = UNRECOGNIZED_KEY
+                self.parent.plugin_manager.process(key, line, self)
             elif key == '#E':
                 pass    # avoid recursion
             else:
@@ -445,7 +454,12 @@ class SpecDataFileScan(object):
             if self.__lazy_interpret__:
                 self.interpret()
         return object.__getattribute__(self, attr)
-        
+    
+    def get_macro_name(self):
+        '''
+        name of the SPEC macro used for this scan
+        '''
+        return self.scanCmd.split()[0]
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
@@ -453,14 +467,18 @@ class SpecDataFileScan(object):
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
         lines = self.raw.splitlines()
-        for i, line in enumerate(lines, start=1):
+        for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
             key = self.parent.plugin_manager.getKey(line.lstrip())
             if key is None:
-                __s__ = '<' + line + '>'
-                _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), i, line)
+                # __s__ = '<' + line + '>'
+                # _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)
                 #raise UnknownSpecFilePart(_msg)
+                # log message instead of raise exception
+                # https://github.com/prjemian/spec2nexus/issues/57
+                key = UNRECOGNIZED_KEY
+                self.parent.plugin_manager.process(key, line, self)
             elif key != '#S':        # avoid recursion
                 # most of the work is done here
                 self.parent.plugin_manager.process(key, line, self)

@@ -20,6 +20,7 @@ CdSe                                    SPEC scans  1-D scans (ascan), problem w
 compression.h5                          NeXus HDF5  2-D compressed image, also demonstrates problem to be resolved in code
 Data_Q.h5                               NeXus HDF5  2-D image at /entry/data/{I,Q}, test file and variable-length strings
 lmn40.spe                               SPEC scans  1-D & 2-D scans (hklmesh), two #E lines, has two header sections
+mca_spectra_example.dat                 SPEC scans  1-D scans (cscan) with 4 MCA spectra in each scan (issue #55)
 writer_1_3.h5                           NeXus HDF5  1-D NeXus User Manual example
 YSZ011_ALDITO_Fe2O3_planar_fired_1.spc  SPEC scans  1-D scans, text in #V metadata, also has #UIM control lines
 03_06_JanTest.dat                       SPEC scans  1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines

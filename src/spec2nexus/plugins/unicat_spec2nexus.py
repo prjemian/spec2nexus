@@ -34,7 +34,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **metadata** below the 
+    * *NXnote* group named **metadata** below the 
       *NXentry* group, such as **/entry/metadata**
       
       * datasets created from dictionary <scan>.metadata
@@ -58,7 +58,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXcollection* group named **metadata** below the 
+    * *NXnote* group named **metadata** below the 
       *NXentry* group, such as **/entry/metadata**
       
       * datasets created from dictionary <scan>.metadata
