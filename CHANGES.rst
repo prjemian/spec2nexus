@@ -7,7 +7,7 @@ Change History
 Production
 **********
 
-:2016.0829.0: `issue #60 <https://github.com/prjemian/spec2nexus/issues/60>`_: Add new plugin test for XPCS plugin
+:2016.0829.0: `issue #60 <https://github.com/prjemian/spec2nexus/issues/60>`_: Add new plugin test for XPCS plugin (thanks to John Hammonds)
 :2016.0615.1: `issue #57 <https://github.com/prjemian/spec2nexus/issues/57>`_: keep information from unrecognized control lines,
               `issue #56 <https://github.com/prjemian/spec2nexus/issues/56>`_: add *specplot* support,
               `issue #55 <https://github.com/prjemian/spec2nexus/issues/55>`_: accept arbitrary number of MCA spectra
