@@ -74,6 +74,13 @@ class Test(unittest.TestCase):
         self.assertEqual(VE1[2],"se2o")
         self.assertEqual(VE1[3],"se2i")
 
+    def testXPCS(self):
+        print 'testXPCS'
+        sd = SpecDataFile(self.xpcsPluginSample)
+        scan = sd.scans['7']
+        print dir(scan)
+        print scan.XPCS
+        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

@@ -137,7 +137,7 @@ def makeDataset(parent, name, data = None, **attr):
     create and write data to a dataset in the HDF5 file hierarchy
     
     Any named parameters in the call to this method 
-	will be saved as attributes of the dataset.
+    will be saved as attributes of the dataset.
 
     :param obj parent: parent group
     :param str name: valid NeXus dataset name
