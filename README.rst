@@ -28,3 +28,8 @@ Provides
 .. [#] http://nexusformat.org
 .. [#] http://hdfgroup.org
 .. [#] http://h5py.org
+
+----
+
+.. image:: https://zenodo.org/badge/24156/prjemian/spec2nexus.svg
+   :target: https://zenodo.org/badge/latestdoi/24156/prjemian/spec2nexus
