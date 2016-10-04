@@ -2,7 +2,9 @@
 spec2nexus documentation
 ########################
 
-:version: |version|
+:version:   |version|
+:release:   |release|
+:published: |today|
 
 Converts SPEC data files and scans into NeXus HDF5 files::
 
