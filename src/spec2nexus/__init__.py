@@ -19,7 +19,7 @@ __copyright__ = '2014-2016, Pete R. Jemian'
 __package_name__ = 'spec2nexus'
 
 from _version import git_release
-__version__ = u'2016.0829.0'
+__version__ = u'2016.1004.0'
 __release__ = git_release(__package_name__, __version__)
 
 __license_url__  = 'http://creativecommons.org/licenses/by/4.0/deed.en_US'
