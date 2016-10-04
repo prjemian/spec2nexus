@@ -3,6 +3,10 @@ spec2nexus
 
 Converts SPEC data files and scans into NeXus HDF5 files
 
+:version:   |version|
+:release:   |release|
+:published: |today|
+
 :author:    Pete R. Jemian
 :email:     prjemian@gmail.com
 :copyright: 2014-2016, Pete R. Jemian
@@ -28,8 +32,3 @@ Provides
 .. [#] http://nexusformat.org
 .. [#] http://hdfgroup.org
 .. [#] http://h5py.org
-
-----
-
-.. image:: https://zenodo.org/badge/24156/prjemian/spec2nexus.svg
-   :target: https://zenodo.org/badge/latestdoi/24156/prjemian/spec2nexus
