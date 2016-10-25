@@ -1,3 +1,1 @@
 include README.rst
-include src/spec2nexus/LICENSE.txt
-include src/spec2nexus/_version.py

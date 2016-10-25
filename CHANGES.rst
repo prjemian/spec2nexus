@@ -7,6 +7,7 @@ Change History
 Production
 **********
 
+:2016.1025.0: standardize the versioning kit with pyRestTable and pvWebMonitor
 :2016.1004.0: `issue #61 <https://github.com/prjemian/spec2nexus/issues/61>`_: release info from git (dropped versioneer package)
 :2016.0829.0: `issue #60 <https://github.com/prjemian/spec2nexus/issues/60>`_: Add new plugin test for XPCS plugin (thanks to John Hammonds)
 :2016.0615.1: `issue #57 <https://github.com/prjemian/spec2nexus/issues/57>`_: keep information from unrecognized control lines,

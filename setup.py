@@ -41,7 +41,11 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        packages = ['spec2nexus', 'spec2nexus.plugins', ],
        #packages=find_packages(),
        package_data = {
-                       'spec2nexus': ['data/*'],
+                       'spec2nexus': [
+                                      'data/*',
+                                      'LICENSE.txt',
+                                      'VERSION',
+                                      ],
                        },
        classifiers = spec2nexus.__classifiers__,
        entry_points={
