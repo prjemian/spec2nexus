@@ -2,11 +2,6 @@ Contents
 ########
 
 .. toctree::
-   :hidden:
-   
-   overview
-
-.. toctree::
    :maxdepth: 2
    :glob:
    

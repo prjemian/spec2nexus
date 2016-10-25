@@ -1,23 +1,16 @@
 spec2nexus
 ##########
 
-Converts SPEC data files and scans into NeXus HDF5 files
+Converts SPEC data files and scans into NeXus HDF5 files::
 
-:version:   |version|
-:release:   |release|
-:published: |today|
+    $ spec2nexus  path/to/file/specfile.dat
 
-:author:    Pete R. Jemian
-:email:     prjemian@gmail.com
-:copyright: 2014-2016, Pete R. Jemian
-:license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
-:URL:       http://spec2nexus.readthedocs.io
-:git:       https://github.com/prjemian/spec2nexus
-:PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
-:Ohloh:     http://ohloh.net/p/spec2nexus
+Writes ``path/to/file/specfile.hdf5``
 
 Provides
 ########
+
+.. index:: SPEC, NeXus, HDF5, h5py
 
 * **spec2nexus**      : command-line tool: Convert SPEC data files to NeXus HDF5
 * **h5toText**        : command-line tool: Print the structure of an HDF5 file
@@ -32,3 +25,12 @@ Provides
 .. [#] http://nexusformat.org
 .. [#] http://hdfgroup.org
 .. [#] http://h5py.org
+
+:author:    Pete R. Jemian
+:email:     prjemian@gmail.com
+:copyright: 2014-2016, Pete R. Jemian
+:license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
+:URL:       http://spec2nexus.readthedocs.io
+:git:       https://github.com/prjemian/spec2nexus
+:PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
+:Ohloh:     http://ohloh.net/p/spec2nexus
