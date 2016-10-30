@@ -125,6 +125,7 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 106)
+        self.assertEqual(sfile.getFirstScanNumber(), '1')
         self.assertEqual(sfile.getMinScanNumber(), 1)
         self.assertEqual(sfile.getMaxScanNumber(), 106)
         self.assertEqual(len(sfile.getScan(1).L), 14)
