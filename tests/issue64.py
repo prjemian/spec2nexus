@@ -63,9 +63,23 @@ class Issue64(unittest.TestCase):
         with tests.common.Capture_stdout() as printed_lines:
             spec2nexus.extractSpecScan.main()
         self.assertEqual(len(printed_lines), 3, 'extractSpecScan')
-        self.assertTrue(printed_lines[0].startswith('program:'))
-        self.assertTrue(printed_lines[1].startswith('read:'))
-        self.assertTrue(printed_lines[2].startswith('wrote:'))
+
+        for item, text in enumerate('program: read: wrote:'.split()):
+            self.assertTrue(printed_lines[item].startswith(text))
+
+        outfile = printed_lines[2][len('wrote: '):]
+        self.assertTrue(os.path.exists(outfile))
+        os.remove(outfile)
+        self.assertFalse(os.path.exists(outfile))
+
+    def test_extractSpecScans_issue_66_verbose_reporting_mismatch_P_O(self):
+        args = self.testfile + ' --verbose -s 50   -c si1t  pind1'
+        for _ in args.split():
+            sys.argv.append(_)
+        with tests.common.Capture_stdout() as printed_lines:
+            spec2nexus.extractSpecScan.main()
+        self.assertEqual(len(printed_lines), 5, 'extractSpecScan')
+
         outfile = printed_lines[2][len('wrote: '):]
         self.assertTrue(os.path.exists(outfile))
         os.remove(outfile)

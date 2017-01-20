@@ -548,10 +548,17 @@ class SPEC_Positioners(ControlLineHandler):
         '''
         scan.positioner = {}
         for row, values in enumerate(scan.P):
+            if row >= len(scan.header.O):
+                scan.add_interpreter_comment('#P%d found without #O%d' % (row, row))
+                continue
             for col, val in enumerate(values.split()):
-                if row < len(scan.header.O) and col < len(scan.header.O[row]):
-                    mne = scan.header.O[row][col]
-                    scan.positioner[mne] = float(val)
+                if col >= len(scan.header.O[row]):
+                    scan.add_interpreter_comment(
+                        'extra value in #P%d position %d, no matching label in #O%d' % (row, col+1, row)
+                        )
+                    continue
+                mne = scan.header.O[row][col]
+                scan.positioner[mne] = float(val)
         if len(scan.positioner) > 0:
             scan.addH5writer(self.key, self.writer)
     

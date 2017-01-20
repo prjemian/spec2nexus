@@ -430,6 +430,7 @@ class SpecDataFileScan(object):
         self.S = ''
         self.scanNum = -1
         self.scanCmd = ''
+        self._interpreter_comments_ = []
         if parent is not None:
             # avoid changing the interface for clients
             self.specFile = parent.fileName
@@ -494,6 +495,22 @@ class SpecDataFileScan(object):
         
         self.__interpreted__ = True
     
+    def add_interpreter_comment(self, comment):
+        '''
+        allow the interpreter to communicate information to the caller
+        
+        see issue #66: https://github.com/prjemian/spec2nexus/issues/66
+        '''
+        self._interpreter_comments_.append(comment)
+    
+    def get_interpreter_comments(self):
+        '''
+        return the list of comments
+        
+        see issue #66: https://github.com/prjemian/spec2nexus/issues/66
+        '''
+        return self._interpreter_comments_
+
     def addPostProcessor(self, label, func):
         '''
         add a function to be processed after interpreting all lines from a scan
