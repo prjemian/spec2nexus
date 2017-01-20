@@ -277,7 +277,9 @@ def _get_group_niac2014(parent, attribute, nxclass_name):
     group that has the same nxclass_name).
     '''
     group = parent.attrs.get(attribute, None)
-    if group is None:
+    if group in parent:
+        group = parent[group]
+    else:
         # Expect that some data files will not write these attributes.
         # Find *any* HDF5 group that has its @NX_class attribute set to ``nxclass_name``.
         for node0 in parent.values():
@@ -289,6 +291,7 @@ def _get_group_niac2014(parent, attribute, nxclass_name):
                 break
         if group is None:
             return False
+        
     if not isNeXusGroup(group, nxclass_name):
         return False
     return group
@@ -330,13 +333,11 @@ def isNeXusFile_ByNXdataAttrs(filename):
         
         # find the signal dataset
         signal = nxdata.attrs.get('signal', None)
-        if signal is None:
-            return False        # no signal attribute
-        if isinstance(signal, numpy.ndarray):
-            signal = signal[0]
         if signal not in nxdata:
-            return False        # no signal dataset
+            return False        # no valid signal attribute
         ds_signal = nxdata[signal]
+        if isinstance(ds_signal, numpy.ndarray):
+            ds_signal = ds_signal[0]                # TODO: why?
         if not isNeXusDataset(ds_signal):
             return False        # that HDF5 object is not a NeXus dataset
         
