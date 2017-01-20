@@ -30,7 +30,7 @@ class Issue64(unittest.TestCase):
         self.sys_argv0 = sys.argv[0]
 
     def tearDown(self):
-        self.sys.argv = [self.sys_argv0,]
+        sys.argv = [self.sys_argv0,]
 
     def test_data_file(self):
         self.assertTrue(os.path.exists(self.testfile))
