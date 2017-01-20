@@ -13,14 +13,18 @@ unit tests for the spec module
 #-----------------------------------------------------------------------------
 
 import unittest
+import os, sys
+
+_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+if _path not in sys.path:
+    sys.path.insert(0, _path)
 from spec2nexus import spec, utils
-import os
 
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.basepath = os.path.abspath(os.path.dirname(__file__))
+        self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
 
 #     def tearDown(self):
@@ -28,8 +32,6 @@ class Test(unittest.TestCase):
 
 #     def testName(self):
 #         pass
-
-        # TODO: apply principle of one test per one possibility
     
     def abs_data_fname(self, fname):
         return os.path.join(self.datapath, fname)
@@ -91,11 +93,11 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 17)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 17)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '17')
         self.assertEqual(len(sfile.getScan(1).L), 27)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  th 19.022 19.222  60 -20000'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -126,11 +128,11 @@ class Test(unittest.TestCase):
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 106)
         self.assertEqual(sfile.getFirstScanNumber(), '1')
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 106)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '106')
         self.assertEqual(len(sfile.getScan(1).L), 14)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  eta 43.6355 44.0355  40 1'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -160,11 +162,11 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 20)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 20)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '20')
         self.assertEqual(len(sfile.getScan(1).L), 15)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  mr 15.6102 15.6052  30 0.3'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -194,11 +196,11 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 102)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 102)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '102')
         self.assertEqual(len(sfile.getScan(1).L), 55)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  herixE -5 5  40 1'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -228,11 +230,11 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 2) # TODO: test more here!
         self.assertEqual(len(sfile.scans), 262)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 271)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '271')
         self.assertEqual(len(sfile.getScan(1).L), 9)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  tth -0.7 -0.5  101 1'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -263,11 +265,11 @@ class Test(unittest.TestCase):
         self.assertEqual(sfile.fileName, fname)
         self.assertEqual(len(sfile.headers), 1)
         self.assertEqual(len(sfile.scans), 37)
-        self.assertEqual(sfile.getMinScanNumber(), 1)
-        self.assertEqual(sfile.getMaxScanNumber(), 37)
+        self.assertEqual(sfile.getMinScanNumber(), '1')
+        self.assertEqual(sfile.getMaxScanNumber(), '37')
         self.assertEqual(len(sfile.getScan(1).L), 50)
-        scan = sfile.scans[1]
-        self.assertEqual(scan.scanNum, 1)
+        scan = sfile.getScan(1)
+        self.assertEqual(scan.scanNum, '1')
         cmd = 'ascan  th 26.7108 27.1107  60 0.05'
         self.assertEqual(scan.scanCmd, cmd)
         self.assertEqual(sfile.getScanCommands([1,]), ['#S 1 '+cmd,])
@@ -292,9 +294,16 @@ class Test(unittest.TestCase):
         # 1-D scans, text in #V35.2 metadata (powderMotor="theta" others are float), also has #UIM control lines
 
 
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    #unittest.main()
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        Test,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == "__main__":
+    runner=unittest.TextTestRunner()
+    runner.run(suite())

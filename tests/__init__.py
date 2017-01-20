@@ -29,6 +29,7 @@ def suite(*args, **kw):
     from tests import test_extractSpecScan
     from tests import test_plugin
     from tests import test_scanf
+    from tests import test_spec
     from tests import test_writer
     from tests import test_XPCSplugin
     from tests import issue64
@@ -39,6 +40,7 @@ def suite(*args, **kw):
         test_extractSpecScan,
         test_plugin,
         test_scanf,
+        test_spec,
         test_writer,
         test_XPCSplugin,
         issue64,
