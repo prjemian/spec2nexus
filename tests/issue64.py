@@ -13,7 +13,6 @@ test punx tests/common module (supports unit testing)
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import lxml
 import os
 import sys
 import tempfile
