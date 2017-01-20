@@ -13,26 +13,30 @@ Unit test for XPCS plugins
 #-----------------------------------------------------------------------------
 
 import unittest
-import os
-from spec2nexus.spec import SpecDataFile
+import os, sys
+
+_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+if _path not in sys.path:
+    sys.path.insert(0, _path)
+import spec2nexus.spec
+
 
 class Test(unittest.TestCase):
 
-
     def setUp(self):
-        self.basepath = os.path.abspath(os.path.dirname(__file__))
+        self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
-        self.xpcsPluginSample = os.path.join(self.datapath, 
-                                             'xpcs_plugin_sample.spec')
-
+        self.xpcsPluginSample = os.path.join(
+            self.datapath, 
+            'xpcs_plugin_sample.spec')
 
     def tearDown(self):
         pass
 
 
     def testVA(self):
-        print "testVA"
-        sd = SpecDataFile(self.xpcsPluginSample)
+        # print "testVA"
+        sd = spec2nexus.spec.SpecDataFile(self.xpcsPluginSample)
         self.assertEqual(len(sd.headers[0].VA), 2)
         VA0 = sd.headers[0].VA['VA0'].split()
         self.assertEqual(len(VA0), 8)
@@ -57,8 +61,8 @@ class Test(unittest.TestCase):
         self.assertEqual(VA1[8], "sa1xd")
 
     def testVD(self):
-        print "testVD"
-        sd = SpecDataFile(self.xpcsPluginSample)
+        # print "testVD"
+        sd = spec2nexus.spec.SpecDataFile(self.xpcsPluginSample)
         self.assertEqual(len(sd.headers[0].VD), 1)
         VD0 = sd.headers[0].VD['VD0'].split()
         self.assertEqual(len(VD0), 2)
@@ -66,8 +70,8 @@ class Test(unittest.TestCase):
         self.assertEqual(VD0[1],"gonio2")
 
     def testVE(self):
-        print "testVE"
-        sd = SpecDataFile(self.xpcsPluginSample)
+        # print "testVE"
+        sd = spec2nexus.spec.SpecDataFile(self.xpcsPluginSample)
         self.assertEqual(len(sd.headers[0].VE), 2)
         VE0 = sd.headers[0].VE['VE0'].split()
         self.assertEqual(len(VE0), 6)
@@ -85,13 +89,31 @@ class Test(unittest.TestCase):
         self.assertEqual(VE1[3],"se2i")
 
     def testXPCS(self):
-        print 'testXPCS'
-        sd = SpecDataFile(self.xpcsPluginSample)
-        scan = sd.scans['7']
-        print dir(scan)
-        print scan.XPCS
+        # print 'testXPCS'
+        sd = spec2nexus.spec.SpecDataFile(self.xpcsPluginSample)
+        self.assertTrue(isinstance(sd, spec2nexus.spec.SpecDataFile))
         
+        scan = sd.getScan(7)
+        self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
+        
+        # finally, start testing the XPCS plugin
+        self.assertFalse('XPCS' in scan.__dict__)
+        scan.interpret()       # force the plug-ins to be processed
+        self.assertTrue('XPCS' in scan.__dict__)
+        for key in 'batch_name preset compression multi_img'.split():
+            self.assertTrue(key in scan.XPCS)
+
+
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        Test,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
+
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    runner=unittest.TextTestRunner()
+    runner.run(suite())

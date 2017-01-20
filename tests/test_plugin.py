@@ -13,15 +13,19 @@ unit tests for the plugin module
 #-----------------------------------------------------------------------------
 
 import unittest
-import plugin
-import os
+import os, sys
+
+_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+if _path not in sys.path:
+    sys.path.insert(0, _path)
+from spec2nexus import plugin
 
 
 class TestPlugin(unittest.TestCase):
 
     def setUp(self):
         os.environ['SPEC2NEXUS_PLUGIN_PATH'] = 'C://Users//Pete//Desktop, /tmp'
-        self.basepath = os.path.abspath(os.path.dirname(__file__))
+        self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.manager = plugin.PluginManager()
         self.manager.load_plugins()
@@ -61,9 +65,16 @@ class TestPlugin(unittest.TestCase):
             self.assertEqual(k, self.manager.getKey(v))
 
 
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    #unittest.main()
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        TestPlugin,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestPlugin)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == "__main__":
+    runner=unittest.TextTestRunner()
+    runner.run(suite())
