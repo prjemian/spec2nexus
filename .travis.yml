@@ -1,0 +1,35 @@
+# :file: .travis.yml
+#
+# :url:  https://travis-ci.org/prjemian/punx
+#
+# for advice, see:
+#  https://docs.travis-ci.com/user/customizing-the-build#The-Build-Lifecycle
+
+language: python
+python:
+  - "2.7"
+
+before_script:
+  # detect if py2 or py3 worker
+  - export PYVER=`python -c "import sys; print(sys.version_info.major)"`
+  - wget http://repo.continuum.io/miniconda/Miniconda${PYVER}-latest-Linux-x86_64.sh -O miniconda.sh
+  - chmod +x miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH=$HOME/miniconda/bin:$PATH
+  - which pip
+  - which python
+  - which conda
+  - python --version
+  - conda install --yes numpy MatPlotLib h5py coverage docopt
+  - pip install coveralls
+  - which coveralls
+
+# command to run tests
+script:
+  - which coverage
+  - coverage run tests/
+
+after_success:
+  - coverage report
+  - which coveralls
+  - coveralls

@@ -18,7 +18,7 @@ from _version import git_release
 
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
-__copyright__ = '2014-2016, Pete R. Jemian'
+__copyright__ = '2014-2017, Pete R. Jemian'
 
 __package_name__ = 'spec2nexus'
 
