@@ -3,6 +3,8 @@
 
 '''developer test for extractSpecScan'''
 
+# TODO: fold into the unit test suite
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

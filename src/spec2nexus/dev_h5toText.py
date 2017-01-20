@@ -3,6 +3,8 @@
 
 '''developer test for h5toText'''
 
+# TODO: fold into the unit test suite
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

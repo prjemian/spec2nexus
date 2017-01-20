@@ -3,6 +3,8 @@
 
 '''development of the :mod:`spec` module'''
 
+# TODO: fold into the unit test suite
+
 
 import os
 from lxml import etree

@@ -3,6 +3,8 @@
 
 '''Process specific data file(s)'''
 
+# TODO: fold into the unit test suite
+
 
 import h5toText
 import os
