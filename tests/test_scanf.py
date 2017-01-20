@@ -12,12 +12,17 @@ unittest: scanf module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import os, sys
 import unittest
-from scanf import scanf
+
+_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+if _path not in sys.path:
+    sys.path.insert(0, _path)
+
+from spec2nexus.scanf import scanf
 
 
 class Test(unittest.TestCase):
-
 
     def testName(self):
         fmt = "#X %gKohm (%gC)"
@@ -49,9 +54,16 @@ class Test(unittest.TestCase):
         self.assertEqual(None, scanf('%g', '.'))
 
 
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    #unittest.main()
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        Test,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == "__main__":
+    runner=unittest.TextTestRunner()
+    runner.run(suite())
