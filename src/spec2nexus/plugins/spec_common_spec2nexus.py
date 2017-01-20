@@ -549,12 +549,9 @@ class SPEC_Positioners(ControlLineHandler):
         scan.positioner = {}
         for row, values in enumerate(scan.P):
             for col, val in enumerate(values.split()):
-                if row >= len(scan.header.O):
-                    pass
-                if col >= len(scan.header.O[row]):
-                    pass
-                mne = scan.header.O[row][col]
-                scan.positioner[mne] = float(val)
+                if row < len(scan.header.O) and col < len(scan.header.O[row]):
+                    mne = scan.header.O[row][col]
+                    scan.positioner[mne] = float(val)
         if len(scan.positioner) > 0:
             scan.addH5writer(self.key, self.writer)
     
