@@ -5,23 +5,27 @@ unit tests for the writer module
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2016, Pete R. Jemian
+# :copyright: (c) 2014-2017, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import os, sys
 import unittest
-import os
-import spec
-import writer
+
+_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+if _path not in sys.path:
+    sys.path.insert(0, _path)
+
+from spec2nexus import spec, writer
 
 
 class TestWriter(unittest.TestCase):
 
     def setUp(self):
-        self.basepath = os.path.abspath(os.path.dirname(__file__))
+        self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.fname = os.path.join(self.datapath, '33id_spec.dat')
         basename = os.path.splitext(self.fname)[0]
@@ -50,9 +54,16 @@ class TestWriter(unittest.TestCase):
 #     sys.argv.append(os.path.join('data', 'lmn40.spe'))
 
 
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        TestWriter,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
+
+
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    #unittest.main()
-    
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestWriter)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    runner=unittest.TextTestRunner()
+    runner.run(suite())
