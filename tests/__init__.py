@@ -15,10 +15,12 @@ if _path not in sys.path:
 def suite(*args, **kw):
     from tests import _version_test
     from tests import issue64
+    from tests import data_03_06_JanTest
     test_suite = unittest.TestSuite()
     test_list = [
         _version_test,
         issue64,
+        data_03_06_JanTest,
         ]
 
     for test in test_list:
