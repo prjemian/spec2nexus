@@ -28,9 +28,15 @@ Provides
 
 :author:    Pete R. Jemian
 :email:     prjemian@gmail.com
-:copyright: 2014-2016, Pete R. Jemian
+:copyright: 2014-2017, Pete R. Jemian
 :license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
 :URL:       http://spec2nexus.readthedocs.io
 :git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
 :Ohloh:     http://ohloh.net/p/spec2nexus
+:travis-ci:
+    .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
+               :target: https://travis-ci.org/prjemian/spec2nexus
+:coveralls:
+   .. image:: https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master
+              :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
