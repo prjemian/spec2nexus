@@ -323,7 +323,12 @@ class SpecDataFile(object):
         '''return all the scan commands as a list, with scan number'''
         if scan_list is None:
             scan_list = self.getScanNumbers()
-        return ['#S ' + str(key) + ' ' + self.scans[key].scanCmd for key in scan_list if key in self.scans]
+        commands = []
+        for key in scan_list:
+            scan = self.getScan(key)
+            if isinstance(scan, SpecDataFileScan):
+                commands.append('#S ' + str(key) + ' ' + scan.scanCmd)
+        return commands
 
 
 #-------------------------------------------------------------------------------------------
