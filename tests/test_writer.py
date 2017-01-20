@@ -21,6 +21,11 @@ if _path not in sys.path:
 
 from spec2nexus import spec, writer
 
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if _test_path not in sys.path:
+    sys.path.insert(0, _test_path)
+import tests.common
+
 
 class TestWriter(unittest.TestCase):
 
@@ -29,7 +34,7 @@ class TestWriter(unittest.TestCase):
         self.datapath = os.path.join(self.basepath, 'data')
         self.fname = os.path.join(self.datapath, '33id_spec.dat')
         basename = os.path.splitext(self.fname)[0]
-        self.hname = basename + '.hdf5'
+        self.hname = tests.common.create_test_file()
 
     def tearDown(self):
         for tname in (self.hname,):

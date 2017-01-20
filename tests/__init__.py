@@ -25,6 +25,7 @@ if _path not in sys.path:
 
 def suite(*args, **kw):
     from tests import _version_test
+    from tests import test_extractSpecScan
     from tests import test_scanf
     from tests import test_writer
     from tests import issue64
@@ -32,6 +33,7 @@ def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         _version_test,
+        test_extractSpecScan,
         test_scanf,
         test_writer,
         issue64,
