@@ -103,6 +103,23 @@ def makeOutputFileName(specFile, scanNum):
     return outFile
 
 
+def expand_scan_range_terms(scans):
+    # expand range of scan terms into individual scan numbers
+    _scans_ = []
+    for item in scans:
+        if item.startswith('-'):
+            _scans_.append(item)
+        else:
+            parts = item.split('-')
+            if len(parts) == 1:
+                _scans_.append(item)
+            elif len(parts) == 2:
+                _scans_ += [str(k) for k in range(int(parts[0]), int(parts[1])+1)]
+            else:
+                raise ValueError('scan specifier not recognized: ' + item)
+    return _scans_
+
+
 def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     import argparse
@@ -128,7 +145,7 @@ def get_user_parameters():
                         action='store', 
                         help="SPEC data file name(s)")
 
-    msg = "scan number(s) to be extracted (must specify at least one)"
+    msg = "scan number(s) to be extracted (must specify at least one) a range is allowed: 8-12 (no whitespace around the '-')"
     parser.add_argument('-s',
                         '--scan', 
                         action='store', 
@@ -189,6 +206,8 @@ def get_user_parameters():
                        help=msg)
 
     args = parser.parse_args()
+    
+    args.scan = expand_scan_range_terms(args.scan)
     
     args.print_labels = not args.nolabels
     del args.nolabels
