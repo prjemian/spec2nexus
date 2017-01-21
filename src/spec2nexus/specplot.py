@@ -254,6 +254,36 @@ class LinePlotter(ImageMaster):
                timestamp_str = self.get_timestamp_str())
 
 
+class MeshPlotter(ImageMaster):
+    '''
+    create a mesh plot (2-D image)
+    '''
+    
+    def make_image(self, plotData, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+
+
+class NeXusPlotter(ImageMaster):
+    '''
+    create a plot from a NeXus HDF5 data file
+    '''
+    
+    def make_image(self, plotData, plotFile):
+        '''
+        make image file from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+
+
 def xy_plot(x, y, 
               plotfile, 
               title=None, subtitle=None, 
