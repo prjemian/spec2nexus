@@ -12,6 +12,19 @@
 
 '''
 Plot the data from scan N in a SPEC data file
+
+.. autosummary:
+
+    ~Selector
+    ~ImageMaster
+    ~LinePlotter
+    ~MeshPlotter
+    ~NeXusPlotter
+    ~xy_plot
+    ~openSpecFile
+    ~ScanAborted
+    ~UnexpectedObjectTypeError
+
 '''
 
 import os
@@ -21,11 +34,63 @@ matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 import spec             # read SPEC data files
+import singletons
 
 
 class UnexpectedObjectTypeError(Exception): pass
 # class UndefinedMacroNameError(Exception): pass
 class ScanAborted(Exception): pass
+
+
+class Selector(singletons.Singleton):
+    '''
+    register various subclasses of :class:`ImageMaster` to handle different types of scan macro
+    '''
+    default_key = '__default__'
+    
+    def __init__(self):
+        self.db = {}
+    
+    def add(self, key, value, default=False):
+        '''
+        register a new value by key
+        
+        :param str key: name of key, typically the macro name
+        :raises KeyError: if key exists
+        :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaster`
+        '''
+        if self.exists(key):
+            raise KeyError('key exists: ' + key)
+        if not issubclass(value, ImageMaster):
+            msg = 'expected subclass of ImageMaster, received type: '
+            msg += type(value).__name__
+            raise UnexpectedObjectTypeError(msg)
+
+        self.db[key] = value
+        if default:
+            self.db[self.default_key] = value
+
+        return value
+    
+    def get(self, key):
+        '''
+        return a value by key
+        
+        :returns: subclass of :class:`ImageMaster` or `None` if key not found
+        '''
+        return self.db.get(key)
+    
+    def exists(self, key):
+        '''
+        is the key known? 
+        '''
+        return key in self.db
+    
+    def default(self):
+        '''
+        retrieve the value of the default key 
+        '''
+        return self.get(self.default_key)
 
 
 class ImageMaster(object):
@@ -376,8 +441,10 @@ def main():
     
     sfile = openSpecFile(args.specFile)
     scan = sfile.getScan(args.scan_number)
-    # TODO: handle differently for mesh or higher dimensionality scan
-    plotter = LinePlotter()
+    selector = Selector()
+    selector.add(scan.get_macro_name(), LinePlotter, default=True)
+    image_maker = selector.default()
+    plotter = image_maker()
     plotter.plot_scan(scan, args.plotFile)
 
 

@@ -35,6 +35,8 @@ import sys
 import spec
 import specplot
 
+# TODO: use specplot.Selector to register image makers for different scan macros as they come up
+# user should be able to augment this, otherwise default selections
 
 MTIME_CACHE_FILE = 'mtime_cache.txt'
 
@@ -123,7 +125,7 @@ class PlotSpecFileScans(object):
             #  For sure, if a plot for N+1 exists, no need to remake plot for scan N.  Thus:
             #    Always remake if plot for scan N+1 does not exist
             scan = sd.getScan(scan_number)
-            basePlotFile = 's' + str(scan.scanNum) + '.png'     # TODO: format name to sort lexically
+            basePlotFile = ('s%05s.png' % str(scan.scanNum)).replace(' ', '0')  # sorts lexically: S1: s00001.png
             fullPlotFile = os.path.join(png_directory, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
@@ -132,8 +134,14 @@ class PlotSpecFileScans(object):
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)
-                    # FIXME: need more flexibility in the type of plot here
-                    plotter = specplot.LinePlotter()
+                    macro = scan.get_macro_name()
+                    if macro.find('scan') >= 0:     # adapt for different scan macros
+                        plot_class = specplot.LinePlotter
+                    elif macro.find('mesh') >= 0:
+                        plot_class = specplot.MeshPlotter
+                    else:
+                        plot_class = specplot.LinePlotter
+                    plotter = plot_class()
                     plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
                 except:

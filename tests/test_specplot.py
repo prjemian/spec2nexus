@@ -33,6 +33,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.plotFile = tests.common.create_test_file(suffix='.png')
+        sys.argv = [sys.argv[0],]
 
     def tearDown(self):
         if os.path.exists(self.plotFile):
@@ -63,7 +64,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertFalse(os.path.exists(self.plotFile))
         
     def test_y_values_all_zero_lin_lin(self):
-        specFile = os.path.join('data', 'issue64_data.txt')
+        specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
 
         sfile = specplot.openSpecFile(specFile)
@@ -77,7 +78,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertTrue(os.path.exists(self.plotFile))
         
     def test_y_values_all_zero_log_lin(self):
-        specFile = os.path.join('data', 'issue64_data.txt')
+        specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
 
         sfile = specplot.openSpecFile(specFile)
