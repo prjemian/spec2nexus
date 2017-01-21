@@ -28,6 +28,7 @@ __registry__ = None
 
 class UnexpectedObjectTypeError(Exception): pass
 class UndefinedMacroNameError(Exception): pass
+class ScanAborted(Exception): pass
 
 
 class Registry(object):
@@ -97,7 +98,7 @@ class MacroPlotHandler(object):
         
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         '''
-        if isinstance(scan, spec.SpecDataFileScan):
+        if not isinstance(scan, spec.SpecDataFileScan):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         self.scan = scan
     
@@ -113,7 +114,13 @@ class MacroPlotHandler(object):
         
         :param str plotFile: name of image file to write
         '''
-        plotData = self.get_plot_data()
+        try:
+            plotData = self.get_plot_data()
+        except KeyError, _exc:
+            was_aborted = self.scan.__getattribute__('_aborted_')
+            if was_aborted is not None:
+                raise ScanAborted(was_aborted)
+            raise _exc
         if self.is_plottable(plotData):
             # only proceed if mtime of SPEC data file is newer than plotFile
             mtime_sdf = os.path.getmtime(self.get_data_file_name())
@@ -197,7 +204,7 @@ class Plotter(object):
     def __init__(self):
         self.registry = self.register_handlers()
     
-    def plot_scan(self, scan, plotFile):
+    def plot_scan(self, scan, plotFile, **kwds):
         '''
         '''
         macro = scan.get_macro_name()
@@ -207,6 +214,7 @@ class Plotter(object):
             self.registry.add(Macro_1D_Scan_HandlerFactory(macro))
 
         handler = self.registry.get(macro)
+        # TODO: do something with kwds dictionary
         handler.set_scan(scan)
         handler.image(plotFile)
 

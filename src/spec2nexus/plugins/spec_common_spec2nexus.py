@@ -128,6 +128,9 @@ class SPEC_Comment(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         scan.comments.append( strip_first_word(text) )
+        pos = text.find('Scan aborted after ')
+        if pos > 0:
+            scan._aborted_ = text[pos:]
         if isinstance(scan, SpecDataFileScan):
             scan.addH5writer(self.key, self.writer)
     

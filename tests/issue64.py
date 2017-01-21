@@ -15,7 +15,6 @@ test punx tests/common module (supports unit testing)
 
 import os
 import sys
-import tempfile
 import unittest
 
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))

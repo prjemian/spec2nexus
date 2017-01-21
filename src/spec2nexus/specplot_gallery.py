@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 
 '''
-read a list of SPEC data file and plot images of all scans
+read a list of SPEC data files and plot images of all scans
 
 The images are stored in files in a directory structure
 that is organized chronologically,
