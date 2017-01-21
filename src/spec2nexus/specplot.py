@@ -23,54 +23,26 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import spec             # read SPEC data files
 
 
-__registry__ = None
-
-
 class UnexpectedObjectTypeError(Exception): pass
-class UndefinedMacroNameError(Exception): pass
+# class UndefinedMacroNameError(Exception): pass
 class ScanAborted(Exception): pass
 
 
-class Registry(object):
+class ImageMaster(object):
     '''
-    register all the plot handlers
-    '''
+    superclass to handle plotting of data from a SPEC scan
     
-    def __init__(self):
-        global __registry__
-        if __registry__ is None:    # singleton
-            __registry__ = {}
-        self.db = __registry__
-    
-    def add(self, value):
-        if not isinstance(value, MacroPlotHandler):
-            msg = 'handler not a subclass of MacroPlotHandler'
-            raise UnexpectedObjectTypeError(msg)
-        if value.macro is None:
-            msg = 'subclass must define a str value for *macro*'
-            raise UndefinedMacroNameError(msg)
-        self.db[value.macro] = value
-    
-    def exists(self, key):
-        return key in self.db
-    
-    def get(self, key):
-        if not self.exists(key):
-            raise KeyError('not found: ' + key)
-        return self.db[key]
+    EXAMPLE:
 
-
-class MacroPlotHandler(object):
-    '''
-    superclass to handle plotting of data collected using a specific SPEC macro
+        sfile = specplot.openSpecFile(specFile)
+        scan = sfile.getScan(scan_number)
+        plotter = specplot.Plotter()
+        plotter.plot_scan(scan, plotFile, y_log=True)
     
-    The *macro* key (``self.macro``) must be set to the *exact* name
-    of the SPEC scan macro as recorded in the data file.  The *macro* key
-    must be unique amongst all instances of :class:`MacroPlotHandler`
-    so the software can pick the correct instance for plotting.
-    
+    TODO: describe how to override any of the settings in the dictionary
+     
     Override any of these methods to customize the handling:
-    
+     
     ========================== ==================================================
     method                     returns (as a string)
     ========================== ==================================================
@@ -86,36 +58,63 @@ class MacroPlotHandler(object):
     :meth:`get_timestamp_str`  text representing when the scan was recorded
     ========================== ==================================================
     '''
-    
-    macro = None    # must define in subclass
-    
+
     def __init__(self):
         self.scan = None
+        self.settings = self.get_initial_settings()
     
+    def get_initial_settings(self):
+        return dict(
+            macro = None,
+            title = None,
+            subtitle = None,
+            x_title = None,
+            y_title = None,
+            x_log = False,
+            y_log = False,
+            timestamp = None,
+            xy_data = None,
+        )
+    
+    def get_setting(self, key):
+        return self.settings.get(key)
+    
+    def _verify_setting_name_(self, key):
+        if key not in self.settings:
+            raise KeyError('unknown plot option: ' + key)
+    
+    def configure(self, **kwds):
+        '''
+        set any of the plot options
+        '''
+        for k, v in kwds.items():
+            self._verify_setting_name_(k)
+            self.settings[k] = v
+
     def set_scan(self, scan):
         '''
         assign the SPEC scan object
-        
+         
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         '''
         if not isinstance(scan, spec.SpecDataFileScan):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         self.scan = scan
-    
+     
     def is_plottable(self, plotData):
         '''
         is there enough data to make a plot?
         '''
-        return self.get_macro() == self.macro and len(plotData) > 0
-        
+        return plotData is not None     # subclass should provide a deeper test
+         
     def image(self, plotFile):
         '''
-        make an image, if permissable, from the SPEC scan object
-        
+        make an image, if permissable, from data in (or referenced by) the SPEC scan object
+         
         :param str plotFile: name of image file to write
         '''
         try:
-            plotData = self.get_plot_data()
+            plotData = self.get_setting('xy_data') or self.get_plot_data()
         except KeyError, _exc:
             was_aborted = self.scan.__getattribute__('_aborted_')
             if was_aborted is not None:
@@ -130,7 +129,7 @@ class MacroPlotHandler(object):
                 mtime_pf = 0
             if mtime_sdf > mtime_pf:
                 self.make_image(plotData, plotFile)
-        
+         
     def make_image(self, plotData, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
@@ -138,16 +137,8 @@ class MacroPlotHandler(object):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        x, y = plotData
-        xy_plot(x, y,  plotFile, 
-               title=self.get_plot_title(),
-               subtitle=self.get_plot_subtitle(),
-               xtitle=self.get_x_title(),
-               ytitle=self.get_y_title(),
-               xlog=self.get_x_log(),
-               ylog=self.get_y_log(),
-               timestamp_str=self.get_timestamp_str())
-    
+        raise NotImplementedError('must implement make_image() in each subclass')
+
     def get_data_file_name(self):
         '''
         the name of the file with the actual data
@@ -170,89 +161,77 @@ class MacroPlotHandler(object):
     
     def get_plot_title(self):
         ' '
-        return self.scan.specFile
+        return self.get_setting('title') or self.scan.specFile
     
     def get_plot_subtitle(self):
         ' '
-        return '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
+        return self.get_setting('subtitle') or '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
     
     def get_x_title(self):
         ' '
-        return self.scan.column_first
+        return self.get_setting('x_title') or self.scan.column_first
     
     def get_y_title(self):
         ' '
-        return self.scan.column_last
+        return self.get_setting('y_title') or self.scan.column_last
     
     def get_x_log(self):
         ' '
-        return False
+        return self.get_setting('x_log')
     
     def get_y_log(self):
         ' '
-        return False
+        return self.get_setting('y_log')
     
     def get_timestamp_str(self):
         ' '
-        return self.scan.date
+        return self.get_setting('timestamp') or self.scan.date
+
+
+class LinePlotMaker(ImageMaster):
+    '''
+    create a line plot
+    '''
+    
+    def make_image(self, plotData, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        x, y = plotData
+        xy_plot(x, y,  plotFile, 
+               title = self.get_plot_title(),
+               subtitle = self.get_plot_subtitle(),
+               xtitle = self.get_x_title(),
+               ytitle = self.get_y_title(),
+               xlog = self.get_x_log(),
+               ylog = self.get_y_log(),
+               timestamp_str = self.get_timestamp_str())
 
 
 class Plotter(object):
     '''
+    generate a plot image
     '''
     
     def __init__(self):
-        self.registry = self.register_handlers()
+        # self.registry = self.register_handlers()
+        pass
     
-    def plot_scan(self, scan, plotFile, **kwds):
+    def plot_scan(self, scan, plotFile, maker=None, **kwds):
         '''
+        make an image plot of the data in the scan
         '''
-        macro = scan.get_macro_name()
-        if not self.registry.exists(macro):
-            # raise UndefinedMacroNameError(macro)
-            # try a little harder: if no handler exists, try the default one anyway
-            self.registry.add(Macro_1D_Scan_HandlerFactory(macro))
-
-        handler = self.registry.get(macro)
-        # TODO: do something with kwds dictionary
-        handler.set_scan(scan)
-        handler.image(plotFile)
-
-    def register_handlers(self):
-        '''
-        subclass Plotter() and override this method to add more handlers
-        '''
-        registry = Registry()
-        # this will happen by default, it's a demo of the default handling
-        # ascan = Macro_1D_Scan_HandlerFactory('ascan')
-        # registry.add(ascan)
-        return registry
-
-
-class Macro_1D_Scan_HandlerFactory(MacroPlotHandler):
-    '''
-    creates an instance of :class:`MacroPlotHandler` with a defined macro name
-    
-    Use this convenience class to simplify the support of many common
-    SPEC scan macros that result in a 1-D scan where the plot should
-    be generated from the last column *v.* the first column.
-    
-    .. rubric:: Usage
-    
-    ::
-    
-        ascan = Macro_1D_Scan_HandlerFactory('ascan')
-    
-    To support a 2-D (or higher) scan, such as a mesh or image, make
-    a subclass of :class:`MacroPlotHandler` and override the appropriate
-    methods.
-    '''
-    
-    def __init__(self, macro):
-        MacroPlotHandler.__init__(self)
-        self.macro = macro
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        maker = maker or LinePlotMaker
+        if not issubclass(maker, ImageMaster):
+            msg = 'handler must be subclass of specplot.ImageMaster'
+            raise TypeError(msg)
+        plot = maker()
+        plot.configure(**kwds)
+        plot.set_scan(scan)
+        plot.image(plotFile)
 
 
 def openSpecFile(specFile):
@@ -301,8 +280,16 @@ def xy_plot(x, y,
     ax = fig.add_subplot('111')
     if xlog:
         ax.set_xscale('log')
+        if max(x) <= 0:
+            msg = 'X data has no positive values,'
+            msg += ' and therefore can not be log-scaled.'
+            raise ValueError(msg)
     if ylog:
         ax.set_yscale('log')
+        if max(y) <= 0:
+            msg = 'Y data has no positive values,'
+            msg += ' and therefore can not be log-scaled.'
+            raise ValueError(msg)
     if not xlog and not ylog:
         ax.ticklabel_format(useOffset=False)
     if xtitle is not None:
@@ -344,10 +331,4 @@ def main():
 
 
 if __name__ == '__main__':
-    import sys
-    if not os.path.exists('__plots__'):
-        os.mkdir('__plots__')
-    s = 'data/02_03_setup.dat 1 __plots__/image.png'
-    for item in s.split():
-        sys.argv.append(item)
     main()

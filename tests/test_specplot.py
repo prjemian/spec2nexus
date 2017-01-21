@@ -14,6 +14,7 @@ unit tests for the specplot module
 
 import unittest
 import os, sys
+import tempfile
 
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
@@ -24,17 +25,6 @@ _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _test_path not in sys.path:
     sys.path.insert(0, _test_path)
 import tests.common
-
-
-class Handler_Log_lin_Plot(specplot.MacroPlotHandler):
-    '''
-    custom log-lin plot
-    '''
-    # TODO: too much work - simplify!
-    
-    def get_y_log(self):
-        'override'
-        return True
 
 
 class Issue_66_plotting_problems(unittest.TestCase):
@@ -94,11 +84,6 @@ class Issue_66_plotting_problems(unittest.TestCase):
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.Plotter()
-        # TODO: configure for log-lin plot
-        
-        handler = Handler_Log_lin_Plot()
-        handler.macro = scan.get_macro_name()
-        plotter.registry.db[handler.macro] = handler
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
@@ -107,8 +92,19 @@ class Issue_66_plotting_problems(unittest.TestCase):
             plotter.plot_scan,
             scan,
             self.plotFile, 
-            ylog=True)
+            y_log=True)
         self.assertFalse(os.path.exists(self.plotFile))
+    
+    def test_command_line(self):
+        tempdir = tempfile.mkdtemp()
+        specFile = self.abs_data_fname('02_03_setup.dat')
+        plotFile = os.path.join(tempdir, 'image.png')
+        sys.argv = [sys.argv[0], specFile, '1', plotFile]
+        specplot.main()
+        self.assertTrue(os.path.exists(plotFile))
+        os.remove(plotFile)
+        os.rmdir(tempdir)
+        self.assertFalse(os.path.exists(plotFile))
 
 
 def suite(*args, **kw):
