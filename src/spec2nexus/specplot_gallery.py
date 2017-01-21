@@ -134,14 +134,8 @@ class PlotSpecFileScans(object):
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)
-                    macro = scan.get_macro_name()
-                    if macro.find('scan') >= 0:     # adapt for different scan macros
-                        plot_class = specplot.LinePlotter
-                    elif macro.find('mesh') >= 0:
-                        plot_class = specplot.MeshPlotter
-                    else:
-                        plot_class = specplot.LinePlotter
-                    plotter = plot_class()
+                    image_maker = specplot.Selector().auto(scan)
+                    plotter = image_maker()
                     plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
                 except:
@@ -342,7 +336,7 @@ def build_index_html(specFile, plotList):
     '''
     build index.html content
     
-    :param str specFile: name of SPEC data fmainile (relative or absolute)
+    :param str specFile: name of SPEC data file (relative or absolute)
     :param [str] plotList: list of HTML `<a>` elements, one for each plot image 
     '''
     baseSpecFile = os.path.basename(specFile)
@@ -416,19 +410,5 @@ def main():
     logger('<'*10 + ' finished')
 
 
-def developer_main():
-    path = '__plots__'
-    if not os.path.exists(path):
-        os.mkdir(path)
-    sys.argv.append('-d')
-    sys.argv.append(path)
-    sys.argv.append('data/writer_1_3.h5')
-#     sys.argv.append('data/02_03_setup.dat')
-#     sys.argv.append('data/03_06_JanTest.dat')
-#     sys.argv.append('data/lmn40.spe')
-    main()
-
-
 if __name__ == '__main__':
-#     developer_main()
     main()

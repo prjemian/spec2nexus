@@ -13,10 +13,10 @@
 '''
 Plot the data from scan N in a SPEC data file
 
-.. autosummary:
+.. autosummary::
 
     ~Selector
-    ~ImageMaster
+    ~ImageMaker
     ~LinePlotter
     ~MeshPlotter
     ~NeXusPlotter
@@ -44,12 +44,81 @@ class ScanAborted(Exception): pass
 
 class Selector(singletons.Singleton):
     '''
-    register various subclasses of :class:`ImageMaster` to handle different types of scan macro
+    associate SPEC scan macro names with image makers
+    
+    :image maker: subclass of :class:`ImageMaker`
+    
+    To include a custom image maker from outside this module,
+    create the subclass and then add it to an instance of this
+    class.  Such as this plotter that defaults to a logarithmic 
+    scale for the X axis for all `logxscan` macros:
+    
+        from spec2nexus import specplot
+        
+        class LogX_Plotter(specplot.ImageMaker):
+
+            def get_x_log(self):
+                return True
+        
+        # ...
+        
+        selector = specplot.Selector()
+        selector.add(`logxscan`, LogX_Plotter)
+        
+        # ...
+        
+        image_maker = specplot.Selector().auto(scan)
+        plotter = image_maker()
+        plotter.plot_scan(scan, fullPlotFile)
+
+    This class is a singleton which means you will always get the same
+    instance when you call this may times in your program.
+    
+    .. autosummary::
+    
+        ~auto
+        ~add
+        ~update
+        ~get
+        ~exists
+        ~default
+
     '''
     default_key = '__default__'
     
     def __init__(self):
         self.db = {}
+        self.add('ascan', LinePlotter, default=True)
+    
+    def auto(self, scan):
+        '''
+        automatically choose a scan image maker based on the SPEC scan macro
+        
+        Selection Rules:
+        
+        * macro ends with "scan": use :class:`LinePlotter`
+        * macro ends with "mesh": use :class:`MeshPlotter`
+        * default: use default image maker (initially :class:`LinePlotter`)
+        '''
+        if not isinstance(scan, spec.SpecDataFileScan):
+            msg = 'expected a SPEC scan object, received: '
+            msg += str(scan)
+            raise UnexpectedObjectTypeError(msg)
+        
+        macro = scan.get_macro_name()
+        if self.exists(macro):
+            return self.get(macro)
+
+        # adapt for different scan macros
+        image_maker = self.default()
+        if macro.lower().endswith('scan'):     
+            image_maker = LinePlotter
+        elif macro.lower().endswith('mesh'):
+            image_maker = MeshPlotter
+
+        # register this macro name
+        self.add(macro, image_maker)
+        return image_maker
     
     def add(self, key, value, default=False):
         '''
@@ -57,12 +126,33 @@ class Selector(singletons.Singleton):
         
         :param str key: name of key, typically the macro name
         :raises KeyError: if key exists
-        :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaster`
+        :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
         '''
         if self.exists(key):
             raise KeyError('key exists: ' + key)
-        if not issubclass(value, ImageMaster):
-            msg = 'expected subclass of ImageMaster, received type: '
+        if not issubclass(value, ImageMaker):
+            msg = 'expected subclass of ImageMaker, received type: '
+            msg += type(value).__name__
+            raise UnexpectedObjectTypeError(msg)
+
+        self.db[key] = value
+        if default:
+            self.db[self.default_key] = value
+
+        return value
+    
+    def update(self, key, value, default=False):
+        '''
+        replace an existing key with a new value
+        
+        :param str key: name of key, typically the macro name
+        :raises KeyError: if key does not exist
+        :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
+        '''
+        if not self.exists(key):
+            raise KeyError('key does not exist: ' + key)
+        if not issubclass(value, ImageMaker):
+            msg = 'expected subclass of ImageMaker, received type: '
             msg += type(value).__name__
             raise UnexpectedObjectTypeError(msg)
 
@@ -76,7 +166,7 @@ class Selector(singletons.Singleton):
         '''
         return a value by key
         
-        :returns: subclass of :class:`ImageMaster` or `None` if key not found
+        :returns: subclass of :class:`ImageMaker` or `None` if key not found
         '''
         return self.db.get(key)
     
@@ -93,13 +183,13 @@ class Selector(singletons.Singleton):
         return self.get(self.default_key)
 
 
-class ImageMaster(object):
+class ImageMaker(object):
     '''
     superclass to handle plotting of data from a SPEC scan
     
     USAGE:
     
-    #. Create a subclass of :class:`ImageMaster`
+    #. Create a subclass of :class:`ImageMaker`
     #. Re-implement :meth:`make_image` to generate the plot image
     #. Re-implement :meth:`is_plottable` as appropriate for the available data
     #. In the call to :meth:`plot_scan`, supply any optional keywords to
@@ -109,7 +199,7 @@ class ImageMaster(object):
     
     EXAMPLE:
 
-        class LinePlotter(ImageMaster):
+        class LinePlotter(ImageMaker):
             'create a line plot'
             
             def make_image(self, plotData, plotFile):
@@ -154,6 +244,17 @@ class ImageMaster(object):
     :meth:`get_y_log`          True: axis is logarithmic, False: axis is linear
     :meth:`get_timestamp_str`  text representing when the scan was recorded
     ========================== ==================================================
+
+    .. autosummary::
+    
+        ~plot_scan
+        ~make_image
+        ~image
+        ~get_initial_settings
+        ~get_setting
+        ~set_scan
+        ~is_plottable
+    
     '''
 
     def __init__(self):
@@ -296,7 +397,7 @@ class ImageMaster(object):
         return self.get_setting('timestamp') or self.scan.date
 
 
-class LinePlotter(ImageMaster):
+class LinePlotter(ImageMaker):
     '''
     create a line plot
     '''
@@ -319,7 +420,7 @@ class LinePlotter(ImageMaster):
                timestamp_str = self.get_timestamp_str())
 
 
-class MeshPlotter(ImageMaster):
+class MeshPlotter(ImageMaker):
     '''
     create a mesh plot (2-D image)
     '''
@@ -334,7 +435,7 @@ class MeshPlotter(ImageMaster):
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
 
-class NeXusPlotter(ImageMaster):
+class NeXusPlotter(ImageMaker):
     '''
     create a plot from a NeXus HDF5 data file
     '''
@@ -441,9 +542,7 @@ def main():
     
     sfile = openSpecFile(args.specFile)
     scan = sfile.getScan(args.scan_number)
-    selector = Selector()
-    selector.add(scan.get_macro_name(), LinePlotter, default=True)
-    image_maker = selector.default()
+    image_maker = Selector().auto(scan)
     plotter = image_maker()
     plotter.plot_scan(scan, args.plotFile)
 
