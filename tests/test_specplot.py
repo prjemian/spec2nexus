@@ -51,7 +51,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
-        plotter = specplot.Plotter()
+        plotter = specplot.LinePlotter()
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
@@ -69,7 +69,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
-        plotter = specplot.Plotter()
+        plotter = specplot.LinePlotter()
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
@@ -83,7 +83,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
-        plotter = specplot.Plotter()
+        plotter = specplot.LinePlotter()
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)

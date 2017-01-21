@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 
 '''
-read a SPEC data file and plot scan n
+Plot the data from scan N in a SPEC data file
 '''
 
 import os
@@ -32,16 +32,48 @@ class ImageMaster(object):
     '''
     superclass to handle plotting of data from a SPEC scan
     
+    USAGE:
+    
+    #. Create a subclass of :class:`ImageMaster`
+    #. Re-implement :meth:`make_image` to generate the plot image
+    #. Re-implement :meth:`is_plottable` as appropriate for the available data
+    #. In the call to :meth:`plot_scan`, supply any optional keywords to
+       define plot settings such as `title`, `subtitle`, etc.
+    #. Optionally, re-implement any of the various *get* methods to 
+       further customize their behavior.
+    
     EXAMPLE:
+
+        class LinePlotter(ImageMaster):
+            'create a line plot'
+            
+            def make_image(self, plotData, plotFile):
+                """
+                make MatPlotLib chart image from the SPEC scan
+                
+                :param obj plotData: object returned from :meth:`get_plot_data`
+                :param str plotFile: name of image file to write
+                """
+                x, y = plotData
+                xy_plot(x, y,  plotFile, 
+                       title = self.get_plot_title(),
+                       subtitle = self.get_plot_subtitle(),
+                       xtitle = self.get_x_title(),
+                       ytitle = self.get_y_title(),
+                       xlog = self.get_x_log(),
+                       ylog = self.get_y_log(),
+                       timestamp_str = self.get_timestamp_str())
 
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
-        plotter = specplot.Plotter()
+        plotter = LinePlotter()
         plotter.plot_scan(scan, plotFile, y_log=True)
     
     TODO: describe how to override any of the settings in the dictionary
      
     Override any of these methods to customize the handling:
+    
+    .. TODO: convert this into an autosummary
      
     ========================== ==================================================
     method                     returns (as a string)
@@ -62,6 +94,23 @@ class ImageMaster(object):
     def __init__(self):
         self.scan = None
         self.settings = self.get_initial_settings()
+    
+    def plot_scan(self, scan, plotFile, maker=None, **kwds):
+        '''
+        make an image plot of the data in the scan
+        '''
+        self.configure(**kwds)
+        self.set_scan(scan)
+        self.image(plotFile)
+         
+    def make_image(self, plotData, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param obj plotData: object returned from :meth:`get_plot_data`
+        :param str plotFile: name of image file to write
+        '''
+        raise NotImplementedError('must implement make_image() in each subclass')
     
     def get_initial_settings(self):
         return dict(
@@ -114,7 +163,7 @@ class ImageMaster(object):
         :param str plotFile: name of image file to write
         '''
         try:
-            plotData = self.get_setting('xy_data') or self.get_plot_data()
+            plotData = self.get_plot_data()
         except KeyError, _exc:
             was_aborted = self.scan.__getattribute__('_aborted_')
             if was_aborted is not None:
@@ -129,15 +178,6 @@ class ImageMaster(object):
                 mtime_pf = 0
             if mtime_sdf > mtime_pf:
                 self.make_image(plotData, plotFile)
-         
-    def make_image(self, plotData, plotFile):
-        '''
-        make MatPlotLib chart image from the SPEC scan
-        
-        :param obj plotData: object returned from :meth:`get_plot_data`
-        :param str plotFile: name of image file to write
-        '''
-        raise NotImplementedError('must implement make_image() in each subclass')
 
     def get_data_file_name(self):
         '''
@@ -150,45 +190,48 @@ class ImageMaster(object):
     
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
+        if self.get_setting('xy_data') is not None:
+            return self.get_setting('xy_data')
+
         # plot last column v. first column
         x = self.scan.data[self.scan.column_first]
         y = self.scan.data[self.scan.column_last]
         return (x, y)
     
     def get_macro(self):
-        ' '
+        'return the name of the SPEC macro for this scan'
         return self.scan.get_macro_name()
     
     def get_plot_title(self):
-        ' '
+        'return the plot title, default is the name of the SPEC data file'
         return self.get_setting('title') or self.scan.specFile
     
     def get_plot_subtitle(self):
-        ' '
+        'return the subtitle, default includes scan number and command'
         return self.get_setting('subtitle') or '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
     
     def get_x_title(self):
-        ' '
+        'return the title for the X axis, default is label of first column in the scan'
         return self.get_setting('x_title') or self.scan.column_first
     
     def get_y_title(self):
-        ' '
+        'return the title for the Y axis, default is label of last column in the scan'
         return self.get_setting('y_title') or self.scan.column_last
     
     def get_x_log(self):
-        ' '
+        'boolean: should the X axis be plotted on a log scale?'
         return self.get_setting('x_log')
     
     def get_y_log(self):
-        ' '
+        'boolean: should the Y axis be plotted on a log scale?'
         return self.get_setting('y_log')
     
     def get_timestamp_str(self):
-        ' '
+        'return the time of this scan as a string, default is date/time from the SPEC scan'
         return self.get_setting('timestamp') or self.scan.date
 
 
-class LinePlotMaker(ImageMaster):
+class LinePlotter(ImageMaster):
     '''
     create a line plot
     '''
@@ -209,37 +252,6 @@ class LinePlotMaker(ImageMaster):
                xlog = self.get_x_log(),
                ylog = self.get_y_log(),
                timestamp_str = self.get_timestamp_str())
-
-
-class Plotter(object):
-    '''
-    generate a plot image
-    '''
-    
-    def __init__(self):
-        # self.registry = self.register_handlers()
-        pass
-    
-    def plot_scan(self, scan, plotFile, maker=None, **kwds):
-        '''
-        make an image plot of the data in the scan
-        '''
-        maker = maker or LinePlotMaker
-        if not issubclass(maker, ImageMaster):
-            msg = 'handler must be subclass of specplot.ImageMaster'
-            raise TypeError(msg)
-        plot = maker()
-        plot.configure(**kwds)
-        plot.set_scan(scan)
-        plot.image(plotFile)
-
-
-def openSpecFile(specFile):
-    '''
-    convenience routine so that others do not have to import spec2nexus.spec
-    '''
-    sd = spec.SpecDataFile(specFile)
-    return sd
 
 
 def xy_plot(x, y, 
@@ -315,6 +327,14 @@ def xy_plot(x, y,
     FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
 
 
+def openSpecFile(specFile):
+    '''
+    convenience routine so that others do not have to import spec2nexus.spec
+    '''
+    sd = spec.SpecDataFile(specFile)
+    return sd
+
+
 def main():
     import argparse
     doc = __doc__.strip().splitlines()[0]
@@ -326,7 +346,8 @@ def main():
     
     sfile = openSpecFile(args.specFile)
     scan = sfile.getScan(args.scan_number)
-    plotter = Plotter()
+    # TODO: handle differently for mesh or higher dimensionality scan
+    plotter = LinePlotter()
     plotter.plot_scan(scan, args.plotFile)
 
 
