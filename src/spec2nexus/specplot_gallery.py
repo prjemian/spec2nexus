@@ -53,7 +53,6 @@ class PlotSpecFileScans(object):
     def __init__(self, filelist, plotDir = None):
         self.filelist = filelist
         self.plotDir = plotDir or os.getcwd()
-        self.plotter = specplot.Plotter()
 
         for specFile in filelist:
             self.plot_all_scans(specFile)
@@ -90,7 +89,7 @@ class PlotSpecFileScans(object):
         plot all the recognized scans from the file named ``specFile``
         '''
         if not spec.is_spec_file(specFile):
-            return
+            raise spec.NotASpecDataFile(specFile)
 
         answer = self._mtime_checkup_(specFile)
         if answer is None:
@@ -124,7 +123,7 @@ class PlotSpecFileScans(object):
             #  For sure, if a plot for N+1 exists, no need to remake plot for scan N.  Thus:
             #    Always remake if plot for scan N+1 does not exist
             scan = sd.getScan(scan_number)
-            basePlotFile = 's' + str(scan.scanNum) + '.png'
+            basePlotFile = 's' + str(scan.scanNum) + '.png'     # TODO: format name to sort lexically
             fullPlotFile = os.path.join(png_directory, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
@@ -133,10 +132,14 @@ class PlotSpecFileScans(object):
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)
-                    self.plotter.plot_scan(scan, fullPlotFile)
+                    # FIXME: need more flexibility in the type of plot here
+                    plotter = specplot.LinePlotter()
+                    plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
                 except:
                     exc = sys.exc_info()[1]
+                    # TODO: this is the place for issue #69
+                    # https://github.com/prjemian/spec2nexus/issues/69
                     msg = "ERROR: '%s' %s #%s" % (exc, specFile, scan.scanNum)
                     # print msg
                     plotList.pop()     # rewrite the default link
