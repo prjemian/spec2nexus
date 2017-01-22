@@ -11,8 +11,6 @@ charting for spec2nexus
 '''
 
 import datetime
-import os
-import h5py
 import numpy
 import matplotlib
 matplotlib.use('Agg')
@@ -20,14 +18,10 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 
-PATH_TO_HERE = os.path.abspath(os.path.split(__file__)[0])
-TEST_FILE = os.path.join(PATH_TO_HERE, 'testdata', '2014-06-12', 'waxs', 'LSM_YSZ_infl_227.hdf5')
-HDF5_DATA_PATH = '/entry/data/data'
 SCALING_FACTOR = 1        #  2**24
 PLOT_H_INT = 7
 PLOT_V_INT = 3
 COLORMAP = 'cubehelix'        # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
-IMG_FILE = os.path.join(PATH_TO_HERE, 'image.png')
 
 # MatPlotLib advises to re-use the figure() object rather create new ones
 # http://stackoverflow.com/questions/21884271/warning-about-too-many-open-figures
@@ -40,10 +34,12 @@ def make_png(
         axes = None,
         title = '2-D data',
         subtitle = None,
-        log_image=True, 
+        log_image=False, 
         hsize=PLOT_H_INT, 
         vsize=PLOT_V_INT, 
-        cmap=COLORMAP):
+        cmap=COLORMAP,
+        xtitle=None, ytitle=None, 
+        timestamp_str=None):
     '''
     read the image from the named HDF5 file and make a PNG file
     
@@ -60,9 +56,8 @@ def make_png(
     :param int hsize: vertical size of the PNG image (default: 3)
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
     :return str: *imgfile*
-    :raises: IOError if either *h5file* or *h5path* are not found
     '''
-    global MPL_FIG
+    global MPL_FIG  # TODO: refactor with fig, as in xy_plot() below?
 
     image_data = numpy.ma.masked_less_equal(image, 0)
     # replace masked data with min good value
@@ -110,7 +105,7 @@ def xy_plot(x, y,
     :param bool ylog: should Y axis be log (default: False=linear)
     :param str timestamp_str: date to use on plot (default: now)
 
-    .. tip:: use this module as a background task
+    .. tip:: when using this module as a background task ...
     
         MatPlotLib has several interfaces for plotting. 
         Since this module runs as part of a background job 

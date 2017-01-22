@@ -460,6 +460,10 @@ class MeshPlotter(ImageMaker):
             [plotData.data[axis] for axis in plotData.axes],
             title = self.get_plot_title(),
             subtitle = self.get_plot_subtitle(),
+            log_image = False,
+            xtitle = self.get_x_title(),
+            ytitle = self.get_y_title(),
+            timestamp_str = self.get_timestamp_str(),
             )
 
 class NeXusPlotter(ImageMaker):
