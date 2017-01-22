@@ -116,7 +116,9 @@ class Selector(singletons.Singleton):
 
         # adapt for different scan macros
         image_maker = self.default()
-        if macro.lower().endswith('scan'):     
+        if macro == 'hklscan':
+            image_maker = HKLScanPlotter
+        elif macro.lower().endswith('scan'):     
             image_maker = LinePlotter
         elif macro.lower().endswith('mesh'):
             image_maker = MeshPlotter
@@ -428,6 +430,32 @@ class LinePlotter(ImageMaker):
             xlog = self.get_x_log(),
             ylog = self.get_y_log(),
             timestamp_str = self.get_timestamp_str())
+
+
+class HKLScanPlotter(LinePlotter):
+    '''
+    create a line plot from hklscan macros
+    '''
+
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        if self.get_setting('image_data') is not None:
+            return self.get_setting('image_data')
+
+        # standard ascan macro handling
+        plot = converters.XYStructure(self.scan)
+        # find the real scan axis, the one that changes
+        for axis in 'H K L'.split():
+            data = plot.data[axis]
+            # could compare start & end from scanCmd, this looks simpler
+            if min(data) != max(data):
+                # tell it to use this axis instead
+                plot.axes = [axis,]
+                self.scan.column_first = axis
+                break
+        # if not found, default changes nothing
+
+        return plot
 
 
 class MeshPlotter(ImageMaker):

@@ -139,7 +139,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertFalse(os.path.exists(plotFile))
     
     def test_command_line_33bm_spec_issue80_hklscan_plot(self):
-        # TODO: #80: hklscan, l was scanned, scans 14 & 16
+        # #80: hklscan, l was scanned, scans 14 & 16
         tempdir = tempfile.mkdtemp()
 
         specFile = self.abs_data_fname('33bm_spec.dat')
@@ -153,6 +153,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
+
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
