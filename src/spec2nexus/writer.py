@@ -15,11 +15,13 @@
 '''(internal library) Parses SPEC data using spec2nexus.eznx API (only requires h5py)'''
 
 
+import h5py
 import numpy as np
+
+import converters
 import eznx
 import spec2nexus
 import utils
-import h5py
 
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
@@ -227,6 +229,8 @@ class Writer(object):
     
     def mesh(self, nxdata, scan):
         '''*internal*: data parser for 2-D mesh and hklmesh'''
+        # TODO: refactor to use converters.MeshStructure() class
+        
         # 2-D parser: http://www.certif.com/spec_help/mesh.html
         # mesh motor1 start1 end1 intervals1 motor2 start2 end2 intervals2 time
         # 2-D parser: http://www.certif.com/spec_help/hklmesh.html
@@ -234,7 +238,6 @@ class Writer(object):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         signal, axes = '', ['',]
-        raise RuntimeError('undergoing a refactoring, mesh() not ready yet')
         
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = scan.scanCmd.split()[1:]
         if label1 not in scan.data:
@@ -268,7 +271,7 @@ class Writer(object):
             for label in column_labels:
                 if label not in nxdata:
                     axis = np.array( scan.data.get(label) )
-                    self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
+                    self.write_ds(nxdata, label, converters.reshape_data(axis, data_shape))
                 else:
                     pass
 
@@ -281,7 +284,7 @@ class Writer(object):
                 num_channels = len(spectrum[0])
                 data_shape.append(num_channels)
                 mca = np.array(spectrum)
-                data = utils.reshape_data(mca, data_shape)
+                data = converters.reshape_data(mca, data_shape)
                 channels = range(1, num_channels+1)
                 ds_name = '_' + key + '_'
                 self.write_ds(nxdata, ds_name, data, axes=axes+':'+ds_name+'channel_', units='counts')
