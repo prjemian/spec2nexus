@@ -69,13 +69,16 @@ def make_png(
     fig = matplotlib.figure.Figure(figsize=(9, 5))
     fig.clf()
     ax = fig.add_subplot('111')
-    # TODO: apply axes scaling
-    ax.imshow(image_data, interpolation='nearest')
+    if isinstance(axes, list) and len(axes) == 2:
+        # ax.pcolormesh(axes[0], axes[1], image_data, cmap=cmap)
+        ax.pcolor(axes[0], axes[1], image_data, cmap=cmap)
+    else:
+        ax.imshow(image_data, interpolation='nearest', cmap=cmap)
 
     timestamp_str = timestamp_str or str(datetime.datetime.now())
     
-    ax.set_title(subtitle, fontsize=9)
-    fig.suptitle(title, fontsize=10)
+    ax.set_title(subtitle, fontsize=10)
+    fig.suptitle(title, fontsize=8)
     fig.text(0.02, 0., timestamp_str,
         fontsize=8, color='gray',
         ha='left', va='bottom', alpha=0.5)
