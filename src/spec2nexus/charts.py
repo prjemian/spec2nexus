@@ -33,7 +33,7 @@ def make_png(
         imgfile, 
         axes = None,
         title = '2-D data',
-        subtitle = None,
+        subtitle = '',
         log_image=False, 
         hsize=PLOT_H_INT, 
         vsize=PLOT_V_INT, 
@@ -57,31 +57,31 @@ def make_png(
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
     :return str: *imgfile*
     '''
-    global MPL_FIG  # TODO: refactor with fig, as in xy_plot() below?
 
-    image_data = numpy.ma.masked_less_equal(image, 0)
     # replace masked data with min good value
+    image_data = numpy.ma.masked_less_equal(image, 0)
     image_data = image_data.filled(image_data.min())
-    
-    if log_image and image_data.max() != 0:
+    if log_image and image_data.max() != 0:     # apply log scaling
         image_data = numpy.log(image_data)
         image_data -= image_data.min()
         image_data *= SCALING_FACTOR / image_data.max()
 
-    plt.set_cmap(cmap)
-    if MPL_FIG is None:
-        MPL_FIG = plt.figure(figsize=(hsize, vsize))
-    else:
-        MPL_FIG.clf()
-    ax = MPL_FIG.add_subplot(111)
-    ax.cla()
-    ax.set_title(title, fontsize=9)
-    if subtitle is not None:
-        #fig.suptitle(title, fontsize=10)
-        pass
+    fig = matplotlib.figure.Figure(figsize=(9, 5))
+    fig.clf()
+    ax = fig.add_subplot('111')
+    # TODO: apply axes scaling
     ax.imshow(image_data, interpolation='nearest')
-    MPL_FIG.savefig(imgfile, bbox_inches='tight')
-    plt.close(MPL_FIG)
+
+    timestamp_str = timestamp_str or str(datetime.datetime.now())
+    
+    ax.set_title(subtitle, fontsize=9)
+    fig.suptitle(title, fontsize=10)
+    fig.text(0.02, 0., timestamp_str,
+        fontsize=8, color='gray',
+        ha='left', va='bottom', alpha=0.5)
+
+    FigureCanvas(fig).print_figure(imgfile, bbox_inches='tight')
+
     return imgfile
 
 
@@ -143,8 +143,7 @@ def xy_plot(x, y,
     if subtitle is not None:
         ax.set_title(subtitle, fontsize=9)
 
-    if timestamp_str is None:
-        timestamp_str = str(datetime.datetime.now())
+    timestamp_str = timestamp_str or str(datetime.datetime.now())
     if title is None:
         title = timestamp_str
     else:
