@@ -72,6 +72,11 @@ def make_png(
     else:
         ax.imshow(image_data, interpolation='nearest', cmap=cmap)
 
+    if xtitle is not None:
+        ax.set_xlabel(xtitle)
+    if ytitle is not None:
+        ax.set_ylabel(ytitle)
+
     timestamp_str = timestamp_str or str(datetime.datetime.now())
     
     ax.set_title(subtitle, fontsize=10)
@@ -146,14 +151,11 @@ def xy_plot(x, y,
     if subtitle is not None:
         ax.set_title(subtitle, fontsize=9)
 
-    timestamp_str = timestamp_str or str(datetime.datetime.now())
-    if title is None:
-        title = timestamp_str
-    else:
-        fig.text(0.02, 0., timestamp_str,
-            fontsize=8, color='gray',
-            ha='left', va='bottom', alpha=0.5)
-    fig.suptitle(title, fontsize=10)
+    ax.set_title(subtitle, fontsize=10)
+    fig.suptitle(title, fontsize=8)
+    fig.text(0.02, 0., timestamp_str,
+        fontsize=8, color='gray',
+        ha='left', va='bottom', alpha=0.5)
     fig.text(0.98, 0., WATERMARK_TEXT,
         fontsize=8, color='gray',
         ha='right', va='bottom', alpha=0.5)

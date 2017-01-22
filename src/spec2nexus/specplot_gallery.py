@@ -84,7 +84,7 @@ class PlotSpecFileScans(object):
             # do nothing if plot directory was last updated _after_ the specFile
             return
         
-        return (mtime_specFile, mtime_cache, mtime_pngdir, png_directory)
+        return (mtime_specFile, mtime_pngdir, png_directory)
     
     def plot_all_scans(self, specFile):
         '''
@@ -96,7 +96,7 @@ class PlotSpecFileScans(object):
         answer = self._mtime_checkup_(specFile)
         if answer is None:
             return
-        mtime_specFile, mtime_cache, mtime_pngdir, png_directory = answer
+        mtime_specFile, mtime_pngdir, png_directory = answer
 
         try:
             logger('SPEC data file: ' + specFile)
