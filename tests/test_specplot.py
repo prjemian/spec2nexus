@@ -58,8 +58,6 @@ class Issue_66_plotting_problems(unittest.TestCase):
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.plot_scan(scan, self.plotFile)
-        self.assertTrue(os.path.exists(self.plotFile))
-        os.remove(self.plotFile)
         self.assertFalse(os.path.exists(self.plotFile))
         
     def test_y_values_all_zero_lin_lin(self):
@@ -116,8 +114,10 @@ class Issue_66_plotting_problems(unittest.TestCase):
 
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
-        self.assertRaises(NotImplementedError, specplot.main)
 
+        specplot.main()
+
+        self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
     
@@ -131,8 +131,10 @@ class Issue_66_plotting_problems(unittest.TestCase):
 
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
-        self.assertRaises(NotImplementedError, specplot.main)
 
+        specplot.main()
+
+        self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
 

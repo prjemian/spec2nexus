@@ -34,11 +34,8 @@ Exceptions:
 '''
 
 import os
-import datetime
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
+import charts
 import converters
 import spec             # read SPEC data files
 import singletons
@@ -420,7 +417,7 @@ class LinePlotter(ImageMaker):
         y = plotData.data[signal]
         axis = plotData.axes[0]
         x = plotData.data[axis]
-        xy_plot(
+        charts.xy_plot(
             x, 
             y,  
             plotFile, 
@@ -457,9 +454,13 @@ class MeshPlotter(ImageMaker):
         # get the data from the plotData structure
         signal = plotData.signal
         image = plotData.data[signal]
-        # TODO: image_plot(image, )
-        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
-
+        charts.make_png(
+            image, 
+            plotFile,
+            [plotData.data[axis] for axis in plotData.axes],
+            title = self.get_plot_title(),
+            subtitle = self.get_plot_subtitle(),
+            )
 
 class NeXusPlotter(ImageMaker):
     '''
@@ -478,79 +479,6 @@ class NeXusPlotter(ImageMaker):
         :param str plotFile: name of image file to write
         '''
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
-
-
-def xy_plot(x, y, 
-              plotfile, 
-              title=None, subtitle=None, 
-              xtitle=None, ytitle=None, 
-              xlog=False, ylog=False,
-              timestamp_str=None):
-    r'''
-    with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
-    
-    :param [float] x: horizontal axis data
-    :param [float] y: vertical axis data
-    :param str plotfile: file name to write plot image
-    :param str xtitle: horizontal axis label (default: not shown)
-    :param str ytitle: vertical axis label (default: not shown)
-    :param str title: title for plot (default: date time)
-    :param str subtitle: subtitle for plot (default: not shown)
-    :param bool xlog: should X axis be log (default: False=linear)
-    :param bool ylog: should Y axis be log (default: False=linear)
-    :param str timestamp_str: date to use on plot (default: now)
-
-    .. tip:: use this module as a background task
-    
-        MatPlotLib has several interfaces for plotting. 
-        Since this module runs as part of a background job 
-        generating lots of plots, MatPlotLib's standard ``plt`` code is 
-        not the right model.  It warns after 20 plots and 
-        will eventually run out of memory.  
-        
-        Here's the fix used in this module:
-        http://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
-
-    '''
-    fig = matplotlib.figure.Figure(figsize=(9, 5))
-    fig.clf()
-
-    ax = fig.add_subplot('111')
-    if xlog:
-        ax.set_xscale('log')
-        if max(x) <= 0:
-            msg = 'X data has no positive values,'
-            msg += ' and therefore can not be log-scaled.'
-            raise ValueError(msg)
-    if ylog:
-        ax.set_yscale('log')
-        if max(y) <= 0:
-            msg = 'Y data has no positive values,'
-            msg += ' and therefore can not be log-scaled.'
-            raise ValueError(msg)
-    if not xlog and not ylog:
-        ax.ticklabel_format(useOffset=False)
-    if xtitle is not None:
-        ax.set_xlabel(xtitle)
-    if ytitle is not None:
-        ax.set_ylabel(ytitle)
-
-    if subtitle is not None:
-        ax.set_title(subtitle, fontsize=9)
-
-    if timestamp_str is None:
-        timestamp_str = str(datetime.datetime.now())
-    if title is None:
-        title = timestamp_str
-    else:
-        fig.text(0.02, 0., timestamp_str,
-            fontsize=8, color='gray',
-            ha='left', va='bottom', alpha=0.5)
-    fig.suptitle(title, fontsize=10)
-
-    ax.plot(x, y, 'o-')
-
-    FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
 
 
 def openSpecFile(specFile):
