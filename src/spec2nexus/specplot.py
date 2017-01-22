@@ -88,7 +88,7 @@ class Selector(singletons.Singleton):
     
     def __init__(self):
         self.db = {}
-        self.add('ascan', LinePlotter, default=True)
+        self.add(self.default_key, LinePlotter, default=True)
     
     def auto(self, scan):
         '''

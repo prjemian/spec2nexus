@@ -14,6 +14,7 @@ unit tests for the specplot module
 
 import unittest
 import os, sys
+import shutil
 import tempfile
 
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
@@ -105,6 +106,19 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertTrue(os.path.exists(plotFile))
         os.remove(plotFile)
         os.rmdir(tempdir)
+        self.assertFalse(os.path.exists(plotFile))
+    
+    def test_command_line_33bm_spec(self):
+        tempdir = tempfile.mkdtemp()
+
+        specFile = self.abs_data_fname('33bm_spec.dat')
+        scan_number = 17        # hklmesh
+
+        plotFile = os.path.join(tempdir, 'image.png')
+        sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
+        self.assertRaises(NotImplementedError, specplot.main)
+
+        shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
 
 
