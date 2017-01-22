@@ -22,6 +22,12 @@ Plot the data from scan N in a SPEC data file
     ~NeXusPlotter
     ~xy_plot
     ~openSpecFile
+
+Exceptions:
+
+.. autosummary::
+
+    ~NotPlottable
     ~ScanAborted
     ~UnexpectedObjectTypeError
 
@@ -41,6 +47,7 @@ import singletons
 class UnexpectedObjectTypeError(Exception): pass
 # class UndefinedMacroNameError(Exception): pass
 class ScanAborted(Exception): pass
+class NotPlottable(Exception): pass
 
 
 class Selector(singletons.Singleton):
@@ -191,8 +198,8 @@ class ImageMaker(object):
     USAGE:
     
     #. Create a subclass of :class:`ImageMaker`
+    #. Re-implement :meth:`get_plot_data` to gather the data for the image
     #. Re-implement :meth:`make_image` to generate the plot image
-    #. Re-implement :meth:`is_plottable` as appropriate for the available data
     #. In the call to :meth:`plot_scan`, supply any optional keywords to
        define plot settings such as `title`, `subtitle`, etc.
     #. Optionally, re-implement any of the various *get* methods to 
@@ -254,7 +261,6 @@ class ImageMaker(object):
         ~get_initial_settings
         ~get_setting
         ~set_scan
-        ~is_plottable
     
     '''
 
@@ -269,6 +275,10 @@ class ImageMaker(object):
         self.configure(**kwds)
         self.set_scan(scan)
         self.image(plotFile)
+    
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        raise NotImplementedError('must implement get_plot_data() in each subclass')
          
     def make_image(self, plotData, plotFile):
         '''
@@ -316,12 +326,6 @@ class ImageMaker(object):
         if not isinstance(scan, spec.SpecDataFileScan):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         self.scan = scan
-     
-    def is_plottable(self, plotData):
-        '''
-        is there enough data to make a plot?
-        '''
-        return plotData is not None     # subclass should provide a deeper test
          
     def image(self, plotFile):
         '''
@@ -336,7 +340,12 @@ class ImageMaker(object):
             if was_aborted is not None:
                 raise ScanAborted(was_aborted)
             raise _exc
-        if self.is_plottable(plotData):
+        
+        if plotData is None:
+            # TODO message needs improvement
+            raise NotPlottable('No plottable data object for ' + str(self.scan))
+        
+        if plotData.plottable():
             # only proceed if mtime of SPEC data file is newer than plotFile
             mtime_sdf = os.path.getmtime(self.get_data_file_name())
             if os.path.exists(plotFile):
@@ -354,16 +363,6 @@ class ImageMaker(object):
         but it *could* be something else
         '''
         return self.scan.header.parent.fileName
-    
-    def get_plot_data(self):
-        '''retrieve default data from spec data file'''
-        if self.get_setting('image_data') is not None:
-            return self.get_setting('image_data')
-
-        # plot last column v. first column
-        x = self.scan.data[self.scan.column_first]
-        y = self.scan.data[self.scan.column_last]
-        return (x, y)
     
     def get_macro(self):
         'return the name of the SPEC macro for this scan'
@@ -403,6 +402,13 @@ class LinePlotter(ImageMaker):
     create a line plot
     '''
     
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        if self.get_setting('image_data') is not None:
+            return self.get_setting('image_data')
+
+        return converters.XYStructure(self.scan)
+    
     def make_image(self, plotData, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
@@ -410,8 +416,7 @@ class LinePlotter(ImageMaker):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        x, y = plotData
-        xy_plot(x, y,  plotFile, 
+        xy_plot(plotData.x, plotData.y,  plotFile, 
                title = self.get_plot_title(),
                subtitle = self.get_plot_subtitle(),
                xtitle = self.get_x_title(),
@@ -429,13 +434,10 @@ class MeshPlotter(ImageMaker):
     
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
-        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
         if self.get_setting('image_data') is not None:
             return self.get_setting('image_data')
         
-        mesh = converters.MeshStructure()
-        mesh.mesh(self.scan)
-        return mesh
+        return converters.MeshStructure(self.scan)
     
     def make_image(self, plotData, plotFile):
         '''
@@ -454,6 +456,10 @@ class NeXusPlotter(ImageMaker):
     create a plot from a NeXus HDF5 data file
     '''
     
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+
     def make_image(self, plotData, plotFile):
         '''
         make image file from the SPEC scan
