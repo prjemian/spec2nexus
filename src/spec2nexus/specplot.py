@@ -416,14 +416,21 @@ class LinePlotter(ImageMaker):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        xy_plot(plotData.x, plotData.y,  plotFile, 
-               title = self.get_plot_title(),
-               subtitle = self.get_plot_subtitle(),
-               xtitle = self.get_x_title(),
-               ytitle = self.get_y_title(),
-               xlog = self.get_x_log(),
-               ylog = self.get_y_log(),
-               timestamp_str = self.get_timestamp_str())
+        signal = plotData.signal
+        y = plotData.data[signal]
+        axis = plotData.axes[0]
+        x = plotData.data[axis]
+        xy_plot(
+            x, 
+            y,  
+            plotFile, 
+            title = self.get_plot_title(),
+            subtitle = self.get_plot_subtitle(),
+            xtitle = self.get_x_title(),
+            ytitle = self.get_y_title(),
+            xlog = self.get_x_log(),
+            ylog = self.get_y_log(),
+            timestamp_str = self.get_timestamp_str())
 
 
 class MeshPlotter(ImageMaker):
@@ -448,6 +455,9 @@ class MeshPlotter(ImageMaker):
         '''
         assert(isinstance(plotData, converters.MeshStructure))
         # get the data from the plotData structure
+        signal = plotData.signal
+        image = plotData.data[signal]
+        # TODO: image_plot(image, )
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
 

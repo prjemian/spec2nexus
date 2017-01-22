@@ -23,6 +23,7 @@ needs to be reshaped according to its intended dimensionality.
 .. autosummary::
 
     ~reshape_data
+    ~PlotDataStructure
     ~XYStructure
     ~MeshStructure
 
@@ -55,12 +56,21 @@ class PlotDataStructure(object):
     
     :param obj scan: instance of :class:`spec2nexus.spec.SpecDataFileScan`
     
+    Attributes:
+    
+    :signal: name of the 'signal' data (default data to be plotted)
+    :data: values of various collected arrays {label: array}
+    :axes: names of the axes of signal data
+    
     Re-implement the :meth:`plottable()` method in each subclass to
     report if the data can be plotted.
     '''
     
     def __init__(self, scan):
         assert(isinstance(scan, spec.SpecDataFileScan))
+        self.signal = None
+        self.axes = []
+        self.data = {}
     
     def plottable(self):
         '''
@@ -82,22 +92,23 @@ class XYStructure(PlotDataStructure):
     '''
     
     def __init__(self, scan):
-        assert(isinstance(scan, spec.SpecDataFileScan))
+        PlotDataStructure.__init__(self, scan)
 
         # plot last column v. first column
-        self.x = scan.data[scan.column_first]
-        self.y = scan.data[scan.column_last]
-        
-        # TODO: consider refactor attributes to similar structure in MeshStructure (signal, data, axes)
+        self.signal = scan.column_last
+        self.axes = [scan.column_first]
+        self.data = {label: scan.data.get(label) for label in scan.L}
         # TODO: should the plot method be moved here?
     
     def plottable(self):
         '''
         can this data be plotted as expected?
         '''
-        if len(self.x) > 0:
-            if len(self.x) == len(self.y):
-                return True
+        if self.signal in self.data:
+            signal = self.data[self.signal]
+            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
+                if len(signal) == len(self.data[self.axes[0]]):
+                    return True
         return False
 
 
@@ -106,12 +117,6 @@ class MeshStructure(PlotDataStructure):
     describe plottable data from a *mesh* or *hklmesh* scan
     
     :param obj scan: instance of :class:`spec2nexus.spec.SpecDataFileScan`
-    
-    Attributes:
-    
-    :signal: name of the 'signal' data (default data to be plotted)
-    :data: values of various collected arrays {label: array}
-    :axes: names of the axes of signal data
     
     References:
     
@@ -130,18 +135,13 @@ class MeshStructure(PlotDataStructure):
     '''
     
     def __init__(self, scan):
-        self.signal = None      # 
-        self.data = {}          # 
-        self.axes = []          # 
+        PlotDataStructure.__init__(self, scan)
         self._mesh_(scan)
 
     def _mesh_(self, scan):
         '''
         data parser for 2-D mesh and hklmesh
         '''
-        
-        assert(isinstance(scan, spec.SpecDataFileScan))
-        
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = scan.scanCmd.split()[1:]
         if label1 not in scan.data:
             label1 = scan.L[0]      # mnemonic v. name
@@ -151,38 +151,39 @@ class MeshStructure(PlotDataStructure):
         axis2 = scan.data.get(label2)
         intervals1, intervals2 = map(int, (intervals1, intervals2))
         start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
+
         if len(axis1) < intervals1:     # stopped scan before second row started
             # TODO: fallback to 1-D support
             msg = 'stopped scan before second row started'
             msg += ', fall back to 1-D plot'
             raise NotImplementedError(msg)
-        else:
-            axis1 = axis1[0:intervals1+1]
-            self.data[label1] = axis1    # 1-D array
 
-            axis2 = [axis2[row] for row in range(len(axis2)) if row % (intervals1+1) == 0]
-            self.data[label2] = axis2    # 1-D array
-    
-            column_labels = scan.L
-            column_labels.remove(label1)    # special handling
-            column_labels.remove(label2)    # special handling
-            if scan.scanCmd.startswith('hkl'):
-                # find the reciprocal space axis held constant
-                label3 = [key for key in ('H', 'K', 'L') if key not in (label1, label2)][0]
-                axis3 = scan.data.get(label3)[0]
-                self.data[label3] = axis3    # constant
-    
-            # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
-            data_shape = [len(axis1), len(axis2)]
-            for label in column_labels:
-                if label not in self.data:
-                    axis = numpy.array( scan.data.get(label) )
-                    self.data[label] = reshape_data(axis, data_shape)
-                else:
-                    pass
-    
-            self.signal = utils.clean_name(scan.column_last)
-            self.axes = [label1, label2]
+        axis1 = axis1[0:intervals1+1]
+        self.data[label1] = axis1    # 1-D array
+
+        axis2 = [axis2[row] for row in range(len(axis2)) if row % (intervals1+1) == 0]
+        self.data[label2] = axis2    # 1-D array
+
+        column_labels = scan.L
+        column_labels.remove(label1)    # special handling
+        column_labels.remove(label2)    # special handling
+        if scan.scanCmd.startswith('hkl'):
+            # find the reciprocal space axis held constant
+            label3 = [key for key in ('H', 'K', 'L') if key not in (label1, label2)][0]
+            axis3 = scan.data.get(label3)[0]
+            self.data[label3] = axis3    # constant
+
+        # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
+        data_shape = [len(axis1), len(axis2)]
+        for label in column_labels:
+            if label not in self.data:
+                axis = numpy.array( scan.data.get(label) )
+                self.data[label] = reshape_data(axis, data_shape)
+            else:
+                pass
+
+        self.signal = utils.clean_name(scan.column_last)
+        self.axes = [label1, label2]
     
         if spec.MCA_DATA_KEY in scan.data:    # 3-D array(s)
             # save each spectrum

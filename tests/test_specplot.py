@@ -57,11 +57,9 @@ class Issue_66_plotting_problems(unittest.TestCase):
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
-        self.assertRaises(
-            specplot.ScanAborted, 
-            plotter.plot_scan,
-            scan,
-            self.plotFile)
+        plotter.plot_scan(scan, self.plotFile)
+        self.assertTrue(os.path.exists(self.plotFile))
+        os.remove(self.plotFile)
         self.assertFalse(os.path.exists(self.plotFile))
         
     def test_y_values_all_zero_lin_lin(self):
