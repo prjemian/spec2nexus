@@ -24,7 +24,7 @@ import re
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.scanf import scanf
-from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber
+from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
 from spec2nexus.utils import strip_first_word, iso8601
 from spec2nexus.writer import CONTAINER_CLASS
 
@@ -1019,8 +1019,8 @@ def data_lines_postprocessing(scan):
     dl = '\n'.join(scan.data_lines).replace('\\\n', ' ')
     if dl.find('@A') > -1:
         # There can be more than 1 MCA spectrum specified
-        # scan.data['_mca_'] = {}  keys: mca or mca1, mca2, ...
-        scan.data['_mca_'] = {}
+        # scan.data[MCA_DATA_KEY] = {}  keys: mca or mca1, mca2, ...
+        scan.data[MCA_DATA_KEY] = {}
 
     # interpret the data lines from the body of the scan
     for _, values in enumerate(dl.splitlines()):
@@ -1031,11 +1031,11 @@ def data_lines_postprocessing(scan):
                 key = 'mca'
             else:
                 key = 'mca' + parts[0][2:]       # @A1: mca1, @A2: mca2, ...
-            if key not in scan.data['_mca_']:
-                scan.data['_mca_'][key] = []
+            if key not in scan.data[MCA_DATA_KEY]:
+                scan.data[MCA_DATA_KEY][key] = []
             # accumulate this spectrum
             mca_spectrum = map(float, parts[1:])
-            scan.data['_mca_'][key].append(mca_spectrum)
+            scan.data[MCA_DATA_KEY][key].append(mca_spectrum)
         else:
             try:
                 buf = scan._interpret_data_row(values)

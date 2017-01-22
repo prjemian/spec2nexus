@@ -21,6 +21,7 @@ import numpy as np
 import converters
 import eznx
 import spec2nexus
+import spec
 import utils
 
 
@@ -200,7 +201,7 @@ class Writer(object):
     
     def mca_spectra(self, nxdata, scan, primary_axis_label):
         '''*internal*: parse for optional 2-D MCA spectra'''
-        if '_mca_' in scan.data:
+        if spec.MCA_DATA_KEY in scan.data:
             # calibration for all spectra
             a, b, c = 0, 0, 0
             if hasattr(scan, 'MCA'):
@@ -213,7 +214,7 @@ class Writer(object):
                 a, b, c = 1, 0, 0
 
             # save each spectrum
-            for key, spectrum in sorted(scan.data['_mca_'].items()):
+            for key, spectrum in sorted(scan.data[spec.MCA_DATA_KEY].items()):
                 ds_name = '_' + key + '_'
                 axes = primary_axis_label + ':' + ds_name + 'channel_'
                 self.write_ds(nxdata, ds_name, spectrum, axes=axes, units = 'counts')
@@ -278,9 +279,9 @@ class Writer(object):
             signal = utils.clean_name(scan.column_last)
             axes = ':'.join([label1, label2])
 
-        if '_mca_' in scan.data:    # 3-D array(s)
+        if spec.MCA_DATA_KEY in scan.data:    # 3-D array(s)
             # save each spectrum
-            for key, spectrum in sorted(scan.data['_mca_'].items()):
+            for key, spectrum in sorted(scan.data[spec.MCA_DATA_KEY].items()):
                 num_channels = len(spectrum[0])
                 data_shape.append(num_channels)
                 mca = np.array(spectrum)

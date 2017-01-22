@@ -123,6 +123,7 @@ from spec2nexus.utils import get_all_plugins
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
 UNRECOGNIZED_KEY = 'unrecognized control line'
+MCA_DATA_KEY = '_mca_'
 
 
 class SpecDataFileNotFound(IOError): 

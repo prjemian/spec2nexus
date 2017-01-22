@@ -184,9 +184,9 @@ class MeshStructure(PlotDataStructure):
             self.signal = utils.clean_name(scan.column_last)
             self.axes = [label1, label2]
     
-        if '_mca_' in scan.data:    # 3-D array(s)
+        if spec.MCA_DATA_KEY in scan.data:    # 3-D array(s)
             # save each spectrum
-            for key, spectrum in sorted(scan.data['_mca_'].items()):
+            for key, spectrum in sorted(scan.data[spec.MCA_DATA_KEY].items()):
                 num_channels = len(spectrum[0])
                 data_shape.append(num_channels)
                 mca = numpy.array(spectrum)
