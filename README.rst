@@ -34,9 +34,12 @@ Provides
 :git:       https://github.com/prjemian/spec2nexus
 :PyPI:      https://pypi.python.org/pypi/spec2nexus/ 
 :Ohloh:     http://ohloh.net/p/spec2nexus
-:travis-ci:
+:Depsy:     Research software impact
+    .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
+               :target: http://depsy.org/package/python/spec2nexus
+:travis-ci: continuous integration
     .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
                :target: https://travis-ci.org/prjemian/spec2nexus
-:coveralls:
+:coveralls: code coverage
    .. image:: https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master
               :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
