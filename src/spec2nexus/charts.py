@@ -154,6 +154,9 @@ def xy_plot(x, y,
             fontsize=8, color='gray',
             ha='left', va='bottom', alpha=0.5)
     fig.suptitle(title, fontsize=10)
+    fig.text(0.98, 0., WATERMARK_TEXT,
+        fontsize=8, color='gray',
+        ha='right', va='bottom', alpha=0.5)
 
     ax.plot(x, y, 'o-')
 
