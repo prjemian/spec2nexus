@@ -33,7 +33,7 @@ import matplotlib
 matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
-import reshape
+import converters
 import spec             # read SPEC data files
 import singletons
 
@@ -433,7 +433,7 @@ class MeshPlotter(ImageMaker):
         if self.get_setting('image_data') is not None:
             return self.get_setting('image_data')
         
-        mesh = reshape.MeshStructure()
+        mesh = converters.MeshStructure()
         mesh.mesh(self.scan)
         return mesh
     
@@ -444,7 +444,7 @@ class MeshPlotter(ImageMaker):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        assert(isinstance(plotData, reshape.MeshStructure))
+        assert(isinstance(plotData, converters.MeshStructure))
         # get the data from the plotData structure
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
