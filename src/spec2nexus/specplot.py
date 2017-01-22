@@ -424,6 +424,13 @@ class MeshPlotter(ImageMaker):
     '''
     create a mesh plot (2-D image)
     '''
+    # see code in: writer.Writer.mesh()
+    
+    def get_plot_data(self):
+        '''retrieve default data from spec data file'''
+        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+        if self.get_setting('xy_data') is not None:
+            return self.get_setting('xy_data')
     
     def make_image(self, plotData, plotFile):
         '''

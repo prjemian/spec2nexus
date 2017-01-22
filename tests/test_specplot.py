@@ -108,7 +108,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         os.rmdir(tempdir)
         self.assertFalse(os.path.exists(plotFile))
     
-    def test_command_line_33bm_spec(self):
+    def test_command_line_33bm_spec_issue72_hklmesh_plot(self):
         tempdir = tempfile.mkdtemp()
 
         specFile = self.abs_data_fname('33bm_spec.dat')
