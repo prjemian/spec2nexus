@@ -234,6 +234,7 @@ class Writer(object):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         signal, axes = '', ['',]
+        raise RuntimeError('undergoing a refactoring, mesh() not ready yet')
         
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = scan.scanCmd.split()[1:]
         if label1 not in scan.data:

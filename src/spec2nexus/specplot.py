@@ -33,6 +33,7 @@ import matplotlib
 matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
+import reshape
 import spec             # read SPEC data files
 import singletons
 
@@ -288,7 +289,7 @@ class ImageMaker(object):
             x_log = False,
             y_log = False,
             timestamp = None,
-            xy_data = None,
+            image_data = None,
         )
     
     def get_setting(self, key):
@@ -356,8 +357,8 @@ class ImageMaker(object):
     
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
-        if self.get_setting('xy_data') is not None:
-            return self.get_setting('xy_data')
+        if self.get_setting('image_data') is not None:
+            return self.get_setting('image_data')
 
         # plot last column v. first column
         x = self.scan.data[self.scan.column_first]
@@ -429,8 +430,12 @@ class MeshPlotter(ImageMaker):
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
-        if self.get_setting('xy_data') is not None:
-            return self.get_setting('xy_data')
+        if self.get_setting('image_data') is not None:
+            return self.get_setting('image_data')
+        
+        mesh = reshape.MeshStructure()
+        mesh.mesh(self.scan)
+        return mesh
     
     def make_image(self, plotData, plotFile):
         '''
@@ -439,6 +444,8 @@ class MeshPlotter(ImageMaker):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
+        assert(isinstance(plotData, reshape.MeshStructure))
+        # get the data from the plotData structure
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
 
