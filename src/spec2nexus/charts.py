@@ -14,18 +14,16 @@ import datetime
 import numpy
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+
+import spec2nexus
 
 
 SCALING_FACTOR = 1        #  2**24
 PLOT_H_INT = 7
 PLOT_V_INT = 3
 COLORMAP = 'cubehelix'        # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
-
-# MatPlotLib advises to re-use the figure() object rather create new ones
-# http://stackoverflow.com/questions/21884271/warning-about-too-many-open-figures
-MPL_FIG = None
+WATERMARK_TEXT = '%s, (C) %s' % (spec2nexus.__package_name__, spec2nexus.__copyright__.split(',')[0])
 
 
 def make_png(
@@ -35,8 +33,8 @@ def make_png(
         title = '2-D data',
         subtitle = '',
         log_image=False, 
-        hsize=PLOT_H_INT, 
-        vsize=PLOT_V_INT, 
+        # hsize=PLOT_H_INT, 
+        # vsize=PLOT_V_INT, 
         cmap=COLORMAP,
         xtitle=None, ytitle=None, 
         timestamp_str=None):
@@ -52,8 +50,8 @@ def make_png(
     :param obj image: array of data to be rendered
     :param str imgfile: name of image file to be written (path is optional)
     :param bool log_image: plot log(image)
-    :param int hsize: horizontal size of the PNG image (default: 7)
-    :param int hsize: vertical size of the PNG image (default: 3)
+    .. :param int hsize: horizontal size of the PNG image (default: 7)
+    .. :param int hsize: vertical size of the PNG image (default: 3)
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
     :return str: *imgfile*
     '''
@@ -70,7 +68,6 @@ def make_png(
     fig.clf()
     ax = fig.add_subplot('111')
     if isinstance(axes, list) and len(axes) == 2:
-        # ax.pcolormesh(axes[0], axes[1], image_data, cmap=cmap)
         ax.pcolor(axes[0], axes[1], image_data, cmap=cmap)
     else:
         ax.imshow(image_data, interpolation='nearest', cmap=cmap)
@@ -82,6 +79,9 @@ def make_png(
     fig.text(0.02, 0., timestamp_str,
         fontsize=8, color='gray',
         ha='left', va='bottom', alpha=0.5)
+    fig.text(0.98, 0., WATERMARK_TEXT,
+        fontsize=8, color='gray',
+        ha='right', va='bottom', alpha=0.5)
 
     FigureCanvas(fig).print_figure(imgfile, bbox_inches='tight')
 
