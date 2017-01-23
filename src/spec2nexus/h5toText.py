@@ -346,7 +346,7 @@ def isNeXusFile_ByNXdataAttrs(filename):
 
         f.close()
         return True
-    except Exception, _exc:
+    except Exception as _exc:
         pass    # ignore any Exceptions, they mean that result stays "False"
     return False
 
