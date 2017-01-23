@@ -26,6 +26,8 @@ needs to be reshaped according to its intended dimensionality.
     ~PlotDataStructure
     ~XYStructure
     ~MeshStructure
+    ~NoDataToPlot
+    ~HandleMeshDataAs1D
 
 '''
 
@@ -34,7 +36,13 @@ import numpy
 import spec
 import utils
 
-class NoDataToPlot(KeyError): pass
+class NoDataToPlot(KeyError): 
+    'scan aborted before any points gathered or data not present in SPEC file'
+    pass
+
+class HandleMeshDataAs1D(RuntimeWarning): 
+    'mesh scan aborted before second row started can plot as 1-D'
+    pass
 
 
 def reshape_data(scan_data, scan_shape):
@@ -155,11 +163,11 @@ class MeshStructure(PlotDataStructure):
         intervals1, intervals2 = map(int, (intervals1, intervals2))
         start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
 
-        if len(axis1) < intervals1:     # stopped scan before second row started
-            # TODO: fallback to 1-D support
+        if len(axis1) < intervals1 and min(axis2) == max(axis2):
+            # stopped scan before second row started, 1-D plot is better (issue #82)
             msg = 'stopped scan before second row started'
             msg += ', fall back to 1-D plot'
-            raise NotImplementedError(msg)
+            raise HandleMeshDataAs1D(msg)
 
         axis1 = axis1[0:intervals1+1]
         self.data[label1] = axis1    # 1-D array

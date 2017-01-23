@@ -480,7 +480,11 @@ class MeshPlotter(ImageMaker):
         if self.get_setting('image_data') is not None:
             return self.get_setting('image_data')
         
-        return converters.MeshStructure(self.scan)
+        try:
+            converter = converters.MeshStructure(self.scan)
+        except converters.HandleMeshDataAs1D as _exc:
+            converter = converters.XYStructure(self.scan)
+        return converter
     
     def make_image(self, plotData, plotFile):
         '''
@@ -489,21 +493,39 @@ class MeshPlotter(ImageMaker):
         :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        assert(isinstance(plotData, converters.MeshStructure))
+        assert(isinstance(plotData, (converters.MeshStructure, converters.XYStructure)))
         # get the data from the plotData structure
-        signal = plotData.signal
-        image = plotData.data[signal]
-        charts.make_png(
-            image, 
-            plotFile,
-            [plotData.data[axis] for axis in plotData.axes],
-            title = self.get_plot_title(),
-            subtitle = self.get_plot_subtitle(),
-            log_image = False,
-            xtitle = self.get_x_title(),
-            ytitle = self.get_y_title(),
-            timestamp_str = self.get_timestamp_str(),
-            )
+        if isinstance(plotData, converters.MeshStructure):
+            signal = plotData.signal
+            image = plotData.data[signal]
+            charts.make_png(
+                image, 
+                plotFile,
+                [plotData.data[axis] for axis in plotData.axes],
+                title = self.get_plot_title(),
+                subtitle = self.get_plot_subtitle(),
+                log_image = False,
+                xtitle = self.get_x_title(),
+                ytitle = self.get_y_title(),
+                timestamp_str = self.get_timestamp_str(),
+                )
+        elif isinstance(plotData, converters.XYStructure):
+            # fallback to 1-D plot
+            signal = plotData.signal
+            y = plotData.data[signal]
+            axis = plotData.axes[0]
+            x = plotData.data[axis]
+            charts.xy_plot(
+                x, 
+                y,  
+                plotFile, 
+                title = self.get_plot_title(),
+                subtitle = self.get_plot_subtitle(),
+                xtitle = self.get_x_title(),
+                ytitle = self.get_y_title(),
+                xlog = self.get_x_log(),
+                ylog = self.get_y_log(),
+                timestamp_str = self.get_timestamp_str())
 
 class NeXusPlotter(ImageMaker):
     '''
