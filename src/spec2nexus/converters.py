@@ -34,6 +34,8 @@ import numpy
 import spec
 import utils
 
+class NoDataToPlot(KeyError): pass
+
 
 def reshape_data(scan_data, scan_shape):
     '''modified from nexpy.readers.readspec.reshape_data'''
@@ -96,9 +98,10 @@ class XYStructure(PlotDataStructure):
 
         # plot last column v. first column
         self.signal = scan.column_last
-        self.axes = [scan.column_first]
+        if self.signal not in scan.data:
+            raise NoDataToPlot(str(scan))
+        self.axes = [scan.column_first,]
         self.data = {label: scan.data.get(label) for label in scan.L}
-        # TODO: should the plot method be moved here?
     
     def plottable(self):
         '''

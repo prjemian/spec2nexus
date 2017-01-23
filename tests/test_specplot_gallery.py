@@ -77,25 +77,25 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('user6idd.dat'))
         specplot_gallery.main()
-
+ 
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
-
+ 
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'user6idd.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
         # TODO: #69: look for handling of scan 1
-
+ 
     def test_command_line_spec_data_file_03_06_JanTest(self):
         sys.argv.append('-d')
         self.assertTrue(os.path.exists(self.tempdir))
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('03_06_JanTest.dat'))
         specplot_gallery.main()
-
+ 
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
-
+ 
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2014', '03', '03_06_JanTest')
         self.assertTrue(os.path.exists(plotDir))
@@ -105,22 +105,22 @@ class SpecPlotGallery(unittest.TestCase):
         # TODO: #69: look for handling of scan 1
         self.assertFalse(os.path.exists(os.path.join(plotDir, 's1.png')))
         # TODO: look for that scan in index.html?
-    
+     
     def test_command_line_spec_data_file_02_03_setup(self):
         sys.argv.append('-d')
         self.assertTrue(os.path.exists(self.tempdir))
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('02_03_setup.dat'))
         specplot_gallery.main()
-
+ 
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
-
+ 
         plotDir = os.path.join(self.tempdir, '2016', '02', '02_03_setup')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '02_03_setup.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
         # TODO: #69: look for handling of scan 5
-    
+     
     def test_command_line_spec_data_file_list(self):
         sys.argv.append('-d')
         self.assertTrue(os.path.exists(self.tempdir))
@@ -128,19 +128,19 @@ class SpecPlotGallery(unittest.TestCase):
         for item in 'user6idd.dat APS_spec_data.dat 02_03_setup.dat'.split():
             sys.argv.append(self.abs_data_fname(item))
         specplot_gallery.main()
-
+ 
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
-
+ 
         plotDir = os.path.join(self.tempdir, '2010', '11', 'APS_spec_data')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-
+ 
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'user6idd.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-
+ 
         plotDir = os.path.join(self.tempdir, '2016', '02', '02_03_setup')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '02_03_setup.dat')))

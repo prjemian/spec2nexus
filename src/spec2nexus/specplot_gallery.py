@@ -35,10 +35,8 @@ import sys
 import spec
 import specplot
 
-# TODO: use specplot.Selector to register image makers for different scan macros as they come up
-# user should be able to augment this, otherwise default selections
-
 MTIME_CACHE_FILE = 'mtime_cache.txt'
+HTML_INDEX_FILE = 'index.html'
 
 
 class DirectoryNotFoundError(ValueError): pass
@@ -109,7 +107,8 @@ class PlotSpecFileScans(object):
         if len(sd.headers) == 0:    # no scan header found, again, silence
             return
     
-        plotList = []
+        plotted_scans = []
+        problem_scans = []
         newFileList = [] # list of all new files created
     
         if not os.path.exists(png_directory):
@@ -119,17 +118,13 @@ class PlotSpecFileScans(object):
         shutil.copy(specFile, png_directory)
     
         for scan_number in sd.getScanNumbers():
-            # TODO: was the data in _this_ scan changed since the last time the SPEC file was modified?
-            #  Check the scan's date/time stamp and also if the plot exists.
-            #  For a scan N, the plot may exist if the scan was in progress at the last update.
-            #  For sure, if a plot for N+1 exists, no need to remake plot for scan N.  Thus:
-            #    Always remake if plot for scan N+1 does not exist
             scan = sd.getScan(scan_number)
-            basePlotFile = ('s%05s.png' % str(scan.scanNum)).replace(' ', '0')  # sorts lexically: S1: s00001.png
+            # make certain that plot files will sort lexically:  S1 --> s00001.png
+            basePlotFile = ('s%05s.png' % str(scan.scanNum)).replace(' ', '0')
             fullPlotFile = os.path.join(png_directory, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
-            plotList.append(href)
+            
             #print "specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile)
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
@@ -138,22 +133,17 @@ class PlotSpecFileScans(object):
                     plotter = image_maker()
                     plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
-                except:
-                    exc = sys.exc_info()[1]
-                    # TODO: this is the place for issue #69
-                    # https://github.com/prjemian/spec2nexus/issues/69
-                    msg = "ERROR: '%s' %s #%s" % (exc, specFile, scan.scanNum)
-                    # print msg
-                    plotList.pop()     # rewrite the default link
-                    plotList.append("<!-- " + msg + " -->")
-                    altText = str(exc) + ': ' + str(scan.scanNum) + ' ' + scan.scanCmd
-                    href = self.href_format(basePlotFile, altText)
-                    plotList.append(href)
+                    plotted_scans.append(href)
+                except Exception as _exc_obj:
+                    msg = "<b>%s</b>" % type(_exc_obj).__name__
+                    msg += ": <tt>#S %s</tt>" % str(scan)
+                    #msg += " (%s)" % specFile
+                    problem_scans.append(msg)
     
-        htmlFile = os.path.join(png_directory, "index.html")
+        htmlFile = os.path.join(png_directory, HTML_INDEX_FILE)
         if len(newFileList) or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')
-            html = build_index_html(specFile, plotList)
+            html = build_index_html(specFile, plotted_scans, problem_scans)
             f = open(htmlFile, "w")
             f.write(html)
             f.close()
@@ -332,7 +322,7 @@ def timestamp():
     return ts
 
 
-def build_index_html(specFile, plotList):
+def build_index_html(specFile, plotted_scans, problem_scans):
     '''
     build index.html content
     
@@ -348,17 +338,26 @@ def build_index_html(specFile, plotList):
     href = "<a href='%s'>%s</a>" % (baseSpecFile, specFile)
     html  = "<html>\n"
     html += "  <head>\n"
-    html += "    <title>SPEC scans from %s</title>\n" % specFile
+    html += "    <title>SPEC scans from %s</title>\n" % os.path.split(specFile)[-1]
     html += "    <!-- %s -->\n"                       % comment
     html += "  </head>\n"
     html += "  <body>\n"
-    html += "    <h1>SPEC scans from: %s</h1>\n"      % specFile
+    html += "    <h1>SPEC scans from: %s</h1>\n"      % os.path.split(specFile)[-1]
     html += "\n"
     html += "    spec file: %s\n"                     % href
     html += "    <br />\n"
     html += "\n"
+    if len(problem_scans) > 0:
+        html += "    <h2>%d scan(s) with plotting problems</h2>\n" % len(problem_scans)
+        html += "\n"
+        html += "    <ul>\n"
+        for item in problem_scans:
+            html += "    <li>%s</li>\n" % item
+        html += "    </ul>\n"
     html += "\n"
-    html += "\n".join(plotList)
+    html += "    <h2>%d plotted scan(s)</h2>\n" % len(plotted_scans)
+    html += "\n"
+    html += "\n".join(plotted_scans)
     html += "\n"
     html += "\n"
     html += "  </body>\n"

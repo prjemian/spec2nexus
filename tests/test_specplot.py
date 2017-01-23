@@ -20,7 +20,7 @@ import tempfile
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
     sys.path.insert(0, _path)
-from spec2nexus import specplot
+from spec2nexus import specplot, converters
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _test_path not in sys.path:
@@ -57,7 +57,14 @@ class Issue_66_plotting_problems(unittest.TestCase):
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
-        plotter.plot_scan(scan, self.plotFile)
+        
+        self.assertRaises(
+            converters.NoDataToPlot, 
+            plotter.plot_scan, 
+            scan, 
+            self.plotFile
+            )
+        
         self.assertFalse(os.path.exists(self.plotFile))
         
     def test_y_values_all_zero_lin_lin(self):

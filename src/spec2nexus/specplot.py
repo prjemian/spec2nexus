@@ -46,6 +46,8 @@ class UnexpectedObjectTypeError(Exception): pass
 class ScanAborted(Exception): pass
 class NotPlottable(Exception): pass
 
+ABORTED_ATTRIBUTE_TEXT = '_aborted_'
+
 
 class Selector(singletons.Singleton):
     '''
@@ -324,6 +326,10 @@ class ImageMaker(object):
         '''
         if not isinstance(scan, spec.SpecDataFileScan):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
+        if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
+            match_text = 'Scan aborted after 0 points.'
+            if scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT) == match_text:
+                raise ScanAborted(match_text)
         self.scan = scan
          
     def image(self, plotFile):
@@ -334,10 +340,11 @@ class ImageMaker(object):
         '''
         try:
             plotData = self.get_plot_data()
-        except KeyError, _exc:
-            was_aborted = self.scan.__getattribute__('_aborted_')
-            if was_aborted is not None:
-                raise ScanAborted(was_aborted)
+        except converters.NoDataToPlot as _exc:
+            raise converters.NoDataToPlot(_exc.message)     # re-cast
+        except KeyError as _exc:
+            if hasattr(self.scan, ABORTED_ATTRIBUTE_TEXT):
+                raise ScanAborted(self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT))
             raise _exc
         
         if plotData is None:
@@ -361,7 +368,7 @@ class ImageMaker(object):
         Usually, this is the SPEC data file
         but it *could* be something else
         '''
-        return self.scan.header.parent.fileName
+        return self.scan.header.parent.fileName  # self.scan.specFile
     
     def get_macro(self):
         'return the name of the SPEC macro for this scan'
@@ -447,6 +454,8 @@ class HKLScanPlotter(LinePlotter):
         # find the real scan axis, the one that changes
         for axis in 'H K L'.split():
             data = plot.data[axis]
+            if data is None:
+                continue
             # could compare start & end from scanCmd, this looks simpler
             if min(data) != max(data):
                 # tell it to use this axis instead
@@ -454,6 +463,8 @@ class HKLScanPlotter(LinePlotter):
                 self.scan.column_first = axis
                 break
         # if not found, default changes nothing
+        if data is None:
+            raise NotPlottable('no data in scan: ' + str(self.scan))
 
         return plot
 

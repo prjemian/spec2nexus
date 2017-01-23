@@ -20,8 +20,8 @@ import spec2nexus
 
 
 SCALING_FACTOR = 1        #  2**24
-PLOT_H_INT = 7
-PLOT_V_INT = 3
+PLOT_H_INT = 9          # 7
+PLOT_V_INT = 5          # 3
 COLORMAP = 'cubehelix'        # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
 WATERMARK_TEXT = '%s, (C) %s' % (spec2nexus.__package_name__, spec2nexus.__copyright__.split(',')[0])
 
@@ -33,8 +33,8 @@ def make_png(
         title = '2-D data',
         subtitle = '',
         log_image=False, 
-        # hsize=PLOT_H_INT, 
-        # vsize=PLOT_V_INT, 
+        hsize=PLOT_H_INT, 
+        vsize=PLOT_V_INT, 
         cmap=COLORMAP,
         xtitle=None, ytitle=None, 
         timestamp_str=None):
@@ -64,7 +64,7 @@ def make_png(
         image_data -= image_data.min()
         image_data *= SCALING_FACTOR / image_data.max()
 
-    fig = matplotlib.figure.Figure(figsize=(9, 5))
+    fig = matplotlib.figure.Figure(figsize=(hsize, vsize))
     fig.clf()
     ax = fig.add_subplot('111')
     if isinstance(axes, list) and len(axes) == 2:
@@ -79,7 +79,8 @@ def make_png(
 
     timestamp_str = timestamp_str or str(datetime.datetime.now())
     
-    ax.set_title(subtitle, fontsize=10)
+    if subtitle is not None:
+        ax.set_title(subtitle, fontsize=10)
     fig.suptitle(title, fontsize=8)
     fig.text(0.02, 0., timestamp_str,
         fontsize=8, color='gray',
@@ -93,12 +94,15 @@ def make_png(
     return imgfile
 
 
-def xy_plot(x, y, 
-              plotfile, 
-              title=None, subtitle=None, 
-              xtitle=None, ytitle=None, 
-              xlog=False, ylog=False,
-              timestamp_str=None):
+def xy_plot(
+        x, y, 
+        plotfile, 
+        title=None, subtitle=None, 
+        xtitle=None, ytitle=None, 
+        xlog=False, ylog=False,
+        hsize=PLOT_H_INT, 
+        vsize=PLOT_V_INT, 
+        timestamp_str=None):
     r'''
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
     
@@ -125,7 +129,7 @@ def xy_plot(x, y,
         http://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
 
     '''
-    fig = matplotlib.figure.Figure(figsize=(9, 5))
+    fig = matplotlib.figure.Figure(figsize=(hsize, vsize))
     fig.clf()
 
     ax = fig.add_subplot('111')
@@ -149,9 +153,7 @@ def xy_plot(x, y,
         ax.set_ylabel(ytitle)
 
     if subtitle is not None:
-        ax.set_title(subtitle, fontsize=9)
-
-    ax.set_title(subtitle, fontsize=10)
+        ax.set_title(subtitle, fontsize=10)
     fig.suptitle(title, fontsize=8)
     fig.text(0.02, 0., timestamp_str,
         fontsize=8, color='gray',
