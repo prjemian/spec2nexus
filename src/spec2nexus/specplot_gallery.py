@@ -50,9 +50,10 @@ class PlotSpecFileScans(object):
     :param str plotDir: name of base directory to store output image thumbnails
     '''
 
-    def __init__(self, filelist, plotDir = None):
+    def __init__(self, filelist, plotDir = None, reverse_chronological = False):
         self.filelist = filelist
         self.plotDir = plotDir or os.getcwd()
+        self.reversed = reverse_chronological
 
         for specFile in filelist:
             self.plot_all_scans(specFile)
@@ -116,8 +117,12 @@ class PlotSpecFileScans(object):
             logger('creating directory: ' + png_directory)
         
         shutil.copy(specFile, png_directory)
-    
-        for scan_number in sd.getScanNumbers():
+        
+        scan_list = sd.getScanNumbers()
+        if self.reversed:
+            scan_list = reversed(sd.getScanNumbersChronological())
+
+        for scan_number in scan_list:
             scan = sd.getScan(scan_number)
             # make certain that plot files will sort lexically:  S1 --> s00001.png
             basePlotFile = ('s%05s.png' % str(scan.scanNum)).replace(' ', '0')
@@ -388,10 +393,18 @@ def main():
     doc = __doc__.strip().splitlines()[0]
     p = argparse.ArgumentParser(description=doc)
     
-    p.add_argument('specFiles',  
-                        nargs='+',  
-                        help="SPEC data file name(s)")
+    p.add_argument(
+        'specFiles',  
+        nargs='+',  
+        help="SPEC data file name(s)")
     
+    p.add_argument(
+        '-r', 
+        action='store_true', 
+        default=False,
+        dest='reverse_chronological',
+        help='sort images in reverse chronolgical order')
+
     pwd = os.getcwd()
     msg = 'base directory for output'
     msg += ' (default:' + pwd + ')'
@@ -405,7 +418,10 @@ def main():
     logging.basicConfig(filename=log_file, level=logging.INFO)
 
     logger('>'*10 + ' starting')
-    PlotSpecFileScans(args.specFiles, specplots_dir)
+    PlotSpecFileScans(
+        args.specFiles, 
+        specplots_dir, 
+        reverse_chronological=args.reverse_chronological)
     logger('<'*10 + ' finished')
 
 

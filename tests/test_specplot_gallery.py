@@ -135,6 +135,7 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
+        # TODO: test the order of plots in the index.html
  
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
         self.assertTrue(os.path.exists(plotDir))
@@ -145,6 +146,20 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '02_03_setup.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
+     
+    def test_command_line_spec_data_file_list_reversed_chrological_issue_79(self):
+        sys.argv.append('-r')
+        sys.argv.append('-d')
+        self.assertTrue(os.path.exists(self.tempdir))
+        sys.argv.append(self.tempdir)
+        sys.argv.append(self.abs_data_fname('APS_spec_data.dat'))
+        specplot_gallery.main()
+
+        plotDir = os.path.join(self.tempdir, '2010', '11', 'APS_spec_data')
+        self.assertTrue(os.path.exists(plotDir))
+        self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
+        self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
+        # TODO: test the order of plots in the index.html, reversed
 
 
 def suite(*args, **kw):
