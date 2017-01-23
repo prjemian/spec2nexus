@@ -12,10 +12,12 @@ unit tests for the specplot module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import unittest
+import logging
 import os, sys
 import shutil
 import tempfile
+import unittest
+
 
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
@@ -35,11 +37,14 @@ class SpecPlotGallery(unittest.TestCase):
         self.datapath = os.path.join(self.basepath, 'data')
         self.tempdir = tempfile.mkdtemp()
         sys.argv = [sys.argv[0],]
+        logging.disable(logging.CRITICAL)
 
     def tearDown(self):
         if os.path.exists(self.tempdir):
+            logging.shutdown()
             shutil.rmtree(self.tempdir)
             self.tempdir = None
+        logging.disable(logging.NOTSET)
 
 #     def testName(self):
 #         pass
