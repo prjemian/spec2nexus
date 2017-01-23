@@ -23,6 +23,20 @@ taken from the ``#D`` line of the SPEC data file.
 The ``spec_file`` is the file name with file extension 
 and directory name removed.  The image file names are
 derived from the scan numbers.
+
+.. autosummary::
+
+    ~DirectoryNotFoundError
+    ~PlotSpecFileScans
+    ~Cache_File_Mtime
+    ~datePath
+    ~get_SpecFileDate
+    ~get_file_mtime
+    ~needToMakePlot
+    ~timestamp
+    ~build_index_html
+    ~logger
+
 '''
 
 
@@ -39,7 +53,9 @@ MTIME_CACHE_FILE = 'mtime_cache.txt'
 HTML_INDEX_FILE = 'index.html'
 
 
-class DirectoryNotFoundError(ValueError): pass
+class DirectoryNotFoundError(ValueError): 
+    'The requested directory does not exist'
+    pass
 
 
 class PlotSpecFileScans(object):

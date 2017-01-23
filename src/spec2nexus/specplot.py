@@ -41,10 +41,17 @@ import spec             # read SPEC data files
 import singletons
 
 
-class UnexpectedObjectTypeError(Exception): pass
-# class UndefinedMacroNameError(Exception): pass
-class ScanAborted(Exception): pass
-class NotPlottable(Exception): pass
+class UnexpectedObjectTypeError(RuntimeError): 
+    'incorrect Python object type: programmer error'
+    pass
+
+class ScanAborted(RuntimeWarning): 
+    'Scan aborted before all points acquired'
+    pass
+
+class NotPlottable(ValueError): 
+    'No plottable data for this scan'
+    pass
 
 ABORTED_ATTRIBUTE_TEXT = '_aborted_'
 
