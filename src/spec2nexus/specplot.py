@@ -78,7 +78,7 @@ class Selector(singletons.Singleton):
         # ...
         
         selector = specplot.Selector()
-        selector.add(`logxscan`, LogX_Plotter)
+        selector.add('logxscan', LogX_Plotter)
         
         # ...
         
@@ -228,8 +228,8 @@ class ImageMaker(object):
                 """
                 x, y = plotData
                 xy_plot(x, y,  plotFile, 
-                       title = self.get_plot_title(),
-                       subtitle = self.get_plot_subtitle(),
+                       title = self.get_title(),
+                       subtitle = self.get_subtitle(),
                        xtitle = self.get_x_title(),
                        ytitle = self.get_y_title(),
                        xlog = self.get_x_log(),
@@ -253,8 +253,8 @@ class ImageMaker(object):
     :meth:`get_data_file_name` the name of the file with the actual data
     :meth:`get_plot_data`      retrieve default data from spec data file
     :meth:`get_macro`          the name of the SPEC scan macro used
-    :meth:`get_plot_title`     the name for the top of the plot
-    :meth:`get_plot_subtitle`  optional smaller text below the title
+    :meth:`get_title`     the name for the top of the plot
+    :meth:`get_subtitle`  optional smaller text below the title
     :meth:`get_x_title`        text for the independent (horizontal) axis
     :meth:`get_y_title`        text for the dependent (vertical) axis
     :meth:`get_x_log`          True: axis is logarithmic, False: axis is linear
@@ -382,11 +382,11 @@ class ImageMaker(object):
         'return the name of the SPEC macro for this scan'
         return self.scan.get_macro_name()
     
-    def get_plot_title(self):
+    def get_title(self):
         'return the plot title, default is the name of the SPEC data file'
         return self.get_setting('title') or self.scan.specFile
     
-    def get_plot_subtitle(self):
+    def get_subtitle(self):
         'return the subtitle, default includes scan number and command'
         return self.get_setting('subtitle') or '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
     
@@ -438,8 +438,8 @@ class LinePlotter(ImageMaker):
             x, 
             y,  
             plotFile, 
-            title = self.get_plot_title(),
-            subtitle = self.get_plot_subtitle(),
+            title = self.get_title(),
+            subtitle = self.get_subtitle(),
             xtitle = self.get_x_title(),
             ytitle = self.get_y_title(),
             xlog = self.get_x_log(),
@@ -514,8 +514,8 @@ class MeshPlotter(ImageMaker):
                 image, 
                 plotFile,
                 [plotData.data[axis] for axis in plotData.axes],
-                title = self.get_plot_title(),
-                subtitle = self.get_plot_subtitle(),
+                title = self.get_title(),
+                subtitle = self.get_subtitle(),
                 log_image = False,
                 xtitle = self.get_x_title(),
                 ytitle = self.get_y_title(),
@@ -531,8 +531,8 @@ class MeshPlotter(ImageMaker):
                 x, 
                 y,  
                 plotFile, 
-                title = self.get_plot_title(),
-                subtitle = self.get_plot_subtitle(),
+                title = self.get_title(),
+                subtitle = self.get_subtitle(),
                 xtitle = self.get_x_title(),
                 ytitle = self.get_y_title(),
                 xlog = self.get_x_log(),
