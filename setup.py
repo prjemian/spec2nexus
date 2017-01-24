@@ -56,6 +56,7 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
                 'extractSpecScan=spec2nexus.extractSpecScan:main',
                 'specplot=spec2nexus.specplot:main',
                 'specplot_gallery=spec2nexus.specplot_gallery:main',
+                'specplot_gallery_builder=spec2nexus.specplot_gallery_builder:main',
 			],
             #'gui_scripts': [],
        },

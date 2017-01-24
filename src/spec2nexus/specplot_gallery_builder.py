@@ -96,13 +96,14 @@ def main():
     if len(file_list) == 0:
         return      # no work to do, return silently
 
+    rev_sense = args.reverse_chronological
     specplot_gallery.PlotSpecFileScans(
         file_list, 
-        specplots_dir, 
-        reverse_chronological=args.reverse_chronological)
+        plotDir = specplots_dir, 
+        reverse_chronological = rev_sense)
 
 
-if __name__ == '__main__':
+def developer():
     import logging
     import shutil
     import tempfile
@@ -116,3 +117,7 @@ if __name__ == '__main__':
     logging.shutdown()
     shutil.rmtree(tempdir)
     logging.disable(logging.NOTSET)
+
+
+if __name__ == '__main__':
+    main()
