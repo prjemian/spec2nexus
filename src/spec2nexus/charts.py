@@ -28,7 +28,7 @@ WATERMARK_TEXT = '%s, (C) %s' % (spec2nexus.__package_name__, spec2nexus.__copyr
 
 def make_png(
         image, 
-        imgfile, 
+        image_file, 
         axes = None,
         title = '2-D data',
         subtitle = '',
@@ -48,17 +48,19 @@ def make_png(
     The HDF5 file could be a NeXus file, not required though.
     
     :param obj image: array of data to be rendered
-    :param str imgfile: name of image file to be written (path is optional)
+    :param str image_file: name of image file to be written (path is optional)
     :param bool log_image: plot log(image)
     .. :param int hsize: horizontal size of the PNG image (default: 7)
     .. :param int hsize: vertical size of the PNG image (default: 3)
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
-    :return str: *imgfile*
+    :return str: *image_file*
     '''
 
     # replace masked data with min good value
     image_data = numpy.ma.masked_less_equal(image, 0)
     image_data = image_data.filled(image_data.min())
+    image_data = numpy.ma.masked_invalid(image_data)    # mask out any NaN values
+
     if log_image and image_data.max() != 0:     # apply log scaling
         image_data = numpy.log(image_data)
         image_data -= image_data.min()
@@ -68,27 +70,23 @@ def make_png(
     fig.clf()
     ax = fig.add_subplot('111')
     if isinstance(axes, list) and len(axes) == 2:
-        x = numpy.array(axes[0])
-        y = numpy.array(axes[1])
-        try:
-            ax.pcolor(x, y, image_data, cmap=cmap)
-        except TypeError as _exc:
-            # FIXME: issue 84: https://github.com/prjemian/spec2nexus/issues/84
-            # workaround for now, don't scale by X & Y
-            ax.imshow(image_data, interpolation='nearest', cmap=cmap)
-        # demo: set the limits of the plot to the limits of the data
-        # ax.axis([(axes[0].min(), (axes[0].max(), axes[1].min(), axes[1].max()])
-        #im = matplotlib.image.NonUniformImage(ax, cmap=cmap)
-        # image_data needs to be array of values to be
-        # colormapped, or a (M,N,3) RGB array, or a (M,N,4) RGBA array.
-        #im.set_data(y, x, image_data)
+        def shift_to_pixel_boundaries(arr):
+            np_arr = numpy.array(arr)
+            step = np_arr[1] - np_arr[0]
+            return numpy.append(np_arr, np_arr[-1] + step) - step/2
+        
+        x = shift_to_pixel_boundaries(axes[0])
+        y = shift_to_pixel_boundaries(axes[1])
+
+        ax.pcolor(y, x, image_data, cmap=cmap)
+        ax.axis([y.min(), y.max(), x.min(), x.max()])
     else:
         ax.imshow(image_data, interpolation='nearest', cmap=cmap)
 
-    if xtitle is not None:
-        ax.set_xlabel(xtitle)
     if ytitle is not None:
-        ax.set_ylabel(ytitle)
+        ax.set_xlabel(ytitle)
+    if xtitle is not None:
+        ax.set_ylabel(xtitle)
 
     timestamp_str = timestamp_str or str(datetime.datetime.now())
     
@@ -102,14 +100,16 @@ def make_png(
         fontsize=8, color='gray',
         ha='right', va='bottom', alpha=0.5)
 
-    FigureCanvas(fig).print_figure(imgfile, bbox_inches='tight')
+    ax.ticklabel_format(useOffset=False, style='plain')
 
-    return imgfile
+    FigureCanvas(fig).print_figure(image_file, bbox_inches='tight')
+
+    return image_file
 
 
 def xy_plot(
         x, y, 
-        plotfile, 
+        plot_file, 
         title=None, subtitle=None, 
         xtitle=None, ytitle=None, 
         xlog=False, ylog=False,
@@ -121,7 +121,7 @@ def xy_plot(
     
     :param [float] x: horizontal axis data
     :param [float] y: vertical axis data
-    :param str plotfile: file name to write plot image
+    :param str plot_file: file name to write plot image
     :param str xtitle: horizontal axis label (default: not shown)
     :param str ytitle: vertical axis label (default: not shown)
     :param str title: title for plot (default: date time)
@@ -175,6 +175,7 @@ def xy_plot(
         fontsize=8, color='gray',
         ha='right', va='bottom', alpha=0.5)
 
+    ax.ticklabel_format(useOffset=False, style='plain')
     ax.plot(x, y, 'o-')
 
-    FigureCanvas(fig).print_figure(plotfile, bbox_inches='tight')
+    FigureCanvas(fig).print_figure(plot_file, bbox_inches='tight')
