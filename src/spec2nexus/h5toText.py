@@ -11,7 +11,19 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''Command line tool to print the structure of an HDF5 file'''
+'''
+Command line tool to print the structure of an HDF5 file (deprecated, planned for deletion, see docs)
+
+DEPRECATION NOTICE:
+
+The *h5toText* code in *spec2nexus* is being replaced by the same 
+capability in the *punx* project. [#]_
+Once the *punx* project is ready for initial release, the
+*h5toText* code will be removed from *sxpec2nexus*.
+
+.. [#] *punx* `structure`: http://punx.readthedocs.io/en/latest/structure.html#structure
+
+'''
 
 __url__ = 'http://spec2nexus.readthedocs.org/en/latest/h5toText.html'
 
