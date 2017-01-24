@@ -175,7 +175,8 @@ def xy_plot(
         fontsize=8, color='gray',
         ha='right', va='bottom', alpha=0.5)
 
-    ax.ticklabel_format(useOffset=False, style='plain')
+    if not xlog and not ylog:
+        ax.ticklabel_format(useOffset=False, style='plain')
     ax.plot(x, y, 'o-')
 
     FigureCanvas(fig).print_figure(plot_file, bbox_inches='tight')
