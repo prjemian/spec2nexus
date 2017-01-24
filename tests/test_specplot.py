@@ -49,47 +49,47 @@ class Issue_66_plotting_problems(unittest.TestCase):
     def test_scan_aborted_after_0_points(self):
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 15
- 
+  
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
- 
+  
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
-         
+          
         self.assertRaises(
             converters.NoDataToPlot, 
             plotter.plot_scan, 
             scan, 
             self.plotFile
             )
-         
+          
         self.assertFalse(os.path.exists(self.plotFile))
-         
+          
     def test_y_values_all_zero_lin_lin(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
- 
+  
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
- 
+  
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.plot_scan(scan, self.plotFile)
         self.assertTrue(os.path.exists(self.plotFile))
-         
+          
     def test_y_values_all_zero_log_lin(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
- 
+  
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
- 
+  
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         self.assertRaises(
@@ -99,7 +99,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
             self.plotFile, 
             y_log=True)
         self.assertFalse(os.path.exists(self.plotFile))
-     
+      
     def test_command_line(self):
         tempdir = tempfile.mkdtemp()
         specFile = self.abs_data_fname('02_03_setup.dat')
@@ -110,60 +110,79 @@ class Issue_66_plotting_problems(unittest.TestCase):
         os.remove(plotFile)
         os.rmdir(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-     
+      
     def test_command_line_33bm_spec_issue72_hklmesh_plot(self):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         tempdir = tempfile.mkdtemp()
- 
+  
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 17        # hklmesh
- 
+  
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
- 
+  
         specplot.main()
- 
+  
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-     
+      
     def test_command_line_33id_spec_issue72_mesh_plot(self):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         tempdir = tempfile.mkdtemp()
- 
+  
         specFile = self.abs_data_fname('33id_spec.dat')
         scan_number = 22        # mesh
- 
+  
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
- 
+  
         specplot.main()
- 
+  
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-     
+      
     def test_command_line_33bm_spec_issue80_hklscan_plot(self):
         # #80: hklscan, l was scanned, scans 14 & 16
         tempdir = tempfile.mkdtemp()
- 
+  
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 14        # hklmesh
- 
+  
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
- 
+  
         specplot.main()
- 
+  
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-        
+         
     def test_one_line_mesh_scan_as_1D_plot_issue82(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue82_data.txt')
         scan_number = 17
+ 
+        sfile = specplot.openSpecFile(specFile)
+        scan = sfile.getScan(scan_number)
+        self.assertTrue(scan is not None)
+ 
+        image_maker = specplot.Selector().auto(scan)
+        self.assertTrue(issubclass(image_maker, specplot.ImageMaker))
+ 
+        plotter = image_maker()
+        self.assertTrue(isinstance(plotter, specplot.MeshPlotter))
+ 
+        if os.path.exists(self.plotFile):   # always re-create this plot for testing
+            os.remove(self.plotFile)
+        plotter.plot_scan(scan, self.plotFile)
+        self.assertTrue(os.path.exists(self.plotFile))
+        
+    def test_one_line_mesh_scan_type_error_33id_29(self):
+        specFile = self.abs_data_fname('33id_spec.dat')
+        scan_number = 29
 
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
@@ -172,7 +191,8 @@ class Issue_66_plotting_problems(unittest.TestCase):
         image_maker = specplot.Selector().auto(scan)
         self.assertTrue(issubclass(image_maker, specplot.ImageMaker))
 
-        plotter = image_maker()
+        plotter = image_maker() # FIXME: TypeError: #S 29 mesh eta 56.95 57.05 10 chi 90.92 91.02 10 1
+        # TypeError: Dimensions of C (11L, 8L) are incompatible with X (11) and/or Y (8); see help(pcolor)
         self.assertTrue(isinstance(plotter, specplot.MeshPlotter))
 
         if os.path.exists(self.plotFile):   # always re-create this plot for testing

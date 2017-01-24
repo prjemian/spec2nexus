@@ -68,7 +68,20 @@ def make_png(
     fig.clf()
     ax = fig.add_subplot('111')
     if isinstance(axes, list) and len(axes) == 2:
-        ax.pcolor(axes[0], axes[1], image_data, cmap=cmap)
+        x = numpy.array(axes[0])
+        y = numpy.array(axes[1])
+        try:
+            ax.pcolor(x, y, image_data, cmap=cmap)
+        except TypeError as _exc:
+            # FIXME: issue 84: https://github.com/prjemian/spec2nexus/issues/84
+            # workaround for now, don't scale by X & Y
+            ax.imshow(image_data, interpolation='nearest', cmap=cmap)
+        # demo: set the limits of the plot to the limits of the data
+        # ax.axis([(axes[0].min(), (axes[0].max(), axes[1].min(), axes[1].max()])
+        #im = matplotlib.image.NonUniformImage(ax, cmap=cmap)
+        # image_data needs to be array of values to be
+        # colormapped, or a (M,N,3) RGB array, or a (M,N,4) RGBA array.
+        #im.set_data(y, x, image_data)
     else:
         ax.imshow(image_data, interpolation='nearest', cmap=cmap)
 
