@@ -185,7 +185,7 @@ class MeshStructure(PlotDataStructure):
             self.data[label3] = axis3    # constant
 
         # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
-        data_shape = [len(axis1), len(axis2)]
+        data_shape = [len(axis2), len(axis1)]
         for label in column_labels:
             if label not in self.data:
                 axis = numpy.array( scan.data.get(label) )

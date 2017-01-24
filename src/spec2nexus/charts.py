@@ -78,15 +78,15 @@ def make_png(
         x = shift_to_pixel_boundaries(axes[0])
         y = shift_to_pixel_boundaries(axes[1])
 
-        ax.pcolor(y, x, image_data, cmap=cmap)
-        ax.axis([y.min(), y.max(), x.min(), x.max()])
+        ax.pcolor(x, y, image_data, cmap=cmap)
+        ax.axis([x.min(), x.max(), y.min(), y.max()])
     else:
         ax.imshow(image_data, interpolation='nearest', cmap=cmap)
 
-    if ytitle is not None:
-        ax.set_xlabel(ytitle)
     if xtitle is not None:
-        ax.set_ylabel(xtitle)
+        ax.set_xlabel(xtitle)
+    if ytitle is not None:
+        ax.set_ylabel(ytitle)
 
     timestamp_str = timestamp_str or str(datetime.datetime.now())
     
