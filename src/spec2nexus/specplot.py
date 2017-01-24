@@ -505,6 +505,10 @@ class MeshPlotter(ImageMaker):
         if isinstance(plotData, converters.MeshStructure):
             signal = plotData.signal
             image = plotData.data[signal]
+            self.configure(     # override the standard handling
+                subtitle = '%s,  %s' % (signal, self.scan.raw.splitlines()[0]),
+                x_title = plotData.axes[0], 
+                y_title = plotData.axes[1])
             charts.make_png(
                 image, 
                 plotFile,
