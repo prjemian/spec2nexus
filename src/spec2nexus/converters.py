@@ -35,6 +35,7 @@ needs to be reshaped according to its intended dimensionality.
 import numpy
 import spec
 import utils
+import spec2nexus.spec
 
 class NoDataToPlot(KeyError): 
     'scan aborted before any points gathered or data not present in SPEC file'
@@ -77,7 +78,7 @@ class PlotDataStructure(object):
     '''
     
     def __init__(self, scan):
-        assert(isinstance(scan, spec.SpecDataFileScan))
+        assert(isinstance(scan, (spec.SpecDataFileScan,spec2nexus.spec.SpecDataFileScan)))
         self.signal = None
         self.axes = []
         self.data = {}

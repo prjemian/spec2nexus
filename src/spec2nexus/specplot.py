@@ -39,6 +39,7 @@ import charts
 import converters
 import spec             # read SPEC data files
 import singletons
+import spec2nexus.spec
 
 
 class UnexpectedObjectTypeError(RuntimeError): 
@@ -114,7 +115,7 @@ class Selector(singletons.Singleton):
         * macro ends with "mesh": use :class:`MeshPlotter`
         * default: use default image maker (initially :class:`LinePlotter`)
         '''
-        if not isinstance(scan, spec.SpecDataFileScan):
+        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
             msg = 'expected a SPEC scan object, received: '
             msg += str(scan)
             raise UnexpectedObjectTypeError(msg)
@@ -331,7 +332,7 @@ class ImageMaker(object):
          
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         '''
-        if not isinstance(scan, spec.SpecDataFileScan):
+        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
             match_text = 'Scan aborted after 0 points.'
