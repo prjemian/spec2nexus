@@ -11,7 +11,23 @@
 #-----------------------------------------------------------------------------
 
 '''
-read a list of SPEC data files and plot images of all scans
+read a list of SPEC data files (or directories) and plot images of all scans
+
+BUILDER
+
+crawl directories for SPEC data files and build default plots for all scans
+
+This script could be called from *cron*, such as:
+
+    # every five minutes (generates no output from outer script)
+    0-59/5 * * * *  /some/directory/specplot_gallery_builder.py
+
+tips if too many processes have been started::
+
+    kill -9 `psg bash | awk '/specplot_shell_script.sh/ {print $2}' -`
+    kill -9 `psg python | awk '/specplot_gallery.py/ {print $2}' -`
+
+RESULT
 
 The images are stored in files in a directory structure
 that is organized chronologically,
@@ -150,7 +166,8 @@ class PlotSpecFileScans(object):
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)
-                    image_maker = specplot.Selector().auto(scan)
+                    selector = specplot.Selector()
+                    image_maker = selector.auto(scan)
                     plotter = image_maker()
                     plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
@@ -410,16 +427,16 @@ def main():
     p = argparse.ArgumentParser(description=doc)
     
     p.add_argument(
-        'specFiles',  
+        'paths',  
         nargs='+',  
-        help="SPEC data file name(s)")
+        help="SPEC data file name(s) or directory(s) with SPEC data files")
     
     p.add_argument(
         '-r', 
         action='store_true', 
         default=False,
         dest='reverse_chronological',
-        help='sort images in reverse chronolgical order')
+        help='sort images from each data file in reverse chronolgical order')
 
     pwd = os.getcwd()
     msg = 'base directory for output'
@@ -429,17 +446,52 @@ def main():
     args = p.parse_args()
 
     specplots_dir = args.dir or pwd
+    assert(os.path.isdir(specplots_dir))
+    
+    file_list = []
+
+    def only_accept_spec_files(fname):
+        if os.path.exists(fname) and spec.is_spec_file(fname):
+            file_list.append(fname)
+
+    for item in args.paths:
+        if os.path.exists(item):
+            if os.path.isfile(item):
+                only_accept_spec_files(item)
+            elif os.path.isdir(item):
+                for subitem in os.listdir(item):
+                    only_accept_spec_files(os.path.join(item, subitem))
 
     log_file = os.path.join(specplots_dir, 'specplot_files_processing.log')
     logging.basicConfig(filename=log_file, level=logging.INFO)
 
     logger('>'*10 + ' starting')
+    # TODO: do not start this process if it is running from previous call
     PlotSpecFileScans(
-        args.specFiles, 
+        file_list, 
         specplots_dir, 
         reverse_chronological=args.reverse_chronological)
     logger('<'*10 + ' finished')
 
 
+def developer():
+    '''
+    supply a file and a directory as command-line arguments to "paths"
+    '''
+    import tempfile
+    
+    tempdir = tempfile.mkdtemp()
+    sys.argv.append('-d')
+    sys.argv.append(tempdir)
+    sys.argv.append(os.path.join('data', '02_03_setup.dat'))
+    sys.argv.append(os.path.join('..', '..', 'tests','data'))
+    main()
+    logging.disable(logging.CRITICAL)
+    logging.shutdown()
+    shutil.rmtree(tempdir)
+    logging.disable(logging.NOTSET)
+
+
 if __name__ == '__main__':
     main()
+    # developer()
