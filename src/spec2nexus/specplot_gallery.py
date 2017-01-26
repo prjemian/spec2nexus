@@ -13,33 +13,6 @@
 '''
 read a list of SPEC data files (or directories) and plot images of all scans
 
-BUILDER
-
-crawl directories for SPEC data files and build default plots for all scans
-
-This script could be called from *cron*, such as:
-
-    # every five minutes (generates no output from outer script)
-    0-59/5 * * * *  /some/directory/specplot_gallery_builder.py
-
-tips if too many processes have been started::
-
-    kill -9 `psg bash | awk '/specplot_shell_script.sh/ {print $2}' -`
-    kill -9 `psg python | awk '/specplot_gallery.py/ {print $2}' -`
-
-RESULT
-
-The images are stored in files in a directory structure
-that is organized chronologically,
-such as: ``yyyy/mm/spec_file/s1.png``.
-The root of the directory is either specified by the 
-command line ``-d`` option or  defaults to the current 
-working directory.  The ``yyyy/mm`` (year and month) are 
-taken from the ``#D`` line of the SPEC data file.
-The ``spec_file`` is the file name with file extension 
-and directory name removed.  The image file names are
-derived from the scan numbers.
-
 .. autosummary::
 
     ~DirectoryNotFoundError
@@ -52,6 +25,33 @@ derived from the scan numbers.
     ~timestamp
     ~build_index_html
     ~logger
+
+.. rubric:: RESULT
+
+The images are stored in files within a directory structure
+that is organized chronologically,
+such as: ``yyyy/mm/spec_file/s1.png``.
+The root of the directory is either specified by the 
+command line ``-d`` option or  defaults to the current 
+working directory.  The ``yyyy/mm`` (year and month) are 
+taken from the ``#D`` line of the SPEC data file.
+The ``spec_file`` is the file name with file extension 
+and directory name removed.  The image file names are
+derived from the scan numbers.
+
+.. rubric:: Linux CRON task
+
+This script could be called from a *cron* entry, such as::
+
+    # every five minutes (generates no output from outer script)
+    0-59/5 * * * *  /some/directory/specplot_gallery.py -d /web/page/dir /spec/data/file/dir
+
+If this script is called too frequently and the list of plots to be generated
+is large enough, it is possible for more than one process to be running.
+In one extreme case, many processes were found running due to problems with the data files.
+To identify and stop all processes of this program::
+
+    kill -9 `ps -ef | grep python | awk '/specplot_gallery.py/ {print $2}' -`
 
 '''
 
@@ -70,7 +70,7 @@ HTML_INDEX_FILE = 'index.html'
 
 
 class DirectoryNotFoundError(ValueError): 
-    'The requested directory does not exist'
+    'Exception: The requested directory does not exist'
     pass
 
 

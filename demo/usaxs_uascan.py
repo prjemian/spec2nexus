@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+#-----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2017, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+#-----------------------------------------------------------------------------
+
+'''
+Plot data from the USAXS uascan macro
+
+.. autosummary::
+
+    ~UAscan_Plotter
+
+'''
+
+import spec2nexus.specplot
+import spec2nexus.specplot_gallery
+
+
+class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
+    '''simple customize of `uascan` handling'''
+    
+    def get_plot_data(self):
+        '''plot the vertical axis on log scale'''
+        structure = spec2nexus.specplot.LinePlotter.get_plot_data(self)
+        if structure.signal in structure.data:
+            if min(structure.data[structure.signal]) <= 0:
+                # TODO: remove any data where Y <= 0 (can't plot on log scale)
+                msg = 'cannot plot Y<0: ' + str(self.scan)
+                raise spec2nexus.specplot.NotPlottable(msg)
+        # in the uascan, a name for the sample is given in `self.scan.comments[0]`
+        subtitle = '#%s uascan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
+        self.configure(
+            y_log = True, 
+            subtitle = subtitle,
+            )
+        return structure
+
+
+def debugging_setup():
+    import os, sys
+    import shutil
+    path = '__usaxs__'
+    shutil.rmtree(path, ignore_errors=True)
+    os.mkdir(path)
+    sys.argv.append('-d')
+    sys.argv.append(path)
+    sys.argv.append(os.path.join('..', 'src', 'spec2nexus', 'data', 'APS_spec_data.dat'))
+
+
+def main():
+    selector = spec2nexus.specplot.Selector()
+    selector.add('uascan', UAscan_Plotter)
+    spec2nexus.specplot_gallery.main()
+
+
+if __name__ == '__main__':
+    # debugging_setup()
+    main()

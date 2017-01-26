@@ -20,7 +20,6 @@ Plot the data from scan N in a SPEC data file
     ~LinePlotter
     ~MeshPlotter
     ~NeXusPlotter
-    ~xy_plot
     ~openSpecFile
 
 Exceptions:
@@ -87,7 +86,7 @@ class Selector(singletons.Singleton):
         plotter.plot_scan(scan, fullPlotFile)
 
     This class is a singleton which means you will always get the same
-    instance when you call this may times in your program.
+    instance when you call this class many times in your program.
     
     .. autosummary::
     
@@ -201,7 +200,7 @@ class Selector(singletons.Singleton):
 
 
 class ImageMaker(object):
-    '''
+    r'''
     superclass to handle plotting of data from a SPEC scan
     
     USAGE:
@@ -214,7 +213,7 @@ class ImageMaker(object):
     #. Optionally, re-implement any of the various *get* methods to 
        further customize their behavior.
     
-    EXAMPLE:
+    EXAMPLE::
 
         class LinePlotter(ImageMaker):
             'create a line plot'
@@ -253,8 +252,8 @@ class ImageMaker(object):
     :meth:`get_data_file_name` the name of the file with the actual data
     :meth:`get_plot_data`      retrieve default data from spec data file
     :meth:`get_macro`          the name of the SPEC scan macro used
-    :meth:`get_title`     the name for the top of the plot
-    :meth:`get_subtitle`  optional smaller text below the title
+    :meth:`get_title`          the name for the top of the plot
+    :meth:`get_subtitle`       optional smaller text below the title
     :meth:`get_x_title`        text for the independent (horizontal) axis
     :meth:`get_y_title`        text for the dependent (vertical) axis
     :meth:`get_x_log`          True: axis is logarithmic, False: axis is linear

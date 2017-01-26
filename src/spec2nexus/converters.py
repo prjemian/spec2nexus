@@ -13,12 +13,7 @@
 
 
 '''
-Shape scan data from raw to different dimensionality
-
-Some SPEC macros collect data in a mesh or grid yet 
-report the data as a 1-D sequence of observations.
-For further processing (such as plotting), the scan data
-needs to be reshaped according to its intended dimensionality.
+Conversion functions and classes used by specplot
 
 .. autosummary::
 
@@ -47,7 +42,16 @@ class HandleMeshDataAs1D(RuntimeWarning):
 
 
 def reshape_data(scan_data, scan_shape):
-    '''modified from nexpy.readers.readspec.reshape_data'''
+    '''
+    Shape scan data from raw to different dimensionality
+    
+    Some SPEC macros collect data in a mesh or grid yet 
+    report the data as a 1-D sequence of observations.
+    For further processing (such as plotting), the scan data
+    needs to be reshaped according to its intended dimensionality.
+
+    modified from nexpy.readers.readspec.reshape_data
+    '''
     scan_size = numpy.prod(scan_shape)
     if scan_data.size == scan_size:
         data = scan_data

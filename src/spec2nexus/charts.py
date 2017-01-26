@@ -45,15 +45,15 @@ def make_png(
     Read the data from the named dataset, mask off some bad values, 
     convert to log(image) and use Matplotlib to make the PNG file.
     
-    The HDF5 file could be a NeXus file, not required though.
-    
     :param obj image: array of data to be rendered
     :param str image_file: name of image file to be written (path is optional)
     :param bool log_image: plot log(image)
-    .. :param int hsize: horizontal size of the PNG image (default: 7)
-    .. :param int hsize: vertical size of the PNG image (default: 3)
+    :param int hsize: horizontal size of the PNG image (default: 7)
+    :param int hsize: vertical size of the PNG image (default: 3)
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
     :return str: *image_file*
+    
+    The HDF5 file could be a NeXus file, or some other layout.
     '''
 
     # replace masked data with min good value

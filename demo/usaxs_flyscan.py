@@ -11,11 +11,10 @@
 #-----------------------------------------------------------------------------
 
 '''
-Plot data from the USAXS FlyScan and uascan macros
+Plot data from the USAXS FlyScan macro
 
 .. autosummary::
 
-    ~UAscan_Plotter
     ~read_reduced_fly_scan_file
     ~retrieve_flyScanData
     ~USAXS_FlyScan_Structure
@@ -30,25 +29,6 @@ import os
 import spec2nexus.converters
 import spec2nexus.specplot
 import spec2nexus.specplot_gallery
-
-
-class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
-    '''simple customize of `uascan` handling'''
-    
-    def get_plot_data(self):
-        '''plot the vertical axis on log scale'''
-        structure = spec2nexus.specplot.LinePlotter.get_plot_data(self)
-        if structure.signal in structure.data:
-            if min(structure.data[structure.signal]) <= 0:
-                # TODO: remove any data where Y <= 0 (can't plot on log scale)
-                msg = 'cannot plot Y<0: ' + str(self.scan)
-                raise spec2nexus.specplot.NotPlottable(msg)
-        subtitle = '#%s uascan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
-        self.configure(
-            y_log = True, 
-            subtitle = subtitle,
-            )
-        return structure
 
 
 # methods picked (& modified) from the USAXS livedata project
@@ -183,17 +163,15 @@ def debugging_setup():
     os.mkdir(path)
     sys.argv.append('-d')
     sys.argv.append(path)
-    sys.argv.append(os.path.join('..', 'src', 'spec2nexus', 'data', 'APS_spec_data.dat'))
     sys.argv.append(os.path.join('..', 'src', 'spec2nexus', 'data', '02_03_setup.dat'))
 
 
 def main():
     selector = spec2nexus.specplot.Selector()
-    selector.add('uascan', UAscan_Plotter)
     selector.add('FlyScan', USAXS_FlyScan_Plotter)
     spec2nexus.specplot_gallery.main()
 
 
 if __name__ == '__main__':
-    #debugging_setup()
+    debugging_setup()
     main()
