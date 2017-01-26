@@ -18,6 +18,8 @@ Contents
    plugin
    utils
    scanf
+   singletons
+   writer
    install
    example_data
    changes
