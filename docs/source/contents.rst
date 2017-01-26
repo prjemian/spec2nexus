@@ -11,7 +11,6 @@ Contents
    spec
    specplot
    specplot_gallery
-   converters
    charts
    specplot_custom_scan_macro
    eznx

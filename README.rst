@@ -16,7 +16,6 @@ Provides
 * **h5toText**        : command-line tool: Print the structure of an HDF5 file
 * **extractSpecScan** : command-line tool: Save columns from SPEC data file scan(s) to TSV files
 * **pySpec**          : library: python binding to read SPEC [#]_ data files
-* **prjPySpec**       : library: legacy version of **pySpec**, frozen at version 2014.0623.0
 * **eznx**            : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
 * **specplot**        : command-line tool: plot a SPEC scan to an image file
 * **specplot_gallery** : command-line tool: call **specplot** for all scans in a list of files, makes a web gallery

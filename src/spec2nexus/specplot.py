@@ -26,6 +26,7 @@ Exceptions:
 
 .. autosummary::
 
+    ~NoDataToPlot
     ~NotPlottable
     ~ScanAborted
     ~UnexpectedObjectTypeError
@@ -33,24 +34,29 @@ Exceptions:
 '''
 
 import os
+import numpy
 
 import charts
-import converters
 import spec             # read SPEC data files
 import singletons
 import spec2nexus.spec
+import utils
 
 
 class UnexpectedObjectTypeError(RuntimeError): 
-    'incorrect Python object type: programmer error'
+    'Exception: incorrect Python object type: programmer error'
     pass
 
 class ScanAborted(RuntimeWarning): 
-    'Scan aborted before all points acquired'
+    'Exception: Scan aborted before all points acquired'
     pass
 
 class NotPlottable(ValueError): 
-    'No plottable data for this scan'
+    'Exception: No plottable data for this scan'
+    pass
+
+class NoDataToPlot(ValueError): 
+    'Exception: scan aborted before any points gathered or data not present in SPEC file'
     pass
 
 ABORTED_ATTRIBUTE_TEXT = '_aborted_'
@@ -203,7 +209,13 @@ class ImageMaker(object):
     r'''
     superclass to handle plotting of data from a SPEC scan
     
-    USAGE:
+    .. rubric:: Internal data model
+
+    :signal: name of the 'signal' data (default data to be plotted)
+    :data: values of various collected arrays {label: array}
+    :axes: names of the axes of signal data
+    
+    .. rubric:: USAGE:
     
     #. Create a subclass of :class:`ImageMaker`
     #. Re-implement :meth:`get_plot_data` to gather the data for the image
@@ -213,19 +225,26 @@ class ImageMaker(object):
     #. Optionally, re-implement any of the various *get* methods to 
        further customize their behavior.
     
-    EXAMPLE::
+    .. rubric:: EXAMPLE
+    
+    ::
 
         class LinePlotter(ImageMaker):
             'create a line plot'
             
-            def make_image(self, plotData, plotFile):
+            def make_image(self, plotFile):
                 """
                 make MatPlotLib chart image from the SPEC scan
                 
                 :param obj plotData: object returned from :meth:`get_plot_data`
                 :param str plotFile: name of image file to write
                 """
-                x, y = plotData
+                assert(self.signal in self.data)
+                assert(len(self.axes) == 1)
+                assert(self.axes[0] in self.data)
+
+                y = self.data[self.signal]
+                x = self.data[self.axes[0]]
                 xy_plot(x, y,  plotFile, 
                        title = self.get_title(),
                        subtitle = self.get_subtitle(),
@@ -240,34 +259,28 @@ class ImageMaker(object):
         plotter = LinePlotter()
         plotter.plot_scan(scan, plotFile, y_log=True)
     
-    TODO: describe how to override any of the settings in the dictionary
-     
-    Override any of these methods to customize the handling:
+    .. rubric:: Class methods
     
-    .. TODO: convert this into an autosummary
-     
-    ========================== ==================================================
-    method                     returns (as a string)
-    ========================== ==================================================
-    :meth:`get_data_file_name` the name of the file with the actual data
-    :meth:`get_plot_data`      retrieve default data from spec data file
-    :meth:`get_macro`          the name of the SPEC scan macro used
-    :meth:`get_title`          the name for the top of the plot
-    :meth:`get_subtitle`       optional smaller text below the title
-    :meth:`get_x_title`        text for the independent (horizontal) axis
-    :meth:`get_y_title`        text for the dependent (vertical) axis
-    :meth:`get_x_log`          True: axis is logarithmic, False: axis is linear
-    :meth:`get_y_log`          True: axis is logarithmic, False: axis is linear
-    :meth:`get_timestamp_str`  text representing when the scan was recorded
-    ========================== ==================================================
+    Override any of these superclass methods to customize the handling:
 
     .. autosummary::
     
-        ~plot_scan
-        ~make_image
-        ~image
+        ~get_data_file_name
         ~get_initial_settings
+        ~get_macro
+        ~get_plot_data
         ~get_setting
+        ~get_subtitle
+        ~get_timestamp_str
+        ~get_title
+        ~get_x_log
+        ~get_x_title
+        ~get_y_log
+        ~get_y_title
+        ~image
+        ~make_image
+        ~plot_scan
+        ~plottable
         ~set_scan
     
     '''
@@ -275,6 +288,9 @@ class ImageMaker(object):
     def __init__(self):
         self.scan = None
         self.settings = self.get_initial_settings()
+        self.signal = None
+        self.axes = []
+        self.data = {}
     
     def plot_scan(self, scan, plotFile, maker=None, **kwds):
         '''
@@ -285,14 +301,19 @@ class ImageMaker(object):
         self.image(plotFile)
     
     def get_plot_data(self):
-        '''retrieve default data from spec data file'''
+        '''retrieve default plottable data from spec data file and store locally'''
         raise NotImplementedError('must implement get_plot_data() in each subclass')
          
-    def make_image(self, plotData, plotFile):
+    def make_image(self, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
         
-        :param obj plotData: object returned from :meth:`get_plot_data`
+        The data to be plotted are provided in:
+        
+        * `self.signal`
+        * `self.axes`
+        * `self.data`
+        
         :param str plotFile: name of image file to write
         '''
         raise NotImplementedError('must implement make_image() in each subclass')
@@ -307,7 +328,6 @@ class ImageMaker(object):
             x_log = False,
             y_log = False,
             timestamp = None,
-            image_data = None,
         )
     
     def get_setting(self, key):
@@ -346,27 +366,14 @@ class ImageMaker(object):
         :param str plotFile: name of image file to write
         '''
         try:
-            plotData = self.get_plot_data()
-        except converters.NoDataToPlot as _exc:
-            raise converters.NoDataToPlot(_exc.message)     # re-cast
+            self.get_plot_data()
         except KeyError as _exc:
             if hasattr(self.scan, ABORTED_ATTRIBUTE_TEXT):
                 raise ScanAborted(self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT))
             raise _exc
         
-        if plotData is None:
-            # TODO message needs improvement
-            raise NotPlottable('No plottable data object for ' + str(self.scan))
-        
-        if plotData.plottable():
-            # only proceed if mtime of SPEC data file is newer than plotFile
-            mtime_sdf = os.path.getmtime(self.get_data_file_name())
-            if os.path.exists(plotFile):
-                mtime_pf = os.path.getmtime(plotFile)
-            else:
-                mtime_pf = 0
-            if mtime_sdf > mtime_pf:
-                self.make_image(plotData, plotFile)
+        if self.plottable() and self.data_is_newer_than_plot(plotFile):
+            self.make_image(plotFile)
 
     def get_data_file_name(self):
         '''
@@ -409,6 +416,22 @@ class ImageMaker(object):
         'return the time of this scan as a string, default is date/time from the SPEC scan'
         return self.get_setting('timestamp') or self.scan.date
 
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        return False    # override in subclass with specific tests
+    
+    def data_is_newer_than_plot(self, plotFile):
+        '''only proceed if mtime of SPEC data file is newer than plotFile'''
+        mtime_sdf = os.path.getmtime(self.get_data_file_name())
+        if os.path.exists(plotFile):
+            mtime_pf = os.path.getmtime(plotFile)
+        else:
+            mtime_pf = 0
+
+        return mtime_sdf > mtime_pf
+
 
 class LinePlotter(ImageMaker):
     '''
@@ -417,22 +440,39 @@ class LinePlotter(ImageMaker):
     
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
-        if self.get_setting('image_data') is not None:
-            return self.get_setting('image_data')
+        # plot last column v. first column
+        assert(isinstance(self.scan, spec2nexus.spec.SpecDataFileScan))
+        self.signal = self.scan.column_last
+        if self.signal not in self.scan.data:
+            raise NoDataToPlot(str(self.scan))
+        self.axes = [self.scan.column_first,]
+        self.data = {label: self.scan.data.get(label) for label in self.scan.L if label in self.scan.data}
 
-        return converters.XYStructure(self.scan)
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        if self.signal in self.data:
+            signal = self.data[self.signal]
+            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
+                if len(signal) == len(self.data[self.axes[0]]):
+                    return True
+        return False
     
-    def make_image(self, plotData, plotFile):
+    def make_image(self, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
         
-        :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        signal = plotData.signal
-        y = plotData.data[signal]
-        axis = plotData.axes[0]
-        x = plotData.data[axis]
+        assert(self.signal in self.data)
+        assert(len(self.axes) == 1)
+        assert(self.axes[0] in self.data)
+
+        y = self.data[self.signal]
+        x = self.data[self.axes[0]]
+        ts = self.get_timestamp_str()
+
         charts.xy_plot(
             x, 
             y,  
@@ -443,7 +483,7 @@ class LinePlotter(ImageMaker):
             ytitle = self.get_y_title(),
             xlog = self.get_x_log(),
             ylog = self.get_y_log(),
-            timestamp_str = self.get_timestamp_str())
+            timestamp_str = ts)
 
 
 class HKLScanPlotter(LinePlotter):
@@ -453,79 +493,148 @@ class HKLScanPlotter(LinePlotter):
 
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
-        if self.get_setting('image_data') is not None:
-            return self.get_setting('image_data')
-
-        # standard ascan macro handling
-        plot = converters.XYStructure(self.scan)
+        # standard hklscan macro handling
         # find the real scan axis, the one that changes
         for axis in 'H K L'.split():
-            data = plot.data[axis]
+            data = self.scan.data.get(axis)
             if data is None:
                 continue
             # could compare start & end from scanCmd, this looks simpler
             if min(data) != max(data):
                 # tell it to use this axis instead
-                plot.axes = [axis,]
+                self.axes = [axis,]
                 self.scan.column_first = axis
                 break
         # if not found, default changes nothing
         if data is None:
             raise NotPlottable('no data in scan: ' + str(self.scan))
 
-        return plot
-
 
 class MeshPlotter(ImageMaker):
     '''
     create a mesh plot (2-D image)
-    '''
-    # see code in: writer.Writer.mesh()
+
+    ..rubric:: References:
     
+    :mesh 2-D parser: http://www.certif.com/spec_help/mesh.html
+        
+        ::
+        
+            mesh motor1 start1 end1 intervals1 motor2 start2 end2 intervals2 time
+    
+    :hklmesh 2-D parser: http://www.certif.com/spec_help/hklmesh.html
+        
+        ::
+        
+            hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time 
+               
+    '''
+    # see code in: writer.Writer.mesh()        self._mesh_(scan)
+
     def get_plot_data(self):
         '''retrieve default data from spec data file'''
-        if self.get_setting('image_data') is not None:
-            return self.get_setting('image_data')
-        
-        try:
-            converter = converters.MeshStructure(self.scan)
-        except converters.HandleMeshDataAs1D as _exc:
-            converter = converters.XYStructure(self.scan)
-        return converter
+        '''
+        data parser for 2-D mesh and hklmesh
+        '''
+        label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = self.scan.scanCmd.split()[1:]
+        if label1 not in self.scan.data:
+            label1 = self.scan.L[0]      # mnemonic v. name
+        if label2 not in self.scan.data:
+            label2 = self.scan.L[1]      # mnemonic v. name
+        axis1 = self.scan.data.get(label1)
+        axis2 = self.scan.data.get(label2)
+        intervals1, intervals2 = map(int, (intervals1, intervals2))
+        start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
+
+        if len(axis1) < intervals1 and min(axis2) == max(axis2):
+            # stopped scan before second row started, 1-D plot is better (issue #82)
+            self.axes = [label1,]
+            self.signal = self.scan.column_last
+            self.data[label1] = self.scan.data[label1]
+            self.data[self.signal] = self.scan.data[self.signal]
+            return
+
+        axis1 = axis1[0:intervals1+1]
+        self.data[label1] = axis1    # 1-D array
+
+        axis2 = [axis2[row] for row in range(len(axis2)) if row % (intervals1+1) == 0]
+        self.data[label2] = axis2    # 1-D array
+
+        column_labels = self.scan.L
+        column_labels.remove(label1)    # special handling
+        column_labels.remove(label2)    # special handling
+        if self.scan.scanCmd.startswith('hkl'):
+            # find the reciprocal space axis held constant
+            label3 = [key for key in ('H', 'K', 'L') if key in column_labels][0]
+            self.data[label3] = self.scan.data.get(label3)[0]    # constant
+
+        # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
+        data_shape = [len(axis2), len(axis1)]
+        for label in column_labels:
+            if label not in self.data:
+                axis = numpy.array( self.scan.data.get(label) )
+                self.data[label] = utils.reshape_data(axis, data_shape)
+            else:
+                pass
+
+        self.signal = utils.clean_name(self.scan.column_last)
+        self.axes = [label1, label2]
     
-    def make_image(self, plotData, plotFile):
+        if spec.MCA_DATA_KEY in self.scan.data:    # 3-D array(s)
+            # save each spectrum
+            for key, spectrum in sorted(self.scan.data[spec.MCA_DATA_KEY].items()):
+                num_channels = len(spectrum[0])
+                data_shape.append(num_channels)
+                mca = numpy.array(spectrum)
+                data = utils.reshape_data(mca, data_shape)
+                channels = range(1, num_channels+1)
+                ds_name = '_' + key + '_'
+                self.data[ds_name] = data
+                self.data[ds_name+'channel_'] = channels
+    
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        try:
+            assert(self.signal in self.data)
+            signal = numpy.array(self.data[self.signal])
+            assert(len(self.axes) in (0,len(signal.shape)))
+            for order, axis in enumerate(reversed(self.axes)):
+                assert(axis in self.data)
+                assert(signal.shape[order] == len(self.data[axis]))
+        except Exception:
+            return False
+        return True
+
+    def make_image(self, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
         
-        :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
-        assert(isinstance(plotData, (converters.MeshStructure, converters.XYStructure)))
-        # get the data from the plotData structure
-        if isinstance(plotData, converters.MeshStructure):
-            signal = plotData.signal
-            image = plotData.data[signal]
+        if len(self.axes) == 2:
+            image = self.data[self.signal]
             self.configure(     # override the standard handling
-                subtitle = '%s,  %s' % (signal, self.scan.raw.splitlines()[0]),
-                x_title = plotData.axes[0], 
-                y_title = plotData.axes[1])
+                subtitle = '%s,  %s' % (self.signal, 
+                                        self.scan.raw.splitlines()[0]),
+                x_title = self.axes[0], 
+                y_title = self.axes[1])
             charts.make_png(
                 image, 
                 plotFile,
-                [plotData.data[axis] for axis in plotData.axes],
+                [self.data[axis] for axis in self.axes],
                 title = self.get_title(),
                 subtitle = self.get_subtitle(),
-                log_image = False,
+                timestamp_str = self.get_timestamp_str(),
                 xtitle = self.get_x_title(),
                 ytitle = self.get_y_title(),
-                timestamp_str = self.get_timestamp_str(),
+                log_image = False,
                 )
-        elif isinstance(plotData, converters.XYStructure):
+        elif len(self.axes) == 1:
             # fallback to 1-D plot
-            signal = plotData.signal
-            y = plotData.data[signal]
-            axis = plotData.axes[0]
-            x = plotData.data[axis]
+            y = self.data[self.signal]
+            x = self.data[self.axes[0]]
             charts.xy_plot(
                 x, 
                 y,  
@@ -547,11 +656,10 @@ class NeXusPlotter(ImageMaker):
         '''retrieve default data from spec data file'''
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
-    def make_image(self, plotData, plotFile):
+    def make_image(self, plotFile):
         '''
         make image file from the SPEC scan
         
-        :param obj plotData: object returned from :meth:`get_plot_data`
         :param str plotFile: name of image file to write
         '''
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
