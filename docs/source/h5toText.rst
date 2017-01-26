@@ -5,6 +5,15 @@ h5toText
 
 Command line tool to print the structure of an HDF5 file
 
+.. caution:: h5toText is deprecated
+
+   The same capability as *h5toText* is being built into the 
+   *punx* [#]_ project.  When that project has its initial release,
+   the *h5toText* code will be removed from *spec2nexus*.
+   
+.. [#] *punx*: http://punx.readthedocs.io
+
+
 .. index:: examples; h5toText
 
 How to use **h5toText**
