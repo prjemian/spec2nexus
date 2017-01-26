@@ -13,6 +13,14 @@
 '''
 Plot data from the USAXS FlyScan and uascan macros
 
+.. autosummary::
+
+    ~UAscan_Plotter
+    ~read_reduced_fly_scan_file
+    ~retrieve_flyScanData
+    ~USAXS_FlyScan_Structure
+    ~USAXS_FlyScan_Plotter
+
 '''
 
 import h5py
@@ -25,11 +33,22 @@ import spec2nexus.specplot_gallery
 
 
 class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
-    '''
-    customize `uascan` handling
-    '''
+    '''simple customize of `uascan` handling'''
     
-    # TODO:
+    def get_plot_data(self):
+        '''plot the vertical axis on log scale'''
+        structure = spec2nexus.specplot.LinePlotter.get_plot_data(self)
+        if structure.signal in structure.data:
+            if min(structure.data[structure.signal]) <= 0:
+                # TODO: remove any data where Y <= 0 (can't plot on log scale)
+                msg = 'cannot plot Y<0: ' + str(self.scan)
+                raise spec2nexus.specplot.NotPlottable(msg)
+        subtitle = '#%s uascan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
+        self.configure(
+            y_log = True, 
+            subtitle = subtitle,
+            )
+        return structure
 
 
 # methods picked (& modified) from the USAXS livedata project
@@ -44,37 +63,21 @@ def read_reduced_fly_scan_file(hdf5_file_name):
     }
     '''
 
-    units = dict(
-        ar = 'degrees',
-        upd_ranges = '',
-        Q = '1/A',
-        R = 'none',
-        dR = 'none', 
-        R_max = 'none',
-        AR_R_peak = 'degrees',
-        ar_r_peak = 'degrees',
-        r_peak = 'none',
-        ar_0 = 'degrees',
-        fwhm = 'degrees',
-    )
-
-    fields = units.keys()
     reduced = {}
     hdf = h5py.File(hdf5_file_name, 'r')
     entry = hdf['/entry']
     for key in entry.keys():
         if key.startswith('flyScan_reduced_'):
             nxdata = entry[key]
-            nxname = key[len('flyScan_reduced_'):]
             d = {}
-            for dsname in fields:
+            for dsname in ['Q', 'R']:
                 if dsname in nxdata:
                     value = nxdata[dsname]
                     if value.size == 1:
                         d[dsname] = float(value[0])
                     else:
                         d[dsname] = numpy.array(value)
-            reduced[nxname] = d
+            reduced[key[len('flyScan_reduced_'):]] = d
     hdf.close()
     return reduced
 
@@ -144,9 +147,9 @@ class USAXS_FlyScan_Structure(spec2nexus.converters.PlotDataStructure):
 
 class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
     '''
-    customize `uascan` handling
+    customize `FlyScan` handling, plot :math:`log(I)` *vs.* :math:`log(Q)`
     
-    The USAXS FlyScan data is stored in a HDF5 file in a subdirectory
+    The USAXS FlyScan data is stored in a NeXus HDF5 file in a subdirectory
     below the SPEC data file.  This code uses existing code from the
     USAXS instrument to read that file.
     '''
@@ -161,7 +164,7 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
 
         # customize the plot just a bit
         # TODO: sample name as given by the user?
-        subtitle = '#%s: %s' % (str(self.scan.scanNum), self.scan.comments[0])
+        subtitle = '#%s FlyScan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
         self.configure(
             x_log = True, 
             y_log = True, 
@@ -172,13 +175,6 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
         return structure
 
 
-def main():
-    selector = spec2nexus.specplot.Selector()
-    selector.add('uascan', UAscan_Plotter)
-    selector.add('FlyScan', USAXS_FlyScan_Plotter)
-    spec2nexus.specplot_gallery.main()
-
-
 def debugging_setup():
     import os, sys
     import shutil
@@ -187,9 +183,17 @@ def debugging_setup():
     os.mkdir(path)
     sys.argv.append('-d')
     sys.argv.append(path)
+    sys.argv.append(os.path.join('..', 'src', 'spec2nexus', 'data', 'APS_spec_data.dat'))
     sys.argv.append(os.path.join('..', 'src', 'spec2nexus', 'data', '02_03_setup.dat'))
 
 
+def main():
+    selector = spec2nexus.specplot.Selector()
+    selector.add('uascan', UAscan_Plotter)
+    selector.add('FlyScan', USAXS_FlyScan_Plotter)
+    spec2nexus.specplot_gallery.main()
+
+
 if __name__ == '__main__':
-    debugging_setup()
+    #debugging_setup()
     main()
