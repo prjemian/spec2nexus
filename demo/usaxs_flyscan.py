@@ -149,5 +149,5 @@ def main():
 
 
 if __name__ == '__main__':
-    debugging_setup()
+    #debugging_setup()
     main()
