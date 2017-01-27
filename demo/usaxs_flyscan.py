@@ -26,7 +26,6 @@ import h5py
 import numpy
 import os
 
-import spec2nexus.converters
 import spec2nexus.specplot
 import spec2nexus.specplot_gallery
 
@@ -73,56 +72,17 @@ def retrieve_flyScanData(scan):
     hdf_file_name = comment[index:-1]
     abs_file = os.path.abspath(os.path.join(path, hdf_file_name))
 
-    plotData = []
+    plotData = {}
     if os.path.exists(abs_file):
         reduced = read_reduced_fly_scan_file(abs_file)
         s_num_bins = str(REDUCED_FLY_SCAN_BINS)
 
-        if s_num_bins in reduced:
-            choice = reduced[s_num_bins]
-        elif 'full' in reduced:
-            choice = reduced['full']
-        else:
-            choice = None
+        choice = reduced.get(s_num_bins) or reduced.get('full')
 
         if choice is not None:
-            plotData = [choice[axis] for axis in 'Q R'.split()]
+            plotData = {axis: choice[axis] for axis in 'Q R'.split()}
 
     return plotData
-
-
-class USAXS_FlyScan_Structure(spec2nexus.converters.PlotDataStructure):
-    '''
-    describe plottable data from 1-D scans such as `ascan`
-    
-    :param obj scan: instance of :class:`spec2nexus.spec.SpecDataFileScan`
-    
-    Attributes:
-    
-    :x: array of horizontal axis values
-    :y: array of vertical axis values
-    '''
-    
-    def __init__(self, scan, fly_scan_data):
-        spec2nexus.converters.PlotDataStructure.__init__(self, scan)
-
-        if len(fly_scan_data) != 2:
-            raise spec2nexus.converters.NoDataToPlot(str(scan))
-
-        self.signal = 'R'
-        self.axes = ['Q',]
-        self.data = dict(Q=fly_scan_data[0], R=fly_scan_data[1])
-    
-    def plottable(self):
-        '''
-        can this data be plotted as expected?
-        '''
-        if self.signal in self.data:
-            signal = self.data[self.signal]
-            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
-                if len(signal) == len(self.data[self.axes[0]]):
-                    return True
-        return False
 
 
 class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
@@ -139,12 +99,17 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
         # get the data from the HDF5 file
         fly_data = retrieve_flyScanData(self.scan)
         
-        # place the data in specplot's plotting structure
-        structure = USAXS_FlyScan_Structure(self.scan, fly_data)
+        if len(fly_data) != 2:
+            raise spec2nexus.specplot.NoDataToPlot(str(scan))
+
+        self.signal = 'R'
+        self.axes = ['Q',]
+        self.data = fly_data
 
         # customize the plot just a bit
-        # TODO: sample name as given by the user?
-        subtitle = '#%s FlyScan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
+        # sample name as given by the user?
+        subtitle = '#' + str(self.scan.scanNum)
+        subtitle += ' FlyScan: ' + self.scan.comments[0]
         self.configure(
             x_log = True, 
             y_log = True, 
@@ -152,12 +117,23 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
             y_title = r'USAXS $R(|\vec{Q}|)$, a.u.',
             subtitle = subtitle,
             )
-        return structure
+    
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        if self.signal in self.data:
+            signal = self.data[self.signal]
+            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
+                if len(signal) == len(self.data[self.axes[0]]):
+                    return True
+        return False
 
 
 def debugging_setup():
     import os, sys
     import shutil
+    sys.path.insert(0, os.path.join('..', 'src'))
     path = '__usaxs__'
     shutil.rmtree(path, ignore_errors=True)
     os.mkdir(path)
@@ -173,5 +149,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # debugging_setup()
+    debugging_setup()
     main()
