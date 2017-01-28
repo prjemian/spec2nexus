@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 
-'''(internal library) common methods used in **spec2nexus** modules'''
+'''
+(internal library) common methods used in **spec2nexus** modules
+
+.. autosummary::
+
+    ~clean_name
+    ~get_all_plugins
+    ~iso8601
+    ~strip_first_word
+    ~sanitize_name
+    ~reshape_data
+
+'''
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -12,7 +24,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import numpy as np
+import numpy
 import re
 import time
 
@@ -98,3 +110,27 @@ def sanitize_name(group, key):      # for legacy support only
     if txt[0].isdigit():
         txt = replacement + txt # can't start with a digit
     return txt
+
+
+def reshape_data(scan_data, scan_shape):
+    '''
+    Shape scan data from raw to different dimensionality
+    
+    Some SPEC macros collect data in a mesh or grid yet 
+    report the data as a 1-D sequence of observations.
+    For further processing (such as plotting), the scan data
+    needs to be reshaped according to its intended dimensionality.
+
+    modified from nexpy.readers.readspec.reshape_data
+    '''
+    scan_size = numpy.prod(scan_shape)
+    if scan_data.size == scan_size:
+        data = scan_data
+    elif scan_data.size < scan_size:
+        data = numpy.empty(scan_size)
+        data.fill(numpy.NaN)               # pad data with NaN
+        data[0:scan_data.size] = scan_data.ravel()  # flatten & insert
+    else:
+        data = scan_data.ravel()        # flatten
+        data = data[0:scan_size]        # truncate extra data
+    return data.reshape(scan_shape)

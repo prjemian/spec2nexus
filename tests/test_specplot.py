@@ -20,7 +20,7 @@ import tempfile
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
     sys.path.insert(0, _path)
-from spec2nexus import specplot, converters
+from spec2nexus import specplot
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _test_path not in sys.path:
@@ -59,7 +59,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
             os.remove(self.plotFile)
              
         self.assertRaises(
-            converters.NoDataToPlot, 
+            specplot.NoDataToPlot, 
             plotter.plot_scan, 
             scan, 
             self.plotFile
@@ -92,12 +92,12 @@ class Issue_66_plotting_problems(unittest.TestCase):
      
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
+        plotter.set_y_log(True)
         self.assertRaises(
             ValueError, 
             plotter.plot_scan,
             scan,
-            self.plotFile, 
-            y_log=True)
+            self.plotFile)
         self.assertFalse(os.path.exists(self.plotFile))
          
     def test_command_line(self):
@@ -107,8 +107,7 @@ class Issue_66_plotting_problems(unittest.TestCase):
         sys.argv = [sys.argv[0], specFile, '1', plotFile]
         specplot.main()
         self.assertTrue(os.path.exists(plotFile))
-        os.remove(plotFile)
-        os.rmdir(tempdir)
+        shutil.rmtree(tempdir, ignore_errors=True)
         self.assertFalse(os.path.exists(plotFile))
          
     def test_command_line_33bm_spec_issue72_hklmesh_plot(self):

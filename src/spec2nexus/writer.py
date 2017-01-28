@@ -18,7 +18,6 @@
 import h5py
 import numpy as np
 
-import converters
 import eznx
 import spec2nexus
 import spec
@@ -230,7 +229,7 @@ class Writer(object):
     
     def mesh(self, nxdata, scan):
         '''*internal*: data parser for 2-D mesh and hklmesh'''
-        # TODO: refactor to use converters.MeshStructure() class
+        # TODO: refactor to use NeXus data model: signal, axes, data
         
         # 2-D parser: http://www.certif.com/spec_help/mesh.html
         # mesh motor1 start1 end1 intervals1 motor2 start2 end2 intervals2 time

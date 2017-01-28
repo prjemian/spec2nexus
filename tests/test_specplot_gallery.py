@@ -57,9 +57,10 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(self.tempdir))
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('writer_1_3.h5'))
-        self.assertRaises(
-            spec.NotASpecDataFile,
-            specplot_gallery.main)
+        specplot_gallery.main()
+        children = os.listdir(self.tempdir)
+        self.assertEqual(len(children), 1)
+        self.assertEqual(children[0], 'specplot_files_processing.log')
     
     def test_command_line_spec_data_file_33bm_spec(self):
         sys.argv.append('-d')
