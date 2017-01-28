@@ -94,13 +94,13 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
     USAXS instrument to read that file.
     '''
     
-    def get_plot_data(self):
-        '''retrieve reducecd data from the FlyScan's HDF5 file'''
+    def retrieve_plot_data(self):
+        '''retrieve reduced data from the FlyScan's HDF5 file'''
         # get the data from the HDF5 file
         fly_data = retrieve_flyScanData(self.scan)
         
         if len(fly_data) != 2:
-            raise spec2nexus.specplot.NoDataToPlot(str(scan))
+            raise spec2nexus.specplot.NoDataToPlot(str(self.scan))
 
         self.signal = 'R'
         self.axes = ['Q',]
@@ -110,13 +110,11 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
         # sample name as given by the user?
         subtitle = '#' + str(self.scan.scanNum)
         subtitle += ' FlyScan: ' + self.scan.comments[0]
-        self.configure(
-            x_log = True, 
-            y_log = True, 
-            x_title = r'$|\vec{Q}|, 1/\AA$',
-            y_title = r'USAXS $R(|\vec{Q}|)$, a.u.',
-            subtitle = subtitle,
-            )
+        self.set_plot_subtitle(subtitle)
+        self.set_x_log(True)
+        self.set_y_log(True)
+        self.set_x_title(r'$|\vec{Q}|, 1/\AA$')
+        self.set_y_title(r'USAXS $R(|\vec{Q}|)$, a.u.')
     
     def plottable(self):
         '''
@@ -149,5 +147,5 @@ def main():
 
 
 if __name__ == '__main__':
-    #debugging_setup()
+    # debugging_setup()
     main()

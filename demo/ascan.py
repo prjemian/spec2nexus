@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 
 '''
-Plot all scans that used `ascan`macro, showing only the scan number (not full scan command)
+Plot all scans that used the SPEC `ascan` macro, showing only the scan number (not full scan command)
 
 This is a simple example of how to customize the scan macro handling.
 There are many more ways to add complexity.
@@ -24,12 +24,11 @@ import spec2nexus.specplot_gallery
 class Custom_Ascan(spec2nexus.specplot.LinePlotter):
     '''simple customization'''
     
-    def get_plot_data(self):
+    def retrieve_plot_data(self):
         '''substitute with the data&time the plot was created'''
-        structure = spec2nexus.specplot.LinePlotter.get_plot_data(self)
-        text = '#S ' + str(self.scan.scanNum) + ' ascan'
-        self.configure(subtitle = text)
-        return structure
+        import datetime
+        spec2nexus.specplot.LinePlotter.retrieve_plot_data(self)
+        self.set_plot_subtitle(str(datetime.datetime.now()))
 
 
 def main():

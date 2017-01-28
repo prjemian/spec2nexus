@@ -218,9 +218,15 @@ class ImageMaker(object):
     .. rubric:: USAGE:
     
     #. Create a subclass of :class:`ImageMaker`
-    #. Re-implement :meth:`retrieve_plot_data` to gather the data for the image
-    #. Re-implement :meth:`make_image` to generate the plot image
-    #. set any plot options such as titles, timestamp, log scale, ...
+    #. Override any of these methods:
+
+       .. autosummary::
+        
+            ~data_file_name
+            ~make_image
+            ~plottable
+            ~plot_options
+            ~retrieve_plot_data
     
     .. rubric:: EXAMPLE
     
@@ -255,28 +261,6 @@ class ImageMaker(object):
         scan = sfile.getScan(scan_number)
         plotter = LinePlotter()
         plotter.plot_scan(scan, plotFile, y_log=True)
-    
-    .. rubric:: Class methods
-    
-    Override any of these superclass methods to customize the handling:
-
-    .. autosummary::
-    
-        ~data_file_name
-        ~_initialize_settings_
-        ~spec_macro
-        ~retrieve_plot_data
-        ~_get_setting_
-        ~plot_subtitle
-        ~timestamp
-        ~plot_title
-        ~x_log
-        ~x_title
-        ~y_log
-        ~y_title
-        ~image
-        ~make_image
-        ~plottable
     
     '''
 
@@ -326,7 +310,38 @@ class ImageMaker(object):
         pass
     
     def retrieve_plot_data(self):
-        '''retrieve default plottable data from spec data file and store locally'''
+        '''
+        retrieve default plottable data from spec data file and store locally
+        
+        This method must retrieve the data to be plotted, either from the
+        SPEC data file scan or from a file which name is provided
+        in the scan detalis.
+        
+        These attributes must be set by this method:
+
+        :data: dictionary containing values of the various collected arrays {label: array}
+        :signal: name of the 'signal' data (default data to be plotted)
+        :axes: names of the axes of signal data
+        
+        .. rubric:: Example data
+        
+        ::
+        
+            self.data = {
+                'angle': [1, 2, 3, 4, 5],
+                'counts': [0. 2. 55. 3. 0]}
+            self.signal = 'counts'
+            self.axes = ['angle']
+        
+        Raise any of these exceptions as appropriate:
+
+        .. autosummary::
+        
+            ~NoDataToPlot
+            ~NotPlottable
+            ~ScanAborted
+
+        '''
         raise NotImplementedError('must implement retrieve_plot_data() in each subclass')
          
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -377,7 +392,7 @@ class ImageMaker(object):
             self.make_image(plotFile)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # get/set methods for the self.settings dictionary
+    # support the self.settings dictionary with get & set methods
     
     def _initialize_settings_(self):
         '''
@@ -396,10 +411,6 @@ class ImageMaker(object):
             z_log = None,
             timestamp = None,
         )
-    
-    def spec_macro(self):
-        'return the name of the SPEC macro for this scan (not a setting, per se)'
-        return self.scan.get_macro_name()
     
     def plot_title(self):
         'return the plot title'
@@ -470,36 +481,6 @@ class LinePlotter(ImageMaker):
     '''
     create a line plot
     '''
-    
-    def retrieve_plot_data(self):
-        '''retrieve default data from spec data file'''
-        # plot last column v. first column
-        assert(isinstance(self.scan, spec2nexus.spec.SpecDataFileScan))
-        self.signal = self.scan.column_last
-        if self.signal not in self.scan.data:
-            raise NoDataToPlot(str(self.scan))
-        self.axes = [self.scan.column_first,]
-        self.data = {label: self.scan.data.get(label) for label in self.scan.L if label in self.scan.data}
-
-    def plottable(self):
-        '''
-        can this data be plotted as expected?
-        '''
-        if self.signal in self.data:
-            signal = self.data[self.signal]
-            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
-                if len(signal) == len(self.data[self.axes[0]]):
-                    return True
-        return False
-    
-    def plot_options(self):
-        '''
-        define the settings for this, accepting any non-default values first
-        '''
-        self.x_title() or self.set_x_title(self.axes[0])
-        self.y_title() or self.set_y_title(self.signal)
-        self.x_log() or self.set_x_log(False)
-        self.y_log() or self.set_y_log(False)
 
     def make_image(self, plotFile):
         '''
@@ -526,6 +507,36 @@ class LinePlotter(ImageMaker):
             xlog = self.x_log(),
             ylog = self.y_log(),
             timestamp_str = ts)
+
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        if self.signal in self.data:
+            signal = self.data[self.signal]
+            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
+                if len(signal) == len(self.data[self.axes[0]]):
+                    return True
+        return False
+    
+    def plot_options(self):
+        '''
+        define the settings for this, accepting any non-default values first
+        '''
+        self.x_title() or self.set_x_title(self.axes[0])
+        self.y_title() or self.set_y_title(self.signal)
+        self.x_log() or self.set_x_log(False)
+        self.y_log() or self.set_y_log(False)
+    
+    def retrieve_plot_data(self):
+        '''retrieve default data from spec data file'''
+        # plot last column v. first column
+        assert(isinstance(self.scan, spec2nexus.spec.SpecDataFileScan))
+        self.signal = self.scan.column_last
+        if self.signal not in self.scan.data:
+            raise NoDataToPlot(str(self.scan))
+        self.axes = [self.scan.column_first,]
+        self.data = {label: self.scan.data.get(label) for label in self.scan.L if label in self.scan.data}
 
 
 class HKLScanPlotter(LinePlotter):
@@ -725,7 +736,7 @@ class NeXusPlotter(ImageMaker):
 
 def openSpecFile(specFile):
     '''
-    convenience routine so that others do not have to import spec2nexus.spec
+    convenience routine so that others do not have to `import spec2nexus.spec`
     '''
     sd = spec.SpecDataFile(specFile)
     return sd

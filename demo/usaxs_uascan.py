@@ -26,26 +26,28 @@ import spec2nexus.specplot_gallery
 class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
     '''simple customize of `uascan` handling'''
     
-    def get_plot_data(self):
+    def retrieve_plot_data(self):
         '''plot the vertical axis on log scale'''
-        structure = spec2nexus.specplot.LinePlotter.get_plot_data(self)
-        if structure.signal in structure.data:
-            if min(structure.data[structure.signal]) <= 0:
+        spec2nexus.specplot.LinePlotter.retrieve_plot_data(self)
+
+        if self.signal in self.data:
+            if min(self.data[self.signal]) <= 0:
                 # TODO: remove any data where Y <= 0 (can't plot on log scale)
                 msg = 'cannot plot Y<0: ' + str(self.scan)
                 raise spec2nexus.specplot.NotPlottable(msg)
+
         # in the uascan, a name for the sample is given in `self.scan.comments[0]`
-        subtitle = '#%s uascan: %s' % (str(self.scan.scanNum), self.scan.comments[0])
-        self.configure(
-            y_log = True, 
-            subtitle = subtitle,
-            )
-        return structure
+        self.set_y_log(True)
+        self.set_plot_subtitle(
+            '#%s uascan: %s' % (str(self.scan.scanNum), self.scan.comments[0]))
 
 
 def debugging_setup():
     import os, sys
     import shutil
+    import ascan
+    selector = spec2nexus.specplot.Selector()
+    selector.add('ascan', ascan.Custom_Ascan)   # just for the demo
     path = '__usaxs__'
     shutil.rmtree(path, ignore_errors=True)
     os.mkdir(path)
