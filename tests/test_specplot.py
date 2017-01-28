@@ -92,12 +92,12 @@ class Issue_66_plotting_problems(unittest.TestCase):
      
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
+        plotter.set_y_log(True)
         self.assertRaises(
             ValueError, 
             plotter.plot_scan,
             scan,
-            self.plotFile, 
-            y_log=True)
+            self.plotFile)
         self.assertFalse(os.path.exists(self.plotFile))
          
     def test_command_line(self):

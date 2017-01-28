@@ -77,7 +77,7 @@ class Selector(singletons.Singleton):
         
         class LogX_Plotter(specplot.ImageMaker):
 
-            def get_x_log(self):
+            def x_log(self):
                 return True
         
         # ...
@@ -218,12 +218,9 @@ class ImageMaker(object):
     .. rubric:: USAGE:
     
     #. Create a subclass of :class:`ImageMaker`
-    #. Re-implement :meth:`get_plot_data` to gather the data for the image
+    #. Re-implement :meth:`retrieve_plot_data` to gather the data for the image
     #. Re-implement :meth:`make_image` to generate the plot image
-    #. In the call to :meth:`plot_scan`, supply any optional keywords to
-       define plot settings such as `title`, `subtitle`, etc.
-    #. Optionally, re-implement any of the various *get* methods to 
-       further customize their behavior.
+    #. set any plot options such as titles, timestamp, log scale, ...
     
     .. rubric:: EXAMPLE
     
@@ -236,7 +233,7 @@ class ImageMaker(object):
                 """
                 make MatPlotLib chart image from the SPEC scan
                 
-                :param obj plotData: object returned from :meth:`get_plot_data`
+                :param obj plotData: object returned from :meth:`retrieve_plot_data`
                 :param str plotFile: name of image file to write
                 """
                 assert(self.signal in self.data)
@@ -246,13 +243,13 @@ class ImageMaker(object):
                 y = self.data[self.signal]
                 x = self.data[self.axes[0]]
                 xy_plot(x, y,  plotFile, 
-                       title = self.get_title(),
-                       subtitle = self.get_subtitle(),
-                       xtitle = self.get_x_title(),
-                       ytitle = self.get_y_title(),
-                       xlog = self.get_x_log(),
-                       ylog = self.get_y_log(),
-                       timestamp_str = self.get_timestamp_str())
+                       title = self.plot_title(),
+                       plot_subtitle = self.plot_subtitle(),
+                       xtitle = self.x_title(),
+                       ytitle = self.y_title(),
+                       xlog = self.x_log(),
+                       ylog = self.y_log(),
+                       timestamp_str = self.timestamp())
 
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
@@ -265,45 +262,43 @@ class ImageMaker(object):
 
     .. autosummary::
     
-        ~get_data_file_name
-        ~get_initial_settings
-        ~get_macro
-        ~get_plot_data
-        ~get_setting
-        ~get_subtitle
-        ~get_timestamp_str
-        ~get_title
-        ~get_x_log
-        ~get_x_title
-        ~get_y_log
-        ~get_y_title
+        ~data_file_name
+        ~_initialize_settings_
+        ~spec_macro
+        ~retrieve_plot_data
+        ~_get_setting_
+        ~plot_subtitle
+        ~timestamp
+        ~plot_title
+        ~x_log
+        ~x_title
+        ~y_log
+        ~y_title
         ~image
         ~make_image
-        ~plot_scan
         ~plottable
-        ~set_scan
     
     '''
 
     def __init__(self):
         self.scan = None
-        self.settings = self.get_initial_settings()
+        self.settings = self._initialize_settings_()
         self.signal = None
         self.axes = []
         self.data = {}
     
-    def plot_scan(self, scan, plotFile, maker=None, **kwds):
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # support methods that a subclass might override
+
+    def data_file_name(self):
         '''
-        make an image plot of the data in the scan
+        the name of the file with the actual data
+        
+        Usually, this is the SPEC data file
+        but it *could* be something else
         '''
-        self.configure(**kwds)
-        self.set_scan(scan)
-        self.image(plotFile)
-    
-    def get_plot_data(self):
-        '''retrieve default plottable data from spec data file and store locally'''
-        raise NotImplementedError('must implement get_plot_data() in each subclass')
-         
+        return self.scan.header.parent.fileName  # self.scan.specFile
+
     def make_image(self, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
@@ -318,113 +313,28 @@ class ImageMaker(object):
         '''
         raise NotImplementedError('must implement make_image() in each subclass')
     
-    def get_initial_settings(self):
-        return dict(
-            macro = None,
-            title = None,
-            subtitle = None,
-            x_title = None,
-            y_title = None,
-            x_log = False,
-            y_log = False,
-            timestamp = None,
-        )
-    
-    def get_setting(self, key):
-        return self.settings.get(key)
-    
-    def _verify_setting_name_(self, key):
-        if key not in self.settings:
-            raise KeyError('unknown plot option: ' + key)
-    
-    def configure(self, **kwds):
-        '''
-        set any of the plot options
-        '''
-        for k, v in kwds.items():
-            self._verify_setting_name_(k)
-            self.settings[k] = v
-
-    def set_scan(self, scan):
-        '''
-        assign the SPEC scan object
-         
-        :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
-        '''
-        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
-            raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
-        if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
-            match_text = 'Scan aborted after 0 points.'
-            if scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT) == match_text:
-                raise ScanAborted(match_text)
-        self.scan = scan
-         
-    def image(self, plotFile):
-        '''
-        make an image, if permissable, from data in (or referenced by) the SPEC scan object
-         
-        :param str plotFile: name of image file to write
-        '''
-        try:
-            self.get_plot_data()
-        except KeyError as _exc:
-            if hasattr(self.scan, ABORTED_ATTRIBUTE_TEXT):
-                raise ScanAborted(self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT))
-            raise _exc
-        
-        if self.plottable() and self.data_is_newer_than_plot(plotFile):
-            self.make_image(plotFile)
-
-    def get_data_file_name(self):
-        '''
-        the name of the file with the actual data
-        
-        Usually, this is the SPEC data file
-        but it *could* be something else
-        '''
-        return self.scan.header.parent.fileName  # self.scan.specFile
-    
-    def get_macro(self):
-        'return the name of the SPEC macro for this scan'
-        return self.scan.get_macro_name()
-    
-    def get_title(self):
-        'return the plot title, default is the name of the SPEC data file'
-        return self.get_setting('title') or self.scan.specFile
-    
-    def get_subtitle(self):
-        'return the subtitle, default includes scan number and command'
-        return self.get_setting('subtitle') or '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd
-    
-    def get_x_title(self):
-        'return the title for the X axis, default is label of first column in the scan'
-        return self.get_setting('x_title') or self.scan.column_first
-    
-    def get_y_title(self):
-        'return the title for the Y axis, default is label of last column in the scan'
-        return self.get_setting('y_title') or self.scan.column_last
-    
-    def get_x_log(self):
-        'boolean: should the X axis be plotted on a log scale?'
-        return self.get_setting('x_log')
-    
-    def get_y_log(self):
-        'boolean: should the Y axis be plotted on a log scale?'
-        return self.get_setting('y_log')
-    
-    def get_timestamp_str(self):
-        'return the time of this scan as a string, default is date/time from the SPEC scan'
-        return self.get_setting('timestamp') or self.scan.date
-
     def plottable(self):
         '''
         can this data be plotted as expected?
         '''
         return False    # override in subclass with specific tests
     
+    def plot_options(self):
+        '''
+        re-define any plot options in a subclass 
+        '''
+        pass
+    
+    def retrieve_plot_data(self):
+        '''retrieve default plottable data from spec data file and store locally'''
+        raise NotImplementedError('must implement retrieve_plot_data() in each subclass')
+         
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # support methods that will not need to be defined in a subclass
+    
     def data_is_newer_than_plot(self, plotFile):
         '''only proceed if mtime of SPEC data file is newer than plotFile'''
-        mtime_sdf = os.path.getmtime(self.get_data_file_name())
+        mtime_sdf = os.path.getmtime(self.data_file_name())
         if os.path.exists(plotFile):
             mtime_pf = os.path.getmtime(plotFile)
         else:
@@ -432,13 +342,136 @@ class ImageMaker(object):
 
         return mtime_sdf > mtime_pf
 
+    def plot_scan(self, scan, plotFile, maker=None):
+        '''
+        make an image plot of the data in the scan
+
+        :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
+        :param str plotFile: file name for plot output
+        '''
+        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
+            raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
+        if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
+            match_text = 'Scan aborted after 0 points.'
+            if scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT) == match_text:
+                raise ScanAborted(match_text)
+
+        self.scan = scan
+
+        self.set_plot_title(self.plot_title() or self.data_file_name())
+        self.set_plot_subtitle(
+            self.plot_subtitle() or 
+            '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd)
+        self.set_timestamp(self.timestamp() or self.scan.date)
+
+        try:
+            self.retrieve_plot_data()
+        except KeyError as _exc:
+            if hasattr(self.scan, ABORTED_ATTRIBUTE_TEXT):
+                raise ScanAborted(self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT))
+            raise _exc
+        
+        self.plot_options()
+        
+        if self.plottable() and self.data_is_newer_than_plot(plotFile):
+            self.make_image(plotFile)
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # get/set methods for the self.settings dictionary
+    
+    def _initialize_settings_(self):
+        '''
+        initial values are set to `None`
+        
+        subclasses that set a value should first check if the value has already been set
+        unless explicitly replacing any customizations by the user
+        '''
+        return dict(
+            title = None,
+            subtitle = None,
+            x_title = None,
+            y_title = None,
+            x_log = None,
+            y_log = None,
+            z_log = None,
+            timestamp = None,
+        )
+    
+    def spec_macro(self):
+        'return the name of the SPEC macro for this scan (not a setting, per se)'
+        return self.scan.get_macro_name()
+    
+    def plot_title(self):
+        'return the plot title'
+        return self.settings['title']
+    
+    def set_plot_title(self, text):
+        'set the plot title'
+        self.settings['title'] = text
+    
+    def plot_subtitle(self):
+        'return the plot_subtitle'
+        return self.settings['subtitle']
+    
+    def set_plot_subtitle(self, text):
+        'set the plot_subtitle'
+        self.settings['subtitle'] = text
+    
+    def x_title(self):
+        'return the title for the X axis'
+        return self.settings['x_title']
+    
+    def set_x_title(self, text):
+        'set the x axis title'
+        self.settings['x_title'] = text
+    
+    def y_title(self):
+        'return the title for the Y axis'
+        return self.settings['y_title']
+    
+    def set_y_title(self, text):
+        'set the y axis title'
+        self.settings['y_title'] = text
+    
+    def x_log(self):
+        'boolean: should the X axis be plotted on a log scale?'
+        return self.settings['x_log']
+    
+    def set_x_log(self, choice):
+        'set the x axis logarithmic if True'
+        self.settings['x_log'] = choice
+    
+    def y_log(self):
+        'boolean: should the Y axis be plotted on a log scale?'
+        return self.settings['y_log']
+    
+    def set_y_log(self, choice):
+        'set the y axis logarithmic if True'
+        self.settings['y_log'] = choice
+    
+    def z_log(self):
+        'boolean: should the Z axis (image) be plotted on a log scale?'
+        return self.settings['z_log']
+    
+    def set_z_log(self, choice):
+        'set the z axis (image) logarithmic if True'
+        self.settings['z_log'] = choice
+    
+    def timestamp(self):
+        'return the time of this scan as a string'
+        return self.settings['timestamp']
+    
+    def set_timestamp(self, text):
+        'set the plot time stamp'
+        self.settings['timestamp'] = text
+
 
 class LinePlotter(ImageMaker):
     '''
     create a line plot
     '''
     
-    def get_plot_data(self):
+    def retrieve_plot_data(self):
         '''retrieve default data from spec data file'''
         # plot last column v. first column
         assert(isinstance(self.scan, spec2nexus.spec.SpecDataFileScan))
@@ -459,6 +492,15 @@ class LinePlotter(ImageMaker):
                     return True
         return False
     
+    def plot_options(self):
+        '''
+        define the settings for this, accepting any non-default values first
+        '''
+        self.x_title() or self.set_x_title(self.axes[0])
+        self.y_title() or self.set_y_title(self.signal)
+        self.x_log() or self.set_x_log(False)
+        self.y_log() or self.set_y_log(False)
+
     def make_image(self, plotFile):
         '''
         make MatPlotLib chart image from the SPEC scan
@@ -471,18 +513,18 @@ class LinePlotter(ImageMaker):
 
         y = self.data[self.signal]
         x = self.data[self.axes[0]]
-        ts = self.get_timestamp_str()
+        ts = self.timestamp()
 
         charts.xy_plot(
             x, 
             y,  
             plotFile, 
-            title = self.get_title(),
-            subtitle = self.get_subtitle(),
-            xtitle = self.get_x_title(),
-            ytitle = self.get_y_title(),
-            xlog = self.get_x_log(),
-            ylog = self.get_y_log(),
+            title = self.plot_title(),
+            subtitle = self.plot_subtitle(),
+            xtitle = self.x_title(),
+            ytitle = self.y_title(),
+            xlog = self.x_log(),
+            ylog = self.y_log(),
             timestamp_str = ts)
 
 
@@ -491,7 +533,7 @@ class HKLScanPlotter(LinePlotter):
     create a line plot from hklscan macros
     '''
 
-    def get_plot_data(self):
+    def retrieve_plot_data(self):
         '''retrieve default data from spec data file'''
         # standard hklscan macro handling
         # find the real scan axis, the one that changes
@@ -531,7 +573,78 @@ class MeshPlotter(ImageMaker):
     '''
     # see code in: writer.Writer.mesh()        self._mesh_(scan)
 
-    def get_plot_data(self):
+    def make_image(self, plotFile):
+        '''
+        make MatPlotLib chart image from the SPEC scan
+        
+        :param str plotFile: name of image file to write
+        '''
+        if len(self.axes) == 2:
+            image = self.data[self.signal]
+            self.set_plot_subtitle(
+                '%s,  %s' % (self.signal, 
+                             self.scan.raw.splitlines()[0])
+                )
+            self.set_x_title(self.axes[0])
+            self.set_y_title(self.axes[1])
+            
+            charts.make_png(
+                image, 
+                plotFile,
+                [self.data[axis] for axis in self.axes],
+                title = self.plot_title(),
+                subtitle = self.plot_subtitle(),
+                timestamp_str = self.timestamp(),
+                xtitle = self.x_title(),
+                ytitle = self.y_title(),
+                log_image = self.z_log(),
+                )
+        elif len(self.axes) == 1:
+            # fallback to 1-D plot
+            y = self.data[self.signal]
+            x = self.data[self.axes[0]]
+            charts.xy_plot(
+                x, 
+                y,  
+                plotFile, 
+                title = self.plot_title(),
+                subtitle = self.plot_subtitle(),
+                xtitle = self.x_title(),
+                ytitle = self.y_title(),
+                xlog = self.x_log(),
+                ylog = self.y_log(),
+                timestamp_str = self.timestamp())
+    
+    def plottable(self):
+        '''
+        can this data be plotted as expected?
+        '''
+        try:
+            assert(self.signal in self.data)
+            signal = numpy.array(self.data[self.signal])
+            assert(len(self.axes) in (0,len(signal.shape)))
+            for order, axis in enumerate(reversed(self.axes)):
+                assert(axis in self.data)
+                assert(signal.shape[order] == len(self.data[axis]))
+        except Exception:
+            return False
+        return True
+    
+    def plot_options(self):
+        '''
+        define the settings for this, accepting any non-default values first
+        '''
+        if len(self.axes) == 1:
+            self.x_title() or self.set_x_title(self.axes[0])
+            self.y_title() or self.set_y_title(self.signal)
+        elif len(self.axes) == 2:
+            self.x_title() or self.set_x_title(self.axes[1])
+            self.y_title() or self.set_y_title(self.axes[0])
+        self.x_log() or self.set_x_log(False)
+        self.y_log() or self.set_y_log(False)
+        self.z_log() or self.set_z_log(False)
+
+    def retrieve_plot_data(self):
         '''retrieve default data from spec data file'''
         '''
         data parser for 2-D mesh and hklmesh
@@ -591,68 +704,13 @@ class MeshPlotter(ImageMaker):
                 ds_name = '_' + key + '_'
                 self.data[ds_name] = data
                 self.data[ds_name+'channel_'] = channels
-    
-    def plottable(self):
-        '''
-        can this data be plotted as expected?
-        '''
-        try:
-            assert(self.signal in self.data)
-            signal = numpy.array(self.data[self.signal])
-            assert(len(self.axes) in (0,len(signal.shape)))
-            for order, axis in enumerate(reversed(self.axes)):
-                assert(axis in self.data)
-                assert(signal.shape[order] == len(self.data[axis]))
-        except Exception:
-            return False
-        return True
-
-    def make_image(self, plotFile):
-        '''
-        make MatPlotLib chart image from the SPEC scan
-        
-        :param str plotFile: name of image file to write
-        '''
-        if len(self.axes) == 2:
-            image = self.data[self.signal]
-            self.configure(     # override the standard handling
-                subtitle = '%s,  %s' % (self.signal, 
-                                        self.scan.raw.splitlines()[0]),
-                x_title = self.axes[0], 
-                y_title = self.axes[1])
-            charts.make_png(
-                image, 
-                plotFile,
-                [self.data[axis] for axis in self.axes],
-                title = self.get_title(),
-                subtitle = self.get_subtitle(),
-                timestamp_str = self.get_timestamp_str(),
-                xtitle = self.get_x_title(),
-                ytitle = self.get_y_title(),
-                log_image = False,
-                )
-        elif len(self.axes) == 1:
-            # fallback to 1-D plot
-            y = self.data[self.signal]
-            x = self.data[self.axes[0]]
-            charts.xy_plot(
-                x, 
-                y,  
-                plotFile, 
-                title = self.get_title(),
-                subtitle = self.get_subtitle(),
-                xtitle = self.get_x_title(),
-                ytitle = self.get_y_title(),
-                xlog = self.get_x_log(),
-                ylog = self.get_y_log(),
-                timestamp_str = self.get_timestamp_str())
 
 class NeXusPlotter(ImageMaker):
     '''
     create a plot from a NeXus HDF5 data file
     '''
     
-    def get_plot_data(self):
+    def retrieve_plot_data(self):
         '''retrieve default data from spec data file'''
         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
