@@ -12,6 +12,7 @@ unit tests for a specific data file
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import h5py
 import os
 import sys
 import unittest
@@ -22,7 +23,7 @@ _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
     sys.path.insert(0, _path)
 
-from spec2nexus import spec, writer, h5toText
+from spec2nexus import spec, writer
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _test_path not in sys.path:
@@ -56,10 +57,39 @@ class Test_03_06_JanTest_data_file(unittest.TestCase):
         
         specwriter.save(hfile, sorted(specfile.getScanNumbers()))
         self.assertTrue(os.path.exists(hfile))
-        self.assertFalse(h5toText.isHdf5File(hfile), 'name of file is not instance of h5py.File')
-        self.assertTrue(h5toText.isNeXusFile_ByNXdataAttrs(hfile))
-        self.assertFalse(h5toText.isNeXusFile_ByAxes(hfile))
-        self.assertFalse(h5toText.isNeXusFile_ByAxisAttr(hfile))
+        
+        def subgroup_list(parent, nxclass):
+            children = []
+            for item in sorted(parent):
+                obj = parent[item]
+                if isinstance(obj, h5py.Group):
+                    if obj.attrs.get('NX_class', '') == nxclass:
+                        children.append(obj)
+            return children
+        
+        fp = h5py.File(hfile, 'r')
+        self.assertTrue(isinstance(fp, h5py.File), hfile)
+        nxentry_groups = subgroup_list(fp, 'NXentry')
+        self.assertGreater(len(nxentry_groups), 0)
+        for nxentry in nxentry_groups:
+            nxdata_groups = subgroup_list(nxentry, 'NXdata')
+            self.assertGreater(len(nxdata_groups), 0)
+            for nxdata in nxdata_groups:
+                signal = nxdata.attrs.get('signal')
+                self.assertTrue(signal in nxdata)
+
+        default = fp.attrs.get('default')
+        self.assertTrue(default in fp)
+        nxentry = fp[default]
+
+        default = nxentry.attrs.get('default')
+        self.assertTrue(default in nxentry)
+        nxdata = nxentry[default]
+
+        signal = nxdata.attrs.get('signal')
+        self.assertTrue(signal in nxdata)
+
+        fp.close()
 
         os.remove(hfile)
         self.assertFalse(os.path.exists(hfile))
