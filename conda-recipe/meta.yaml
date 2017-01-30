@@ -24,7 +24,6 @@ requirements:
     - python
     - numpy
     - h5py
-    - MatPlotLib
 
 about:
   home: http://spec2nexus.readthedocs.io
