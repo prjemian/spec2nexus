@@ -19,7 +19,6 @@ Plot the data from scan N in a SPEC data file
     ~ImageMaker
     ~LinePlotter
     ~MeshPlotter
-    ~NeXusPlotter
     ~openSpecFile
 
 Exceptions:
@@ -716,22 +715,23 @@ class MeshPlotter(ImageMaker):
                 self.data[ds_name] = data
                 self.data[ds_name+'channel_'] = channels
 
-class NeXusPlotter(ImageMaker):
-    '''
-    create a plot from a NeXus HDF5 data file
-    '''
-    
-    def retrieve_plot_data(self):
-        '''retrieve default data from spec data file'''
-        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
-    def make_image(self, plotFile):
-        '''
-        make image file from the SPEC scan
-        
-        :param str plotFile: name of image file to write
-        '''
-        raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+# class NeXusPlotter(ImageMaker):    # TODO: issue #92
+#     '''
+#     create a plot from a NeXus HDF5 data file
+#     '''
+#     
+#     def retrieve_plot_data(self):
+#         '''retrieve default data from spec data file'''
+#         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
+# 
+#     def make_image(self, plotFile):
+#         '''
+#         make image file from the SPEC scan
+#         
+#         :param str plotFile: name of image file to write
+#         '''
+#         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
 
 def openSpecFile(specFile):
