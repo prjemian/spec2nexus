@@ -112,7 +112,7 @@ def get_user_parameters():
 def parse_scan_list_spec(scan_list_spec):
     '''parses the argument of the -s option, returns a scan number list'''
     # can this be simpler?
-    sl = scan_list_spec[0].split(',')   # FIXME: why is this a list?
+    sl = scan_list_spec[0].split(',')   # FIXME: why is this a list? see issue #91
 
     scan_list = []
     for item in sl:
