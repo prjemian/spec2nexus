@@ -30,6 +30,6 @@ script:
   - coverage run tests/
 
 after_success:
-  - coverage report
+  - coverage report -m
   - which coveralls
   - coveralls

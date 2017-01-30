@@ -20,6 +20,7 @@ Contents
    singletons
    writer
    install
+   unit_testing
    example_data
    changes
    license
