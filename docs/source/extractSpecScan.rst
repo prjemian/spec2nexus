@@ -13,28 +13,29 @@ How to use **extractSpecScan**
 
 Extract one scan from a SPEC data file::
 
-    $ extractSpecScan data/APS_spec_data.dat -s 1 -c mr USAXS_PD I0 seconds
+    user@host ~$ extractSpecScan data/APS_spec_data.dat -s 1 -c mr USAXS_PD I0 seconds
 
 the usage message::
 
-   [linux,511]$ extractSpecScan
+   user@host ~$ extractSpecScan
    usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
                           [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
                           spec_file
-   extractSpecScan: error: too few arguments
 
 the version number::
 
-   [linux,511]$ extractSpecScan -v
-   2015.0822.0
+   user@host ~$ extractSpecScan -v
+   2017.0201.0
 
 the help message::
 
+   user@host ~$ extractSpecScan -h
    usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
                           [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
                           spec_file
    
-   Save columns from SPEC data file scan(s) to TSV files
+   Save columns from SPEC data file scan(s) to TSV files URL:
+   http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html v2016.1025.0
    
    positional arguments:
      spec_file             SPEC data file name(s)
@@ -50,14 +51,14 @@ the help message::
      -c COLUMN [COLUMN ...], --column COLUMN [COLUMN ...]
                            column label(s) to be extracted (must specify at least
                            one)
-     --quiet               suppress all program output (except errors),
-                           do not use with --verbose option
-     --verbose             print more program output, do not use with --quiet option
      -G                    report scan Geometry (#G) header information
-     -P                    report scan Positioner (#P) header information
+     -P                    report scan Positioners (#O & #P) header information
      -Q                    report scan Q (#Q) header information
      -V                    report scan (UNICAT-style #H & #V) header information
-
+     --quiet               suppress all program output (except errors), do not
+                           use with --verbose option
+     --verbose             print more program output, do not use with --quiet
+                           option
 
 Example
 *******

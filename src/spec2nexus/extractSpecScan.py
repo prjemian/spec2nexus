@@ -21,37 +21,7 @@ Save columns from SPEC data file scan(s) to TSV files
   extractSpecScan.py /tmp/CeCoIn5 -s 5 -c HerixE Ana5 ICO-C
   extractSpecScan.py ./testdata/11_03_Vinod.dat   -s 2 12   -c USAXS.m2rp Monitor  I0
 
-**General usage**::
-
-    usage: extractSpecScan [-h] [--nolabels] [-s SCAN [SCAN ...]] [-c COLUMN [COLUMN ...]] spec_file
-
-Save columns from SPEC data file scan(s) to TSV files
-
-
-positional arguments:
-
-========================  ==========================================================================
-argument                  description
-========================  ==========================================================================
-spec_file                 SPEC data file name (path is optional, can use relative or absolute)
-========================  ==========================================================================
-
-
-optional arguments:
-
-=============================  ==========================================================================
-argument                       description
-=============================  ==========================================================================
--h, --help                     show this help message and exit
--v, --version                  show the version and exit
---nolabels                     do not write column labels to output file (default: write labels)
--s SCAN [SCAN ...]             scan number(s) to be extracted, must be integers
---scan SCAN [SCAN ...]         same as *-s* option
--c COLUMN [COLUMN ...]         column label(s) to be extracted
---column COLUMN [COLUMN ...]   same as *-c* option
-=============================  ==========================================================================
-
-.. note:: column names MUST appear in all chosen scans
+.. note:: sdpecified column names **MUST** appear in all chosen scans
 
 Compatible with Python 2.7+
 '''
