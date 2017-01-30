@@ -6,10 +6,11 @@ How to write a custom scan handling for *specplot*
 
 Sometimes, it will be obvious that a certain scan macro never generates
 any plot images, or that the default handling creates a plot that
-is a poor representation of the data, such as the *hklscan* where 
-only one of the the axes *hkl* is scanned.
-In such cases, it may be useful to prepare custom handling
-for any instance of that macro.
+is a poor representation of the data, such as the 
+:ref:`hklscan <custom.hklscan.specplot>` where 
+only one of the the axes *hkl* is scanned.  To pick the scanned axis 
+for plotting, it is necessary to prepare custom handling and replace
+the default handling.
 
 Overview
 ********
@@ -79,8 +80,8 @@ In each example, decisions have been made about where to provide the desired fea
 
 .. _custom.ascan.specplot:
 
-Simple: Change the plot title text in *ascan* macros
-====================================================
+Change the plot title text in *ascan* macros
+============================================
 
 The SPEC *ascan* macro is a workhorse and records the scan 
 of a positioner and the measurement of data in a counter.
@@ -120,8 +121,8 @@ See the changed title:
 
 .. _custom.y_log.specplot:
 
-Simple: make the *y*-axis log scale
-===================================
+Make the *y*-axis log scale
+===========================
 
 The APS USAXS instrument uses a custom scan macro called *uascan* for routine step scans.
 Since this macro name ends with "scan", the default selection in *specplot* images this data 
@@ -164,8 +165,8 @@ See the example :ref:`custom.usaxs.specplot` below.
 
 .. _custom.hklscan.specplot:
 
-Complicated: The *hklscan* macro
-================================
+SPEC's *hklscan* macro
+======================
 
 The SPEC *hklscan* macro appears in a SPEC data file due to
 either a *hscan*, *kscan*, or *lscan*.  In each of these one of the *hkl*
@@ -200,8 +201,8 @@ uses this information to make the plot.
 
 .. _custom.usaxs.specplot:
 
-Complicated: get *xy* data from HDF5 file
-=========================================
+Get *xy* data from HDF5 file
+============================
 
 One example of complexity is when SPEC has been used to direct data collection
 but the data is not stored in the SPEC data file.  The SPEC data file scan

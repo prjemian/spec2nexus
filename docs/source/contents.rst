@@ -8,9 +8,9 @@ Contents
    spec2nexus
    h5toText
    extractSpecScan
-   spec
    specplot
    specplot_gallery
+   spec
    charts
    specplot_custom_scan_macro
    eznx

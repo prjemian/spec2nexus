@@ -42,7 +42,9 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        #packages=find_packages(),
        package_data = {
                        'spec2nexus': [
-                                      'data/*',
+                                      'data/02_03_setup_fly/*',
+                                      'data/*.*',
+                                      'data/Cd*',
                                       'LICENSE.txt',
                                       'VERSION',
                                       ],
