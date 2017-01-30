@@ -1,0 +1,36 @@
+package:
+  name: spec2nexus
+  version: "2017.0201.0"
+
+source:
+  git_rev: 2017.0201.0
+  git_url:  https://github.com/prjemian/spec2nexus.git
+
+build:
+  entry_points:
+    - spec2nexus = spec2nexus.nexus:main
+    - h5toText  =spec2nexus.h5toText:main
+    - extractSpecScan = spec2nexus.extractSpecScan:main
+    - specplot = spec2nexus.specplot:main
+    - specplot_gallery = spec2nexus.specplot_gallery:main
+
+requirements:
+
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+    - numpy
+    - h5py
+    - MatPlotLib
+
+about:
+  home: http://spec2nexus.readthedocs.io
+  license: Creative Commons Attribution 4.0 International Public License
+  summary: 'Converts SPEC data files and scans into NeXus HDF5 files'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
