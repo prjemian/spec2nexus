@@ -7,24 +7,85 @@ Change History
 Production
 **********
 
+:2016-0201.0: 
+
+    * `milestone punch list <https://github.com/prjemian/spec2nexus/milestone/3?closed=1>`_
+    
+    * `#73 <https://github.com/prjemian/spec2nexus/issues/73>`_
+      refactor mesh and MCA data parsing code
+
+    * `#67 <https://github.com/prjemian/spec2nexus/issues/67>`_
+      apply continuous integration via travis-ci
+
+    * `#66 <https://github.com/prjemian/spec2nexus/issues/66>`_
+      add verbosity option
+
+    * `#65 <https://github.com/prjemian/spec2nexus/issues/65>`_
+      apply unit testing
+
+    * `#64 <https://github.com/prjemian/spec2nexus/issues/64>`_
+      *extractSpecScan*: list index out of range
+
+    * `#63 <https://github.com/prjemian/spec2nexus/issues/63>`_
+      *extractSpecScan*: command line option to select range of scans
+
+    * `#56 <https://github.com/prjemian/spec2nexus/issues/56>`_
+      *specplot* and *specplot_gallery*: add from USAXS instrument and generalize
+    
 :2016.1025.0: standardize the versioning kit with pyRestTable and pvWebMonitor
-:2016.1004.0: `issue #61 <https://github.com/prjemian/spec2nexus/issues/61>`_: release info from git (dropped versioneer package)
-:2016.0829.0: `issue #60 <https://github.com/prjemian/spec2nexus/issues/60>`_: Add new plugin test for XPCS plugin (thanks to John Hammonds)
-:2016.0615.1: `issue #57 <https://github.com/prjemian/spec2nexus/issues/57>`_: keep information from unrecognized control lines,
-              `issue #56 <https://github.com/prjemian/spec2nexus/issues/56>`_: add *specplot* support,
-              `issue #55 <https://github.com/prjemian/spec2nexus/issues/55>`_: accept arbitrary number of MCA spectra
+:2016.1004.0: 
+
+    * `#61 <https://github.com/prjemian/spec2nexus/issues/61>`_
+      release info from git (dropped versioneer package)
+
+:2016.0829.0: 
+
+    * `#60 <https://github.com/prjemian/spec2nexus/issues/60>`_
+      Add new plugin test for XPCS plugin (thanks to John Hammonds)
+
+:2016.0615.1:
+
+    * `#57 <https://github.com/prjemian/spec2nexus/issues/57>`_
+      keep information from unrecognized control lines,
+
+    * `#56 <https://github.com/prjemian/spec2nexus/issues/56>`_
+      add *specplot* support,
+
+    * `#55 <https://github.com/prjemian/spec2nexus/issues/55>`_
+      accept arbitrary number of MCA spectra
+
 :2016.0601.0: match complete keys, use unix EOL internally, do not fail if no metadata
-:2016.0216.0: `issue #36 <https://github.com/prjemian/spec2nexus/issues/36>`_: identify NIAC2014-compliant NeXus files
+:2016.0216.0: 
+
+    * `#36 <https://github.com/prjemian/spec2nexus/issues/36>`_
+      identify NIAC2014-compliant NeXus files
+
 :2016.0210.0: bugfix: eznx.makeGroup() now correctly sets attributes on new group + documentation for NIAC2014 attributes
-:2016.0204.0: (`#45 <https://github.com/prjemian/spec2nexus/issues/45>`_) handle case when no data points in scan , 
-              (`#46 <https://github.com/prjemian/spec2nexus/issues/46>`_) spec.getScan() ensures argument is used as ``str``
+:2016.0204.0: 
+
+    * `#45 <https://github.com/prjemian/spec2nexus/issues/45>`_
+      handle case when no data points in scan ,
+
+    * `#46 <https://github.com/prjemian/spec2nexus/issues/46>`_
+      spec.getScan() ensures argument is used as ``str``
+
 :2016.0201.0: added spec.getScanNumbersChronological(), spec.getFirstScanNumber(), and spec.getLastScanNumber()
-:2016.0131.0: support new NeXus method for default/signal/axes/_indices, 
-              `issue #43 <https://github.com/prjemian/spec2nexus/issues/43>`_
-:2016.0130.0: fixed `issue #44 <https://github.com/prjemian/spec2nexus/issues/44>`_
-:2015.1221.1: added versioneer support (`issue #40 <https://github.com/prjemian/spec2nexus/issues/40>`_)
-:2015.1221.0: read scans with repeated scan numbers
-              (`issue #39 <https://github.com/prjemian/spec2nexus/issues/39>`_)
+:2016.0131.0: 
+
+    * `#43 <https://github.com/prjemian/spec2nexus/issues/43>`_
+      support new NeXus method for default/signal/axes/_indices, 
+
+:2016.0130.0: fixed `#44 <https://github.com/prjemian/spec2nexus/issues/44>`_
+:2015.1221.1: 
+
+    * `#40 <https://github.com/prjemian/spec2nexus/issues/40>`_
+      added versioneer support
+
+:2015.1221.0: 
+
+    * `#39 <https://github.com/prjemian/spec2nexus/issues/39>`_
+      read scans with repeated scan numbers
+
 :2015.0822.0: extractSpecScan: add option to report scan heading data, such as positioners and Q
 :2015.0214.0: h5toText: handle HDF5 'O' data type (variable length strings)
 :2015.0127.0: spec: ignore bad data lines
