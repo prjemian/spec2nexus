@@ -26,6 +26,21 @@ It is optional to:
 * override the definition of :meth:`postprocess`
 * override the definition of :meth:`writer`
 
+.. rubric:: Classes
+
+.. autosummary::
+
+  ~ControlLineHandler
+  ~PluginManager
+
+.. rubric:: Exceptions
+
+.. autosummary::
+
+  ~control
+  ~DuplicateControlLineKey
+  ~DuplicatePlugin
+
 '''
 
 
@@ -65,6 +80,17 @@ class ControlLineHandler(object):
 
     :param str key: regular expression to match a control line key, up to the first space
     :returns: None
+
+    .. rubric:: Class Methods
+    
+    .. autosummary::
+    
+      ~getKey
+      ~match_key
+      ~process
+      ~postprocess
+      ~writer
+  
     '''
     
     key = None
@@ -155,6 +181,18 @@ class ControlLineHandler(object):
 class PluginManager(object):
     '''
     Manage the set of SPEC data file control line plugins
+
+    .. rubric:: Class Methods
+    
+    .. autosummary::
+    
+      ~register
+      ~hasKey
+      ~getKey
+      ~get
+      ~load_plugins
+      ~process
+  
     '''
     
     def __init__(self):
