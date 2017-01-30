@@ -14,6 +14,8 @@
 
 '''Converts SPEC data files and scans into NeXus HDF5 files'''
 
+# this is the main code for the *spec2nexus* application
+
 __url__ = 'http://spec2nexus.readthedocs.org/en/latest/spec2nexus.html'
 
 import os                           #@UnusedImport
