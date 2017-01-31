@@ -29,12 +29,19 @@ requirements:
     - matplotlib
 
 test:
+
     imports:
       - spec2nexus
       - spec2nexus.spec
       - spec2nexus.eznx
       - spec2nexus.specplot
       - spec2nexus.specplot_gallery
+
+  commands:
+    - spec2nexus --help
+    - extractSpecScan --help
+    - specplot --help
+    - specplot_gallery --help
 
 
 about:
@@ -46,3 +53,4 @@ about:
 # See
 # http://docs.continuum.io/conda/build.html for
 # more information about meta.yaml
+# https://conda.io/docs/build_tutorials/pkgs.html
