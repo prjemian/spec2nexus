@@ -30,16 +30,18 @@ requirements:
 
 test:
 
-    imports:
-      - spec2nexus
-      - spec2nexus.spec
-      - spec2nexus.eznx
-      - spec2nexus.specplot
-      - spec2nexus.specplot_gallery
+  imports:
+    - spec2nexus
+    - spec2nexus.spec
+    - spec2nexus.eznx
+    - spec2nexus.specplot
+    - spec2nexus.specplot_gallery
+
 
   commands:
-    - spec2nexus --help
     - extractSpecScan --help
+    - h5toText --help
+    - spec2nexus --help
     - specplot --help
     - specplot_gallery --help
 
