@@ -26,8 +26,8 @@ A reason will accompany these scans, as shown in the example.
 
 
 
-How to use *specplot_gallery*
-*****************************
+How to use *specplot_gallery*: command line
+*******************************************
 
 Here is an example::
 
@@ -48,6 +48,25 @@ The last scan shown is from a *hklmesh* (2-D) scan.  It is mostly a
 constant background level, thus the large black area.
 
 Each of the plots in the web page can be enlarged (by clicking on it).
+
+
+How to use *specplot_gallery*: periodic background task (cron)
+**************************************************************
+
+This script could be called from a Linux background task scheduler (*cron*) entry.
+To add the entry, type the `crontab -e` command which opens the task list in a 
+screen editor and add lines such as these to the file::
+
+    # every five minutes (generates no output from outer script)
+    0-59/5 * * * *  /path/to/specplot_gallery.py -d /web/page/dir /spec/data/file/dirs
+
+If the *specplot_gallery* script is called too frequently and the list of plots to 
+be generated is large enough, it is possible for more than one process to be running.
+In one extreme case, many processes were found running due to problems with the data 
+files.  To identify and stop all processes of this program, use this on the command line::
+
+    kill -9 `ps -ef | grep python | awk '/specplot_gallery.py/ {print $2}' -`
+
 
 source code documentation
 *************************
