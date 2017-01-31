@@ -215,6 +215,9 @@ class SpecDataFile(object):
         self.plugin_manager = plugin_manager
 
         self.read()
+    
+    def __str__(self):
+        return self.fileName or 'None'
 
     def read(self):
         """Reads and parses a spec data file"""
