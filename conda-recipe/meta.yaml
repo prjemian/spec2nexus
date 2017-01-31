@@ -1,15 +1,15 @@
 package:
   name: spec2nexus
-  version: "2017.0201.0"
+  version: "2017.0201.0rc1"
 
 source:
-  git_rev: 2017.0201.0
+  git_rev: 2017.0201.0rc1
   git_url:  https://github.com/prjemian/spec2nexus.git
 
 build:
   entry_points:
     - spec2nexus = spec2nexus.nexus:main
-    - h5toText  =spec2nexus.h5toText:main
+    - h5toText   = spec2nexus.h5toText:main
     - extractSpecScan = spec2nexus.extractSpecScan:main
     - specplot = spec2nexus.specplot:main
     - specplot_gallery = spec2nexus.specplot_gallery:main
@@ -19,14 +19,27 @@ requirements:
   build:
     - python
     - setuptools
+    - numpy
+    - h5py
 
   run:
     - python
     - numpy
     - h5py
+    - matplotlib
+
+test:
+    imports:
+      - spec2nexus
+      - spec2nexus.spec
+      - spec2nexus.eznx
+      - spec2nexus.specplot
+      - spec2nexus.specplot_gallery
+
 
 about:
   home: http://spec2nexus.readthedocs.io
+  license_file: src/spec2nexus/LICENSE.txt
   license: Creative Commons Attribution 4.0 International Public License
   summary: 'Converts SPEC data files and scans into NeXus HDF5 files'
 
