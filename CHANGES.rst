@@ -24,7 +24,7 @@ Production
       apply unit testing
 
     * `#64 <https://github.com/prjemian/spec2nexus/issues/64>`_
-      *extractSpecScan*: list index out of range
+      *extractSpecScan*: fixed list index out of range
 
     * `#63 <https://github.com/prjemian/spec2nexus/issues/63>`_
       *extractSpecScan*: command line option to select range of scans
