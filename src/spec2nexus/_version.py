@@ -30,7 +30,7 @@ USAGE:
 
 DEVELOPER_TEST_PACKAGE = '__developer_testing__'
 DEVELOPER_TEST_RELEASE = 'git_release_unavailable'
-GIT_COMMAND = 'git describe'
+GIT_COMMAND = 'git describe --tags'
 
 def git_release(package, version='release_undefined'):
     '''
