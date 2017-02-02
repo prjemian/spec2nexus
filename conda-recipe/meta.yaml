@@ -1,9 +1,9 @@
 package:
   name: spec2nexus
-  version: "2017.0201.0"
+  version: "2017.0202.0"
 
 source:
-  git_rev: 2017.0201.0
+  git_rev: 2017.0202.0
   git_url:  https://github.com/prjemian/spec2nexus.git
 
 build:
