@@ -78,7 +78,7 @@ class Issue99(unittest.TestCase):
     def test_specplot_lmn40_scan244(self):
         'watch out for IndexError: list index out of range'
         scan_number = 244
-        expected_x_title = 'data index number (hkl all held constant)'
+        expected_x_title = 'data point number (hkl all held constant)'
 
         sfile = spec2nexus.specplot.openSpecFile(self.testfile)
         self.assertTrue(isinstance(sfile, spec2nexus.spec.SpecDataFile))

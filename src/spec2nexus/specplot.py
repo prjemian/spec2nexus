@@ -564,7 +564,7 @@ class HKLScanPlotter(LinePlotter):
 
         if len(self.axes) == 0:
             # issue #99:  file: lmn40.spe, scan 244, hkl all fixed
-            axis = 'data index number'
+            axis = 'data point number'
             data = range(1, 1+len(self.scan.data['H']))
             self.scan.data[axis] = data
             self.set_x_title(axis + ' (hkl all held constant)')
