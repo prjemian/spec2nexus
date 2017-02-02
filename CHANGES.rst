@@ -7,6 +7,14 @@ Change History
 Production
 **********
 
+:2016-0202.0: 
+
+    * `#99 <https://github.com/prjemian/spec2nexus/issues/99>`_
+      fix list index error in *hklscan* when hkl are all constant
+
+    * `#96 <https://github.com/prjemian/spec2nexus/issues/96>`_
+      combine steps when publishing to PyPI
+
 :2016-0201.0: 
 
     * `milestone punch list <https://github.com/prjemian/spec2nexus/milestone/3?closed=1>`_
