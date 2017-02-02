@@ -45,7 +45,7 @@ class TestGitRelease(unittest.TestCase):
 
     def test_version(self):
         path = os.path.dirname(_version.__file__)
-        version_str = open(os.path.join(path, 'VERSION'), 'r').read()
+        version_str = open(os.path.join(path, 'VERSION'), 'r').read().strip()
 
         release = git_release(pkg.__package_name__)
         self.assertTrue(release.startswith(version_str), 
