@@ -526,6 +526,7 @@ class LinePlotter(ImageMaker):
         self.y_title() or self.set_y_title(self.signal)
         self.x_log() or self.set_x_log(False)
         self.y_log() or self.set_y_log(False)
+        self.set_z_log(False)
     
     def retrieve_plot_data(self):
         '''retrieve default data from spec data file'''
@@ -555,11 +556,24 @@ class HKLScanPlotter(LinePlotter):
             if min(data) != max(data):
                 # tell it to use this axis instead
                 self.axes = [axis,]
-                self.scan.column_first = axis
                 break
+
         # if not found, default changes nothing
         if data is None:
             raise NotPlottable('no data in scan: ' + str(self.scan))
+
+        if len(self.axes) == 0:
+            # issue #99:  file: lmn40.spe, scan 244, hkl all fixed
+            axis = 'data index number'
+            data = range(1, 1+len(self.scan.data['H']))
+            self.scan.data[axis] = data
+            self.set_x_title(axis + ' (hkl all held constant)')
+            self.axes = [axis,]
+
+        self.scan.column_first = axis
+        self.data[axis] = data
+        self.signal = self.scan.column_last
+        self.data[self.signal] = self.scan.data[self.signal]
 
 
 class MeshPlotter(ImageMaker):
