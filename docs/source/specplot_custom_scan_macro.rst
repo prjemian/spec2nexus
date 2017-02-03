@@ -124,6 +124,26 @@ See the changed title:
 Make the *y*-axis log scale
 ===========================
 
+A very simple customization can make the Y axis to be logarithmic scale.
+(This customization is planned for an added feature [#]_ in a future relase of the
+*spec2nexus* package.)  We present two examples.
+
+modify handling of `a2scan`
+---------------------------
+
+One user wants all the `a2scan` images to be plotted with a logarithmic 
+scale on the Y axis.  Here's the code:
+
+.. rubric:: `custom_a2scan_gallery.py` example
+
+.. literalinclude:: ../../demo/custom_a2scan_gallery.py
+    :tab-width: 4
+    :linenos:
+    :language: python
+
+custom `uascan`
+---------------
+
 The APS USAXS instrument uses a custom scan macro called *uascan* for routine step scans.
 Since this macro name ends with "scan", the default selection in *specplot* images this data 
 using the :class:`~spec2nexus.specplot.LinePlotter` class.
@@ -162,6 +182,8 @@ reduced to :math:`I(Q)` and viewed on a log-log plot,
 but that process is beyond this simple example.
 See the example :ref:`custom.usaxs.specplot` below.
 
+.. [#] `specplot: add option for default log(signal)
+        <https://github.com/prjemian/spec2nexus/issues/102>`_
 
 .. _custom.hklscan.specplot:
 
