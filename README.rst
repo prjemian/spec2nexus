@@ -36,16 +36,15 @@ Provides
 :PyPI:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
 :OpenHub:   Compare open source software: https://www.openhub.net/p/spec2nexus
 :Depsy:     Research software impact
-
     .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
                :target: http://depsy.org/package/python/spec2nexus
-
 :travis-ci: continuous integration
-
     .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
                :target: https://travis-ci.org/prjemian/spec2nexus
-
 :coveralls: code coverage
-
    .. image:: https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master
               :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
+:discussion:
+    .. image:: https://badges.gitter.im/spec2nexus/Lobby.svg
+       :alt: Join the chat at https://gitter.im/spec2nexus/Lobby
+       :target: https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
