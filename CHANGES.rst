@@ -11,6 +11,8 @@ Production
 
     * `#103 <https://github.com/prjemian/spec2nexus/issues/103>`_
       changed *converters* back to *utils*
+    * `#97 <https://github.com/prjemian/spec2nexus/issues/97>`_
+      PyPI project description now formatted properly
     * `#90 <https://github.com/prjemian/spec2nexus/issues/90>`_
       use *versioneer* (again)
 
