@@ -1,4 +1,3 @@
-
 ##########
 spec2nexus
 ##########
@@ -36,12 +35,6 @@ Provides
 :PyPI:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
 :OpenHub:   Compare open source software: https://www.openhub.net/p/spec2nexus
 
-..
-   :Depsy:     Research software impact
-   :travis-ci: continuous integration
-   :coveralls: code coverage
-   :discussion:
-
 :build badges:
 
    ..  see http://shields.io/ for more badge ideas
@@ -67,4 +60,3 @@ Provides
    .. image:: https://badges.gitter.im/spec2nexus/Lobby.svg
       :target: https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
       :alt: Join the chat at https://gitter.im/spec2nexus/Lobby
-      
