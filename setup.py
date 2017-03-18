@@ -41,14 +41,14 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
        packages = ['spec2nexus', 'spec2nexus.plugins', ],
        #packages=find_packages(),
        package_data = {
-                       'spec2nexus': [
-                                      'data/02_03_setup_fly/*',
-                                      'data/*.*',
-                                      'data/Cd*',
-                                      'LICENSE.txt',
-                                      'VERSION',
-                                      ],
-                       },
+            'spec2nexus': [
+                           'data/02_03_setup_fly/*',
+                           'data/*.*',
+                           'data/Cd*',
+                           'LICENSE.txt',
+                           'VERSION',
+                           ],
+            },
        classifiers = spec2nexus.__classifiers__,
        entry_points={
             # create & install scripts in <python>/bin
