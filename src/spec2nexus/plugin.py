@@ -37,8 +37,8 @@ It is optional to:
 
 .. autosummary::
 
-  ~control
   ~DuplicateControlLineKey
+  ~DuplicateControlLinePlugin
   ~DuplicatePlugin
 
 '''
