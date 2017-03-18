@@ -26,7 +26,7 @@ long_description = open('README.rst', 'r').read()
 
 
 setup (name =  spec2nexus.__package_name__,        # spec2nexus
-       version = spec2nexus.__version__,
+       #version = spec2nexus.__version__,
        license = spec2nexus.__license__,
        description = spec2nexus.__description__,
        long_description = long_description,
@@ -46,7 +46,6 @@ setup (name =  spec2nexus.__package_name__,        # spec2nexus
                            'data/*.*',
                            'data/Cd*',
                            'LICENSE.txt',
-                           'VERSION',
                            ],
             },
        classifiers = spec2nexus.__classifiers__,
