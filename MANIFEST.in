@@ -1,1 +1,3 @@
 include README.rst
+include versioneer.py
+include src/spec2nexus/_version.py

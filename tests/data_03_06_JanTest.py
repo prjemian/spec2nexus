@@ -17,12 +17,11 @@ import os
 import sys
 import unittest
 
-import spec2nexus
-
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 if _path not in sys.path:
     sys.path.insert(0, _path)
 
+import spec2nexus
 from spec2nexus import spec, writer
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

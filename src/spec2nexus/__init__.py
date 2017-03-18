@@ -13,7 +13,6 @@
 #-----------------------------------------------------------------------------
 
 import os
-from _version import git_release
 
 
 __author__    = 'Pete R. Jemian'
@@ -21,11 +20,6 @@ __email__     = 'prjemian@gmail.com'
 __copyright__ = '2014-2017, Pete R. Jemian'
 
 __package_name__ = 'spec2nexus'
-
-_path = os.path.dirname(__file__)
-_vfile = os.path.join(_path, 'VERSION')
-__version__ = open(_vfile, 'r').read()
-__release__ = git_release(__package_name__, __version__)
 
 __license_url__  = 'http://creativecommons.org/licenses/by/4.0/deed.en_US'
 __license__      = 'Creative Commons Attribution 4.0 International Public License (see LICENSE file)'
@@ -58,3 +52,7 @@ __classifiers__ = [
      'Topic :: Software Development',
      'Topic :: Utilities',
    ]
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

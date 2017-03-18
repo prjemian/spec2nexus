@@ -35,16 +35,36 @@ Provides
 :git:       source: https://github.com/prjemian/spec2nexus
 :PyPI:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
 :OpenHub:   Compare open source software: https://www.openhub.net/p/spec2nexus
-:Depsy:     Research software impact
-    .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
-               :target: http://depsy.org/package/python/spec2nexus
-:travis-ci: continuous integration
-    .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
-               :target: https://travis-ci.org/prjemian/spec2nexus
-:coveralls: code coverage
+
+..
+   :Depsy:     Research software impact
+   :travis-ci: continuous integration
+   :coveralls: code coverage
+   :discussion:
+
+:build badges:
+
+   ..  see http://shields.io/ for more badge ideas
+
+   .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
+      :target: https://travis-ci.org/prjemian/spec2nexus
    .. image:: https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master
-              :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
-:discussion:
-    .. image:: https://badges.gitter.im/spec2nexus/Lobby.svg
-       :alt: Join the chat at https://gitter.im/spec2nexus/Lobby
-       :target: https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+      :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
+
+:release badges:
+      
+   .. image:: https://img.shields.io/github/tag/prjemian/spec2nexus.svg
+      :target: https://github.com/prjemian/spec2nexus/tags
+   .. image:: https://img.shields.io/github/release/prjemian/spec2nexus.svg
+      :target: https://github.com/prjemian/spec2nexus/releases
+   .. image:: https://img.shields.io/pypi/v/spec2nexus.svg
+      :target: https://pypi.python.org/pypi/spec2nexus/
+
+:social badges:
+      
+   .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
+      :target: http://depsy.org/package/python/spec2nexus
+   .. image:: https://badges.gitter.im/spec2nexus/Lobby.svg
+      :target: https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+      :alt: Join the chat at https://gitter.im/spec2nexus/Lobby
+      
