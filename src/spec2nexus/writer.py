@@ -271,7 +271,7 @@ class Writer(object):
             for label in column_labels:
                 if label not in nxdata:
                     axis = np.array( scan.data.get(label) )
-                    self.write_ds(nxdata, label, converters.reshape_data(axis, data_shape))
+                    self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
                 else:
                     pass
 
@@ -284,7 +284,7 @@ class Writer(object):
                 num_channels = len(spectrum[0])
                 data_shape.append(num_channels)
                 mca = np.array(spectrum)
-                data = converters.reshape_data(mca, data_shape)
+                data = utils.reshape_data(mca, data_shape)
                 channels = range(1, num_channels+1)
                 ds_name = '_' + key + '_'
                 self.write_ds(nxdata, ds_name, data, axes=axes+':'+ds_name+'channel_', units='counts')
