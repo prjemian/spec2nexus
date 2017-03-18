@@ -15,7 +15,6 @@ Plugins are now used to handle all control lines in :mod:`spec2nexus.spec`.
 Any control line encountered but not recognized will be placed as text
 in a NeXus **NXnote** group named ``unrecognized``.
 
-
 .. _supplied_plugins:
 
 Supplied **spec** plugin modules
@@ -31,7 +30,7 @@ These plugin modules are supplied:
    ~spec2nexus.plugins.unicat_spec2nexus
    ~spec2nexus.plugins.uim_spec2nexus
    ~spec2nexus.plugins.XPCS_spec2nexus
-
+   
 .. toctree::
    :maxdepth: 2
    :hidden:
