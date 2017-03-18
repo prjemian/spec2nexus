@@ -11,7 +11,7 @@ Writes ``path/to/file/specfile.hdf5``
 Provides
 ########
 
-.. index:: SPEC, NeXus, HDF5, h5py
+.. keywords - SPEC, NeXus, HDF5, h5py
 
 * **spec2nexus**       : command-line tool: Convert SPEC data files to NeXus HDF5
 * **h5toText**         : command-line tool: Print the structure of an HDF5 file
