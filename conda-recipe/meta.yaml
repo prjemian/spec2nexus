@@ -1,10 +1,10 @@
 package:
   name: spec2nexus
-  version: "2017.3.0"
+  version: "{{ environ.RELEASE }}"
 
 source:
-  git_rev: 2017.3.0
-  git_url:  https://github.com/prjemian/spec2nexus.git
+  git_rev: "{{ environ.RELEASE }}"
+  git_url: https://github.com/prjemian/spec2nexus.git
 
 build:
   entry_points:
@@ -56,3 +56,4 @@ about:
 # http://docs.continuum.io/conda/build.html for
 # more information about meta.yaml
 # https://conda.io/docs/build_tutorials/pkgs.html
+# https://conda.io/docs/building/meta-yaml.html

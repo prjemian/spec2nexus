@@ -3,7 +3,8 @@
 # output from this program
 src/spec2nexus/data/*.hdf5
 
-conda-recipe/builds
+# builds of conda recipes for distribution
+conda-packages
 
 # C extensions
 *.so

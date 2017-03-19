@@ -5,16 +5,25 @@ conda package for ***spec2nexus***.
 
 see: https://conda.io/docs/build_tutorials/pkgs.html
 
+Note:  These commands should be run from the repository root: `./conda-recipe/..`
+
 ## linux-64
     
     export PROJECT=spec2nexus
-    export RELEASE=2017.3.0
+    ###
+    ### EDIT next line to chosen release
+    ###
+    export RELEASE=2017.317.0
+    ###
+    ###
+
     export ANACONDA=$HOME/Apps/anaconda
     export BUILD_DIR=$ANACONDA/conda-bld
     export HOST_ARCH=linux-64
     export TARGET_DIR=./conda-recipe
-    export OUTPUT_DIR=$TARGET_DIR/builds/
+    export OUTPUT_DIR=$TARGET_DIR/../conda-packages/
     
+    /bin/rm -rf $OUTPUT_DIR
     conda build --python 2.7 $TARGET_DIR
     
     #BUILD START: spec2nexus-2017.3.0-py27_0
@@ -22,17 +31,24 @@ see: https://conda.io/docs/build_tutorials/pkgs.html
     #updating index in: /home/prjemian/Apps/anaconda/conda-bld/noarch
 
 
-this command will install as a local test
+## local test
+
+this command will the conda package (just built) install as a local test
 
     conda install --use-local spec2nexus
 
----------------------------
+## Build & Upload
+
+Build for all supported architectures
+and upload to my conda channel.
 
     mkdir -p $OUTPUT_DIR
+
     # where $ARCH can be osx-64, linux-32, linux-64, win-32 or win-64
-    for ARCH in osx-64 linux-32; do
-      conda convert --platform $ARCH $BUILD_DIR/$HOST_ARCH/$PROJECT-$RELEASE-py27_0.tar.bz2 -o $OUTPUT_DIR
-      anaconda upload $OUTPUT_DIR/$ARCH/$PROJECT-$RELEASE-py27_0.tar.bz2
+    for ARCH in osx-64 linux-32 linux-64 win-32 win-64; do
+      BZ_TARGET=$PROJECT-$RELEASE-py27_0.tar.bz2
+      conda convert --platform $ARCH $BUILD_DIR/$HOST_ARCH/$BZ_TARGET -o $OUTPUT_DIR
+      #anaconda upload $OUTPUT_DIR/$ARCH/$BZ_TARGET
     done
 
 
