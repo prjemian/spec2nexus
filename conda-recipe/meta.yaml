@@ -1,9 +1,9 @@
 package:
   name: spec2nexus
-  version: "{{ environ.RELEASE }}"
+  version: {{ environ.get('RELEASE') }}
 
 source:
-  git_rev: "{{ environ.RELEASE }}"
+  git_rev: {{ environ.get('RELEASE') }}
   git_url: https://github.com/prjemian/spec2nexus.git
 
 build:

@@ -33,7 +33,7 @@ Note:  These commands should be run from the repository root: `..`
 
 ## local test
 
-this command will the conda package (just built) install as a local test
+this command will install the conda package (just built) install as a local test
 
     conda install --use-local spec2nexus
 
@@ -54,14 +54,29 @@ and upload to my conda channel.
 
 ## win-64
 
-    BUILD START: spec2nexus-2017.3.0-py27_0
-    updating index in: D:\Apps\Anaconda\conda-bld\win-64
-    updating index in: D:\Apps\Anaconda\conda-bld\noarch
+    #BUILD START: spec2nexus-2017.3.0-py27_0
+    #updating index in: D:\Apps\Anaconda\conda-bld\win-64
+    #updating index in: D:\Apps\Anaconda\conda-bld\noarch
 
-    conda convert --platform win-32 D:\Apps\Anaconda\conda-bld\win-64\spec2nexus-2017.3.0-py27_0.tar.bz2 -o  conda-recipe/builds
-    anaconda upload conda-recipe\builds\win-32\spec2nexus-2017.3.0-py27_0.tar.bz2
-    conda convert --platform win-64 D:\Apps\Anaconda\conda-bld\win-64\spec2nexus-2017.3.0-py27_0.tar.bz2 -o  conda-recipe/builds
-    anaconda upload conda-recipe\builds\win-64\spec2nexus-2017.3.0-py27_0.tar.bz2
+    $env:PROJECT = "spec2nexus"
+    ###
+    ### EDIT next line to chosen release
+    ###
+    $env:RELEASE = "2017.317.0"
+    ###
+    ###
+
+note: FIXME: use correct powershell environment variable syntax!
+
+    $env:ANACONDA   = "$HOME/Apps/anaconda"
+    $env:BUILD_DIR  = "$ANACONDA/conda-bld"
+    $env:HOST_ARCH  = "linux-64"
+    $env:TARGET_DIR = "./conda-recipe"
+    $env:OUTPUT_DIR = "$TARGET_DIR/../conda-packages/"
+    
+    conda build --python 2.7 $TARGET_DIR
+
+    conda install --use-local spec2nexus
 
 ## query about ***spec2nexus***
 
