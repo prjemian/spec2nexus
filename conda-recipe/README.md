@@ -5,7 +5,7 @@ conda package for ***spec2nexus***.
 
 see: https://conda.io/docs/build_tutorials/pkgs.html
 
-Note:  These commands should be run from the repository root: `./conda-recipe/..`
+Note:  These commands should be run from the repository root: `..`
 
 ## linux-64
     
