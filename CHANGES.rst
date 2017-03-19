@@ -7,7 +7,11 @@ Change History
 Production
 **********
 
-:2017-3-0: 
+:2017.317.0:
+
+   * minor update of the *2017.3.0* release
+
+:2017.3.0: 
 
     * `#103 <https://github.com/prjemian/spec2nexus/issues/103>`_
       changed *converters* back to *utils*
