@@ -13,18 +13,13 @@ Provides
 
 .. keywords - SPEC, NeXus, HDF5, h5py
 
-* **spec2nexus**       : command-line tool: Convert SPEC data files to NeXus HDF5
+* **spec2nexus**       : command-line tool: Convert `SPEC <http://certif.com>`_ data files to `NeXus <http://nexusformat.org>`_ `HDF5 <http://hdfgroup.org>`_
 * **h5toText**         : command-line tool: Print the structure of an HDF5 file
 * **extractSpecScan**  : command-line tool: Save columns from SPEC data file scan(s) to TSV files
-* **spec**             : library: python binding to read SPEC [#]_ data files
-* **eznx**             : library: (Easy NeXus) supports writing NeXus [#]_ HDF5 [#]_ files using h5py [#]_
+* **spec**             : library: python binding to read SPEC data files
+* **eznx**             : library: (Easy NeXus) supports writing NeXus HDF5 files using h5py
 * **specplot**         : command-line tool: plot a SPEC scan to an image file
 * **specplot_gallery** : command-line tool: call **specplot** for all scans in a list of files, makes a web gallery
-
-.. [#] http://certif.com
-.. [#] http://nexusformat.org
-.. [#] http://hdfgroup.org
-.. [#] http://h5py.org
 
 :author:    Pete R. Jemian
 :email:     prjemian@gmail.com
