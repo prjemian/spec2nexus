@@ -12,4 +12,4 @@ exclude_lines =
 [run]
 omit =
 	versioneer.py
-	src/punx/_version.py
+	src/spec2nexus/_version.py
