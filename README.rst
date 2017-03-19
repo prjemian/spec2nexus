@@ -47,8 +47,10 @@ Provides
       :target: https://github.com/prjemian/spec2nexus/releases
    .. image:: https://img.shields.io/pypi/v/spec2nexus.svg
       :target: https://pypi.python.org/pypi/spec2nexus/
+   .. image:: https://anaconda.org/prjemian/spec2nexus/badges/version.svg
+      :target: https://anaconda.org/prjemian/spec2nexus
 
-:social badges:
+:community badges:
       
    .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
       :target: http://depsy.org/package/python/spec2nexus
