@@ -167,6 +167,22 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
         # TODO: test the order of plots in the index.html, reversed
 
+    def test_command_line_specified_directory_not_found_issue_98(self):
+        sys.argv.append('-d')
+        sys.argv.append("Goofball-directory_does_not_exist")
+        sys.argv.append(self.abs_data_fname('APS_spec_data.dat'))
+        self.assertRaises(specplot_gallery.DirectoryNotFoundError, specplot_gallery.main)
+
+    def test_command_line_specified_directory_fails_isdir_issue_98(self):
+        text_file_name = os.path.join(self.tempdir, 'goofball.txt')
+        outp = open(text_file_name, 'w')
+        outp.write('goofball text is not a directory')
+        outp.close()
+        sys.argv.append('-d')
+        sys.argv.append(text_file_name)
+        sys.argv.append(self.abs_data_fname('APS_spec_data.dat'))
+        self.assertRaises(specplot_gallery.PathIsNotDirectoryError, specplot_gallery.main)
+
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
@@ -179,5 +195,5 @@ def suite(*args, **kw):
 
 
 if __name__ == "__main__":
-    runner=unittest.TextTestRunner()
+    runner=unittest.TextTestRunner(verbosity=2)
     runner.run(suite())

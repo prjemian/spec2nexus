@@ -72,6 +72,9 @@ HTML_INDEX_FILE = 'index.html'
 class DirectoryNotFoundError(ValueError): 
     'Exception: The requested directory does not exist'
     pass
+class PathIsNotDirectoryError(ValueError): 
+    'Exception: The path is not a directory'
+    pass
 
 
 class PlotSpecFileScans(object):
@@ -446,7 +449,10 @@ def main():
     args = p.parse_args()
 
     specplots_dir = args.dir or pwd
-    assert(os.path.isdir(specplots_dir))
+    if not os.path.exists(specplots_dir):
+        raise DirectoryNotFoundError(specplots_dir)
+    if not os.path.isdir(specplots_dir):
+        raise PathIsNotDirectoryError(specplots_dir)
     
     file_list = []
 
