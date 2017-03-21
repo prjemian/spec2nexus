@@ -21,26 +21,27 @@ Provides
 * **specplot**         : command-line tool: plot a SPEC scan to an image file
 * **specplot_gallery** : command-line tool: call **specplot** for all scans in a list of files, makes a web gallery
 
-:author:    Pete R. Jemian
-:email:     prjemian@gmail.com
-:copyright: 2014-2017, Pete R. Jemian
-:license:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
-:URL:       documentation: http://spec2nexus.readthedocs.io
-:git:       source: https://github.com/prjemian/spec2nexus
-:PyPI:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
-:OpenHub:   Compare open source software: https://www.openhub.net/p/spec2nexus
+Package Information
+###################
 
-:build badges:
+* **author**:    Pete R. Jemian
+* **email**:     prjemian@gmail.com
+* **copyright**: 2014-2017, Pete R. Jemian
+* **license**:   Creative Commons Attribution 4.0 International Public License (see *LICENSE.txt*)
+* **URL**:       documentation: http://spec2nexus.readthedocs.io
+* **git**:       source: https://github.com/prjemian/spec2nexus
+* **PyPI**:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
+* **OpenHub**:   Compare open source software: https://www.openhub.net/p/spec2nexus
 
-   ..  see http://shields.io/ for more badge ideas
+..  see http://shields.io/ for more badge ideas
 
+* **build badges**:
    .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
       :target: https://travis-ci.org/prjemian/spec2nexus
    .. image:: https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master
       :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
 
-:release badges:
-      
+* **release badges**:
    .. image:: https://img.shields.io/github/tag/prjemian/spec2nexus.svg
       :target: https://github.com/prjemian/spec2nexus/tags
    .. image:: https://img.shields.io/github/release/prjemian/spec2nexus.svg
@@ -50,8 +51,7 @@ Provides
    .. image:: https://anaconda.org/prjemian/spec2nexus/badges/version.svg
       :target: https://anaconda.org/prjemian/spec2nexus
 
-:community badges:
-      
+* **community badges**
    .. image:: http://depsy.org/api/package/pypi/spec2nexus/badge.svg
       :target: http://depsy.org/package/python/spec2nexus
    .. image:: https://badges.gitter.im/spec2nexus/Lobby.svg
