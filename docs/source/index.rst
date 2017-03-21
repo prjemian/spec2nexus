@@ -1,8 +1,8 @@
 .. include:: ../../README.rst
 
-:version:   |version|
-:release:   |release|
-:published: |today|
+* **version**:   |version|
+* **release**:   |release|
+* **published**: |today|
 
 .. toctree::
    :maxdepth: 2
