@@ -13,7 +13,7 @@ Note:  These commands should be run from the repository root: `..`
     ###
     ### EDIT next line to chosen release
     ###
-    export RELEASE=2017.317.0
+    export RELEASE=2017.522.0
     ###
     ###
 
