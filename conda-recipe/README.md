@@ -10,12 +10,7 @@ Note:  These commands should be run from the repository root: `..`
 ## linux-64
     
     export PROJECT=spec2nexus
-    ###
-    ### EDIT next line to chosen release
-    ###
-    export RELEASE=2017.522.0
-    ###
-    ###
+    export RELEASE=`python ./setup.py --version | grep -o "^[0-9.]*"`
 
     export ANACONDA=$HOME/Apps/anaconda
     export BUILD_DIR=$ANACONDA/conda-bld
@@ -50,6 +45,7 @@ and upload to my conda channel.
       conda convert --platform $ARCH $BUILD_DIR/$HOST_ARCH/$BZ_TARGET -o $OUTPUT_DIR
       #anaconda upload $OUTPUT_DIR/$ARCH/$BZ_TARGET
     done
+    #  anaconda upload $OUTPUT_DIR/*/$BZ_TARGET
 
 
 ## win-64
