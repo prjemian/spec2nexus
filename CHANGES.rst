@@ -7,12 +7,16 @@ Change History
 Production
 **********
 
-:2017.522.0:
+:2017.522.1:
 
     * `#105 <https://github.com/prjemian/spec2nexus/issues/105>`_
       ignore extra content in `#@CALIB` control lines
     * `#104 <https://github.com/prjemian/spec2nexus/issues/104>`_
-       use versioneer (again)
+      use versioneer (again)
+    * `#101 <https://github.com/prjemian/spec2nexus/issues/101>`_
+       documentation URL & date/time added to every gallery page
+    * `#100 <https://github.com/prjemian/spec2nexus/issues/100>`_
+      conda package installs properly on Windows now
     * `#99 <https://github.com/prjemian/spec2nexus/issues/99>`_
       BUG: specplot_gallery: plots of hklscan from file `lmn40.spe`
     * `#98 <https://github.com/prjemian/spec2nexus/issues/98>`_

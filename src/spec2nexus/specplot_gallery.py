@@ -67,6 +67,7 @@ import specplot
 
 MTIME_CACHE_FILE = 'mtime_cache.txt'
 HTML_INDEX_FILE = 'index.html'
+DOC_URL = 'http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html'
 
 
 class DirectoryNotFoundError(ValueError): 
@@ -400,6 +401,11 @@ def build_index_html(specFile, plotted_scans, problem_scans):
     html += "\n"
     html += "\n".join(plotted_scans)
     html += "\n"
+    html += "\n"
+    html += "    <hr />\n"
+    ref = 'page created: ' + str(datetime.datetime.now())
+    ref += ', specplot_gallery documentation: <a href="%s">%s</a>' % (DOC_URL, DOC_URL)
+    html += "    <center><small>%s</small></center>\n" % ref
     html += "\n"
     html += "  </body>\n"
     html += "</html>\n"
