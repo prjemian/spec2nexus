@@ -828,12 +828,16 @@ class SPEC_MCA_Calibration(ControlLineHandler):
 
     '''
 
-    key = '#@CALIB'
+    # key = '#@CALIB'
+    # accept upper or lower case variants
+    # https://certif.com/spec_help/scans.html
+    key = '#@[cC][aA][lL][iI][bB]'
     
     def process(self, text, scan, *args, **kws):
         # #@CALIB a b c
+        # #@Calib 0.0501959 0.0141105 0 mca1
         s = strip_first_word(text).split()
-        a, b, c = map(float, s)
+        a, b, c = map(float, s[0:3])
         
         if not hasattr(scan, 'MCA'):
             scan.MCA = {}
