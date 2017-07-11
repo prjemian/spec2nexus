@@ -293,6 +293,46 @@ class Test(unittest.TestCase):
         # TODO: apply file-specific tests (see README.txt)
         # 1-D scans, text in #V35.2 metadata (powderMotor="theta" others are float), also has #UIM control lines
 
+    def test_extra_control_line_content__issue109(self):
+        specFile = os.path.join(
+            os.path.dirname(__file__), 
+            'data', 
+            'issue109_data.txt')
+        sfile = spec.SpecDataFile(specFile)
+    
+        scan_number = 1
+        scan = sfile.getScan(scan_number)
+        self.assertTrue(scan is not None)
+        self.assertEqual(
+            scan.T, 
+            "0.5", 
+            "received expected count time")
+
+        # check scan 25, #T line said 0 seconds, but data for Seconds says 1
+        scan_number = 25
+        scan = sfile.getScan(scan_number)
+        self.assertTrue(scan is not None)
+        self.assertEqual(scan.T, "0", "received expected count time")
+        self.assertTrue("Seconds" in scan.data, "found counting base")
+        self.assertEqual(
+            scan.data["Seconds"][0], 
+            1, 
+            "received expected count time")
+        self.assertNotEqual(
+            scan.T, 
+            str(scan.data["Seconds"][0]), 
+            "did not report what they were about to do")
+
+        # check scan 11, #M line said 400000 counts
+        scan_number = 11
+        scan = sfile.getScan(scan_number)
+        self.assertTrue(scan is not None)
+        self.assertEqual(
+            scan.M, 
+            "400000", 
+            "received expected monitor count")
+        pass
+
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
