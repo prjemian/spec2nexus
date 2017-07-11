@@ -313,14 +313,14 @@ class Test(unittest.TestCase):
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         self.assertEqual(scan.T, "0", "received expected count time")
-        self.assertTrue("Seconds" in scan.data, "found counting base")
+        self.assertTrue("Seco nds" in scan.data, "found counting base")
         self.assertEqual(
-            scan.data["Seconds"][0], 
+            scan.data["Seco nds"][0], 
             1, 
             "received expected count time")
         self.assertNotEqual(
             scan.T, 
-            str(scan.data["Seconds"][0]), 
+            str(scan.data["Seco nds"][0]), 
             "did not report what they were about to do")
 
         # check scan 11, #M line said 400000 counts
@@ -331,7 +331,14 @@ class Test(unittest.TestCase):
             scan.M, 
             "400000", 
             "received expected monitor count")
-        pass
+        self.assertTrue(hasattr(scan, 'MCA'), "MCA data found")
+        self.assertTrue("ROI" in scan.MCA, "MCA ROI data found")
+        roi_dict = scan.MCA["ROI"]
+        key = "FeKa(mca1 R1)"
+        self.assertTrue(key in roi_dict, "MCA ROI data found")
+        roi = roi_dict[key]
+        self.assertEqual(roi["first_chan"], 377, "MCA ROI first channel")
+        self.assertEqual(roi["last_chan"], 413, "MCA ROI last channel")
 
 
 def suite(*args, **kw):

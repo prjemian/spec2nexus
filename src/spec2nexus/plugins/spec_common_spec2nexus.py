@@ -409,8 +409,11 @@ class SPEC_Monitor(ControlLineHandler):
     key = '#M'
     
     def process(self, text, scan, *args, **kws):
-        scan.M, dname = strip_first_word(text).split()
-        scan.monitor_name = dname.lstrip('(').rstrip(')')
+        text = strip_first_word(text)
+        pos = text.find(" ")
+        scan.M = text[:pos]
+        scan.monitor_name = text[pos:].strip().lstrip('(').rstrip(')')
+
         scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
@@ -618,7 +621,11 @@ class SPEC_CountTime(ControlLineHandler):
     key = '#T'
     
     def process(self, text, scan, *args, **kws):
-        scan.T = strip_first_word(text).split()[0]
+        text = strip_first_word(text)
+        pos = text.find(" ")
+        scan.T = text[:pos]
+        scan.time_name = text[pos:].strip().lstrip('(').rstrip(')')
+
         scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
@@ -975,9 +982,15 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     key = '#@ROI'
     
     def process(self, text, scan, *args, **kws):
-        s = strip_first_word(text).split()
-        ROI_name = s[0]
-        first_chan, last_chan = map(int, s[1:])
+        text = strip_first_word(text)
+
+        pos = text.rfind(" ")
+        last_chan = int(text[pos:])
+        text = text[:pos]
+
+        pos = text.rfind(" ")
+        first_chan = int(text[pos:])
+        ROI_name = text[:pos].strip()
 
         if not hasattr(scan, 'MCA'):
             scan.MCA = {}
