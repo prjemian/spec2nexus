@@ -32,6 +32,7 @@ Package Information
 * **git**:       source: https://github.com/prjemian/spec2nexus
 * **PyPI**:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
 * **OpenHub**:   Compare open source software: https://www.openhub.net/p/spec2nexus
+* **Release Notes**: https://github.com/prjemian/spec2nexus/wiki/Release-Notes
 
 ..  see http://shields.io/ for more badge ideas
 
