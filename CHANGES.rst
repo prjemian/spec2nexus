@@ -7,7 +7,7 @@ Change History
 Production
 **********
 
-.. planned :2017.711.0:
+:2017.711.0:
 
     * `#110 <https://github.com/prjemian/spec2nexus/issues/110>`_
        Ownership of info between #L/data & #S n

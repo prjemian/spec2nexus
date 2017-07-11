@@ -331,14 +331,20 @@ class Test(unittest.TestCase):
             scan.M, 
             "400000", 
             "received expected monitor count")
-        self.assertTrue(hasattr(scan, 'MCA'), "MCA data found")
-        self.assertTrue("ROI" in scan.MCA, "MCA ROI data found")
+        self.assertTrue(hasattr(scan, 'MCA'), "MCA found")
+        self.assertTrue("ROI" in scan.MCA, "MCA ROI found")
         roi_dict = scan.MCA["ROI"]
         key = "FeKa(mca1 R1)"
-        self.assertTrue(key in roi_dict, "MCA ROI data found")
+        self.assertTrue(key in roi_dict, "MCA ROI config found")
         roi = roi_dict[key]
         self.assertEqual(roi["first_chan"], 377, "MCA ROI first channel")
         self.assertEqual(roi["last_chan"], 413, "MCA ROI last channel")
+
+        self.assertTrue(key in scan.data, "MCA ROI data found")
+        self.assertEqual(
+            len(scan.data[key]), 
+            61, 
+            "embedded comment not part of data")
 
 
 def suite(*args, **kw):
