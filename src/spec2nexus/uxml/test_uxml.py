@@ -82,7 +82,7 @@ class TestPlugin(unittest.TestCase):
 			if len(txt) > 0:
 				uxml.process(txt, self.scan)
 		self.assertTrue(hasattr(self.scan, 'UXML'))
-		#print '\n'.join([ '%3d: %s' % (i,j) for i,j in enumerate(self.scan.UXML) ])
+		#print ('\n'.join([ '%3d: %s' % (i,j) for i,j in enumerate(self.scan.UXML) ]))
 		self.assertEquals(9, len(self.scan.UXML))
 		self.assertTrue(hasattr(self.scan, 'h5writers'))
 		self.assertFalse('UXML_metadata' in self.scan.h5writers)
@@ -145,7 +145,7 @@ class TestData(unittest.TestCase):
 		for tname in (self.hname,):
 			if os.path.exists(tname):
 				os.remove(tname)
-				#print "removed test file:", tname
+				#print ("removed test file: %s" % tname)
 				pass
 
 	def testName(self):
@@ -159,7 +159,7 @@ class TestData(unittest.TestCase):
 		self.assertTrue(isinstance(dd, dict))
 		
 		#scan = spec_data.scans[1]
-		#print etree.tostring(scan.UXML_root)
+		#print (etree.tostring(scan.UXML_root))
 
 
 if __name__ == "__main__":
