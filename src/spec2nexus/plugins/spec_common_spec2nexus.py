@@ -1060,7 +1060,7 @@ def data_lines_postprocessing(scan):
                     # only keep complete rows
                     for label, val in buf.items():
                         scan.data[label].append(val)
-            except ValueError, _exc:
+            except ValueError as _exc:
                 pass    # ignore bad data lines (could save it as such ...)
     scan.addH5writer('scan data', data_lines_writer)
 
