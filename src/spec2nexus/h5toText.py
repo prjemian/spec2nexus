@@ -114,7 +114,7 @@ class H5toText(object):
                         s += [ fmt % (indentation, '@path', linkref.path) ]
                 else:
                     msg = "unidentified %s: %s, %s", itemname, repr(classref), repr(linkref)
-                    raise Exception, msg
+                    raise Exception(msg)
 
         for value in groups:        # show things that look like groups
             itemname = value.name.split("/")[-1]

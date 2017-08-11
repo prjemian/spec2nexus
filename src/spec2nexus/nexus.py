@@ -124,7 +124,7 @@ def parse_scan_list_spec(scan_list_spec):
         elif len(sublist) == 2:
             scan_list += range(int(sublist[0]), int(sublist[1])+1)
         else:
-            raise ValueError, 'improper scan list specifier: ' + sublist
+            raise ValueError('improper scan list specifier: ' + sublist)
 
     sl = []
     for item in sorted(scan_list):
