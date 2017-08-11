@@ -166,7 +166,7 @@ class PlotSpecFileScans(object):
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
             
-            #print "specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile)
+            #print ("specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile))
             if needToMakePlot(fullPlotFile, mtime_specFile):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)

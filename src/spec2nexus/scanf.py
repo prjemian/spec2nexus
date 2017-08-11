@@ -96,7 +96,7 @@ def _scanf_compile(fmt):
             format_pat += char
             i += 1
     if DEBUG:
-        print "DEBUG: %r -> %s" % (fmt, format_pat)
+        print ("DEBUG: %r -> %s" % (fmt, format_pat))
     format_re = re.compile(format_pat)
     if len(scanf_cache) > SCANF_CACHE_SIZE:
         scanf_cache.clear()

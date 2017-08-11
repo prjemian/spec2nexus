@@ -168,17 +168,17 @@ def main():
     for spec_data_file_name in spec_data_file_name_list:
         if not os.path.exists(spec_data_file_name):
             msg = 'File not found: ' + spec_data_file_name
-            print msg
+            print (msg)
             continue
 
         if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
-            print 'reading SPEC data file: '+spec_data_file_name
+            print ('reading SPEC data file: '+spec_data_file_name)
         spec_data = spec.SpecDataFile(spec_data_file_name)
     
         scan_list = pick_scans(spec_data.getScanNumbers(), user_parms.scan_list)
         if user_parms.reporting_level in (REPORTING_VERBOSE):
-            print '  discovered', len(spec_data.scans.keys()), ' scans'
-            print '  converting scan number(s): '  +  ', '.join(map(str, scan_list))
+            print ('  discovered %d scans' % len(spec_data.scans.keys()))
+            print ('  converting scan number(s): '  +  ', '.join(map(str, scan_list)))
 
         basename = os.path.splitext(spec_data_file_name)[0]
         nexus_output_file_name = basename + user_parms.hdf5_extension
@@ -186,7 +186,7 @@ def main():
             out = writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
             if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
-                print 'wrote NeXus HDF5 file: ' + nexus_output_file_name
+                print ('wrote NeXus HDF5 file: ' + nexus_output_file_name)
 
 
 if __name__ == "__main__":

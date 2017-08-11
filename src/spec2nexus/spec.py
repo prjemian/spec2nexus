@@ -84,11 +84,11 @@ Get the first and last scan numbers from the file:
 
     >>> from spec2nexus import spec
     >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
-    >>> print spec_data.fileName
+    >>> print (spec_data.fileName)
     path/to/my/spec_data.dat
-    >>> print 'first scan: ', spec_data.getFirstScanNumber()
+    >>> print ('first scan: ', spec_data.getFirstScanNumber())
     1
-    >>> print 'last scan: ', spec_data.getLastScanNumber()
+    >>> print ('last scan: ', spec_data.getLastScanNumber())
     22
 
 Get plottable data from scan number 10:

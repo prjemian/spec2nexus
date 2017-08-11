@@ -470,7 +470,7 @@ def do_filelist(filelist, limit=5, show_attributes=True):
     for item in filelist:
         mc = H5toText(item)
         mc.array_items_shown = limit
-        print '\n'.join(mc.report(show_attributes) or '')
+        print ('\n'.join(mc.report(show_attributes) or ''))
 
 
 def main():
