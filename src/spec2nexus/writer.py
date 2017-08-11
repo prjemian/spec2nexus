@@ -21,7 +21,7 @@ import numpy as np
 import spec2nexus.eznx as eznx
 import spec2nexus
 import spec2nexus.spec as spec
-import spec2nexus.utils as spec
+import spec2nexus.utils as utils
  
 
 # see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
