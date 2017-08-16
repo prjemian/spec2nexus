@@ -296,15 +296,13 @@ class SpecDataFile(object):
     
     def getScanNumbers(self):
         '''return a list of all scan numbers sorted by scan number'''
-        def my_cmp(x, y):
-            return cmp(float(x), float(y))
-        return sorted(self.scans.keys(), my_cmp)
+        return sorted(self.scans.keys(), key=int)
     
     def getScanNumbersChronological(self):
         '''return a list of all scan numbers sorted by date'''
-        def my_cmp(x, y):
-            return cmp(time.strptime(x.date), time.strptime(y.date))
-        scans = sorted(self.scans.values(), my_cmp)
+        def byDate_key(scan):
+            return time.strptime(scan.date)
+        scans = sorted(self.scans.values(), key=byDate_key)
         return [_.scanNum for _ in scans]
     
     def getMinScanNumber(self):
