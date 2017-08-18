@@ -54,7 +54,7 @@ def clean_name(key):
 
 def get_all_plugins():
     '''load all spec2nexus plugin modules'''
-    import plugin
+    import spec2nexus.plugin as plugin
     manager = plugin.PluginManager()
     manager.load_plugins()
     return manager

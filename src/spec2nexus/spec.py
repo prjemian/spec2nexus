@@ -84,11 +84,11 @@ Get the first and last scan numbers from the file:
 
     >>> from spec2nexus import spec
     >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
-    >>> print spec_data.fileName
+    >>> print (spec_data.fileName)
     path/to/my/spec_data.dat
-    >>> print 'first scan: ', spec_data.getFirstScanNumber()
+    >>> print ('first scan: ', spec_data.getFirstScanNumber())
     1
-    >>> print 'last scan: ', spec_data.getLastScanNumber()
+    >>> print ('last scan: ', spec_data.getLastScanNumber())
     22
 
 Get plottable data from scan number 10:
@@ -205,9 +205,9 @@ class SpecDataFile(object):
         self.scans = {}
         self.readOK = -1
         if not os.path.exists(filename):
-            raise SpecDataFileNotFound, 'file does not exist: ' + str(filename)
+            raise SpecDataFileNotFound('file does not exist: ' + str(filename))
         if not is_spec_file(filename):
-            raise NotASpecDataFile, 'not a SPEC data file: ' + str(filename)
+            raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
 
         if plugin_manager is None:
@@ -269,7 +269,7 @@ class SpecDataFile(object):
             buf = open(spec_file_name, 'r').read()
         except IOError:
             msg = 'Could not open spec file: ' + str(spec_file_name)
-            raise SpecDataFileCouldNotOpen, msg
+            raise SpecDataFileCouldNotOpen(msg)
         if not is_spec_file(spec_file_name):
             msg = 'Not a spec data file: ' + str(spec_file_name)
             raise NotASpecDataFile(msg)
@@ -296,15 +296,13 @@ class SpecDataFile(object):
     
     def getScanNumbers(self):
         '''return a list of all scan numbers sorted by scan number'''
-        def my_cmp(x, y):
-            return cmp(float(x), float(y))
-        return sorted(self.scans.keys(), my_cmp)
+        return sorted(self.scans.keys(), key=int)
     
     def getScanNumbersChronological(self):
         '''return a list of all scan numbers sorted by date'''
-        def my_cmp(x, y):
-            return cmp(time.strptime(x.date), time.strptime(y.date))
-        scans = sorted(self.scans.values(), my_cmp)
+        def byDate_key(scan):
+            return time.strptime(scan.date)
+        scans = sorted(self.scans.values(), key=byDate_key)
         return [_.scanNum for _ in scans]
     
     def getMinScanNumber(self):
@@ -554,5 +552,5 @@ class SpecDataFileScan(object):
             i += 1
             key = label + '_' + str(i)
             if i == 1000:
-                raise RuntimeError, "cannot make unique key for duplicated column label!"
+                raise RuntimeError("cannot make unique key for duplicated column label!")
         return key

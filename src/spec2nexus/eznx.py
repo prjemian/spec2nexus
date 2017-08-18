@@ -241,7 +241,7 @@ def read_nexus_field(parent, dataset_name, astype=None):
     if astype is not None:
         dtype = astype
     if len(dataset.shape) > 1:
-        raise RuntimeError, "unexpected %d-D data" % len(dataset.shape)
+        raise RuntimeError( "unexpected %d-D data" % len(dataset.shape))
     if dataset.size > 1:
         return dataset[...].astype(dtype)   # as array
     else:

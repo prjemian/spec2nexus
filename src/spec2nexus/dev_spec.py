@@ -45,40 +45,40 @@ def developer_test(spec_file_name = None):
         #spec_file_name = os.path.join(spec_dir, '130123B_2.spc')
         spec_file_name = os.path.join(spec_dir, 'user6idd.dat')
         os.chdir(spec_dir)
-        print '-'*70
+        print ('-'*70)
     # now open the file and read it
     test = spec.SpecDataFile(spec_file_name)
     scan = test.getScan(1)
     scan.interpret()
-    #print scan.UXML_root
-    #print prettify(scan.UXML_root)
+    #print (scan.UXML_root)
+    #print (prettify(scan.UXML_root))
 
     if False:
         # tell us about the test file
-        print 'file', test.fileName
-        print 'headers', len(test.headers)
-        print 'scans', len(test.scans)
-        #print 'positioners in first scan:'; print test.scans[0].positioner
+        print ('file %s' % test.fileName)
+        print ('headers %d' % len(test.headers))
+        print ('scans %d' % len(test.scans))
+        #print ('positioners in first scan:'); print (test.scans[0].positioner)
         for scan in test.scans.values():
-            # print scan.scanNum, scan.date, scan.column_first, scan.positioner[scan.column_first], 'eV', 1e3*scan.metadata['DCM_energy']
-            print scan.scanNum, scan.scanCmd
-        print 'first scan: ', test.getMinScanNumber()
-        print 'last scan: ', test.getMaxScanNumber()
-        print 'positioners in last scan:'
+            # print (scan.scanNum, scan.date, scan.column_first, scan.positioner[scan.column_first], 'eV', 1e3*scan.metadata['DCM_energy'])
+            print (scan.scanNum, scan.scanCmd)
+        print ('first scan: %s' % test.getMinScanNumber())
+        print ('last scan: %s' % test.getMaxScanNumber())
+        print ('positioners in last scan:')
         last_scan = test.getScan(-1)
-        print last_scan.positioner
+        print (last_scan.positioner)
         pLabel = last_scan.column_first
         dLabel = last_scan.column_last
         if len(pLabel) > 0:
-            print last_scan.data[pLabel]
-            print len(last_scan.data[pLabel])
-            print pLabel, dLabel
+            print (last_scan.data[pLabel])
+            print (len(last_scan.data[pLabel]))
+            print (pLabel, dLabel)
             for i in range(len(last_scan.data[pLabel])):
-                print last_scan.data[pLabel][i], last_scan.data[dLabel][i]
-        print 'labels in scan 1:', test.getScan(1).L
+                print (last_scan.data[pLabel][i], last_scan.data[dLabel][i])
+        print ('labels in scan 1: %s' % test.getScan(1).L)
         if test.getScan(1) is not None:
-            print 'command line of scan 5:', test.getScan(5).scanCmd
-        print '\n'.join(test.getScanCommands([1, 2]))
+            print ('command line of scan 5: %s' % test.getScan(5).scanCmd)
+        print ('\n'.join(test.getScanCommands([1, 2])))
     pass
 
 
