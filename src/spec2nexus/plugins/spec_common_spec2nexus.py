@@ -31,6 +31,11 @@ from spec2nexus.writer import CONTAINER_CLASS
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def split_column_labels(text):
+    """SPEC labels may contain one space"""
+    return re.split("  +", text)
+
+
 # header block
 
 class SPEC_File(ControlLineHandler):
@@ -376,7 +381,7 @@ class SPEC_Labels(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         # Some folks use more than two spaces!  Use regular expression(re) module
-        scan.L = re.split("  +", strip_first_word(text))
+        scan.L = split_column_labels(strip_first_word(text))
 
         if len(scan.L) == 1 and hasattr(scan, 'N') and scan.N[0] > 1:
             # BUT: some folks only use a single-space as a separator!
@@ -467,7 +472,7 @@ class SPEC_PositionerNames(ControlLineHandler):
     key = '#O\d+'
     
     def process(self, text, header, *args, **kws):
-        header.O.append( strip_first_word(text).split() )
+        header.O.append(split_column_labels(strip_first_word(text)))
 
 
 class SPEC_PositionerMnemonics(ControlLineHandler):

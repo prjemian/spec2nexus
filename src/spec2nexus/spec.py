@@ -84,11 +84,11 @@ Get the first and last scan numbers from the file:
 
     >>> from spec2nexus import spec
     >>> spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')
-    >>> print (spec_data.fileName)
+    >>> print(spec_data.fileName)
     path/to/my/spec_data.dat
-    >>> print ('first scan: ', spec_data.getFirstScanNumber())
+    >>> print('first scan: ', spec_data.getFirstScanNumber())
     1
-    >>> print ('last scan: ', spec_data.getLastScanNumber())
+    >>> print('last scan: ', spec_data.getLastScanNumber())
     22
 
 Get plottable data from scan number 10:
@@ -175,7 +175,10 @@ def is_spec_file(filename):
     if not os.path.isfile(filename):
         return False
     expected_controls = ('#F ', '#E ', '#D ', '#C ')
-    lines = open(filename).readlines()[:len(expected_controls)]
+    try:
+        lines = open(filename).readlines()[:len(expected_controls)]
+    except UnicodeDecodeError:
+        return False
     if len(lines) != len(expected_controls):
         return False
     for expected, line in zip(expected_controls, lines):
@@ -282,13 +285,9 @@ class SpecDataFile(object):
     def getScan(self, scan_number=0):
         '''return the scan number indicated, None if not found'''
         if int(float(scan_number)) < 1:
-            # relative list index (integer only), convert to actual scan number
-            keylist = sorted(self.getScanNumbers())
-            key = len(keylist) + int(scan_number)
-            if 0 <= key < len(keylist):
-                scan_number = keylist[key]
-            else:
-                return None
+            # relative scan referrence
+            scanlist = self.getScanNumbers()
+            scan_number = list(scanlist)[int(scan_number)]
         scan_number = str(scan_number)
         if scan_number in self.scans:
             return self.scans[scan_number]
