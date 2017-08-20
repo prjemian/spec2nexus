@@ -76,7 +76,6 @@ The resulting (binary) data file has this structure::
 
 
 import h5py    # HDF5 support
-import numpy
 import six
 
 
