@@ -13,6 +13,8 @@ Production
        support Python3
     * `#112 <https://github.com/prjemian/spec2nexus/issues/112>`_
        merge py3-62 branch
+    * `#111 <https://github.com/prjemian/spec2nexus/issues/111>`_
+       Change raise statements to use parens around arguments. Affects issue #62
 
 
 :2017.711.0:
