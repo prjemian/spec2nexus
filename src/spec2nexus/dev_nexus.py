@@ -17,7 +17,7 @@
 
 
 import sys
-import nexus
+from spec2nexus import nexus
 
 args = 'data/02_03_setup.dat  -f --verbose   -s 46'
 args = 'data/33id_spec.dat  -f --verbose   -s 1'

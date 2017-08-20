@@ -6,10 +6,10 @@
 # TODO: fold into the unit test suite
 
 
-import h5toText
 import os
-import writer
-import spec
+from spec2nexus import h5toText
+from spec2nexus import writer
+from spec2nexus import spec
 
 
 if __name__ == '__main__':

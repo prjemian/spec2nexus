@@ -17,7 +17,7 @@
 
 
 import sys
-import extractSpecScan
+from spec2nexus import extractSpecScan
 
 #args = 'data/APS_spec_data.dat -s 1 6   -c mr USAXS_PD I0 seconds'
 #args = 'data/33id_spec.dat     -s 1 6   -c H K L signal elastic I0 seconds'

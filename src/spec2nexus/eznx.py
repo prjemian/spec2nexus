@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from _ast import Num
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -187,9 +186,9 @@ def makeLink(parent, sourceObject, targetName):
     if not 'target' in sourceObject.attrs:
         # NeXus link, NOT an HDF5 link!
         sourceObject.attrs["target"] = str(sourceObject.name)
-    source_name = sourceObject.name.encode("ascii", "ignore")
-    new_name = targetName.encode("ascii", "ignore")
-    parent[new_name] = parent[source_name]
+    str_source = sourceObject.name.encode("ascii", "ignore")
+    str_target = targetName.encode("ascii", "ignore")
+    parent[str_target] = parent[str_source]
 
 
 def makeExternalLink(hdf5FileObject, sourceFile, sourcePath, targetPath):

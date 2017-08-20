@@ -18,7 +18,7 @@
 
 import os
 import sys
-import h5toText
+from spec2nexus import h5toText
 
 testpath = os.path.abspath(os.path.split(__file__)[0])
 

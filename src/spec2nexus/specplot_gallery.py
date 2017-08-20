@@ -62,8 +62,8 @@ import os
 import shutil
 import sys
 
-import spec
-import specplot
+from spec2nexus import spec
+from spec2nexus import specplot
 
 MTIME_CACHE_FILE = 'mtime_cache.txt'
 HTML_INDEX_FILE = 'index.html'

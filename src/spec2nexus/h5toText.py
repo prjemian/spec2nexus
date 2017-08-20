@@ -470,12 +470,12 @@ def do_filelist(filelist, limit=5, show_attributes=True):
     for item in filelist:
         mc = H5toText(item)
         mc.array_items_shown = limit
-        print ('\n'.join(mc.report(show_attributes) or ''))
+        print('\n'.join(mc.report(show_attributes) or ''))
 
 
 def main():
     '''standard command-line interface'''
-    import __init__
+    from spec2nexus import __init__
     NUM_DISPLAYED_DEFAULT = 5
     NUM_DISPLAYED_MIN = 3
     import argparse

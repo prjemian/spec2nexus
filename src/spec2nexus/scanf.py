@@ -137,7 +137,8 @@ def scanf(fmt, s=None):
     """
 
     if s == None: s = sys.stdin
-    if hasattr(s, "readline"): s = s.readline()
+    if hasattr(s, "readline"): 
+        s = s.readline()
 
     format_re, casts = _scanf_compile(fmt)
     found = format_re.match(s)

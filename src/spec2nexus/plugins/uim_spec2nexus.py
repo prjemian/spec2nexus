@@ -52,4 +52,4 @@ class UIM_generic(ControlLineHandler):
         if not hasattr(spec_obj, 'UIM'):
             spec_obj.UIM = []
 
-        spec_obj.UIM.append( text )
+        spec_obj.UIM.append(text)

@@ -8,7 +8,7 @@ This example is based on ``writer_2_1`` of the NeXus Manual:
 http://download.nexusformat.org/doc/html/examples/h5py/index.html
 '''
 
-import eznx
+from spec2nexus import eznx
 
 
 HDF5_FILE = 'eznx_example.hdf5'

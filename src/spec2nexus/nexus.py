@@ -27,8 +27,8 @@ if __name__ == "__main__":
     path = os.path.join('..', os.path.dirname(__file__))
     sys.path.insert(0, os.path.abspath(path))
 
-import spec
-import writer
+from spec2nexus import spec
+from spec2nexus import writer
 
 
 hdf5_extension = '.hdf5'
@@ -47,7 +47,7 @@ def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     global hdf5_extension
     import argparse
-    import __init__
+    from spec2nexus import __init__
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
     doc += '\n  v' + __init__.__version__
@@ -168,7 +168,7 @@ def main():
     for spec_data_file_name in spec_data_file_name_list:
         if not os.path.exists(spec_data_file_name):
             msg = 'File not found: ' + spec_data_file_name
-            print (msg)
+            print(msg)
             continue
 
         if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
@@ -177,8 +177,8 @@ def main():
     
         scan_list = pick_scans(spec_data.getScanNumbers(), user_parms.scan_list)
         if user_parms.reporting_level in (REPORTING_VERBOSE):
-            print ('  discovered %d scans' % len(spec_data.scans.keys()))
-            print ('  converting scan number(s): '  +  ', '.join(map(str, scan_list)))
+            print('  discovered %d scans' % len(spec_data.scans.keys()))
+            print('  converting scan number(s): '  +  ', '.join(map(str, scan_list)))
 
         basename = os.path.splitext(spec_data_file_name)[0]
         nexus_output_file_name = basename + user_parms.hdf5_extension
@@ -186,7 +186,7 @@ def main():
             out = writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
             if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
-                print ('wrote NeXus HDF5 file: ' + nexus_output_file_name)
+                print('wrote NeXus HDF5 file: ' + nexus_output_file_name)
 
 
 if __name__ == "__main__":

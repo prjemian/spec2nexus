@@ -8,7 +8,7 @@
 
 import os
 from lxml import etree
-import spec
+from spec2nexus import spec
 
 def prettify(someXML):
     #for more on lxml/XSLT see: http://lxml.de/xpathxslt.html#xslt-result-objects
@@ -24,7 +24,7 @@ def prettify(someXML):
         </xsl:stylesheet>''')
     transform = etree.XSLT(xslt_tree)
     result = transform(someXML)
-    return unicode(result)
+    return str(result)
 
 def developer_test(spec_file_name = None):
     """

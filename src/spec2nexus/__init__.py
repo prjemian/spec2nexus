@@ -30,7 +30,7 @@ __url__          = u'http://spec2nexus.readthedocs.org'
 #__download_url__ = u'https://github.com/prjemian/spec2nexus/tarball/' + __version__
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5', 'MatPlotLib']
 
-__install_requires__ = ('h5py','numpy', )
+__install_requires__ = ('h5py', 'numpy', )
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',
@@ -40,6 +40,9 @@ __classifiers__ = [
      'Programming Language :: Python',
      'Programming Language :: Python :: 2',
      'Programming Language :: Python :: 2.7',
+     'Programming Language :: Python :: 3',
+     'Programming Language :: Python :: 3.5',
+     'Programming Language :: Python :: 3.6',
      'Topic :: Scientific/Engineering',
      'Topic :: Scientific/Engineering :: Astronomy',
      'Topic :: Scientific/Engineering :: Bio-Informatics',
