@@ -77,6 +77,9 @@ class Issue64(unittest.TestCase):
             sys.argv.append(_)
         with tests.common.Capture_stdout() as printed_lines:
             spec2nexus.extractSpecScan.main()
+        if len(printed_lines) != 5:
+            print(args)
+            print("\n".join(printed_lines))
         self.assertEqual(len(printed_lines), 5, 'extractSpecScan')
 
         outfile = printed_lines[2][len('wrote: '):]

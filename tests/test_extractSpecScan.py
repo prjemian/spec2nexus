@@ -69,8 +69,8 @@ class Test(unittest.TestCase):
 
         # test first and last lines of data
         # remaining lines: three columns of numbers, tab delimited
-        self.assertEqual([-10.118571, 297.467, 66.0], map(float, buf[3].split()))
-        self.assertEqual([-5.5910424, 297.483, 66.0], map(float, buf[-1].split()))
+        self.assertEqual([-10.118571, 297.467, 66.0], list(map(float, buf[3].split())))
+        self.assertEqual([-5.5910424, 297.483, 66.0], list(map(float, buf[-1].split())))
 
         os.remove(outfile)
         self.assertFalse(os.path.exists(outfile))
@@ -101,8 +101,8 @@ class Test(unittest.TestCase):
 
         # test first and last lines of data
         # remaining lines: three columns of numbers, tab delimited
-        self.assertEqual([-12.063282, 297.529, 66.0], map(float, buf[3].split()))
-        self.assertEqual([-2.0358687, 297.553, 66.0], map(float, buf[-1].split()))
+        self.assertEqual([-12.063282, 297.529, 66.0], list(map(float, buf[3].split())))
+        self.assertEqual([-2.0358687, 297.553, 66.0], list(map(float, buf[-1].split())))
 
         os.remove(outfile)
         self.assertFalse(os.path.exists(outfile))

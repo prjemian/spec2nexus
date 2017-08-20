@@ -33,7 +33,7 @@ from spec2nexus.writer import CONTAINER_CLASS
 
 def split_column_labels(text):
     """SPEC labels may contain one space"""
-    return re.split("  +", text)
+    return re.split("  +", text.replace("\t", "  "))
 
 
 # header block
