@@ -119,5 +119,3 @@ class XPCS_CCD(ControlLineHandler):
         
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         pass
-    
-    
