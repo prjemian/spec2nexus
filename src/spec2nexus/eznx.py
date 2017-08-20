@@ -188,10 +188,9 @@ def makeLink(parent, sourceObject, targetName):
     if not 'target' in sourceObject.attrs:
         # NeXus link, NOT an HDF5 link!
         sourceObject.attrs["target"] = str(sourceObject.name)
-    import h5py.h5g
-    source_name = str.encode(str(sourceObject.name))
-    new_name = str.encode(str(targetName))
-    parent._id.link(source_name, new_name, h5py.h5g.LINK_HARD)
+    source_name = sourceObject.name.encode("ascii", "ignore")
+    new_name = targetName.encode("ascii", "ignore")
+    parent[new_name] = parent[source_name]
 
 
 def makeExternalLink(hdf5FileObject, sourceFile, sourcePath, targetPath):
