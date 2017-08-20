@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from _ast import Num
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -75,7 +76,8 @@ The resulting (binary) data file has this structure::
 
 
 import h5py    # HDF5 support
-#import numpy   # in this case, provides data structures
+import numpy
+import six
 
 
 def makeFile(filename, **attr):
@@ -148,7 +150,9 @@ def makeDataset(parent, name, data = None, **attr):
     if data is None:
         obj = parent.create_dataset(name)
     else:
-        if isinstance(data, float) or isinstance(data, int) or isinstance(data, str):
+        if isinstance(data, six.string_types):
+            data = data.encode("ascii", "ignore")
+        elif isinstance(data, float) or isinstance(data, int):
             data = [data,]
         obj = parent.create_dataset(name, data=data)
     addAttributes(obj, **attr)

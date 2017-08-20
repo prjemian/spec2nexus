@@ -141,7 +141,7 @@ class SPEC_Comment(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
-        write_dataset(h5parent, "comments", '\n'.join(map(str, scan.comments)))
+        write_dataset(h5parent, "comments", '\n'.join(list(map(str, scan.comments))))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -237,7 +237,7 @@ class SPEC_Geometry(ControlLineHandler):
         group = makeGroup(h5parent, 'G', nxclass, description=desc)
         dd = {}
         for item, value in scan.G.items():
-            dd[item] = map(float, value.split())
+            dd[item] = list(map(float, value.split()))
         writer.save_dict(group, dd)
 
 
@@ -445,7 +445,7 @@ class SPEC_NumColumns(ControlLineHandler):
     # TODO: Needs an example data file to test (issue #8)
     
     def process(self, text, scan, *args, **kws):
-        scan.N = map(int, strip_first_word(text).split())
+        scan.N = list(map(int, strip_first_word(text).split()))
 
 
 class SPEC_PositionerNames(ControlLineHandler):
@@ -598,7 +598,7 @@ class SPEC_HKL(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         s = strip_first_word(text)
         if len(s) > 0:
-            scan.Q = map(float, s.split())
+            scan.Q = list(map(float, s.split()))
             scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
@@ -849,7 +849,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
         # #@CALIB a b c
         # #@Calib 0.0501959 0.0141105 0 mca1
         s = strip_first_word(text).split()
-        a, b, c = map(float, s[0:3])
+        a, b, c = list(map(float, s[0:3]))
         
         if not hasattr(scan, 'MCA'):
             scan.MCA = {}
@@ -898,7 +898,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         # #@CHANN 1201 1110 1200 1
         s = strip_first_word(text).split()
-        number_saved, first_saved, last_saved = map(int, s[0:3])
+        number_saved, first_saved, last_saved = list(map(int, s[0:3]))
         reduction_coef = float(s[-1])
 
         if not hasattr(scan, 'MCA'):
@@ -944,7 +944,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         s = strip_first_word(text).split()
-        preset_time, elapsed_live_time, elapsed_real_time = map(float, s)
+        preset_time, elapsed_live_time, elapsed_real_time = list(map(float, s))
 
         if not hasattr(scan, 'MCA'):
             scan.MCA = {}
@@ -1056,7 +1056,7 @@ def data_lines_postprocessing(scan):
             if key not in scan.data[MCA_DATA_KEY]:
                 scan.data[MCA_DATA_KEY][key] = []
             # accumulate this spectrum
-            mca_spectrum = map(float, parts[1:])
+            mca_spectrum = list(map(float, parts[1:]))
             scan.data[MCA_DATA_KEY][key].append(mca_spectrum)
         else:
             try:
