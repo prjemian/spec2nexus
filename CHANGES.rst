@@ -15,6 +15,8 @@ Production
        merge py3-62 branch
     * `#111 <https://github.com/prjemian/spec2nexus/issues/111>`_
        Change raise statements to use parens around arguments. Affects issue #62
+    * `#114 <https://github.com/prjemian/spec2nexus/issues/114>`_
+       travis-ci for python 3.5 & 3.6
 
 
 :2017.711.0:

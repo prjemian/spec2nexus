@@ -1,0 +1,7 @@
+# Requirements : spec2nexus
+
+h5py
+lxml
+matplotlib
+numpy
+six
