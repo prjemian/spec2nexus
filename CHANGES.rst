@@ -17,6 +17,8 @@ Production
        Change raise statements to use parens around arguments. Affects issue #62
     * `#114 <https://github.com/prjemian/spec2nexus/issues/114>`_
        travis-ci for python 3.5 & 3.6
+    * `#107 <https://github.com/prjemian/spec2nexus/issues/107>`_
+       Problems accessing SpecDataFileScan.data
 
 
 :2017.711.0:
