@@ -115,9 +115,11 @@ class Writer(object):
     
     def root_attributes(self):
         '''*internal*: returns the attributes to be written to the root element as a dict'''
+        from spec2nexus._version import get_versions
+        version = get_versions()['version']
         header0 = self.spec.headers[0]
         dd = dict(
-            spec2nexus_version = spec2nexus.__version__,
+            spec2nexus_version = version,
             SPEC_file = self.spec.specFile,
             SPEC_epoch = header0.epoch,
             SPEC_date = utils.iso8601(header0.date),

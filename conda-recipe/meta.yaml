@@ -27,6 +27,7 @@ requirements:
     - numpy
     - h5py
     - matplotlib
+    - six
 
 test:
 

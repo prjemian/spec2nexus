@@ -19,8 +19,8 @@ Note:  These commands should be run from the repository root: `..`
     export OUTPUT_DIR=$TARGET_DIR/../conda-packages/
     
     /bin/rm -rf $OUTPUT_DIR
-    conda build --python 2.7 $TARGET_DIR
-    
+    conda build --python 2.7 $TARGET_DIR 2>&1 | tee $TARGET_DIR/build.log
+
     #BUILD START: spec2nexus-2017.3.0-py27_0
     #updating index in: /home/prjemian/Apps/anaconda/conda-bld/linux-64
     #updating index in: /home/prjemian/Apps/anaconda/conda-bld/noarch

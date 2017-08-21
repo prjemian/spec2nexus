@@ -475,13 +475,14 @@ def do_filelist(filelist, limit=5, show_attributes=True):
 
 def main():
     '''standard command-line interface'''
-    from spec2nexus import __init__
+    import argparse
+    from spec2nexus._version import get_versions
+    version = get_versions()['version']
     NUM_DISPLAYED_DEFAULT = 5
     NUM_DISPLAYED_MIN = 3
-    import argparse
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
-    doc += '\n  v' + __init__.__version__
+    doc += '\n  v' + version
     parser = argparse.ArgumentParser(prog='h5toText', description=doc)
     parser.add_argument('infile', 
                         action='store', 
@@ -503,7 +504,7 @@ def main():
     parser.add_argument('-v', 
                         '--version', 
                         action='version', 
-                        version=__init__.__version__)
+                        version=version)
     cmd_args = parser.parse_args()
 
     if cmd_args.num_displayed.lower() == "none":

@@ -61,7 +61,10 @@ copyright = spec2nexus.__copyright__
 # built documents.
 #
 # The short X.Y version.
-versioneer_version = spec2nexus.__version__.split('+')
+from spec2nexus._version import get_versions
+versioneer_version = get_versions()['version']
+del get_versions
+versioneer_version = versioneer_version.split('+')
 version = versioneer_version[0]
 # The full version, including alpha/beta/rc tags.
 #release = punx.__release__

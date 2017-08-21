@@ -47,10 +47,11 @@ def get_user_parameters():
     '''configure user's command line parameters from sys.argv'''
     global hdf5_extension
     import argparse
-    from spec2nexus import __init__
+    from spec2nexus._version import get_versions
+    version = get_versions()['version']
     doc = __doc__.strip().splitlines()[0]
     doc += '\n  URL: ' + __url__
-    doc += '\n  v' + __init__.__version__
+    doc += '\n  v' + version
     parser = argparse.ArgumentParser(prog='spec2nexus', description=doc)
     parser.add_argument('infile', 
                         action='store', 
@@ -73,7 +74,7 @@ def get_user_parameters():
     parser.add_argument('-v', 
                         '--version', 
                         action='version', 
-                        version=__init__.__version__)
+                        version=version)
     msg =  'specify which scans to save'
     msg += ', such as: -s all  or  -s 1  or  -s 1,2,3-5  (no spaces!)'
     msg += ', default = %s' % SCAN_LIST_ALL
