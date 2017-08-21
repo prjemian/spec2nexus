@@ -18,8 +18,7 @@ before_script:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH=$HOME/miniconda/bin:$PATH
   - export PY_ENV=travis-$TRAVIS_PYTHON_VERSION
-  - export EXTRA_CONDA_PKGS=numpy MatPlotLib h5py coverage docopt
-  - conda create -y -n $PY_ENV python=$TRAVIS_PYTHON_VERSION $EXTRA_CONDA_PKGS 
+  - conda create -y -n $PY_ENV python=$TRAVIS_PYTHON_VERSION numpy MatPlotLib h5py coverage docopt
   - source activate $PY_ENV
   - which pip
   - which python
