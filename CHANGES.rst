@@ -19,6 +19,8 @@ Production
        travis-ci for python 3.5 & 3.6
     * `#107 <https://github.com/prjemian/spec2nexus/issues/107>`_
        Problems accessing SpecDataFileScan.data
+    * `#95 <https://github.com/prjemian/spec2nexus/issues/95>`_
+       document final release steps
 
 
 :2017.711.0:
