@@ -3,6 +3,9 @@
 # output from this program
 src/spec2nexus/data/*.hdf5
 
+# used when building release notes
+__github_creds__.txt
+
 # builds of conda recipes for distribution
 conda-packages
 
