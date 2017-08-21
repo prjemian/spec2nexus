@@ -25,16 +25,11 @@ from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.scanf import scanf
 from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
-from spec2nexus.utils import strip_first_word, iso8601
+from spec2nexus.utils import strip_first_word, iso8601, split_column_labels
 from spec2nexus.writer import CONTAINER_CLASS
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def split_column_labels(text):
-    """SPEC labels may contain one space"""
-    return re.split("  +", text.replace("\t", "  "))
-
 
 # header block
 

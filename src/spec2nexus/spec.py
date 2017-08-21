@@ -406,7 +406,7 @@ class SpecDataFileHeader(object):
 LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
     'comments', 'data', 'data_lines', 'date', 'G', 'I',
     'L', 'M', 'positioner', 'N', 'P', 'Q', 'T',
-    'column_first', 'column_last'
+    'column_first', 'column_last',
 ]
 
 

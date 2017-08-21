@@ -85,6 +85,11 @@ def strip_first_word(line):
     return val.strip()
 
 
+def split_column_labels(text):
+    """SPEC labels may contain one space"""
+    return re.split("  +", text.replace("\t", "  "))
+
+
 def sanitize_name(group, key):      # for legacy support only
     '''make name that is allowed by HDF5 and NeXus rules
     

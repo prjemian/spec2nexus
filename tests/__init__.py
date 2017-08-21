@@ -35,6 +35,7 @@ def suite(*args, **kw):
     from tests import test_XPCSplugin
     from tests import issue64
     from tests import issue99_hklscan
+    from tests import issue107
     test_suite = unittest.TestSuite()
     test_list = [
         data_03_06_JanTest,
@@ -48,6 +49,7 @@ def suite(*args, **kw):
         test_XPCSplugin,
         issue64,
         issue99_hklscan,
+        issue107,
         ]
 
     for test in test_list:
