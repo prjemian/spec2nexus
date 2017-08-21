@@ -15,8 +15,8 @@ import argparse
 
 
 CREDS_FILE_NAME = "__github_creds__.txt"
-GITHUB_NXDL_ORGANIZATION = "nexusformat"
-GITHUB_NXDL_REPOSITORY = "definitions"
+GITHUB_ORGANIZATION = "prjemian"
+GITHUB_REPOSITORY = "spec2nexus"
 GITHUB_PER_PAGE = 30
 
 
@@ -45,8 +45,8 @@ class ReleaseNotes(object):
     def connect(self):
         uname, pwd = open(self.creds_file_name, 'r').read().split()
         self.gh = github.Github(uname, password=pwd, per_page=GITHUB_PER_PAGE)
-        self.user = self.gh.get_user(GITHUB_NXDL_ORGANIZATION)
-        self.repo = self.user.get_repo(GITHUB_NXDL_REPOSITORY)
+        self.user = self.gh.get_user(GITHUB_ORGANIZATION)
+        self.repo = self.user.get_repo(GITHUB_REPOSITORY)
     
     def learn(self):
         base_commit = None
@@ -118,7 +118,7 @@ class ReleaseNotes(object):
         print("")
 
 
-def main(base="v3.2", head="master", milestone="NXDL 3.3"):
+def main(base="2017.711.0", head="master", milestone="2017-09 release"):
     # github.enable_console_debug_logging()
     notes = ReleaseNotes(base, head=head, milestone=milestone)
     notes.connect()
@@ -152,24 +152,3 @@ def parse_command_line():
 if __name__ == '__main__':
     cmd = parse_command_line()
     main(cmd.base, head=cmd.head, milestone=cmd.milestone)
-
-
-# NeXus - Neutron and X-ray Common Data Format
-# 
-# Copyright (C) 2008-2017 NeXus International Advisory Committee (NIAC)
-# 
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 3 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-# For further information, see http://www.nexusformat.org
