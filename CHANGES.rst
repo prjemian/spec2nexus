@@ -7,7 +7,7 @@ Change History
 Production
 **********
 
-:2017.901.1:
+:2017.901.2:
 
     * `#62 <https://github.com/prjemian/spec2nexus/issues/62>`_
        support Python3
