@@ -5,7 +5,15 @@ conda package for ***spec2nexus***.
 
 see: https://conda.io/docs/build_tutorials/pkgs.html
 
-Note:  These commands should be run from the repository root: `..`
+Note:  These commands should be run from a sandbox (disposable) clone of the GitHub master.
+
+## create the sandbox 
+
+assuming linux OS and bash shell
+
+    cd /tmp
+    git clone https://github.com/prjemian/spec2nexus.git ./spec2nexus-sandbox
+    cd ./spec2nexus-sandbox
 
 ## linux-64
     
@@ -83,3 +91,7 @@ Query conda-forge for any *spec2nexus* packages:
 What versions of *spec2nexus* are available from my channel?
 
     anaconda show prjemian/spec2nexus
+
+## dispose the sandbox
+    cd
+    /bin/rm -rf /tmp/spec2nexus-sandbox
