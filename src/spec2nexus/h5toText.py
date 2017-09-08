@@ -11,7 +11,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 Command line tool to print the structure of an HDF5 file (deprecated, planned for deletion, see docs)
 
 DEPRECATION NOTICE:
@@ -23,7 +23,7 @@ Once the *punx* project is ready for initial release, the
 
 .. [#] *punx* `structure`: http://punx.readthedocs.io/en/latest/structure.html#structure
 
-'''
+"""
 
 __url__ = 'http://spec2nexus.readthedocs.org/en/latest/h5toText.html'
 
@@ -34,20 +34,21 @@ import numpy
 
 
 class H5toText(object):
-    '''
+    
+    """
     Example usage showing default display::
     
         mc = H5toText(filename)
         mc.array_items_shown = 5
         show_attributes = False
         txt = mc.report(show_attributes)
-    '''
+    """
     requested_filename = None
     isNeXus = False
     array_items_shown = 5
 
     def __init__(self, filename):
-        '''store filename and test if file is NeXus HDF5'''
+        """store filename and test if file is NeXus HDF5"""
         self.requested_filename = filename
         self.filename = None
         self.show_attributes = True
@@ -56,11 +57,11 @@ class H5toText(object):
             self.isNeXus = isNeXusFile(filename)
 
     def report(self, show_attributes=True):
-        '''
+        """
         return the structure of the HDF5 file in a list of strings
         
         The work of parsing the datafile is done in this method.
-        '''
+        """
         if self.filename is None: return None
         self.show_attributes = show_attributes
         f = h5py.File(self.filename, 'r')
@@ -72,7 +73,7 @@ class H5toText(object):
         return structure
 
     def _renderGroup(self, obj, name, indentation = "  "):
-        '''return a [formatted_string] with the contents of the group'''
+        """return a [formatted_string] with the contents of the group"""
         s = []
         nxclass = obj.attrs.get('NX_class', '')
         if len(nxclass) > 0:
@@ -123,7 +124,7 @@ class H5toText(object):
         return s
 
     def _renderAttributes(self, obj, indentation = "  "):
-        '''return a [formatted_string] with any attributes'''
+        """return a [formatted_string] with any attributes"""
         s = []
         if self.show_attributes:
             for name, value in obj.attrs.iteritems():
@@ -131,13 +132,13 @@ class H5toText(object):
         return s
 
     def _renderLinkedObject(self, obj, name, indentation = "  "):
-        '''return a [formatted_string] with the name and target of a NeXus linked object'''
+        """return a [formatted_string] with the name and target of a NeXus linked object"""
         s = []
         s.append("%s%s --> %s" % (indentation, name, obj.attrs['target']))
         return s
 
     def _renderDataset(self, dset, name, indentation = "  "):
-        '''return a [formatted_string] with the contents and structure of a dataset'''
+        """return a [formatted_string] with the contents and structure of a dataset"""
         shape = dset.shape
         # dset.dtype.kind == 'S', nchar = dset.dtype.itemsize
         if self.isNeXus:
@@ -186,7 +187,7 @@ class H5toText(object):
         return s
 
     def _renderDsType(self, obj):
-        ''' get the storage (data) type of the dataset '''
+        """get the storage (data) type of the dataset"""
         t = str(obj.dtype)
         # dset.dtype.kind == 'S', nchar = dset.dtype.itemsize
         if obj.dtype.kind == 'S':        # fixed-length string
@@ -198,7 +199,7 @@ class H5toText(object):
         return t
 
     def _renderDsShape(self, obj):
-        ''' return the shape of the HDF5 dataset '''
+        """return the shape of the HDF5 dataset"""
         s = obj.shape
         l = []
         for dim in s:
@@ -210,7 +211,7 @@ class H5toText(object):
         return result
 
     def _renderArray(self, obj, indentation = '  '):
-        ''' nicely format an array up to arbitrary rank '''
+        """nicely format an array up to arbitrary rank"""
         shape = obj.shape
         r = ""
         if len(shape) > 0:
@@ -218,14 +219,14 @@ class H5toText(object):
         return r
 
     def _decideNumShown(self, n):
-        ''' determine how many values to show '''
+        """determine how many values to show"""
         if self.array_items_shown != None:
             if n > self.array_items_shown:
                 n = self.array_items_shown - 2
         return n
 
     def _renderNdArray(self, obj, indentation = '  '):
-        ''' return a list of lower-dimension arrays, nicely formatted '''
+        """return a list of lower-dimension arrays, nicely formatted"""
         
         def __render(obj, rank, key, indents):
             if rank == 1:
@@ -258,7 +259,7 @@ class H5toText(object):
 
 
 def isNeXusFile(filename):
-    '''
+    """
     is `filename` is a NeXus HDF5 file?
     
     Tests if ``filename`` adheres to either
@@ -270,7 +271,7 @@ def isNeXusFile(filename):
     or
     "Associating plottable data by dimension number using the ``axis`` attribute"
     (needs URL - again, from NeXus manual)
-    '''
+    """
     if not os.path.exists(filename):
         return None
     m1 = isNeXusFile_ByNXdataAttrs
@@ -281,13 +282,13 @@ def isNeXusFile(filename):
 
 
 def _get_group_niac2014(parent, attribute, nxclass_name):
-    '''
+    """
     supports the NIAC2014method:
     
     Search parent for the group named by the attribute
     (with fallback if the attribute is not defined to picking *any*
     group that has the same nxclass_name).
-    '''
+    """
     group = parent.attrs.get(attribute, None)
     if group in parent:
         group = parent[group]
@@ -309,7 +310,7 @@ def _get_group_niac2014(parent, attribute, nxclass_name):
     return group
 
 def isNeXusFile_ByNXdataAttrs(filename):
-    '''
+    """
     is `filename` is a NeXus HDF5 file?
     
     This is the "NIAC2014" method.
@@ -326,7 +327,7 @@ def isNeXusFile_ByNXdataAttrs(filename):
     
     where curly braces (``{`` and ``}``) denote that the enclosed name
     is defined in the data file.
-    '''
+    """
     try:
         f = h5py.File(filename, 'r')
         if not isHdf5File(f):
@@ -364,7 +365,7 @@ def isNeXusFile_ByNXdataAttrs(filename):
 
 
 def isNeXusFile_ByAxes(filename):
-    '''
+    """
     is `filename` is a NeXus HDF5 file?
 
     This has been, to date, the most common method in NeXus to define the default plot.
@@ -379,7 +380,7 @@ def isNeXusFile_ByAxes(filename):
     This is the minimum requirement for a NeXus data file.
     
     This method ignores any exceptions incurred.
-    '''
+    """
     try:
         f = h5py.File(filename, 'r')
         if not isHdf5File(f):
@@ -404,18 +405,18 @@ def isNeXusFile_ByAxes(filename):
 
 
 def isNeXusFile_ByAxisAttr(filename):
-    '''
+    """
     is `filename` is a NeXus HDF5 file?
     
     This is the oldest method in NeXus to define the default plot.
     
     NOTE: **Not implemented yet!**
-    '''
+    """
     return False    # TODO: implement this method
 
 
 def isNeXusGroup(obj, NXtype):
-    '''is `obj` a NeXus group?'''
+    """is `obj` a NeXus group?"""
     nxclass = None
     if isHdf5Group(obj):
         nxclass = obj.attrs.get('NX_class', None)
@@ -425,48 +426,48 @@ def isNeXusGroup(obj, NXtype):
 
 
 def isNeXusDataset(obj):
-    '''is `obj` a NeXus dataset?'''
+    """is `obj` a NeXus dataset?"""
     return isHdf5Dataset(obj)
 
 
 def isNeXusLink(obj):
-    '''is `obj` linked to another NeXus item?'''
+    """is `obj` linked to another NeXus item?"""
     target = obj.attrs.get('target', '')
     return len(target) > 0 and target != obj.name
 
 
 def isHdf5File(obj):
-    '''is `obj` an HDF5 File?'''
+    """is `obj` an HDF5 File?"""
     return isinstance(obj, h5py.File)
 
 
 def isHdf5Group(obj):
-    '''is `obj` an HDF5 Group?'''
+    """is `obj` an HDF5 Group?"""
     return isinstance(obj, h5py.Group)
 
 
 def isHdf5Dataset(obj):
-    '''is `obj` an HDF5 Dataset?'''
+    """is `obj` an HDF5 Dataset?"""
     return isinstance(obj, h5py.Dataset)
 
 
 def isHdf5Link(obj):
-    '''is `obj` an HDF5 Link?'''
+    """is `obj` an HDF5 Link?"""
     return isinstance(obj, h5py.HardLink)
 
 
 def isHdf5ExternalLink(obj):
-    '''is `obj` an HDF5 ExternalLink?'''
+    """is `obj` an HDF5 ExternalLink?"""
     return isinstance(obj, h5py.ExternalLink)
 
 
 def do_filelist(filelist, limit=5, show_attributes=True):
-    '''
+    """
     interpret and print the structure of a list of HDF5 files
     
     :param [str] filelist: one or more file names to be interpreted
     :param int limit: maximum number of array items to be shown (default = 5)
-    '''
+    """
     for item in filelist:
         mc = H5toText(item)
         mc.array_items_shown = limit
@@ -474,7 +475,7 @@ def do_filelist(filelist, limit=5, show_attributes=True):
 
 
 def main():
-    '''standard command-line interface'''
+    """standard command-line interface"""
     import argparse
     from spec2nexus._version import get_versions
     version = get_versions()['version']

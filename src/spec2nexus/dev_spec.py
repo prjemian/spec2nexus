@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''development of the :mod:`spec` module'''
+"""development of the :mod:`spec` module"""
 
 # TODO: fold into the unit test suite
 
@@ -12,7 +12,7 @@ from spec2nexus import spec
 
 def prettify(someXML):
     #for more on lxml/XSLT see: http://lxml.de/xpathxslt.html#xslt-result-objects
-    xslt_tree = etree.XML('''\
+    xslt_tree = etree.XML("""\
         <!-- XSLT taken from Comment 4 by Michael Kay found here:
         http://www.dpawson.co.uk/xsl/sect2/pretty.html#d8621e19 -->
         <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -21,7 +21,7 @@ def prettify(someXML):
           <xsl:template match="/">
             <xsl:copy-of select="."/>
           </xsl:template>
-        </xsl:stylesheet>''')
+        </xsl:stylesheet>""")
     transform = etree.XSLT(xslt_tree)
     result = transform(someXML)
     return str(result)

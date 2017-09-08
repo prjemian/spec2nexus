@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------
 
 
-'''
+"""
 (Easy NeXus) support reading & writing NeXus HDF5 files using h5py
 
 :predecessor: NeXus h5py example code: ``my_lib.py`` [#]_
@@ -71,7 +71,7 @@ The resulting (binary) data file has this structure::
 
 .. rubric::  Classes and Methods
 
-'''
+"""
 
 
 import h5py    # HDF5 support
@@ -117,13 +117,13 @@ def makeGroup(parent, name, nxclass, **attr):
 
 
 def openGroup(parent, name, nx_class, **attr):
-    '''open or create the NeXus/HDF5 group, return the object
+    """open or create the NeXus/HDF5 group, return the object
 
     :param obj parent: h5py parent object
     :param str name: valid NeXus group name to open or create
     :param str nxclass: valid NeXus class name (base class or application definition)
     :param dict attr: optional dictionary of attributes
-    '''
+    """
     try:
         group = parent[name]
         addAttributes(group, **attr)
@@ -133,7 +133,7 @@ def openGroup(parent, name, nx_class, **attr):
 
 
 def makeDataset(parent, name, data = None, **attr):
-    '''
+    """
     create and write data to a dataset in the HDF5 file hierarchy
     
     Any named parameters in the call to this method 
@@ -144,7 +144,7 @@ def makeDataset(parent, name, data = None, **attr):
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
     :return: h5py dataset object
-    '''
+    """
     if data is None:
         obj = parent.create_dataset(name)
     else:
@@ -158,13 +158,13 @@ def makeDataset(parent, name, data = None, **attr):
 
 
 def write_dataset(parent, name, data, **attr):
-    '''write to the NeXus/HDF5 dataset, create it if necessary, return the object
+    """write to the NeXus/HDF5 dataset, create it if necessary, return the object
 
     :param obj parent: h5py parent object
     :param str name: valid NeXus dataset name to write
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
-    '''
+    """
     try:
         dset = parent[name]
         dset[:] = data
@@ -227,13 +227,13 @@ def addAttributes(parent, **attr):
 
 
 def read_nexus_field(parent, dataset_name, astype=None):
-    '''
+    """
     get a dataset from the HDF5 parent group
     
     :param obj parent: h5py parent object
     :param str dataset_name: name of the dataset (NeXus field) to be read
     :param obj astype: option to return as different data type
-    '''
+    """
     try:
         dataset = parent[dataset_name]
     except KeyError:
@@ -250,7 +250,7 @@ def read_nexus_field(parent, dataset_name, astype=None):
 
 
 def read_nexus_group_fields(parent, name, fields):
-    '''
+    """
     return the fields in the NeXus group as a dict(name=dataset)
     
     This routine provides a mass way to read a directed list
@@ -261,6 +261,6 @@ def read_nexus_group_fields(parent, name, fields):
     :param [name] fields: list of field names to be read
     :returns: dictionary of {name:dataset}
     :raises KeyError: if a field is not found
-    '''
+    """
     group = parent[name]
     return {key: read_nexus_field(group, key) for key in fields}

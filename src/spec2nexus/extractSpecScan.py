@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 
 
-'''
+"""
 Save columns from SPEC data file scan(s) to TSV files
 
 .. note:: TSV: tab-separated values
@@ -24,7 +24,7 @@ Save columns from SPEC data file scan(s) to TSV files
 .. note:: sdpecified column names **MUST** appear in all chosen scans
 
 Compatible with Python 2.7+
-'''
+"""
 
 from __future__ import print_function
 
@@ -47,7 +47,7 @@ REPORTING_VERBOSE  = 'verbose'
 
 
 def makeOutputFileName(specFile, scanNum):
-    '''
+    """
     return an output file name based on specFile and scanNum
     
     :param str specFile: name of existing SPEC data file to be read
@@ -68,7 +68,7 @@ def makeOutputFileName(specFile, scanNum):
     CeCoIn5.dat  scan 77    CeCoIn5_77.dat
     CeCoIn5.dat  scan 5.1   CeCoIn5_5_1.dat
     ===========  ========   ===============
-    '''
+    """
     name_parts = os.path.splitext(specFile)
     scan_number = str(scanNum).replace('.', '_')
     outFile = name_parts[0] + '_' + scan_number + name_parts[1]
@@ -93,7 +93,7 @@ def expand_scan_range_terms(scans):
 
 
 def get_user_parameters():
-    '''configure user's command line parameters from sys.argv'''
+    """configure user's command line parameters from sys.argv"""
     import argparse
     from spec2nexus._version import get_versions
     version = get_versions()['version']
@@ -190,7 +190,7 @@ def get_user_parameters():
 
 
 def main():
-    '''
+    """
     read the data file, find each scan, find the columns, save the data
     
     :param [str] cmdArgs: Namespace from argparse, returned from get_user_parameters()
@@ -210,7 +210,7 @@ def main():
         1.9725    64845    352
         1.9975    65449    478
     
-    '''
+    """
     cmdArgs = get_user_parameters()
 
     if cmdArgs.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):

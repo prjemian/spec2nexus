@@ -1,6 +1,6 @@
-'''
+"""
 unit tests for the UXML control lines
-'''
+"""
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -19,7 +19,7 @@ from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
 from lxml import etree
 
-SPEC_DATA_FILE_LINES = '''
+SPEC_DATA_FILE_LINES = """
 #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
 #UXML   <dataset name="enable" unique_id="find_me">Enable</dataset>
 #UXML   <hardlink name="found_you" target_id="find_me"/>
@@ -29,7 +29,7 @@ SPEC_DATA_FILE_LINES = '''
 #UXML   <dataset name="attenuator_transmission" type="float">3.55764458e-02</dataset>
 #UXML   <dataset name="status">Out</dataset>
 #UXML </group>
-	'''
+	"""
 
 def get_paths():
 	uxml_path = os.path.abspath(os.path.dirname(__file__))
@@ -51,7 +51,7 @@ class TestPlugin(unittest.TestCase):
 		pass
 
 	def test_01_process(self):
-		'''test the :meth:`process` method'''
+		"""test the :meth:`process` method"""
 		self.scan = SpecDataFileScan(None, '')
 		self.assertTrue(isinstance(self.scan, SpecDataFileScan))
 
@@ -88,7 +88,7 @@ class TestPlugin(unittest.TestCase):
 		self.assertFalse('UXML_metadata' in self.scan.h5writers)
 		self.assertFalse(hasattr(self.scan, 'UXML_root'))
 	
-		'''test the :meth:`postprocess` method'''
+		"""test the :meth:`postprocess` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():
@@ -113,7 +113,7 @@ class TestPlugin(unittest.TestCase):
 		self.assertEquals('enable', node.get('name'))
 		self.assertEquals('find_me', node.get('unique_id'))
 	
-		'''test the :meth:`writer` method'''
+		"""test the :meth:`writer` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():

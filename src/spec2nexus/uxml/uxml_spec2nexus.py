@@ -11,7 +11,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 UXML header information
 
 Document the UXML Language
@@ -64,7 +64,7 @@ Excerpt::
     #UXML   <dataset name="status">Out</dataset>
     #UXML </group>
 
-'''
+"""
 
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word
@@ -77,7 +77,8 @@ UXML_SUPPLIES_ROOT_TAG = False
 
 
 class Dataset(object):
-    '''HDF5/NeXus dataset specification'''
+    
+    """HDF5/NeXus dataset specification"""
 
     def __init__(self, xml_node):
         self.name = xml_node.get('name')
@@ -86,7 +87,8 @@ class Dataset(object):
 
 
 class Group(object):
-    '''HDF5/NeXus group specification'''
+    
+    """HDF5/NeXus group specification"""
 
     def __init__(self, xml_node):
         self.name = xml_node.get('name')
@@ -99,7 +101,8 @@ class Group(object):
 
 
 class Hardlink(object):
-    '''HDF5/NeXus hard link specification'''
+    
+    """HDF5/NeXus hard link specification"""
 
     def __init__(self, xml_node):
         self.name = xml_node.get('name')
@@ -107,7 +110,8 @@ class Hardlink(object):
 
 
 class UXML_metadata(ControlLineHandler):
-    '''
+
+    """
     **#UXML** -- XML metadata in scan header
     
     IN-MEMORY REPRESENTATION
@@ -119,7 +123,7 @@ class UXML_metadata(ControlLineHandler):
     * various items below the *NXentry* parent group,
       as indicated in the UXML
 
-    '''
+    """
 
     key = '#UXML'
     
@@ -132,11 +136,11 @@ class UXML_metadata(ControlLineHandler):
         scan.addPostProcessor('UXML_metadata', self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
-        '''
+        """
         convert the list of UXML text into a single text block
         
         :param SpecDataFileScan scan: data from a single SPEC scan
-        '''
+        """
         xml_text = '\n'.join(scan.UXML)
         if UXML_SUPPLIES_ROOT_TAG:
             root = etree.fromstring(xml_text)
@@ -151,7 +155,7 @@ class UXML_metadata(ControlLineHandler):
         scan.addH5writer('UXML_metadata', self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
-        '''Describe how to store this data in an HDF5 NeXus file'''
+        """Describe how to store this data in an HDF5 NeXus file"""
         desc = 'UXML metadata'
         #eznx.write_dataset(h5parent, "counting_basis", desc)
         #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)

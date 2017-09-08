@@ -11,12 +11,12 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 **#H** & **#V** - Metadata in SPEC data files as defined by APS UNICAT
 
 Handles the UNICAT control lines which write additional metadata
 in the scans using #H/#V pairs of labels/values.
-'''
+"""
 
 
 from spec2nexus.plugin import ControlLineHandler
@@ -25,7 +25,8 @@ from spec2nexus import eznx
 
 
 class UNICAT_MetadataMnemonics(ControlLineHandler):
-    '''
+
+    """
     **#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)
     
     Individual metadata names are expected to be single-word strings 
@@ -46,7 +47,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
       
       * datasets created from dictionary <scan>.metadata
 
-    '''
+    """
 
     key = '#H\d+'
     
@@ -55,7 +56,8 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
 
 
 class UNICAT_MetadataValues(ControlLineHandler):
-    '''
+
+    """
     **#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)
     
     Individual metadata values are expected to be numbers but may 
@@ -80,7 +82,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
       
       * datasets created from dictionary <scan>.metadata
 
-    '''
+    """
 
     key = '#V\d+'
     
@@ -89,11 +91,11 @@ class UNICAT_MetadataValues(ControlLineHandler):
         scan.addPostProcessor('unicat_metadata', self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
-        '''
+        """
         interpret the UNICAT metadata (mostly floating point) from the scan header
         
         :param SpecDataFileScan scan: data from a single SPEC scan (instance of SpecDataFileScan)
-        '''
+        """
         scan.metadata = {}
         if not hasattr(scan.header, "H"):
             msg = "No matching #H line(s) for scan %d" % scan.scanNum
@@ -114,7 +116,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
         scan.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
-        '''Describe how to store this data in an HDF5 NeXus file'''
+        """Describe how to store this data in an HDF5 NeXus file"""
         if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
             desc='SPEC metadata (UNICAT-style #H & #V lines)'
             group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)

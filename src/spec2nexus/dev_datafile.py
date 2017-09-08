@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''Process specific data file(s)'''
+"""Process specific data file(s)"""
 
 # TODO: fold into the unit test suite
 

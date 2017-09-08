@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 
-'''command-line tool to convert SPEC data files to NeXus HDF5'''
+"""command-line tool to convert SPEC data files to NeXus HDF5"""
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

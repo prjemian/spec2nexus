@@ -11,7 +11,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 define the plug-in architecture
 
 Create a subclass of :class:`spec2nexus.plugin.ControlLineHandler`
@@ -41,7 +41,7 @@ It is optional to:
   ~DuplicateControlLinePlugin
   ~DuplicatePlugin
 
-'''
+"""
 
 
 import os                           #@UnusedImport
@@ -60,22 +60,20 @@ FILE_NAME_ENDING = '_spec2nexus.py'
 
 
 class DuplicateControlLinePlugin(Exception): 
-    '''This control line handler has been used more than once.'''
-    pass
+    """This control line handler has been used more than once."""
 
 
 class DuplicateControlLineKey(Exception): 
-    '''This control line key regular expression has been used more than once.'''
-    pass
+    """This control line key regular expression has been used more than once."""
 
 
 class DuplicatePlugin(Exception): 
-    '''This plugin file name has been used more than once.'''
-    pass
+    """This plugin file name has been used more than once."""
 
 
 class ControlLineHandler(object):
-    '''
+
+    """
     Plugin to handle a single control line in a SPEC data file
 
     :param str key: regular expression to match a control line key, up to the first space
@@ -91,16 +89,16 @@ class ControlLineHandler(object):
       ~postprocess
       ~writer
   
-    '''
+    """
     
     key = None
     
     def getKey(self):
-        '''return this handler's unique identifying key'''
+        """return this handler's unique identifying key"""
         return str(self.key)
     
     def match_key(self, text):
-        '''
+        """
         test if this plugin's key matches the supplied text
         
         :param str text: first word on the line, 
@@ -111,7 +109,7 @@ class ControlLineHandler(object):
 
         If this method is to be used, then override this method in the 
         plugin or a :class:`NotImplementedError` exception will be raised.
-        '''
+        """
         # ensure that #X and #XPCS do not both match #X
         full_pattern = '^' + self.key + '$'
         t = re.match(full_pattern, text)
@@ -123,7 +121,7 @@ class ControlLineHandler(object):
         return str(self.__name__)
     
     def process(self, *args, **kw):
-        '''
+        """
         Parse this text from the SPEC data file according to the control line key.
         
         A plugin will receive *text* and one of these objects: 
@@ -135,12 +133,12 @@ class ControlLineHandler(object):
 
         All plugins **must** override this method 
         or a :class:`NotImplementedError` exception will be raised.
-        '''
+        """
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
     
     def postprocess(self, *args, **kw):
-        '''
+        """
         apply additional interpretation after all control lines have been read
 
         queue this method by calling::
@@ -154,12 +152,12 @@ class ControlLineHandler(object):
 
         If this method is to be used, then override this method in the 
         plugin or a :class:`NotImplementedError` exception will be raised.
-        '''
+        """
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
     
     def writer(self, *args, **kw):
-        '''
+        """
         write in-memory structure to HDF5+NeXus data file
         
         queue this by calling::
@@ -173,13 +171,14 @@ class ControlLineHandler(object):
 
         If this method is to be used, then override this method in the 
         plugin or a :class:`NotImplementedError` exception will be raised.
-        '''
+        """
         
         raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
 class PluginManager(object):
-    '''
+
+    """
     Manage the set of SPEC data file control line plugins
 
     .. rubric:: Class Methods
@@ -193,13 +192,13 @@ class PluginManager(object):
       ~load_plugins
       ~process
   
-    '''
+    """
     
     def __init__(self):
         self.handler_dict = {}
     
     def register(self, handler):
-        '''add this handler to the list of known handlers'''
+        """add this handler to the list of known handlers"""
         handler_key = handler().getKey()
         if handler_key is None:
             raise NotImplementedError('Must define **key** in ' + self.__class__)
@@ -208,15 +207,15 @@ class PluginManager(object):
         self.handler_dict[handler_key] = handler
     
     def hasKey(self, key):
-        '''Is this key known?'''
+        """Is this key known?"""
         return key in self.handler_dict
     
     def getKey(self, spec_data_file_line):
-        '''
+        """
         Find the key that matches this line in a SPEC data file.  Return None if not found.
         
         :param str spec_data_file_line: one line from a SPEC data file
-        '''
+        """
         pos = spec_data_file_line.find(' ')
         if pos < 0:
             return None
@@ -227,24 +226,24 @@ class PluginManager(object):
         return None
 
     def get(self, key):
-        '''return the handler identified by key or None'''
+        """return the handler identified by key or None"""
         if not self.hasKey(key):
             return None
         return self.handler_dict[key]
     
     def load_plugins(self):
-        '''
+        """
         Call this once to load all plugins that handle SPEC control lines
-        '''
+        """
         env_var = PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE
         internal_dir = PLUGIN_INTERNAL_SUBDIRECTORY
         control_line_search_path = self._getSearchPath(internal_dir, env_var)
         self._register_control_line_plugins(control_line_search_path)
     
     def _getSearchPath(self, internal_path, env_var_name):
-        '''
+        """
         construct the list of directories in which Control Line plugins may be found
-        '''
+        """
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), internal_path)
         control_line_search_path = [path, ]
         search_path = os.environ.get(env_var_name, None)
@@ -256,9 +255,9 @@ class PluginManager(object):
         return control_line_search_path
     
     def _register_control_line_plugins(self, plugin_path_list):
-        '''
+        """
         register all plugin classes, keyed by control line key
-        '''
+        """
         module_dict = self._getPluginFiles(plugin_path_list)
         def isControlLineHandler(obj):
             def cname(thing):
@@ -280,9 +279,9 @@ class PluginManager(object):
                 pass
 
     def _getPluginFiles(self, plugin_path_list):
-        '''
+        """
         build dictionary of modules containing plugin classes, keyed by module name
-        '''
+        """
         module_dict = {}
         for path in plugin_path_list:
             if not os.path.exists(path):
@@ -300,7 +299,7 @@ class PluginManager(object):
         return module_dict
     
     def process(self, key, *args, **kw):
-        '''pick the control line handler by key and call its process() method'''
+        """pick the control line handler by key and call its process() method"""
         handler = self.get(key)
         if handler is not None:
             handler().process(*args, **kw)

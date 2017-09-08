@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------
 
 
-'''Converts SPEC data files and scans into NeXus HDF5 files'''
+"""Converts SPEC data files and scans into NeXus HDF5 files"""
 
 # this is the main code for the *spec2nexus* application
 
@@ -44,8 +44,8 @@ SCAN_LIST_ALL      = 'all'
 
 
 def get_user_parameters():
-    '''configure user's command line parameters from sys.argv'''
-    global hdf5_extension
+    """configure user's command line parameters from sys.argv"""
+    # global hdf5_extension
     import argparse
     from spec2nexus._version import get_versions
     version = get_versions()['version']
@@ -113,7 +113,7 @@ def get_user_parameters():
 
 
 def parse_scan_list_spec(scan_list_spec):
-    '''parses the argument of the -s option, returns a scan number list'''
+    """parses the argument of the -s option, returns a scan number list"""
     # can this be simpler?
     sl = scan_list_spec[0].split(',')   # FIXME: why is this a list? see issue #91
 
@@ -136,13 +136,13 @@ def parse_scan_list_spec(scan_list_spec):
 
 
 def pick_scans(all_scans, opt_scan_list):
-    '''
+    """
     edit opt_scan_list for the scans to be converted
     
     To be converted, a scan number must be first specified in opt_scan_list
     and then all_scans is checked to make sure that scan exists.
     The final list is returned.
-    '''
+    """
     if opt_scan_list == SCAN_LIST_ALL:
         scan_list = all_scans
     else:
@@ -154,7 +154,7 @@ def pick_scans(all_scans, opt_scan_list):
 
 
 def main():
-    '''entry point for command-line interface'''
+    """entry point for command-line interface"""
 
     user_parms = get_user_parameters()
 

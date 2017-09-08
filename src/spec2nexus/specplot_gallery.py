@@ -10,7 +10,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 read a list of SPEC data files (or directories) and plot images of all scans
 
 .. autosummary::
@@ -53,7 +53,7 @@ To identify and stop all processes of this program::
 
     kill -9 `ps -ef | grep python | awk '/specplot_gallery.py/ {print $2}' -`
 
-'''
+"""
 
 
 import datetime
@@ -71,20 +71,20 @@ DOC_URL = 'http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html'
 
 
 class DirectoryNotFoundError(ValueError): 
-    'Exception: The requested directory does not exist'
-    pass
+    """Exception: The requested directory does not exist"""
+
 class PathIsNotDirectoryError(ValueError): 
-    'Exception: The path is not a directory'
-    pass
+    """Exception: The path is not a directory"""
 
 
 class PlotSpecFileScans(object):
-    '''
+    
+    """
     read a SPEC data file and plot thumbnail images of all its scans
     
     :param [str] filelist: list of SPEC data files to be checked
     :param str plotDir: name of base directory to store output image thumbnails
-    '''
+    """
 
     def __init__(self, filelist, plotDir = None, reverse_chronological = False):
         self.filelist = filelist
@@ -95,9 +95,9 @@ class PlotSpecFileScans(object):
             self.plot_all_scans(specFile)
     
     def _mtime_checkup_(self, specFile):
-        '''
+        """
         check the mtime of various files to see if the plot needs to be made
-        '''
+        """
         if not os.path.exists(specFile):
             return
     
@@ -122,9 +122,9 @@ class PlotSpecFileScans(object):
         return (mtime_specFile, mtime_pngdir, png_directory)
     
     def plot_all_scans(self, specFile):
-        '''
+        """
         plot all the recognized scans from the file named ``specFile``
-        '''
+        """
         if not spec.is_spec_file(specFile):
             raise spec.NotASpecDataFile(specFile)
 
@@ -195,11 +195,11 @@ class PlotSpecFileScans(object):
         os.utime(png_directory, None)
     
     def get_PngDir(self, specFile):
-        '''
+        """
         return the PNG directory based on the specFile
         
         :param str specFile: name of SPEC data file (relative or absolute)
-        '''
+        """
         data_file_root_name = os.path.splitext(os.path.split(specFile)[1])[0]
         date_str = get_SpecFileDate(specFile)
         if date_str is None:
@@ -207,9 +207,9 @@ class PlotSpecFileScans(object):
         return self.getBaseDir(data_file_root_name, date_str)
 
     def getBaseDir(self, basename, date):
-        '''
+        """
         find the path based on the date in the spec file
-        '''
+        """
         return os.path.join(self.plotDir, datePath(date), basename)
     
     def href_format(self, basePlotFile, altText):
@@ -222,14 +222,15 @@ class PlotSpecFileScans(object):
 
 
 class Cache_File_Mtime(object):
-    '''
+    
+    """
     maintain a list of all known data file modification times
     
     :param str base_dir: name of base directory to store output image thumbnails
     
     This list will allow the code to avoid unnecessary work
     reparsing and plotting of unchanged SPEC data files.
-    '''
+    """
 
     def __init__(self, base_dir):
         if not os.path.exists(base_dir):
@@ -240,7 +241,7 @@ class Cache_File_Mtime(object):
         self.cache = self.read()
 
     def read(self):
-        '''read the cache from storage'''
+        """read the cache from storage"""
         cache = {}
         if os.path.exists(self.cache_file):
             for line in open(self.cache_file, 'r').readlines():
@@ -250,7 +251,7 @@ class Cache_File_Mtime(object):
         return cache
 
     def write(self):
-        '''write the cache to storage'''
+        """write the cache to storage"""
         f = open(self.cache_file, 'w')
         for key, val in sorted(self.cache.items()):
             t = str(key) + '\t' + str(val) + '\n'
@@ -258,24 +259,24 @@ class Cache_File_Mtime(object):
         f.close()
     
     def get(self, fname):
-        '''
+        """
         get the file modified time from the cache
         
         :param str fname: file name, already known to exist
         :return: time (float) cached value of when fname was 
             last modified or None if not known
-        '''
+        """
         if fname in self.cache:
             return self.cache[fname]
         return None
 
     def was_file_updated(self, fname):
-        '''
+        """
         compare the mtime between disk and cache
         
         :param str fname: file name, already known to exist
         :return bool: True if file is newer than the cache (or new to the cache)
-        '''
+        """
         mtime_file = get_file_mtime(fname)
         mtime_cache = self.get(fname)
         if mtime_cache is None or mtime_file > mtime_cache:
@@ -289,11 +290,11 @@ class Cache_File_Mtime(object):
 
 
 def datePath(date):
-    '''
+    """
     convert the date into a path: yyyy/mm
     
     :param str date: text date from SPEC file #D line: 'Thu Jun 19 12:21:55 2014'
-    '''
+    """
     import time
     dateStr = time.strptime(date, "%a %b %d %H:%M:%S %Y")
     yyyy = "%04d" % dateStr.tm_year
@@ -302,11 +303,11 @@ def datePath(date):
 
 
 def get_SpecFileDate(specFile):
-    '''
+    """
     return the #D date of the SPEC data file or None
     
     :param str specFile: name of SPEC data file (relative or absolute)
-    '''
+    """
     # Get that without parsing the data file, it's on the 3rd line of the file.
     #     #F 06_19_Tony.dat
     #     #E 1403198515
@@ -328,21 +329,21 @@ def get_SpecFileDate(specFile):
 
 
 def get_file_mtime(filename):
-    '''
+    """
     get the file modified time from disk
     
     :param str fname: file name, already known to exist
     :return: time (float) fname was last modified
-    '''
+    """
     return os.path.getmtime(filename)
 
 
 def needToMakePlot(fullPlotFile, mtime_specFile):
-    '''
+    """
     Determine if a plot needs to be (re)made.  Use mtime as the basis.
 
     :return bool: ``True`` if plot should be made again
-    '''
+    """
     remake_plot = True
     if os.path.exists(fullPlotFile):
         mtime_plotFile = get_file_mtime(fullPlotFile)
@@ -353,11 +354,11 @@ def needToMakePlot(fullPlotFile, mtime_specFile):
 
 
 def timestamp():
-    '''
+    """
     current time as yyyy-mm-dd hh:mm:ss
     
     :return str: 
-    '''
+    """
     ts = str(datetime.datetime.now())
     ts = ' '.join(ts.split('T'))    # convert to modified ISO8601 format
     ts = ts.split('.')[0]           # strip off the fractional seconds
@@ -365,12 +366,12 @@ def timestamp():
 
 
 def build_index_html(specFile, plotted_scans, problem_scans):
-    '''
+    """
     build index.html content
     
     :param str specFile: name of SPEC data file (relative or absolute)
     :param [str] plotList: list of HTML `<a>` elements, one for each plot image 
-    '''
+    """
     baseSpecFile = os.path.basename(specFile)
     comment = "\n"
     comment += "   written by: %s\n" % sys.argv[0]
@@ -413,11 +414,11 @@ def build_index_html(specFile, plotted_scans, problem_scans):
 
 
 def logger(message):
-    '''
+    """
     log a message or report from this module
 
     :param str message: text to be logged
-    '''
+    """
     now = str(datetime.datetime.now())
     name = os.path.basename(sys.argv[0])
     pid = os.getpid()
@@ -487,9 +488,9 @@ def main():
 
 
 def developer():
-    '''
+    """
     supply a file and a directory as command-line arguments to "paths"
-    '''
+    """
     import tempfile
     
     tempdir = tempfile.mkdtemp()

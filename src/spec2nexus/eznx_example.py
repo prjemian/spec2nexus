@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Writes a simple NeXus HDF5 file using h5py with links.
 
 This example is based on ``writer_2_1`` of the NeXus Manual:
 http://download.nexusformat.org/doc/html/examples/h5py/index.html
-'''
+"""
 
 from spec2nexus import eznx
 
 
 HDF5_FILE = 'eznx_example.hdf5'
 
-I_v_TTH_DATA = '''
+I_v_TTH_DATA = """
 17.92608    1037
 17.92558    2857
 17.92508    23819
@@ -25,7 +25,7 @@ I_v_TTH_DATA = '''
 17.92208    29315
 17.92158    6622
 17.92108    1321
-'''
+"""
 #---------------------------
 
 tthData, countsData = zip(*[map(float,_.split()) for _ in I_v_TTH_DATA.strip().splitlines()])

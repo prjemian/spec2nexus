@@ -127,28 +127,23 @@ MCA_DATA_KEY = '_mca_'
 
 
 class SpecDataFileNotFound(IOError): 
-    '''data file was not found'''
-    pass
+    """data file was not found"""
 
 class SpecDataFileCouldNotOpen(IOError): 
-    '''data file could not be opened'''
-    pass
+    """data file could not be opened"""
 
 class NotASpecDataFile(Exception): 
-    '''content of file is not SPEC data (first line must start with ``#F``)'''
-    pass
+    """content of file is not SPEC data (first line must start with ``#F``)"""
 
 class DuplicateSpecScanNumber(Exception): 
-    '''multiple use of scan number in a single SPEC data file'''
-    pass
+    """multiple use of scan number in a single SPEC data file"""
 
 class UnknownSpecFilePart(Exception): 
-    '''unknown part in a single SPEC data file'''
-    pass
+    """unknown part in a single SPEC data file"""
 
 
 def is_spec_file(filename):
-    '''
+    """
     test if a given file name is a SPEC data file
     
     :param str filename: path/to/possible/spec/data.file
@@ -169,7 +164,7 @@ def is_spec_file(filename):
         #C LNO_LAO  User = epix33bm
     
     .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
-    '''
+    """
     if not os.path.exists(filename):
         return False
     if not os.path.isfile(filename):
@@ -191,9 +186,10 @@ def is_spec_file(filename):
 
 
 class SpecDataFile(object):
-    '''
+
+    """
     contents of a spec data file
-    '''
+    """
 
     fileName = ''
     parts = ''
@@ -283,7 +279,7 @@ class SpecDataFile(object):
         return buf.replace('\r\n', '\n').replace('\r', '\n')
     
     def getScan(self, scan_number=0):
-        '''return the scan number indicated, None if not found'''
+        """return the scan number indicated, None if not found"""
         if int(float(scan_number)) < 1:
             # relative scan referrence
             scanlist = self.getScanNumbers()
@@ -294,34 +290,34 @@ class SpecDataFile(object):
         return None
     
     def getScanNumbers(self):
-        '''return a list of all scan numbers sorted by scan number'''
+        """return a list of all scan numbers sorted by scan number"""
         return sorted(self.scans.keys(), key=int)
     
     def getScanNumbersChronological(self):
-        '''return a list of all scan numbers sorted by date'''
+        """return a list of all scan numbers sorted by date"""
         def byDate_key(scan):
             return time.strptime(scan.date)
         scans = sorted(self.scans.values(), key=byDate_key)
         return [_.scanNum for _ in scans]
     
     def getMinScanNumber(self):
-        '''return the lowest numbered scan'''
+        """return the lowest numbered scan"""
         return self.getScanNumbers()[0]
     
     def getMaxScanNumber(self):
-        '''return the highest numbered scan'''
+        """return the highest numbered scan"""
         return self.getScanNumbers()[-1]
     
     def getFirstScanNumber(self):
-        '''return the first scan'''
+        """return the first scan"""
         return self.getScanNumbersChronological()[0]
     
     def getLastScanNumber(self):
-        '''return the last scan'''
+        """return the last scan"""
         return self.getScanNumbersChronological()[-1]
     
     def getScanCommands(self, scan_list=None):
-        '''return all the scan commands as a list, with scan number'''
+        """return all the scan commands as a list, with scan number"""
         if scan_list is None:
             scan_list = self.getScanNumbers()
         commands = []
@@ -377,26 +373,26 @@ class SpecDataFileHeader(object):
             func(self)
     
     def addPostProcessor(self, label, func):
-        '''
+        """
         add a function to be processed after interpreting all lines from a header
         
         :param str label: unique label by which this postprocessor will be known
         :param obj func: function reference of postprocessor
         
         The postprocessors will be called at the end of header interpretation.
-        '''
+        """
         if label not in self.postprocessors:
             self.postprocessors[label] = func
     
     def addH5writer(self, label, func):
-        '''
+        """
         add a function to be processed when writing the scan header
         
         :param str label: unique label by which this writer will be known
         :param obj func: function reference of writer
         
         The writers will be called when the HDF5 file is to be written.
-        '''
+        """
         if label not in self.h5writers:
             self.h5writers[label] = func
 
@@ -463,9 +459,9 @@ class SpecDataFileScan(object):
         return object.__getattribute__(self, attr)
     
     def get_macro_name(self):
-        '''
+        """
         name of the SPEC macro used for this scan
-        '''
+        """
         return self.scanCmd.split()[0]
 
     def interpret(self):
@@ -497,42 +493,42 @@ class SpecDataFileScan(object):
         self.__interpreted__ = True
     
     def add_interpreter_comment(self, comment):
-        '''
+        """
         allow the interpreter to communicate information to the caller
         
         see issue #66: https://github.com/prjemian/spec2nexus/issues/66
-        '''
+        """
         self._interpreter_comments_.append(comment)
     
     def get_interpreter_comments(self):
-        '''
+        """
         return the list of comments
         
         see issue #66: https://github.com/prjemian/spec2nexus/issues/66
-        '''
+        """
         return self._interpreter_comments_
 
     def addPostProcessor(self, label, func):
-        '''
+        """
         add a function to be processed after interpreting all lines from a scan
         
         :param str label: unique label by which this postprocessor will be known
         :param obj func: function reference of postprocessor
         
         The postprocessors will be called at the end of scan data interpretation.
-        '''
+        """
         if label not in self.postprocessors:
             self.postprocessors[label] = func
     
     def addH5writer(self, label, func):
-        '''
+        """
         add a function to be processed when writing the scan data
         
         :param str label: unique label by which this writer will be known
         :param obj func: function reference of writer
         
         The writers will be called when the HDF5 file is to be written.
-        '''
+        """
         if label not in self.h5writers:
             self.h5writers[label] = func
     
@@ -544,7 +540,7 @@ class SpecDataFileScan(object):
         return buf
 
     def _unique_key(self, label, keylist):
-        '''ensure that label is not yet existing in keylist'''
+        """ensure that label is not yet existing in keylist"""
         i = 0
         key = label
         while key in keylist:

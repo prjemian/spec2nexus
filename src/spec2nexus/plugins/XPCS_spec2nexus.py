@@ -6,9 +6,9 @@
 # :email:     JPHammonds@anl.gov
 #-----------------------------------------------------------------------------
 
-'''
+"""
 SPEC data file control lines unique to the APS XPCS instrument
-'''
+"""
 
 from spec2nexus.plugin import ControlLineHandler, strip_first_word
 from spec2nexus.eznx import makeGroup
@@ -16,7 +16,7 @@ from spec2nexus.spec import SpecDataFileHeader
 from spec2nexus.spec import SpecDataFileScan
 
 class XPCS_VA(ControlLineHandler):
-    '''**#VA**'''
+    """**#VA**"""
 
     key = '#VA\d+'
 
@@ -29,7 +29,7 @@ class XPCS_VA(ControlLineHandler):
             spec_obj.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
-        ''' Describe how to write VA data'''
+        """ Describe how to write VA data"""
         desc = "XPCS VA parameters"
         group = makeGroup(h5parent, 'VA', nxclass,description=desc)
         dd = {}
@@ -38,7 +38,7 @@ class XPCS_VA(ControlLineHandler):
         writer.save_dict(group, dd)
 
 class XPCS_VD(ControlLineHandler):
-    '''**#VD** '''
+    """**#VD** """
 
     key = '#VD\d+'
 
@@ -52,7 +52,7 @@ class XPCS_VD(ControlLineHandler):
             spec_obj.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
-        ''' Describe how to write VD data'''
+        """Describe how to write VD data"""
         desc = "XPCS VD parameters"
         group = makeGroup(h5parent, 'VD', nxclass, description=desc)
         dd = {}
@@ -61,7 +61,7 @@ class XPCS_VD(ControlLineHandler):
         writer.save_dict(group, dd)
 
 class XPCS_VE(ControlLineHandler):
-    '''**#VE** '''
+    """**#VE** """
 
     key = '#VE\d+'
 
@@ -75,7 +75,7 @@ class XPCS_VE(ControlLineHandler):
             spec_obj.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
-        ''' Describe how to write VE data'''
+        """Describe how to write VE data"""
         desc = "XPCS VE parameters"
         group = makeGroup(h5parent, 'VE', nxclass,description=desc)
         dd = {}
@@ -84,9 +84,7 @@ class XPCS_VE(ControlLineHandler):
         writer.save_dict(group, dd)
 
 class XPCS_XPCS(ControlLineHandler):
-    '''
-        #XPCS
-    '''
+    """#XPCS"""
     
     key = '#XPCS'
     
@@ -103,9 +101,7 @@ class XPCS_XPCS(ControlLineHandler):
     
 
 class XPCS_CCD(ControlLineHandler):
-    '''
-        #CCD
-    '''
+    """#CCD"""
     
     key = '#CCD'
     

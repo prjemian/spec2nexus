@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''
+"""
 charting for spec2nexus
 
 .. autosummary::
@@ -8,7 +8,7 @@ charting for spec2nexus
     ~make_png
     ~xy_plot
 
-'''
+"""
 
 import datetime
 import numpy
@@ -38,7 +38,7 @@ def make_png(
         cmap=COLORMAP,
         xtitle=None, ytitle=None, 
         timestamp_str=None):
-    '''
+    """
     read the image from the named HDF5 file and make a PNG file
     
     Test that the HDF5 file exists and that the path to the data exists in that file.
@@ -54,7 +54,7 @@ def make_png(
     :return str: *image_file*
     
     The HDF5 file could be a NeXus file, or some other layout.
-    '''
+    """
 
     # replace masked data with min good value
     image_data = numpy.ma.masked_less_equal(image, 0)
@@ -116,7 +116,7 @@ def xy_plot(
         hsize=PLOT_H_INT, 
         vsize=PLOT_V_INT, 
         timestamp_str=None):
-    r'''
+    r"""
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
     
     :param [float] x: horizontal axis data
@@ -141,7 +141,7 @@ def xy_plot(
         Here's the fix used in this module:
         http://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
 
-    '''
+    """
     fig = matplotlib.figure.Figure(figsize=(hsize, vsize))
     fig.clf()
 

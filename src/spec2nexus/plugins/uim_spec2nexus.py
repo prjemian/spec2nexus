@@ -11,15 +11,15 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 **#UIM** : Image header information from EPICS areaDetector
 
 :deprecated: in favor of UXML
-'''
+"""
 
 # TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
 
-'''
+"""
 #UIM Image header information from areaDetector
 #UIM UIMR: ROI information, UIMC: image counter setup
 #UIM Center pixel: 206 85
@@ -39,12 +39,13 @@
 #UIMC8 imsca2 2 MaxValue
 #UIMC9 imsca3 3 MaxValue
 #UIMC10 imsca4 4 MaxValue
-'''
+"""
 
 from spec2nexus.plugin import ControlLineHandler
 
 class UIM_generic(ControlLineHandler):
-    '''**#UIM** -- various image header information'''
+
+    """**#UIM** -- various image header information"""
 
     key = '#UIM\w*'
     

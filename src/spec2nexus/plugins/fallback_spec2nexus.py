@@ -11,9 +11,9 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 Fallback handling for any SPEC data file control lines not recognized by other handlers
-'''
+"""
 
 from collections import OrderedDict
 from spec2nexus.plugin import ControlLineHandler
@@ -21,7 +21,8 @@ from spec2nexus.eznx import makeGroup
 from spec2nexus.spec import SpecDataFileHeader, UNRECOGNIZED_KEY, SpecDataFileScan
 
 class UnrecognizedControlLine(ControlLineHandler):
-    '''unrecognized control line'''
+    
+    """unrecognized control line"""
 
     key = UNRECOGNIZED_KEY
 
@@ -34,7 +35,7 @@ class UnrecognizedControlLine(ControlLineHandler):
             spec_obj.addH5writer(self.key, self.writer)
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
-        '''write the data in a NeXus group named ``unrecognized``'''
+        """write the data in a NeXus group named ``unrecognized``"""
         desc = "SPEC data file control lines not otherwise recognized"
         nxclass = 'NXnote'
         group = makeGroup(h5parent, 'unrecognized', nxclass, description=desc)

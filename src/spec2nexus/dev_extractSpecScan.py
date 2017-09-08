@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
-'''developer test for extractSpecScan'''
+"""developer test for extractSpecScan"""
 
 # TODO: fold into the unit test suite
 

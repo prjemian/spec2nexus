@@ -10,7 +10,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-'''
+"""
 Plot the data from scan N in a SPEC data file
 
 .. autosummary::
@@ -30,7 +30,7 @@ Exceptions:
     ~ScanAborted
     ~UnexpectedObjectTypeError
 
-'''
+"""
 
 import os
 import numpy
@@ -38,7 +38,6 @@ import numpy
 from spec2nexus import charts
 from spec2nexus import spec             # read SPEC data files
 from spec2nexus import singletons
-import spec2nexus.spec
 from spec2nexus import utils
 
 
@@ -62,7 +61,7 @@ ABORTED_ATTRIBUTE_TEXT = '_aborted_'
 
 
 class Selector(singletons.Singleton):
-    '''
+    """
     associate SPEC scan macro names with image makers
     
     :image maker: subclass of :class:`ImageMaker`
@@ -102,7 +101,7 @@ class Selector(singletons.Singleton):
         ~exists
         ~default
 
-    '''
+    """
     default_key = '__default__'
     
     def __init__(self):
@@ -110,7 +109,7 @@ class Selector(singletons.Singleton):
         self.add(self.default_key, LinePlotter, default=True)
     
     def auto(self, scan):
-        '''
+        """
         automatically choose a scan image maker based on the SPEC scan macro
         
         Selection Rules:
@@ -118,8 +117,8 @@ class Selector(singletons.Singleton):
         * macro ends with "scan": use :class:`LinePlotter`
         * macro ends with "mesh": use :class:`MeshPlotter`
         * default: use default image maker (initially :class:`LinePlotter`)
-        '''
-        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
+        """
+        if not isinstance(scan, (spec.SpecDataFileScan, )):
             msg = 'expected a SPEC scan object, received: '
             msg += str(scan)
             raise UnexpectedObjectTypeError(msg)
@@ -142,13 +141,13 @@ class Selector(singletons.Singleton):
         return image_maker
     
     def add(self, key, value, default=False):
-        '''
+        """
         register a new value by key
         
         :param str key: name of key, typically the macro name
         :raises KeyError: if key exists
         :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
-        '''
+        """
         if self.exists(key):
             raise KeyError('key exists: ' + key)
         if not issubclass(value, ImageMaker):
@@ -163,13 +162,13 @@ class Selector(singletons.Singleton):
         return value
     
     def update(self, key, value, default=False):
-        '''
+        """
         replace an existing key with a new value
         
         :param str key: name of key, typically the macro name
         :raises KeyError: if key does not exist
         :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
-        '''
+        """
         if not self.exists(key):
             raise KeyError('key does not exist: ' + key)
         if not issubclass(value, ImageMaker):
@@ -184,28 +183,28 @@ class Selector(singletons.Singleton):
         return value
     
     def get(self, key):
-        '''
+        """
         return a value by key
         
         :returns: subclass of :class:`ImageMaker` or `None` if key not found
-        '''
+        """
         return self.db.get(key)
     
     def exists(self, key):
-        '''
+        """
         is the key known? 
-        '''
+        """
         return key in self.db
     
     def default(self):
-        '''
+        """
         retrieve the value of the default key 
-        '''
+        """
         return self.get(self.default_key)
 
 
 class ImageMaker(object):
-    r'''
+    r"""
     superclass to handle plotting of data from a SPEC scan
     
     .. rubric:: Internal data model
@@ -232,15 +231,15 @@ class ImageMaker(object):
     ::
 
         class LinePlotter(ImageMaker):
-            'create a line plot'
+            '''create a line plot'''
             
             def make_image(self, plotFile):
-                """
+                '''
                 make MatPlotLib chart image from the SPEC scan
                 
                 :param obj plotData: object returned from :meth:`retrieve_plot_data`
                 :param str plotFile: name of image file to write
-                """
+                '''
                 assert(self.signal in self.data)
                 assert(len(self.axes) == 1)
                 assert(self.axes[0] in self.data)
@@ -261,7 +260,7 @@ class ImageMaker(object):
         plotter = LinePlotter()
         plotter.plot_scan(scan, plotFile, y_log=True)
     
-    '''
+    """
 
     def __init__(self):
         self.scan = None
@@ -274,16 +273,16 @@ class ImageMaker(object):
     # support methods that a subclass might override
 
     def data_file_name(self):
-        '''
+        """
         the name of the file with the actual data
         
         Usually, this is the SPEC data file
         but it *could* be something else
-        '''
+        """
         return self.scan.header.parent.fileName  # self.scan.specFile
 
     def make_image(self, plotFile):
-        '''
+        """
         make MatPlotLib chart image from the SPEC scan
         
         The data to be plotted are provided in:
@@ -293,23 +292,23 @@ class ImageMaker(object):
         * `self.data`
         
         :param str plotFile: name of image file to write
-        '''
+        """
         raise NotImplementedError('must implement make_image() in each subclass')
     
     def plottable(self):
-        '''
+        """
         can this data be plotted as expected?
-        '''
+        """
         return False    # override in subclass with specific tests
     
     def plot_options(self):
-        '''
+        """
         re-define any plot options in a subclass 
-        '''
+        """
         pass
     
     def retrieve_plot_data(self):
-        '''
+        """
         retrieve default plottable data from spec data file and store locally
         
         This method must retrieve the data to be plotted, either from the
@@ -340,14 +339,14 @@ class ImageMaker(object):
             ~NotPlottable
             ~ScanAborted
 
-        '''
+        """
         raise NotImplementedError('must implement retrieve_plot_data() in each subclass')
          
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # support methods that will not need to be defined in a subclass
     
     def data_is_newer_than_plot(self, plotFile):
-        '''only proceed if mtime of SPEC data file is newer than plotFile'''
+        """only proceed if mtime of SPEC data file is newer than plotFile"""
         mtime_sdf = os.path.getmtime(self.data_file_name())
         if os.path.exists(plotFile):
             mtime_pf = os.path.getmtime(plotFile)
@@ -357,13 +356,13 @@ class ImageMaker(object):
         return mtime_sdf > mtime_pf
 
     def plot_scan(self, scan, plotFile, maker=None):
-        '''
+        """
         make an image plot of the data in the scan
 
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         :param str plotFile: file name for plot output
-        '''
-        if not isinstance(scan, (spec.SpecDataFileScan, spec2nexus.spec.SpecDataFileScan)):
+        """
+        if not isinstance(scan, (spec.SpecDataFileScan, )):
             raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
         if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
             match_text = 'Scan aborted after 0 points.'
@@ -394,12 +393,12 @@ class ImageMaker(object):
     # support the self.settings dictionary with get & set methods
     
     def _initialize_settings_(self):
-        '''
+        """
         initial values are set to `None`
         
         subclasses that set a value should first check if the value has already been set
         unless explicitly replacing any customizations by the user
-        '''
+        """
         return dict(
             title = None,
             subtitle = None,
@@ -477,16 +476,16 @@ class ImageMaker(object):
 
 
 class LinePlotter(ImageMaker):
-    '''
+    """
     create a line plot
-    '''
+    """
 
     def make_image(self, plotFile):
-        '''
+        """
         make MatPlotLib chart image from the SPEC scan
         
         :param str plotFile: name of image file to write
-        '''
+        """
         assert(self.signal in self.data)
         assert(len(self.axes) == 1)
         assert(self.axes[0] in self.data)
@@ -508,9 +507,9 @@ class LinePlotter(ImageMaker):
             timestamp_str = ts)
 
     def plottable(self):
-        '''
+        """
         can this data be plotted as expected?
-        '''
+        """
         if self.signal in self.data:
             signal = self.data[self.signal]
             if signal is not None and len(signal) > 0 and len(self.axes) == 1:
@@ -519,9 +518,9 @@ class LinePlotter(ImageMaker):
         return False
     
     def plot_options(self):
-        '''
+        """
         define the settings for this, accepting any non-default values first
-        '''
+        """
         self.x_title() or self.set_x_title(self.axes[0])
         self.y_title() or self.set_y_title(self.signal)
         self.x_log() or self.set_x_log(False)
@@ -529,9 +528,9 @@ class LinePlotter(ImageMaker):
         self.set_z_log(False)
     
     def retrieve_plot_data(self):
-        '''retrieve default data from spec data file'''
+        """retrieve default data from spec data file"""
         # plot last column v. first column
-        assert(isinstance(self.scan, spec2nexus.spec.SpecDataFileScan))
+        assert(isinstance(self.scan, spec.SpecDataFileScan))
         self.signal = self.scan.column_last
         if self.signal not in self.scan.data:
             raise NoDataToPlot(str(self.scan))
@@ -540,12 +539,12 @@ class LinePlotter(ImageMaker):
 
 
 class HKLScanPlotter(LinePlotter):
-    '''
+    """
     create a line plot from hklscan macros
-    '''
+    """
 
     def retrieve_plot_data(self):
-        '''retrieve default data from spec data file'''
+        """retrieve default data from spec data file"""
         # standard hklscan macro handling
         # find the real scan axis, the one that changes
         for axis in 'H K L'.split():
@@ -577,7 +576,7 @@ class HKLScanPlotter(LinePlotter):
 
 
 class MeshPlotter(ImageMaker):
-    '''
+    """
     create a mesh plot (2-D image)
 
     ..rubric:: References:
@@ -594,15 +593,15 @@ class MeshPlotter(ImageMaker):
         
             hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time 
                
-    '''
+    """
     # see code in: writer.Writer.mesh()        self._mesh_(scan)
 
     def make_image(self, plotFile):
-        '''
+        """
         make MatPlotLib chart image from the SPEC scan
         
         :param str plotFile: name of image file to write
-        '''
+        """
         if len(self.axes) == 2:
             image = self.data[self.signal]
             self.set_plot_subtitle(
@@ -640,9 +639,9 @@ class MeshPlotter(ImageMaker):
                 timestamp_str = self.timestamp())
     
     def plottable(self):
-        '''
+        """
         can this data be plotted as expected?
-        '''
+        """
         try:
             assert(self.signal in self.data)
             signal = numpy.array(self.data[self.signal])
@@ -655,9 +654,9 @@ class MeshPlotter(ImageMaker):
         return True
     
     def plot_options(self):
-        '''
+        """
         define the settings for this, accepting any non-default values first
-        '''
+        """
         if len(self.axes) == 1:
             self.x_title() or self.set_x_title(self.axes[0])
             self.y_title() or self.set_y_title(self.signal)
@@ -669,10 +668,10 @@ class MeshPlotter(ImageMaker):
         self.z_log() or self.set_z_log(False)
 
     def retrieve_plot_data(self):
-        '''retrieve default data from spec data file'''
-        '''
+        """retrieve default data from spec data file
+        
         data parser for 2-D mesh and hklmesh
-        '''
+        """
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = self.scan.scanCmd.split()[1:]
         if label1 not in self.scan.data:
             label1 = self.scan.L[0]      # mnemonic v. name
@@ -731,27 +730,27 @@ class MeshPlotter(ImageMaker):
 
 
 # class NeXusPlotter(ImageMaker):    # TODO: issue #92
-#     '''
+#     """
 #     create a plot from a NeXus HDF5 data file
-#     '''
+#     """
 #     
 #     def retrieve_plot_data(self):
-#         '''retrieve default data from spec data file'''
+#         """retrieve default data from spec data file"""
 #         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 # 
 #     def make_image(self, plotFile):
-#         '''
+#         """
 #         make image file from the SPEC scan
 #         
 #         :param str plotFile: name of image file to write
-#         '''
+#         """
 #         raise NotImplementedError(self.__class__.__name__ + '() is not ready')
 
 
 def openSpecFile(specFile):
-    '''
+    """
     convenience routine so that others do not have to `import spec2nexus.spec`
-    '''
+    """
     sd = spec.SpecDataFile(specFile)
     return sd
 

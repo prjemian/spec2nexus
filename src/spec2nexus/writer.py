@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------
 
 
-'''(internal library) Parses SPEC data using spec2nexus.eznx API (only requires h5py)'''
+"""(internal library) Parses SPEC data using spec2nexus.eznx API (only requires h5py)"""
 
 
 import h5py
@@ -35,17 +35,18 @@ CONTAINER_CLASS = 'NXnote'         # any additional freeform information not cov
 
 
 class Writer(object):
-    '''
+    
+    """
     writes out scans from SPEC data file to NeXus HDF5 file
     
     :param obj spec_data: instance of :class:`~spec2nexus.spec.SpecDataFile`
-    '''
+    """
 
     def __init__(self, spec_data):
         self.spec = spec_data
         
-    def save(self, hdf_file, scan_list=[]):
-        '''
+    def save(self, hdf_file, scan_list=None):
+        """
         save the information in this SPEC data file to a NeXus HDF5 file
         
         Each scan in scan_list will be converted to a **NXentry** group.  
@@ -75,7 +76,8 @@ class Writer(object):
         
         :param str hdf_file: name of NeXus/HDF5 file to be written
         :param [int] scanlist: list of scan numbers to be read
-        '''
+        """
+        scan_list = scan_list or []
         root = eznx.makeFile(hdf_file, **self.root_attributes())
         pick_first_entry = True
         for key in scan_list:
@@ -114,7 +116,7 @@ class Writer(object):
         root.close()    # be CERTAIN to close the file
     
     def root_attributes(self):
-        '''*internal*: returns the attributes to be written to the root element as a dict'''
+        """*internal*: returns the attributes to be written to the root element as a dict"""
         from spec2nexus._version import get_versions
         version = get_versions()['version']
         header0 = self.spec.headers[0]
@@ -138,7 +140,7 @@ class Writer(object):
         return dd
     
     def save_scan(self, nxentry, scan):
-        '''*internal*: save the data from each SPEC scan to its own NXentry group'''
+        """*internal*: save the data from each SPEC scan to its own NXentry group"""
         scan.interpret()        # ensure interpretation is complete
         eznx.addAttributes(nxentry, default="data")
         eznx.write_dataset(nxentry, "title", str(scan))
@@ -152,12 +154,12 @@ class Writer(object):
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
 
     def save_dict(self, group, data):
-        '''*internal*: store a dictionary'''
+        """*internal*: store a dictionary"""
         for k, v in data.items():
             self.write_ds(group, k, v)
 
     def save_data(self, nxdata, scan):
-        '''*internal*: store the scan data'''
+        """*internal*: store the scan data"""
         scan_type = scan.scanCmd.split()[0]
 
         signal, axes = '', ['',]
@@ -195,7 +197,7 @@ class Writer(object):
                 eznx.addAttributes(nxdata, **{axis_name+'_indices': indices})
     
     def oneD(self, nxdata, scan):
-        '''*internal*: generic data parser for 1-D column data, returns signal and axis'''
+        """*internal*: generic data parser for 1-D column data, returns signal and axis"""
         for column in scan.L:
             self.write_ds(nxdata, column, scan.data[column])
 
@@ -205,7 +207,7 @@ class Writer(object):
         return signal, axis
     
     def mca_spectra(self, nxdata, scan, primary_axis_label):
-        '''*internal*: parse for optional 2-D MCA spectra'''
+        """*internal*: parse for optional 2-D MCA spectra"""
         if spec.MCA_DATA_KEY in scan.data:
             # calibration for all spectra
             a, b, c = 0, 0, 0
@@ -234,7 +236,7 @@ class Writer(object):
                 self.write_ds(nxdata, ds_name + 'channel_', channels, units = 'channel')
     
     def mesh(self, nxdata, scan):
-        '''*internal*: data parser for 2-D mesh and hklmesh'''
+        """*internal*: data parser for 2-D mesh and hklmesh"""
         # TODO: refactor to use NeXus data model: signal, axes, data
         
         # 2-D parser: http://www.certif.com/spec_help/mesh.html
@@ -299,6 +301,6 @@ class Writer(object):
         return signal, axes
     
     def write_ds(self, group, label, data, **attr):
-        '''*internal*: writes a dataset to the HDF5 file, records the SPEC name as an attribute'''
+        """*internal*: writes a dataset to the HDF5 file, records the SPEC name as an attribute"""
         clean_name = utils.clean_name(label)
         eznx.write_dataset(group, clean_name, data, spec_name=label, **attr)

@@ -129,7 +129,7 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
 
 
 def debugging_setup():
-    import os, sys
+    import sys
     import shutil
     sys.path.insert(0, os.path.join('..', 'src'))
     path = '__usaxs__'

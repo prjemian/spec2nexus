@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
-'''developer test for h5toText'''
+"""developer test for h5toText"""
 
 # TODO: fold into the unit test suite
 
