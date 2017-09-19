@@ -26,4 +26,5 @@ YSZ011_ALDITO_Fe2O3_planar_fired_1.spc  SPEC scans  1-D scans, text in #V metada
 03_06_JanTest.dat                       SPEC scans  1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines
 user6idd.dat                            SPEC scans  1-D scans, aborted scan, control lines:  #R #UB #UE #UX #UX1 #UX2 #X, 
                                                     non-default format in #X lines
+spec_from_spock.spc                     SPEC scans  no header section, uses "nan", from sardana
 ======================================  ==========  ==========================================================================
