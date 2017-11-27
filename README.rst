@@ -43,6 +43,8 @@ Package Information
       :target: https://coveralls.io/github/prjemian/spec2nexus?branch=master
 
 * **release badges**:
+   .. image:: https://img.shields.io/pypi/pyversions/spec2nexus.svg
+      :target: https://pypi.python.org/pypi/spec2nexus
    .. image:: https://img.shields.io/github/tag/prjemian/spec2nexus.svg
       :target: https://github.com/prjemian/spec2nexus/tags
    .. image:: https://img.shields.io/github/release/prjemian/spec2nexus.svg
