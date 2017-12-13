@@ -51,9 +51,9 @@ class Issue119(unittest.TestCase):
         self.assertTrue(hasattr(scan.header, "H"))
         scan.interpret()
         self.assertTrue(hasattr(scan, "metadata"))
-        self.assertTrue("DCM_energy" in scan["metadata"])
-        self.assertGreaterThan(len(scan.metadata), 15)
-        self.assertTrue("DCM_lambda" in scan["metadata"])
+        self.assertTrue("DCM_energy" in scan.metadata)
+        self.assertGreater(len(scan.metadata), 15)
+        self.assertTrue("DCM_lambda" in scan.metadata)
 
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
 
@@ -61,7 +61,7 @@ class Issue119(unittest.TestCase):
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        Issue107,
+        Issue119,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
