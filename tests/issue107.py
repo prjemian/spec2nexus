@@ -51,7 +51,7 @@ class Issue107(unittest.TestCase):
         self.assertTrue(hasattr(scan.header, "H"))
         scan.interpret()
         self.assertTrue(hasattr(scan, "metadata"))
-        self.assertEqual(len(scan.metadata), 135)
+        self.assertEqual(len(scan.metadata), 140)
 
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
 

@@ -19,6 +19,7 @@ in the scans using #H/#V pairs of labels/values.
 """
 
 
+import re
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word, split_column_labels
 from spec2nexus import eznx
@@ -52,7 +53,8 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
     key = '#H\d+'
     
     def process(self, text, spec_obj, *args, **kws):
-        spec_obj.H.append( strip_first_word(text).split() )
+        labels = strip_first_word(text).split()
+        spec_obj.H.append(labels)
 
 
 class UNICAT_MetadataValues(ControlLineHandler):
@@ -87,7 +89,14 @@ class UNICAT_MetadataValues(ControlLineHandler):
     key = '#V\d+'
     
     def process(self, text, scan, *args, **kws):
-        scan.V.append(split_column_labels(strip_first_word(text)))
+        index = len(scan.V)
+        row_text =  strip_first_word(text)
+        for delimiter in (r" "*2, r" "):
+            values = re.split(delimiter, row_text)
+            if len(scan.header.H[index]) == len(values):
+                    break
+        # issue #107: values = split_column_labels(row_text)
+        scan.V.append(values)
         scan.addPostProcessor('unicat_metadata', self.postprocess)
     
     def postprocess(self, scan, *args, **kws):

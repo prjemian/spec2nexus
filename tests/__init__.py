@@ -36,6 +36,7 @@ def suite(*args, **kw):
     from tests import issue64
     from tests import issue99_hklscan
     from tests import issue107
+    from tests import issue119
     test_suite = unittest.TestSuite()
     test_list = [
         data_03_06_JanTest,
