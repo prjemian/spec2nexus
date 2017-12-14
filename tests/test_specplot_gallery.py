@@ -153,7 +153,7 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(plotDir, '02_03_setup.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
      
-    def test_command_line_spec_data_file_list_reversed_chrological_issue_79(self):
+    def test_command_line_spec_data_file_list_reversed_chronological_issue_79(self):
         sys.argv.append('-r')
         sys.argv.append('-d')
         self.assertTrue(os.path.exists(self.tempdir))
