@@ -78,7 +78,10 @@ class SPEC_Epoch(ControlLineHandler):
     def process(self, buf, scan, *args, **kws):
         header = SpecDataFileHeader(buf, parent=scan)
         line = buf.splitlines()[0].strip()
-        header.epoch = int(strip_first_word(line))
+        if line.find(".") > -1:
+            header.epoch = float(strip_first_word(line))
+        else:
+            header.epoch = int(strip_first_word(line))
         header.interpret()                  # parse the full header
         scan.headers.append(header)
 
