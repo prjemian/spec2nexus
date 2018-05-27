@@ -133,7 +133,7 @@ def openGroup(parent, name, nx_class, **attr):
 
 
 def makeDataset(parent, name, data = None, **attr):
-    """
+    '''
     create and write data to a dataset in the HDF5 file hierarchy
     
     Any named parameters in the call to this method 
@@ -144,18 +144,23 @@ def makeDataset(parent, name, data = None, **attr):
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
     :return: h5py dataset object
-    """
+    '''
     if data is None:
         obj = parent.create_dataset(name)
     else:
-        if isinstance(data, six.string_types):
-            data = data.encode("ascii", "ignore")
-        elif isinstance(data, float) or isinstance(data, int):
-            data = [data,]
-        obj = parent.create_dataset(name, data=data)
+        # storing-a-list-of-strings-to-a-hdf5-dataset-from-python
+        # https://stackoverflow.com/questions/23220513/
+        # [n.encode("ascii", "ignore") for n in data]
+        def encoder(value):
+            if isinstance(value, six.string_types):
+                return value.encode("ascii", "ignore")
+            return value
+
+        if not isinstance(data, (tuple, list)):
+            data = [data, ]
+        obj = parent.create_dataset(name, data=list(map(encoder, data)))
     addAttributes(obj, **attr)
     return obj
-
 
 def write_dataset(parent, name, data, **attr):
     """write to the NeXus/HDF5 dataset, create it if necessary, return the object
@@ -220,7 +225,7 @@ def addAttributes(parent, **attr):
     :param obj parent: h5py parent object
     :param dict attr: optional dictionary of attributes
     """
-    if attr and type(attr) == type({}):
+    if isinstance(attr, dict):
         # attr is a dictionary of attributes
         for k, v in attr.items():
             parent.attrs[k] = v
