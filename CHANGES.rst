@@ -9,6 +9,8 @@ Production
 
 :pending:
 
+    * `#120 <https://github.com/prjemian/spec2nexus/issues/120>`_
+       do not mock `six` package in documentation
     * `#119 <https://github.com/prjemian/spec2nexus/issues/119>`_
        delimiters in #H/#V lines with or without text values
 
