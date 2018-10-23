@@ -14,9 +14,10 @@ from sphinx.cmd import build
 
 def main():
     options = """
-    -b html -d {builddir}/doctrees {paperopt} {sphinxopts} source  {builddir}/html
+    -b html {sourcedir}  {builddir}/html {sphinxopts}
     """.format(
-        builddir=os.getcwd(),
+        sourcedir="source",
+        builddir=os.path.join(os.getcwd(), "build"),
         paperopt="-D latex_paper_size=letter",
         sphinxopts="",
         ).strip()
