@@ -36,9 +36,9 @@ Package Information
 
 ..  see http://shields.io/ for more badge ideas
 
-* **citation**
-  .. image:: https://zenodo.org/badge/16967699.svg
-     :target: https://zenodo.org/badge/latestdoi/16967699
+* **citation**:
+   .. image:: https://zenodo.org/badge/16967699.svg
+      :target: https://zenodo.org/badge/latestdoi/16967699
 
 * **build badges**:
    .. image:: https://travis-ci.org/prjemian/spec2nexus.svg?branch=master
