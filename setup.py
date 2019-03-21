@@ -4,7 +4,7 @@
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2015, Pete R. Jemian
+# :copyright: (c) 2014-2019, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -19,12 +19,13 @@ import sys
 import versioneer
 
 # pull in some definitions from the package's __init__.py file
-sys.path.insert(0, os.path.join('src', ))
+basedir = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(basedir, 'src', ))
 import spec2nexus
 
 
 verbose=1
-long_description = open('README.rst', 'r').read()
+long_description = open(os.path.join(basedir, 'README.md'), 'r').read()
 
 
 setup (
