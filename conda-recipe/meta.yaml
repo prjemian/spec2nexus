@@ -1,0 +1,56 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+{% set name = data.get('name') %}
+{% set version = data.get('version') %}
+{% set url = data.get('url') %}
+{% set description = data.get('description') %}
+{% set keywords = data.get('keywords') %}
+{% set license = data.get('license') %}
+
+source:
+  path: ../
+
+about:
+  home: "{{ url }}"
+  license_file: src/{{ name }}/LICENSE.txt
+  license_family: CC
+  license: "{{ license }}"
+  summary: "{{ description }}"
+  keywords: "{{ keywords }}"
+
+package:
+    name: "{{ name|lower }}"
+    version: "{{ version }}"
+
+build:
+  noarch: python
+  script: python setup.py install
+
+requirements:
+  
+  build:
+    - python
+    - setuptools
+    - h5py
+    - numpy
+    - matplotlib
+    - six
+
+  run:
+    - python
+    - h5py
+    - numpy
+    - matplotlib
+    - six
+
+test:
+
+  imports:
+    - spec2nexus
+
+  commands:
+    - spec2nexus --help
+    - python run_test.py
+
+extra:
+  recipe-maintainers:
+    - prjemian

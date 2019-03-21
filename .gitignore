@@ -9,6 +9,7 @@ release.txt
 
 # builds of conda recipes for distribution
 conda-packages
+build_log.txt
 
 # C extensions
 *.so
