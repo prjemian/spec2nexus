@@ -45,7 +45,7 @@ Package Information
 -   **Release Notes**:
     <https://github.com/prjemian/spec2nexus/wiki/Release-Notes>
 
-<!-- -->
+
 
 -   **citation**:
     [![image](https://zenodo.org/badge/16967699.svg)](https://zenodo.org/badge/latestdoi/16967699)
