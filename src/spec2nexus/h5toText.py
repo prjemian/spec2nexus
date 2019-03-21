@@ -127,7 +127,7 @@ class H5toText(object):
         """return a [formatted_string] with any attributes"""
         s = []
         if self.show_attributes:
-            for name, value in obj.attrs.iteritems():
+            for name, value in obj.attrs.items():
                 s.append("%s  @%s = %s" % (indentation, name, str(value)))
         return s
 
