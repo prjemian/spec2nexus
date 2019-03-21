@@ -47,13 +47,10 @@ Package Information
 -   **citation**:
     [![image](https://zenodo.org/badge/16967699.svg)](https://zenodo.org/badge/latestdoi/16967699)
 
--   
+-   **build badges**:
 
-    **build badges**:
-
-    :   [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
-
-        [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)
+    [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
+    [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)
 
 -   
 
