@@ -14,6 +14,10 @@ Production
     * `#119 <https://github.com/prjemian/spec2nexus/issues/119>`_
        delimiters in #H/#V lines with or without text values
 
+:2019.0321.0: (tag)
+
+    * tag as-is, post conda noarch package and post to pypi
+
 :2017.901.4:
 
     * `#62 <https://github.com/prjemian/spec2nexus/issues/62>`_
