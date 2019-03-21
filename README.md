@@ -48,30 +48,16 @@ Package Information
     [![image](https://zenodo.org/badge/16967699.svg)](https://zenodo.org/badge/latestdoi/16967699)
 
 -   **build badges**:
-
     [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
     [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)
 
--   
+-   **release badges**:
+    [![image](https://img.shields.io/pypi/pyversions/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus)
+    [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)
+    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
+    [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)
+    [![image](https://anaconda.org/prjemian/spec2nexus/badges/version.svg)](https://anaconda.org/prjemian/spec2nexus)
 
-    **release badges**:
-
-    :   [![image](https://img.shields.io/pypi/pyversions/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus)
-
-        [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)
-
-        [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
-
-        [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)
-
-        [![image](https://anaconda.org/prjemian/spec2nexus/badges/version.svg)](https://anaconda.org/prjemian/spec2nexus)
-
--   
-
-    **community badges**
-
-    :   [![image](http://depsy.org/api/package/pypi/spec2nexus/badge.svg)](http://depsy.org/package/python/spec2nexus)
-
-        [![Join the chat at https://gitter.im/spec2nexus/Lobby](https://badges.gitter.im/spec2nexus/Lobby.svg)](https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-
+-   **community badges**
+    [![image](http://depsy.org/api/package/pypi/spec2nexus/badge.svg)](http://depsy.org/package/python/spec2nexus)
+    [![Join the chat at https://gitter.im/spec2nexus/Lobby](https://badges.gitter.im/spec2nexus/Lobby.svg)](https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
