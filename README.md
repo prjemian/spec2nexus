@@ -59,7 +59,10 @@ Package Information
     [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)
     [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
     [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)
-    [![image](https://anaconda.org/prjemian/spec2nexus/badges/version.svg)](https://anaconda.org/prjemian/spec2nexus)
+    [x
+    ![image]
+    x(https://anaconda.org/prjemian/spec2nexus/badges/version.svg)
+    x](https://anaconda.org/prjemian/spec2nexus)
 
 -   **community badges**
     [![image](http://depsy.org/api/package/pypi/spec2nexus/badge.svg)](http://depsy.org/package/python/spec2nexus)
