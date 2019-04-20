@@ -49,3 +49,5 @@ class MD_apstools(ControlLineHandler):
         value = text[p+1:].strip()
         # TODO: try to interpret as other than text?  ... Not yet.
         spec_obj.MD[key] = value
+        
+    # TODO: write to NeXus HDF5 file
