@@ -26,6 +26,7 @@ spec_from_spock.spc                     SPEC scans  no header section, uses "nan
 startup_1.spec                          SPEC scans  1-D scans with SCA spectra & UXML headers for RSM code
 user6idd.dat                            SPEC scans  1-D scans, aborted scan, control lines:  #R #UB #UE #UX #UX1 #UX2 #X, 
                                                     non-default format in #X lines
+usaxs-bluesky-specwritercallback.dat    SPEC scans  1-D scans, #MD control lines
 writer_1_3.h5                           NeXus HDF5  1-D NeXus User Manual example
 YSZ011_ALDITO_Fe2O3_planar_fired_1.spc  SPEC scans  1-D scans, text in #V metadata, also has #UIM control lines
 ======================================  ==========  ==========================================================================
