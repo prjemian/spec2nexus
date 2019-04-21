@@ -12,7 +12,8 @@ unit tests for a specific data file
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-# import h5py
+from collections import OrderedDict
+import h5py
 import os
 import sys
 import unittest
@@ -22,7 +23,7 @@ if _path not in sys.path:
     sys.path.insert(0, _path)
 
 import spec2nexus
-from spec2nexus import spec     #, writer
+from spec2nexus import spec, writer
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _test_path not in sys.path:
@@ -58,53 +59,44 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
         self.assertTrue(isinstance(specfile, spec2nexus.spec.SpecDataFile), file1)
         
         for scan_num, scan in specfile.scans.items():
-            msg = "Scan %s test for MD" % scan_num
+            msg = "Scan %s MD test" % scan_num
             scan.interpret()    # force lazy-loader to parse this scan
             self.assertTrue(hasattr(scan, "MD"), msg)
+            self.assertTrue(isinstance(scan.MD, OrderedDict), msg)
+            self.assertGreater(len(scan.MD), 0, msg)
         
-        # TODO: put the metadata into a NeXus file
+        # test the metadata in a NeXus file
 
-#         specwriter = writer.Writer(specfile)
-#         self.assertTrue(isinstance(specwriter, spec2nexus.writer.Writer), file1)
-#         
-#         specwriter.save(hfile, sorted(specfile.getScanNumbers()))
-#         self.assertTrue(os.path.exists(hfile))
-#         
-#         def subgroup_list(parent, nxclass):
-#             children = []
-#             for item in sorted(parent):
-#                 obj = parent[item]
-#                 if isinstance(obj, h5py.Group):
-#                     if obj.attrs.get('NX_class', '') == nxclass:
-#                         children.append(obj)
-#             return children
-#         
-#         fp = h5py.File(hfile, 'r')
-#         self.assertTrue(isinstance(fp, h5py.File), hfile)
-#         nxentry_groups = subgroup_list(fp, 'NXentry')
-#         self.assertGreater(len(nxentry_groups), 0)
-#         for nxentry in nxentry_groups:
-#             nxdata_groups = subgroup_list(nxentry, 'NXdata')
-#             self.assertGreater(len(nxdata_groups), 0)
-#             for nxdata in nxdata_groups:
-#                 signal = nxdata.attrs.get('signal')
-#                 self.assertTrue(signal in nxdata)
-# 
-#         default = fp.attrs.get('default')
-#         self.assertTrue(default in fp)
-#         nxentry = fp[default]
-# 
-#         default = nxentry.attrs.get('default')
-#         self.assertTrue(default in nxentry)
-#         nxdata = nxentry[default]
-# 
-#         signal = nxdata.attrs.get('signal')
-#         self.assertTrue(signal in nxdata)
-# 
-#         fp.close()
-# 
-#         os.remove(hfile)
-#         self.assertFalse(os.path.exists(hfile))
+        specwriter = writer.Writer(specfile)
+        self.assertTrue(isinstance(specwriter, spec2nexus.writer.Writer), file1)
+         
+        specwriter.save(hfile, sorted(specfile.getScanNumbers()))
+        self.assertTrue(os.path.exists(hfile))
+         
+        def subgroup_list(parent, nxclass):
+            children = []
+            for item in sorted(parent):
+                obj = parent[item]
+                if isinstance(obj, h5py.Group):
+                    if obj.attrs.get('NX_class', '') == nxclass:
+                        children.append(obj)
+            return children
+         
+        fp = h5py.File(hfile, 'r')
+        for nxentry in subgroup_list(fp, 'NXentry'):
+            # nxinstrument_groups = subgroup_list(nxentry, 'NXinstrument')
+            # self.assertEqual(len(nxinstrument_groups), 1)
+            # nxinstrument = nxinstrument_groups[0]
+
+            nxcollection_groups = subgroup_list(nxentry, 'NXcollection')
+            self.assertGreater(len(nxcollection_groups), 0)
+            md_group = nxentry.get("bluesky_metadata")
+            self.assertIsNotNone(md_group, "bluesky_metadata in NeXus file")
+ 
+        fp.close()
+ 
+        os.remove(hfile)
+        self.assertFalse(os.path.exists(hfile))
 
 
 def suite(*args, **kw):
