@@ -31,8 +31,9 @@
 #MD tune_parameters = {'num': 31, 'width': -0.004, 'initial_position': 8.824885, 'peak_choice': 'com', 'x_axis': 'm_stage_r', 'y_axis': 'I0_USAXS'}
 """
 
-from spec2nexus.plugin import ControlLineHandler
 from collections import OrderedDict
+from spec2nexus.plugin import ControlLineHandler
+from spec2nexus import eznx
 
 class MD_apstools(ControlLineHandler):
 
@@ -40,9 +41,9 @@ class MD_apstools(ControlLineHandler):
 
     key = '#MD\w*'
     
-    def process(self, text, spec_obj, *args, **kws):
-        if not hasattr(spec_obj, 'MD'):
-            spec_obj.MD = OrderedDict()
+    def process(self, text, scan, *args, **kws):
+        if not hasattr(scan, 'MD'):
+            scan.MD = OrderedDict()
 
         p = text.find("=")
         if p > len("# MD "):
@@ -51,8 +52,15 @@ class MD_apstools(ControlLineHandler):
             value = text[p+1:].strip()
         else:
             # badly-formed #MD control line
-            key = "MD_line_%d" % (len(spec_obj.MD)+1)
+            key = "MD_line_%d" % (len(scan.MD)+1)
             value = text.strip()
-        spec_obj.MD[key] = value
-        
-    # TODO: write to NeXus HDF5 file
+        scan.MD[key] = value
+        scan.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        """Describe how to store this data in an HDF5 NeXus file"""
+        nxclass = "NXcollection"
+        if hasattr(scan, 'MD') and len(scan.MD) > 0:
+            desc='Bluesky metadata (as written by apstools.SpecWriterCallback)'
+            group = eznx.makeGroup(h5parent, 'bluesky_metadata', nxclass, description=desc)
+            writer.save_dict(group, scan.MD)
