@@ -20,6 +20,7 @@
 #MD purpose = tuner
 #MD tune_md = {'width': -0.004, 'initial_position': 8.824885, 'time_iso8601': '2019-04-19 10:04:44.402643'}
 #MD tune_parameters = {'num': 31, 'width': -0.004, 'initial_position': 8.824885, 'peak_choice': 'com', 'x_axis': 'm_stage_r', 'y_axis': 'I0_USAXS'}
+#MD badly-formed MD control line
 #N 31
 #L Epoch_float  Epoch  seconds  I0_USAXS  I00_USAXS  PD_USAXS  TR diode  I000  scaler0_time  scaler0_display_rate  m_stage_r  m_stage_r_user_setpoint  m_stage_r_soft_limit_lo  m_stage_r_soft_limit_hi
 2.424184560775757 2 1000000.0 166.0 3110.0 1315.0 1.0 226.0 0.1 5.0 8.826885 8.826885 -7.856115 37.143885
