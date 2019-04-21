@@ -44,10 +44,15 @@ class MD_apstools(ControlLineHandler):
         if not hasattr(spec_obj, 'MD'):
             spec_obj.MD = OrderedDict()
 
-        key = text.split()[1]
         p = text.find("=")
-        value = text[p+1:].strip()
-        # TODO: try to interpret as other than text?  ... Not yet.
+        if p > len("# MD "):
+            # f"#MD {key} = {value}"
+            key = text.split()[1]
+            value = text[p+1:].strip()
+        else:
+            # badly-formed #MD control line
+            key = "MD_line_%d" % (len(spec_obj.MD)+1)
+            value = text.strip()
         spec_obj.MD[key] = value
         
     # TODO: write to NeXus HDF5 file
