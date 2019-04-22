@@ -9,12 +9,18 @@ Production
 
 :pending:
 
+    * `#131 <https://github.com/prjemian/spec2nexus/issues/131>`_
+       support #MD control lines from apstools.SpecWriterCallback
     * `#120 <https://github.com/prjemian/spec2nexus/issues/120>`_
        do not mock `six` package in documentation
     * `#119 <https://github.com/prjemian/spec2nexus/issues/119>`_
        delimiters in #H/#V lines with or without text values
 
-:2019.0321.0: (tag)
+:2019.0422.0: (tag only)
+
+    * tag as-is, for issue #131
+
+:2019.0321.0: (tag only)
 
     * tag as-is, post conda noarch package and post to pypi
 
