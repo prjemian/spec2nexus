@@ -662,27 +662,38 @@ class SPEC_UserReserved(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
+    * (SpecDataFileHeader): **UserReserved**, [*str*]
     * (SpecDataFileScan): **UserReserved**, [*str*]
     
     HDF5/NeXus REPRESENTATION
     
-    * Dataset named **UserReserved** in the *NXentry* group, such as */S1/UserReserved*
+    * Within a group named **UserReserved** in the *NXentry* group:
+      dataset(s) named **header_##** (from the SPEC data file header 
+      section) or **item_##** (from the SPEC data file scan section), 
+      such as */S1/UserReserved/header_1* and  */S1/UserReserved/item_5*
     """
 
     key = '#U'
     
-    def process(self, text, scan_or_header, *args, **kws):
+    def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
-        if not hasattr(scan_or_header, "UserReserved"):
-            scan_or_header.UserReserved = []
-        scan_or_header.UserReserved.append(text.strip())
+        if not hasattr(sdf_object, "UserReserved"):
+            sdf_object.UserReserved = []
+        sdf_object.UserReserved.append(text.strip())
 
-        scan_or_header.addH5writer(self.key, self.writer)
+        sdf_object.addH5writer(self.key, self.writer)
     
-    def writer(self, h5parent, writer, scan_or_header, *args, **kws):
+    def writer(self, h5parent, writer, sdf_object, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         desc = 'SPEC control line "#U: Reserved for user"'
-        write_dataset(h5parent, "UserReserved", scan_or_header.UserReserved, description = desc)
+        group = openGroup(h5parent, 'UserReserved', "NXnote", description=desc)
+        if isinstance(sdf_object, SpecDataFileHeader):
+            tag = "header"
+        else:
+            tag = "item"
+        for i, text in enumerate(sdf_object.UserReserved):
+            key = "%s_%d" % (tag, i+1)
+            write_dataset(group, key, text, description = "#U line %d" % (i+1))
 
 
 class SPEC_TemperatureSetPoint(ControlLineHandler):
