@@ -79,6 +79,7 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_HKL
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_Scan
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_CountTime
+   ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_UserReserved
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_TemperatureSetPoint
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine
    ~spec2nexus.plugins.spec_common_spec2nexus.SPEC_MCA
