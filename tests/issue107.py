@@ -13,6 +13,7 @@ test issue 107
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import h5py
 import os
 import sys
 import unittest
@@ -23,6 +24,7 @@ if _path not in sys.path:
 
 import spec2nexus.extractSpecScan
 import spec2nexus.spec
+from spec2nexus import writer
 
 _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _path not in sys.path:
@@ -62,21 +64,49 @@ class Issue133(unittest.TestCase):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(path, 'data', 'JL124_1.spc')
         self.sys_argv0 = sys.argv[0]
+        self.hfile = tests.common.create_test_file()
 
     def tearDown(self):
         sys.argv = [self.sys_argv0,]
+        os.remove(self.hfile)
 
     def test_data_file(self):
         self.assertTrue(os.path.exists(self.testfile))
 
-        specData = spec2nexus.spec.SpecDataFile(self.testfile)
+        specfile = spec2nexus.spec.SpecDataFile(self.testfile)
         scanNum = 1
-        scan = specData.getScan(scanNum)
+        scan = specfile.getScan(scanNum)
         scan.interpret()
         self.assertTrue(hasattr(scan.header, "UserReserved"), "#U in scan header")
         self.assertEqual(len(scan.header.UserReserved), 1, "only one #U in header")
         self.assertTrue(hasattr(scan, "UserReserved"), "#U in scan #1")
         self.assertEqual(len(scan.UserReserved), 1, "only one #U in scan #1")
+        
+        # test for UserReserved in a NeXus file
+
+        specwriter = writer.Writer(specfile)
+        specwriter.save(self.hfile, "1 2 3 4 5".split())
+        self.assertTrue(os.path.exists(self.hfile))
+
+        fp = h5py.File(self.hfile, 'r')
+        entry = fp.get("/S1")
+        self.assertIsNot(entry, None, "group /S1")
+        u = entry.get("UserReserved")
+        self.assertNotEqual(u, None, "group /S1/UserReserved")
+        self.assertNotEqual(u.get("header_1"), None, "dataset /S1/UserReserved/header_1")
+        self.assertEqual(u.get("header_2"), None, "dataset /S1/UserReserved/header_2")
+        self.assertNotEqual(u.get("item_1"), None, "dataset /S1/UserReserved/item_1")
+        self.assertEqual(u.get("item_2"), None, "dataset /S1/UserReserved/item_2")
+
+        entry = fp.get("/S2")
+        self.assertIsNot(entry, None, "group /S2")
+        u = entry.get("UserReserved")
+        self.assertNotEqual(u, None, "group /S2/UserReserved")
+        self.assertNotEqual(u.get("header_1"), None, "dataset /S1/UserReserved/header_1")
+        self.assertEqual(u.get("header_2"), None, "dataset /S1/UserReserved/header_2")
+        self.assertEqual(u.get("item_1"), None, "dataset /S1/UserReserved/item_1")
+        self.assertEqual(u.get("item_2"), None, "dataset /S1/UserReserved/item_2")
+        fp.close()
 
 
 def suite(*args, **kw):
