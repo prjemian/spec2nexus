@@ -655,6 +655,36 @@ class SPEC_CountTime(ControlLineHandler):
         write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
 
 
+class SPEC_UserReserved(ControlLineHandler):
+    
+    """
+    **#U** -- Reserved for user
+        
+    IN-MEMORY REPRESENTATION
+    
+    * (SpecDataFileScan): **UserReserved**, [*str*]
+    
+    HDF5/NeXus REPRESENTATION
+    
+    * Dataset named **UserReserved** in the *NXentry* group, such as */S1/UserReserved*
+    """
+
+    key = '#U'
+    
+    def process(self, text, scan_or_header, *args, **kws):
+        text = strip_first_word(text)
+        if not hasattr(scan_or_header, "UserReserved"):
+            scan_or_header.UserReserved = []
+        scan_or_header.UserReserved.append(text.strip())
+
+        scan_or_header.addH5writer(self.key, self.writer)
+    
+    def writer(self, h5parent, writer, scan_or_header, *args, **kws):
+        """Describe how to store this data in an HDF5 NeXus file"""
+        desc = 'SPEC control line "#U: Reserved for user"'
+        write_dataset(h5parent, "UserReserved", scan_or_header.UserReserved, description = desc)
+
+
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     
     """
