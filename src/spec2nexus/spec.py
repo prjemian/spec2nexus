@@ -291,7 +291,12 @@ class SpecDataFile(object):
     
     def getScanNumbers(self):
         """return a list of all scan numbers sorted by scan number"""
-        return sorted(self.scans.keys(), key=int)
+        keys = self.scans.keys()
+        try:
+            r = sorted(keys, key=int)
+        except ValueError as _exc:
+            r = sorted(keys, key=float)
+        return r
     
     def getScanNumbersChronological(self):
         """return a list of all scan numbers sorted by date"""
