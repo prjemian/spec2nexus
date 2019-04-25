@@ -239,8 +239,8 @@ class SpecDataFile(object):
         
         text = buf.splitlines()[0].strip()
         key = self.plugin_manager.getKey(text)
-        if key != '#F':
-            raise NotASpecDataFile('First line does not start with #F: ' + self.fileName)
+#         if key != '#F':
+#             raise NotASpecDataFile('First line does not start with #F: ' + self.fileName)
         self.plugin_manager.process(key, text, self)
         buf = buf[len(text):]
 
