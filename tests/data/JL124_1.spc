@@ -31,6 +31,7 @@
 #O3 mono-sl bottom  mono-sl right  GammaScrew    baffle   Table X  Table Y1  Table Y2  Table Y3
 #O4 33ide:m58:c1:m5  33ide:m58:c1:m6  33ide:m58:c1:m7  33ide:m58:c1:m8  ion_ch_vert  
 #C Sun Feb 17 16:13:28 2013.  Globals saved in "/home/33id/data/junelee/20130213/LNO1/autosave/spec_autosave20130217_161328.sav".
+#U test of issue #133: support user control line "#U " - appears in header section
 
 #S 1  a3scan  gam 2.30527 2.30527  mu 3.72748 3.72748  del 0.0455765 0.0455765  1 1
 #D Sun Feb 17 16:17:26 2013
@@ -45,6 +46,7 @@
 #P2 0 0 0 0 0 0 4.9999698 2.4999625
 #P3 -0.10019175 2.5002594 66.5 34.92 -2.15124 -87.37856 -101.46268 -70.889
 #P4 87.99997 2.1800002 92.08 -0.00159 12.55028 
+#U test of issue #133: support user control line "#U " - appears in scan section
 #UIM Image header information from areaDetector
 #UIM UIMR: ROI information, UIMC: image counter setup
 #UIM Center pixel: 158 157
