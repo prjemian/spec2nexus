@@ -56,11 +56,35 @@ class Issue107(unittest.TestCase):
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
 
 
+class Issue133(unittest.TestCase):
+   
+    def setUp(self):
+        path = os.path.dirname(__file__)
+        self.testfile = os.path.join(path, 'data', 'JL124_1.spc')
+        self.sys_argv0 = sys.argv[0]
+
+    def tearDown(self):
+        sys.argv = [self.sys_argv0,]
+
+    def test_data_file(self):
+        self.assertTrue(os.path.exists(self.testfile))
+
+        specData = spec2nexus.spec.SpecDataFile(self.testfile)
+        scanNum = 1
+        scan = specData.getScan(scanNum)
+        scan.interpret()
+        self.assertTrue(hasattr(scan.header, "UserReserved"), "#U in scan header")
+        self.assertEqual(len(scan.header.UserReserved), 1, "only one #U in header")
+        self.assertTrue(hasattr(scan, "UserReserved"), "#U in scan #1")
+        self.assertEqual(len(scan.UserReserved), 1, "only one #U in scan #1")
+
+
 def suite(*args, **kw):
-    test_suite = unittest.TestSuite()
     test_list = [
         Issue107,
+        Issue133,
         ]
+    test_suite = unittest.TestSuite()
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
     return test_suite
