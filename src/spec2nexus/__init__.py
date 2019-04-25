@@ -12,8 +12,6 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import os
-
 
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
