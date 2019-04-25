@@ -148,6 +148,23 @@ def is_spec_file(filename):
     
     :param str filename: path/to/possible/spec/data.file
 
+    *filename* is a SPEC file if it contains at least one #S control line
+    """
+    if not os.path.exists(filename) or not os.path.isfile(filename):
+        return False
+    with open(filename, "r") as fp:
+        for line in fp.readlines():
+            if line.startswith("#S "):
+                return True
+    return False
+
+
+def is_spec_file_with_header(filename):
+    """
+    test if a given file name is a SPEC data file
+    
+    :param str filename: path/to/possible/spec/data.file
+
     *filename* is a SPEC file only if the file starts [#]_ 
     with these control lines in order:
 
@@ -165,9 +182,7 @@ def is_spec_file(filename):
     
     .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
     """
-    if not os.path.exists(filename):
-        return False
-    if not os.path.isfile(filename):
+    if not os.path.exists(filename) or not os.path.isfile(filename):
         return False
     expected_controls = ('#F ', '#E ', '#D ', '#C ')
     try:
