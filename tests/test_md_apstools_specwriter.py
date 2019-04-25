@@ -92,7 +92,7 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
             self.assertGreater(len(nxcollection_groups), 0)
             md_group = nxentry.get("bluesky_metadata")
             self.assertIsNotNone(md_group, "bluesky_metadata in NeXus file")
- 
+
         fp.close()
  
         os.remove(hfile)
