@@ -113,9 +113,10 @@ Try to read a file that does not exist:
 
 """
 
-
-import re       #@UnusedImport
+from collections import OrderedDict
+import datetime
 import os       #@UnusedImport
+import re       #@UnusedImport
 import sys      #@UnusedImport
 import time
 from spec2nexus.utils import get_all_plugins
@@ -216,7 +217,7 @@ class SpecDataFile(object):
         global plugin_manager
         self.fileName = None
         self.headers = []
-        self.scans = {}
+        self.scans = OrderedDict()
         self.readOK = -1
         if not os.path.exists(filename):
             raise SpecDataFileNotFound('file does not exist: ' + str(filename))
@@ -233,49 +234,137 @@ class SpecDataFile(object):
     def __str__(self):
         return self.fileName or 'None'
 
+    def _raw_headers_dict(self, buf):
+        """
+        parse buf line-by-line into header blocks (includes scans)
+        """
+        headers = OrderedDict()
+        header_num = "default"
+        block = []
+
+        for _line_num, text in enumerate(buf.splitlines()):
+            if text.startswith("#E "):
+                if len(block) > 0:
+                    headers[header_num] = "\n".join(block)
+                    block = []
+                header_num = _line_num
+            elif text.startswith("#F "):
+                continue
+            block.append(text)
+
+        if len(block) > 0:
+            headers[header_num] = "\n".join(block)
+
+        return headers
+
+    def _raw_scans_list(self, buf):
+        """
+        parse header block (buf) line-by-line into separate header and scan blocks
+        """
+        header = []
+        scans = []
+        block = []
+        in_scan = False
+
+        for text in buf.splitlines():
+            if text.startswith("#S "):
+                in_scan = True
+                if len(block) > 0:
+                    scans.append("\n".join(block))
+                    block = []
+            if in_scan:
+                block.append(text)
+            else:
+                header.append(text)
+
+        if in_scan and len(block) > 0:
+            scans.append("\n".join(block))
+
+        return scans, "\n".join(header)
+    
+    def _make_default_header_buffer(self):
+        t = time.time()
+        dt = datetime.datetime.fromtimestamp(t)
+        buf = []
+        # buf.append("#F " + self.fileName)
+        buf.append("#E %d" % int(t))
+        buf.append("#D " + dt.strftime("%c"))
+        buf.append("#C default header")
+        return "\n".join(buf)
+
     def read(self):
         """Reads and parses a spec data file"""
         buf = self._read_file_(self.fileName)
         
-        text = buf.splitlines()[0].strip()
-        key = self.plugin_manager.getKey(text)
-#         if key != '#F':
-#             raise NotASpecDataFile('First line does not start with #F: ' + self.fileName)
-        self.plugin_manager.process(key, text, self)
-        buf = buf[len(text):]
+        # TODO: must mesh with LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES and interpret()
+        # find the header blocks (includes #E and #S lines)
+        headers = self._raw_headers_dict(buf)
+        for h, header in headers.items():
+            if h == "default":
+                default_header_buffer = self._make_default_header_buffer()
+                header = default_header_buffer + "\n\n" + header
+            line1 = header.splitlines()[0]
+            key = self.plugin_manager.getKey(line1)
+            self.plugin_manager.process(key, header, self)
+        pass
+        
+        if False:
+            # find the header blocks (includes #E and #S lines)
+            headers = self._raw_headers_dict(buf)
+            for h, header in headers.items():
+                if h != "default":
+                    header_object = SpecDataFileHeader(header, self)
+                    self.headers.append(header_object)
+                    # TODO: key = self.plugin_manager.getKey(text)
+                    # TODO: self.plugin_manager.process(key, text, sdf_object)
+                scans, raw_header = self._raw_scans_list(header)
+                for scan in scans:
+                    if h == "default":
+                        header_object = self._make_default_header()
+                        self.headers.append(header_object)
+                        # TODO: key = self.plugin_manager.getKey(text)
+                        # TODO: self.plugin_manager.process(key, text, sdf_object)
 
-        #------------------------------------------------------
-        # identify all header blocks: split buf on #E control lines
-        headers = []                            # caution: some files may have EOL = \r\n
-        for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
-            if len(part.strip()) == 0: continue         # just in case DOS EOL
-            key = self.plugin_manager.getKey(part.splitlines()[0].strip())
-            if key != '#E':
-                headers.append('#E ' + part)        # new header is starting
-        del buf                                 # Dispose of the input buffer memory (necessary?)
-        # headers is a list of the #E header blocks (contains all #S scan blocks)
-
-        #------------------------------------------------------
-        # walk through all header blocks: split each header block on #S control lines
-        self.parts = []         # break into list of blocks, either #E or #S, in order of appearance
-        for part in headers:
-            for block in part.split('\n#S '):   # break header sections by scans
-                text = block.splitlines()[0].strip()
-                if self.plugin_manager.getKey(text) not in ('#E', '#S'):
-                    block = '#S ' + block
-                self.parts.append(block)        # keep each block (starts with either #E or #S)
-        del headers, block
-        # self.parts is a list of the #E and #S parts
-
-        #------------------------------------------------------
-        # pull the information from each scan head
-        for part in self.parts:
-            text = part.splitlines()[0].strip()
+        if False:
+            text = buf.splitlines()[0].strip()
             key = self.plugin_manager.getKey(text)
-            if key in ('#E', '#S'):
-                self.plugin_manager.process(key, part, self)
-            else:
-                raise UnknownSpecFilePart(part.splitlines()[0].strip())
+            if key != '#F':
+                raise NotASpecDataFile('First line does not start with #F: ' + self.fileName)
+            self.plugin_manager.process(key, text, self)
+            buf = buf[len(text):]
+    
+            #------------------------------------------------------
+            # identify all header blocks: split buf on #E control lines
+            headers = []                            # caution: some files may have EOL = \r\n
+            for part in buf.split('\n#E '):         # Identify the spec file header sections (usually just 1)
+                if len(part.strip()) == 0: continue         # just in case DOS EOL
+                key = self.plugin_manager.getKey(part.splitlines()[0].strip())
+                if key != '#E':
+                    headers.append('#E ' + part)        # new header is starting
+            del buf                                 # Dispose of the input buffer memory (necessary?)
+            # headers is a list of the #E header blocks (contains all #S scan blocks)
+    
+            #------------------------------------------------------
+            # walk through all header blocks: split each header block on #S control lines
+            self.parts = []         # break into list of blocks, either #E or #S, in order of appearance
+            for part in headers:
+                for block in part.split('\n#S '):   # break header sections by scans
+                    text = block.splitlines()[0].strip()
+                    if self.plugin_manager.getKey(text) not in ('#E', '#S'):
+                        block = '#S ' + block
+                    self.parts.append(block)        # keep each block (starts with either #E or #S)
+            del headers, block
+            # self.parts is a list of the #E and #S parts
+    
+            #------------------------------------------------------
+            # pull the information from each scan head
+            for part in self.parts:
+                text = part.splitlines()[0].strip()
+                key = self.plugin_manager.getKey(text)
+                if key in ('#E', '#S'):
+                    self.plugin_manager.process(key, part, self)
+                else:
+                    raise UnknownSpecFilePart(part.splitlines()[0].strip())
 
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
@@ -352,7 +441,7 @@ class SpecDataFile(object):
 
 
 class SpecDataFileHeader(object):
-    """contents of a spec data file header (#F) section"""
+    """contents of a spec data file header (#E) section"""
 
     def __init__(self, buf, parent = None):
         #----------- initialize the instance variables
@@ -415,6 +504,9 @@ class SpecDataFileHeader(object):
         """
         if label not in self.h5writers:
             self.h5writers[label] = func
+    
+    def getLatestScan(self):
+        return list(self.parent.scans.values())[-1]
 
 
 #-------------------------------------------------------------------------------------------
@@ -450,7 +542,10 @@ class SpecDataFileScan(object):
         self._interpreter_comments_ = []
         if parent is not None:
             # avoid changing the interface for clients
-            self.specFile = parent.fileName
+            if isinstance(parent, SpecDataFile):
+                self.specFile = parent.fileName
+            elif isinstance(parent, SpecDataFileHeader):
+                self.specFile = parent.parent.fileName
         elif self.header is not None:
             if self.header.parent is not None:
                 self.specFile = self.header.parent.fileName

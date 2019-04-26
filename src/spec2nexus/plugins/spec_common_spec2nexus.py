@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
+from builtins import isinstance
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -55,7 +56,10 @@ class SPEC_File(ControlLineHandler):
     key = '#F'
     
     def process(self, text, spec_file_obj, *args, **kws):
-        spec_file_obj.specFile = strip_first_word(text)
+        if not hasattr(spec_file_obj, "specFile"):
+            spec_file_obj.specFile = None
+        if spec_file_obj.specFile in (None, ""):
+            spec_file_obj.specFile = strip_first_word(text)
 
 
 class SPEC_Epoch(ControlLineHandler):
@@ -77,15 +81,15 @@ class SPEC_Epoch(ControlLineHandler):
 
     key = '#E'
     
-    def process(self, buf, scan, *args, **kws):
-        header = SpecDataFileHeader(buf, parent=scan)
+    def process(self, buf, sdf_object, *args, **kws):
+        header = SpecDataFileHeader(buf, parent=sdf_object)
         line = buf.splitlines()[0].strip()
         if line.find(".") > -1:
             header.epoch = float(strip_first_word(line))
         else:
             header.epoch = int(strip_first_word(line))
+        sdf_object.headers.append(header)
         header.interpret()                  # parse the full header
-        scan.headers.append(header)
 
 
 class SPEC_Date(ControlLineHandler):
@@ -104,14 +108,22 @@ class SPEC_Date(ControlLineHandler):
 
     key = '#D'
     
-    def process(self, text, scan, *args, **kws):
-        scan.date = strip_first_word(text)
-        if isinstance(scan, SpecDataFileScan):
-            scan.addH5writer(self.key, self.writer)
+    def process(self, text, sdf_object, *args, **kws):
+        text = strip_first_word(text)
+        if isinstance(sdf_object, SpecDataFileScan):
+            sdf_object = sdf_object.header
+        sp = text.split(" ")
+        if len(sp) == 1:
+            sdf_object.epoch = int(float(text))
+            text = datetime.datetime.fromtimestamp(float(text))
+            text = text.strftime("%c")
+        sdf_object.date = text
+        if isinstance(sdf_object, SpecDataFileScan):
+            sdf_object.addH5writer(self.key, self.writer)
     
-    def writer(self, h5parent, writer, scan, *args, **kws):
+    def writer(self, h5parent, writer, sdf_object, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        write_dataset(h5parent, "date", iso8601(scan.date)  )
+        write_dataset(h5parent, "date", iso8601(sdf_object.date)  )
 
 
 class SPEC_Comment(ControlLineHandler):
@@ -182,24 +194,13 @@ class SPEC_Scan(ControlLineHandler):
     key = '#S'
     
     def process(self, part, spec_obj, *args, **kws):
-        if len(spec_obj.headers) == 0:
-            # we have not read a header yet, make a default one
-            t = time.time()
-            dt = datetime.datetime.fromtimestamp(t)
-            buf = []
-            buf.append("#F " + spec_obj.fileName)
-            buf.append("#E %d" % int(t))
-            buf.append("#D " + dt.strftime("%c"))
-            buf.append("#C default header")
-            header = SpecDataFileHeader("\n".join(buf), parent=spec_obj)
-            spec_obj.headers.append(header)
-            # TODO: careful!  Make sure we do not strip out the info from the first line
-        scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
+        header = spec_obj.parent.headers[-1]
+        scan = SpecDataFileScan(header, part, parent=spec_obj)
         text = part.splitlines()[0].strip()
         scan.S = strip_first_word(text)
         scan.scanNum = scan.S.split()[0]
         scan.scanCmd = strip_first_word(scan.S)
-        if scan.scanNum in spec_obj.scans:
+        if scan.scanNum in header.parent.scans:
             # Before raising an exception, 
             #    Check for duplicate and create alternate name
             #    write as "%d.%d" % (scan.scanNum, index) 
@@ -213,10 +214,10 @@ class SPEC_Scan(ControlLineHandler):
                     scan.scanNum = new_scanNum
                     break
         scan.scanNum = str(scan.scanNum)
-        if scan.scanNum in spec_obj.scans:
-            msg = str(scan.scanNum) + ' in ' + spec_obj.fileName
+        if scan.scanNum in header.parent.scans:
+            msg = str(scan.scanNum) + ' in ' + header.parent.fileName
             raise DuplicateSpecScanNumber(msg)
-        spec_obj.scans[scan.scanNum] = scan
+        header.parent.scans[scan.scanNum] = scan
 
 
 class SPEC_Geometry(ControlLineHandler):
@@ -496,8 +497,13 @@ class SPEC_PositionerNames(ControlLineHandler):
 
     key = '#O\d+'
     
-    def process(self, text, header, *args, **kws):
-        header.O.append(split_column_labels(strip_first_word(text)))
+    def process(self, text, sdf_object, *args, **kws):
+        if isinstance(sdf_object, SpecDataFileScan):
+            sdf_object = sdf_object.header
+        key = text.split()[0]
+        if key == "#O0":
+            sdf_object.O = []       # TODO: What if motor names are different?
+        sdf_object.O.append(split_column_labels(strip_first_word(text)))
 
 
 class SPEC_PositionerMnemonics(ControlLineHandler):
@@ -575,6 +581,8 @@ class SPEC_Positioners(ControlLineHandler):
     key = '#P\d+'
     
     def process(self, text, scan, *args, **kws):
+        if isinstance(scan, SpecDataFileHeader):
+            scan = scan.getLatestScan()
         scan.P.append( strip_first_word(text) )
         scan.addPostProcessor('motor_positions', self.postprocess)
     

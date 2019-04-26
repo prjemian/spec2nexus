@@ -220,9 +220,18 @@ class PluginManager(object):
         if pos < 0:
             return None
         text = spec_data_file_line[:pos]
+        
+        # try to locate the key directly
+        handler = self.handler_dict.get(text)
+        if handler is not None:
+            return text
+        
+        # search and match using regular expressions
         for key, handler in self.handler_dict.items():
             if handler().match_key(text):
                 return key
+        
+        # give up
         return None
 
     def get(self, key):
