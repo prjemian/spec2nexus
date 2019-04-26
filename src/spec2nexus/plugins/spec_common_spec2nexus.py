@@ -19,9 +19,7 @@ SPEC data file standard control lines
 
 """
 
-import datetime
 import re
-import time
 
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
@@ -182,18 +180,6 @@ class SPEC_Scan(ControlLineHandler):
     key = '#S'
     
     def process(self, part, spec_obj, *args, **kws):
-        if len(spec_obj.headers) == 0:
-            # we have not read a header yet, make a default one
-            t = time.time()
-            dt = datetime.datetime.fromtimestamp(t)
-            buf = []
-            buf.append("#F " + spec_obj.fileName)
-            buf.append("#E %d" % int(t))
-            buf.append("#D " + dt.strftime("%c"))
-            buf.append("#C ")
-            header = SpecDataFileHeader("\n".join(buf), parent=spec_obj)
-            spec_obj.headers.append(header)
-            # TODO: careful!  Make sure we do not strip out the info from the first line
         scan = SpecDataFileScan(spec_obj.headers[-1], part, parent=spec_obj)
         text = part.splitlines()[0].strip()
         scan.S = strip_first_word(text)
