@@ -7,14 +7,34 @@ Change History
 Production
 **********
 
-:pending:
+:2.1.0: 2019.04.26, release
 
+    * `#135 <https://github.com/prjemian/spec2nexus/issues/135>`_
+       switch to semantic versioning 
+    * `#133 <https://github.com/prjemian/spec2nexus/issues/133>`_
+       support user control line "#U " with plugin
     * `#131 <https://github.com/prjemian/spec2nexus/issues/131>`_
        support #MD control lines from apstools.SpecWriterCallback
+    * `#125 <https://github.com/prjemian/spec2nexus/issues/125>`_
+       fluorescence spectra in files for RSM3D
     * `#120 <https://github.com/prjemian/spec2nexus/issues/120>`_
        do not mock `six` package in documentation
     * `#119 <https://github.com/prjemian/spec2nexus/issues/119>`_
        delimiters in #H/#V lines with or without text values
+    * `#116 <https://github.com/prjemian/spec2nexus/issues/116>`_
+       process data from spock
+
+	see [release notes](https://github.com/prjemian/spec2nexus/wiki/releasenotes__2-1-0)
+
+	It takes a couple steps to upgrade an existing conda installation from version 2017.nnnn to newer version 2.1.0
+
+	- add a declaration of `spec2nexus < 2000` in the `conda-meta/pinned` file in the conda environment
+	- `conda update -c prjemian spec2nexus` (should change to 2.1.0)
+
+	It may still be necessary to uninstall and reinstall spec2nexus to effect an update:
+
+		conda uninstall -y spec2nexus
+		conda install -c prjemian spec2nexus
 
 :2019.0422.0: (tag only)
 
