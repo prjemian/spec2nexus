@@ -3,20 +3,20 @@
 # Coded for both python2 and python3.
 
 '''
-Create release notes for a new relase of the GitHub repository.
+Create release notes for a new release of the GitHub repository.
 '''
 
 from __future__ import print_function
 from datetime import datetime
 import os, sys
-import github
+import github       # pip install pygithub or conda install -c conda-forge pygithub
 import collections
 import argparse
 
 
 CREDS_FILE_NAME = "__github_creds__.txt"
-GITHUB_ORGANIZATION = "prjemian"
-GITHUB_REPOSITORY = "spec2nexus"
+# GITHUB_ORGANIZATION = "BCDA-APS"        # see below, after get_GitHub_org_and_repo()
+# GITHUB_REPOSITORY = "apstools"
 GITHUB_PER_PAGE = 30
 
 
@@ -24,6 +24,50 @@ def str2time(time_string):
     # Tue, 20 Dec 2016 17:35:40 GMT
     fmt = "%a, %d %b %Y %H:%M:%S %Z"
     return datetime.strptime(time_string, fmt)
+
+
+def find_creds_file(fname):
+    candidates = [os.path.dirname(__file__),]
+    home = os.environ.get("HOME")
+    if home is not None:
+        candidates.append(os.path.join(home, ".config"))
+    for path in candidates:
+        filename = os.path.join(path, fname)
+        if os.path.exists(filename):
+            return filename
+    raise ValueError('Missing file: ' + fname)
+
+
+def get_GitHub_org_and_repo():
+    """
+    get the GitHub organization name and repository name
+    
+    Simplistic search of ``<root>/.git/config``::
+
+        [remote "origin"]
+            url = https://github.com/BCDA-APS/apstools
+            fetch = +refs/heads/*:refs/remotes/origin/*
+    """
+    config_file = os.path.join(os.path.dirname(__file__), ".git", "config")
+    if not os.path.exists(config_file):
+        msg = "Could not find file: " + config_file
+        raise RuntimeError(msg)
+    
+    with open(config_file, "r") as fp:
+        get_next_url = False        # a trigger
+        for line in fp.readlines():
+            text = line.strip()
+            if text == '[remote "origin"]':
+                get_next_url = True
+            elif get_next_url and text.startswith("url = https://github.com/"):
+                org, repo = text.split("/")[-2:]
+                repo = os.path.splitext(repo)[0]
+                return org, repo
+        msg = "Could not find GitHub info in: " + config_file
+        raise RuntimeError(msg)
+
+
+GITHUB_ORGANIZATION, GITHUB_REPOSITORY = get_GitHub_org_and_repo()
 
 
 class ReleaseNotes(object):
@@ -36,11 +80,7 @@ class ReleaseNotes(object):
 
         self.commit_db = {}
         self.db = dict(tags={}, pulls={}, issues={}, commits={})
-        self.creds_file_name = os.path.join(
-            os.path.dirname(__file__), 
-            CREDS_FILE_NAME)
-        if not os.path.exists(self.creds_file_name):
-            raise ValueError('Missing file: ' + self.creds_file_name)
+        self.creds_file_name = find_creds_file(CREDS_FILE_NAME)
     
     def connect(self):
         uname, pwd = open(self.creds_file_name, 'r').read().split()
