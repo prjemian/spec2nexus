@@ -258,7 +258,9 @@ class SpecDataFile(object):
             if key in ('#E', '#S'):
                 self.plugin_manager.process(key, part, self)
             else:
-                raise UnknownSpecFilePart(part.splitlines()[0].strip())
+                msg = part.splitlines()[0].strip()
+                msg += " in " + self.fileName
+                raise UnknownSpecFilePart(msg)
 
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
