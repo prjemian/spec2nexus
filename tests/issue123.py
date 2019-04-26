@@ -49,7 +49,7 @@ class Issue123(unittest.TestCase):
         self.assertTrue(isinstance(specData, spec.SpecDataFile))
 
         scans = specData.getScanNumbers()
-        self.assertEqual(len(scans), 172, "expected number of scans")
+        self.assertEqual(len(scans), 171, "expected number of scans")
 
 
 def suite(*args, **kw):
