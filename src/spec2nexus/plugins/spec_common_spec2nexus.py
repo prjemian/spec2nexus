@@ -190,7 +190,7 @@ class SPEC_Scan(ControlLineHandler):
             buf.append("#F " + spec_obj.fileName)
             buf.append("#E %d" % int(t))
             buf.append("#D " + dt.strftime("%c"))
-            buf.append("#C default header")
+            buf.append("#C ")
             header = SpecDataFileHeader("\n".join(buf), parent=spec_obj)
             spec_obj.headers.append(header)
             # TODO: careful!  Make sure we do not strip out the info from the first line
