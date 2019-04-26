@@ -36,8 +36,10 @@ requirements:
     - six
 
   run:
+    - python
     - h5py
     - numpy
+    - matplotlib
     - six
 
 test:
