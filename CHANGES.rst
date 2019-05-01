@@ -7,6 +7,13 @@ Change History
 Production
 **********
 
+:2019.0501.0: 2019.05.01, release
+
+    * `#137 <https://github.com/prjemian/spec2nexus/issues/137>`_
+       bug in #U control line handling
+    * `#140 <https://github.com/prjemian/spec2nexus/issues/140>`_
+       change: #U data goes into `<object>.U` list (name changed from `UserReserved`)
+
 :2.1.0: 2019.04.26, release
 
     * `#135 <https://github.com/prjemian/spec2nexus/issues/135>`_
