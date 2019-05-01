@@ -77,18 +77,18 @@ class Issue133(unittest.TestCase):
         scanNum = 1
         scan = specfile.getScan(scanNum)
 
-        # issue #137
+        # issue #137 & #140
         try:
-            u = scan.__getattribute__("UserReserved")
+            u = scan.__getattribute__("U")
         except AttributeError:
             u = None
-        self.assertEqual(u, None, "UserReserved attribute not yet loaded")
+        self.assertEqual(u, None, "U attribute not yet loaded")
         scan.interpret()
-        self.assertTrue(hasattr(scan, "UserReserved"), "#U in scan #1")
-        self.assertEqual(len(scan.UserReserved), 1, "only one #U in scan #1")
+        self.assertTrue(hasattr(scan, "U"), "#U in scan #1")
+        self.assertEqual(len(scan.U), 1, "only one #U in scan #1")
 
-        self.assertTrue(hasattr(scan.header, "UserReserved"), "#U in scan header")
-        self.assertEqual(len(scan.header.UserReserved), 1, "only one #U in header")
+        self.assertTrue(hasattr(scan.header, "U"), "#U in scan header")
+        self.assertEqual(len(scan.header.U), 1, "only one #U in header")
         
         # test for UserReserved in a NeXus file
 

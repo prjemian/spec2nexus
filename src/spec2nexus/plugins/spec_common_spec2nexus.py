@@ -662,8 +662,8 @@ class SPEC_UserReserved(ControlLineHandler):
         
     IN-MEMORY REPRESENTATION
     
-    * (SpecDataFileHeader): **UserReserved**, [*str*]
-    * (SpecDataFileScan): **UserReserved**, [*str*]
+    * (SpecDataFileHeader): **U**, [*str*]
+    * (SpecDataFileScan): **U**, [*str*]
     
     HDF5/NeXus REPRESENTATION
     
@@ -677,9 +677,9 @@ class SPEC_UserReserved(ControlLineHandler):
     
     def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
-        if not hasattr(sdf_object, "UserReserved"):
-            sdf_object.UserReserved = []
-        sdf_object.UserReserved.append(text.strip())
+        if not hasattr(sdf_object, "U"):
+            sdf_object.U = []
+        sdf_object.U.append(text.strip())
 
         sdf_object.addH5writer(self.key, self.writer)
     
@@ -691,7 +691,7 @@ class SPEC_UserReserved(ControlLineHandler):
             tag = "header"
         else:
             tag = "item"
-        for i, text in enumerate(sdf_object.UserReserved):
+        for i, text in enumerate(sdf_object.U):
             key = "%s_%d" % (tag, i+1)
             write_dataset(group, key, text, description = "#U line %d" % (i+1))
 
