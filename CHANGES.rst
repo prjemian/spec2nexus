@@ -7,7 +7,14 @@ Change History
 Production
 **********
 
-:2019.0501.0: 2019.05.01, release
+:2019.0503.0: 2019.05.03, tag
+
+    * `#142 <https://github.com/prjemian/spec2nexus/issues/142>`_
+       DuplicateSpecScanNumber with multiple #F sections
+    * `#137 <https://github.com/prjemian/spec2nexus/issues/137>`_
+       (again) bug in #U control line handling
+
+:2019.0501.0: 2019.05.01, tag
 
     * `#137 <https://github.com/prjemian/spec2nexus/issues/137>`_
        bug in #U control line handling
