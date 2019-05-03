@@ -82,8 +82,8 @@ class Issue133(unittest.TestCase):
             u = scan.__getattribute__("U")
         except AttributeError:
             u = None
-        self.assertEqual(u, None, "U attribute not yet loaded")
-        scan.interpret()
+        self.assertNotEqual(u, None, "U attribute lazy loaded")
+        # not needed: scan.interpret()
         self.assertTrue(hasattr(scan, "U"), "#U in scan #1")
         self.assertEqual(len(scan.U), 1, "only one #U in scan #1")
 
