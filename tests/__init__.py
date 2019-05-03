@@ -27,6 +27,7 @@ def suite(*args, **kw):
     from tests import data_03_06_JanTest
     from tests import test_extractSpecScan
     from tests import test_md_apstools_specwriter
+    from tests import test_multiple_headers
     from tests import test_plugin
     from tests import test_scanf
     from tests import test_spec
@@ -43,6 +44,7 @@ def suite(*args, **kw):
         data_03_06_JanTest,
         test_extractSpecScan,
         test_md_apstools_specwriter,
+        test_multiple_headers,
         test_plugin,
         test_scanf,
         test_spec,
