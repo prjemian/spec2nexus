@@ -188,13 +188,13 @@ class SPEC_Scan(ControlLineHandler):
         if scan.scanNum in spec_obj.scans:
             # Before raising an exception, 
             #    Check for duplicate and create alternate name
-            #    write as "%d.%d" % (scan.scanNum, index) 
+            #    write as "%d.%d" % (scan.scanNum, index+1) 
             #    where index is the lowest integer in 
-            #    range(1,really big) that is not already in use.
-            # really_big < len(total number of scans in data file)
-            # Will a non-integer scanNum break anything?
-            for i in range(1, len(scan.parent.scans)):
-                new_scanNum = "%s.%d" % (scan.scanNum, i)
+            #    range(really big) that is not already in use.
+            # really_big <= len(total number of scans in data file)
+            # Will a non-integer scanNum break anything?  [note: It *has* caused troubles.]
+            for i in range(len(scan.parent.scans)):
+                new_scanNum = "%s.%d" % (scan.scanNum, i+1)
                 if new_scanNum not in spec_obj.scans:
                     scan.scanNum = new_scanNum
                     break
