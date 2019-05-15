@@ -75,6 +75,7 @@ The resulting (binary) data file has this structure::
 
 
 import h5py    # HDF5 support
+import numpy
 import six
 
 
@@ -156,7 +157,7 @@ def makeDataset(parent, name, data = None, **attr):
                 return value.encode("ascii", "ignore")
             return value
 
-        if not isinstance(data, (tuple, list)):
+        if not isinstance(data, (tuple, list, numpy.ndarray)):
             data = [data, ]
         obj = parent.create_dataset(name, data=list(map(encoder, data)))
     addAttributes(obj, **attr)
