@@ -350,6 +350,16 @@ class SpecDataFile(object):
                 continue
             key = self.plugin_manager.getKey(block.splitlines()[0])
             self.plugin_manager.process(key, block, self)
+            
+            if key == "#S":
+                scan = self.scans.values()[-1]
+                for line in scan.raw.splitlines()[1:]:
+                    if len(line) > 0:
+                        key = line.split()[0]
+                        if key in ("#D",):
+                            self.plugin_manager.process(key, line, scan)
+                            break
+                        # TODO: need first-step processing of scans for date and ...
         
         # if False:
         #     # TODO: must mesh with LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES and interpret()
@@ -552,7 +562,7 @@ class SpecDataFileHeader(object):
 #-------------------------------------------------------------------------------------------
 
 LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
-    'comments', 'data', 'data_lines', 'date', 'G', 'I',
+    'comments', 'data', 'data_lines', 'G', 'I',
     'L', 'M', 'positioner', 'N', 'P', 'Q', 'T',
     'column_first', 'column_last',
 ]

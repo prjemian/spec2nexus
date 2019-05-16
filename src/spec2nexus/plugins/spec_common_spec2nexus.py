@@ -109,8 +109,8 @@ class SPEC_Date(ControlLineHandler):
     
     def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
-        if isinstance(sdf_object, SpecDataFileScan):
-            sdf_object = sdf_object.header
+        # if isinstance(sdf_object, SpecDataFileScan):
+        #     sdf_object = sdf_object.header
         sp = text.split(" ")
         if len(sp) == 1:
             sdf_object.epoch = int(float(text))
