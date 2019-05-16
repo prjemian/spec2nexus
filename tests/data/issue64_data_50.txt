@@ -1,4 +1,0 @@
-# file: tests/../tests/data/issue64_data.txt
-# scan: 50
-# si1t	pind1
-# <no SPEC data points in this scan>
