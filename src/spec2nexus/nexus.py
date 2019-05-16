@@ -115,7 +115,7 @@ def get_user_parameters():
 def parse_scan_list_spec(scan_list_spec):
     """parses the argument of the -s option, returns a scan number list"""
     # can this be simpler?
-    sl = scan_list_spec[0].split(',')   # FIXME: why is this a list? see issue #91
+    sl = scan_list_spec[0].split(',')
 
     scan_list = []
     for item in sl:
@@ -147,9 +147,10 @@ def pick_scans(all_scans, opt_scan_list):
         scan_list = all_scans
     else:
         scan_list = map(str, opt_scan_list)
-        for item in scan_list:
-            if item not in all_scans:
-                scan_list.remove(item)
+        # for item in scan_list:
+        #     if str(item) not in all_scans:
+        #         scan_list.remove(item)
+        scan_list = [item for item in scan_list if str(item) in all_scans]
     return scan_list
 
 
@@ -176,7 +177,8 @@ def main():
             print ('reading SPEC data file: '+spec_data_file_name)
         spec_data = spec.SpecDataFile(spec_data_file_name)
     
-        scan_list = pick_scans(spec_data.getScanNumbers(), user_parms.scan_list)
+        all_scans = spec_data.getScanNumbers()
+        scan_list = list(pick_scans(all_scans, user_parms.scan_list))
         if user_parms.reporting_level in (REPORTING_VERBOSE):
             print('  discovered %d scans' % len(spec_data.scans.keys()))
             print('  converting scan number(s): '  +  ', '.join(map(str, scan_list)))
