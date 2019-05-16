@@ -256,31 +256,31 @@ class SpecDataFile(object):
     #         headers[header_num] = "\n".join(block)
     # 
     #     return headers
-
-    def _raw_scans_list(self, buf):
-        """
-        parse header block (buf) line-by-line into separate header and scan blocks
-        """
-        header = []
-        scans = []
-        block = []
-        in_scan = False
-
-        for text in buf.splitlines():
-            if text.startswith("#S "):
-                in_scan = True
-                if len(block) > 0:
-                    scans.append("\n".join(block))
-                    block = []
-            if in_scan:
-                block.append(text)
-            else:
-                header.append(text)
-
-        if in_scan and len(block) > 0:
-            scans.append("\n".join(block))
-
-        return scans, "\n".join(header)
+    # 
+    # def _raw_scans_list(self, buf):
+    #     """
+    #     parse header block (buf) line-by-line into separate header and scan blocks
+    #     """
+    #     header = []
+    #     scans = []
+    #     block = []
+    #     in_scan = False
+    # 
+    #     for text in buf.splitlines():
+    #         if text.startswith("#S "):
+    #             in_scan = True
+    #             if len(block) > 0:
+    #                 scans.append("\n".join(block))
+    #                 block = []
+    #         if in_scan:
+    #             block.append(text)
+    #         else:
+    #             header.append(text)
+    # 
+    #     if in_scan and len(block) > 0:
+    #         scans.append("\n".join(block))
+    # 
+    #     return scans, "\n".join(header)
     
     def _make_default_header_buffer(self):
         t = time.time()
