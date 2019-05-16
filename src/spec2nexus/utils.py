@@ -83,7 +83,10 @@ def iso8601(date):
     :ISO8601: 2010-11-03T13:39:34
     """
     spec_fmt = '%a %b %d %H:%M:%S %Y'
-    t_obj = time.strptime(date, spec_fmt)
+    try:
+        t_obj = time.strptime(date, spec_fmt)
+    except ValueError as ex:
+        raise ex
     iso_fmt = '%Y-%m-%dT%H:%M:%S'
     iso = time.strftime(iso_fmt, t_obj)
     return iso

@@ -119,6 +119,9 @@ class SPEC_Date(ControlLineHandler):
         sdf_object.date = text
         if isinstance(sdf_object, SpecDataFileScan):
             sdf_object.addH5writer(self.key, self.writer)
+            if len(sdf_object.header.date.strip()) == 0:
+                sdf_object.header.date = text
+            # TODO: what if header date is greater than this scan's date?
     
     def writer(self, h5parent, writer, sdf_object, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""

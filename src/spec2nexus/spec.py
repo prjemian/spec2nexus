@@ -300,6 +300,10 @@ class SpecDataFile(object):
                         if key in ("#D",):
                             self.plugin_manager.process(key, line, scan)
                             break
+        
+        # fix any missing parts
+        if not hasattr(self, "specFile"):
+            self.specFile = self.fileName
     
     def getScan(self, scan_number=0):
         """return the scan number indicated, None if not found"""

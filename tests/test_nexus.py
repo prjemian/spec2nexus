@@ -30,7 +30,7 @@ if _test_path not in sys.path:
 import tests.common
 
 
-class TestNexus(unittest.TestCase):
+class TestExampleData_to_Nexus(unittest.TestCase):
 
     def setUp(self):
         self._owd = os.getcwd()
@@ -40,11 +40,11 @@ class TestNexus(unittest.TestCase):
         os.chdir(self.tempdir)
 
         self.test_files = {
-            "02_03_setup.dat":          "-f --verbose   -s 46",
-            "33id_spec.dat":            "-f --verbose   -s 1",
-            "spec_from_spock.spc":      "-f --verbose   -s 116",
-            "mca_spectra_example.dat":  "-f --verbose   -s 1",
-            "xpcs_plugin_sample.spec":  "-f --verbose   -s 1",
+            "02_03_setup.dat":          "-f --quiet   -s 46",
+            "33id_spec.dat":            "-f --quiet   -s 1",
+            "spec_from_spock.spc":      "-f --quiet   -s 116",
+            "mca_spectra_example.dat":  "-f --quiet   -s 1",
+            "xpcs_plugin_sample.spec":  "-f --quiet   -s 1",
             }
 
     def tearDown(self):
@@ -54,7 +54,7 @@ class TestNexus(unittest.TestCase):
         if os.path.exists(self.tempdir):
             shutil.rmtree(self.tempdir, ignore_errors=True)
 
-    def test_trivial(self):
+    def test_example_data(self):
         self.assertTrue(True, "trivial assertion - always True")
         
         for fn, args in self.test_files.items():
@@ -62,13 +62,16 @@ class TestNexus(unittest.TestCase):
             cmd = fn + "  " + args
             _argv = sys.argv = [self.sys_argv0,] + [c for c in cmd.split()]
 
-            print(f"Testing NeXus conversion of SPEC data file: {fn}")
+            # print("+"*10, f"Testing NeXus conversion of SPEC data file: {fn}")
             nexus.main()
+            
+            hn = os.path.splitext(fn)[0] + ".hdf5"
+            self.assertTrue(os.path.exists(hn))
 
 
 def suite(*args, **kw):
     test_list = [
-        TestNexus,
+        TestExampleData_to_Nexus,
         ]
 
     test_suite = unittest.TestSuite()
