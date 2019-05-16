@@ -51,6 +51,7 @@ class Issue107(unittest.TestCase):
         scanNum = 4
         scan = specData.getScan(scanNum)
         self.assertTrue(hasattr(scan.header, "H"))
+        self.assertTrue(hasattr(scan, "V"))
         scan.interpret()
         self.assertTrue(hasattr(scan, "metadata"))
         self.assertEqual(len(scan.metadata), 140)

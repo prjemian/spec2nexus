@@ -13,6 +13,7 @@ charting for spec2nexus
 import datetime
 import numpy
 import matplotlib
+import matplotlib.figure
 matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
