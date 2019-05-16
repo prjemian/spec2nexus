@@ -7,14 +7,16 @@ Change History
 Production
 **********
 
-:2020.0.0: *tba*, release
+:2020.0.0: *tba*, major release
 
     * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
-       test more content from headers
+       unit tests for header content
     * `#144 <https://github.com/prjemian/spec2nexus/issues/144>`_
        eznx `makeDataset()` now recognizes if data is `ndarray`
     * `#123 <https://github.com/prjemian/spec2nexus/issues/123>`_
        Accept data files with no header control lines (#F #E #D #C sequence)
+    * `#113 <https://github.com/prjemian/spec2nexus/issues/113>`_
+       unit tests for eznx
     * `#70 <https://github.com/prjemian/spec2nexus/issues/70>`_
        remove h5toText, find this now in `punx` package
 
