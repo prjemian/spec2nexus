@@ -32,24 +32,43 @@ import tests.common
 class Issue123(unittest.TestCase):
    
     def setUp(self):
-        path = os.path.dirname(spec.__file__)
-        self.testfile = os.path.join(path, 'data', 'spec_from_spock.spc')
+        self.path = os.path.dirname(spec.__file__)
         self.sys_argv0 = sys.argv[0]
 
     def tearDown(self):
         sys.argv = [self.sys_argv0,]
 
-    def test_data_file(self):
-        self.assertTrue(os.path.exists(self.testfile))
+    def test_spock_file(self):
+        testfile = os.path.join(self.path, 'data', 'spec_from_spock.spc')
 
-        self.assertFalse(spec.is_spec_file_with_header(self.testfile))
-        self.assertTrue(spec.is_spec_file(self.testfile))
+        self.assertTrue(os.path.exists(testfile))
 
-        specData = spec.SpecDataFile(self.testfile)
+        self.assertFalse(spec.is_spec_file_with_header(testfile))
+        self.assertTrue(spec.is_spec_file(testfile))
+
+        specData = spec.SpecDataFile(testfile)
         self.assertTrue(isinstance(specData, spec.SpecDataFile))
 
         scans = specData.getScanNumbers()
         self.assertEqual(len(scans), 171, "expected number of scans")
+        
+        # TODO: test more content
+
+    def test_33id_file(self):
+        testfile = os.path.join(self.path, 'data', '33id_spec.dat')
+
+        self.assertTrue(os.path.exists(testfile))
+
+        self.assertTrue(spec.is_spec_file_with_header(testfile))
+        self.assertTrue(spec.is_spec_file(testfile))
+
+        specData = spec.SpecDataFile(testfile)
+        self.assertTrue(isinstance(specData, spec.SpecDataFile))
+
+        scans = specData.getScanNumbers()
+        self.assertEqual(len(scans), 106, "expected number of scans")
+        
+        # TODO: test more content
 
 
 def suite(*args, **kw):

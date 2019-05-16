@@ -234,7 +234,7 @@ class SpecDataFile(object):
     def __str__(self):
         return self.fileName or 'None'
 
-    def _raw_headers_dict(self, buf):
+    def _raw_headers_dict(self, buf):   # TODO: deprecated - remove?
         """
         parse buf line-by-line into header blocks (includes scans)
         """
@@ -292,21 +292,61 @@ class SpecDataFile(object):
         buf.append("#C default header")
         return "\n".join(buf)
 
+    def get_sections(self, buf):
+        """
+        divide (SPEC data file text) buffer into sections
+        
+        internal: A *block* starts with either #F | #E | #S
+        
+        PARAMETERS
+        
+        buf : str
+            the contents of the SPEC data file
+        
+        RETURNS
+        
+        sections : [[str]]
+            list of blocks where each block is the text from `buf`
+        
+        """
+        sections, block = [], []
+        
+        for _line_num, text in enumerate(buf.splitlines()):
+            if len(text.strip()) > 0:
+                f = text.split()[0]
+                if len(f) == 2 and f in ("#E", "#F", "#S"):
+                    if len(block) > 0:
+                        sections.append("\n".join(block))
+                    block = []
+            block.append(text)
+
+        if len(block) > 0:
+            sections.append("\n".join(block))
+        return sections
+
     def read(self):
         """Reads and parses a spec data file"""
         buf = self._read_file_(self.fileName)
         
-        # TODO: must mesh with LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES and interpret()
-        # find the header blocks (includes #E and #S lines)
-        headers = self._raw_headers_dict(buf)
-        for h, header in headers.items():
-            if h == "default":
-                default_header_buffer = self._make_default_header_buffer()
-                header = default_header_buffer + "\n\n" + header
-            line1 = header.splitlines()[0]
-            key = self.plugin_manager.getKey(line1)
-            self.plugin_manager.process(key, header, self)
-        pass
+        sections = self.get_sections(buf)
+        for block in sections:
+            if len(block) == 0:
+                continue
+            key = self.plugin_manager.getKey(block.splitlines()[0])
+            self.plugin_manager.process(key, block, self)
+        
+        if False:
+            # TODO: must mesh with LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES and interpret()
+            # find the header blocks (includes #E and #S lines)
+            headers = self._raw_headers_dict(buf)
+            for h, header in headers.items():
+                if h == "default":
+                    default_header_buffer = self._make_default_header_buffer()
+                    header = default_header_buffer + "\n\n" + header
+                line1 = header.splitlines()[0]
+                key = self.plugin_manager.getKey(line1)
+                self.plugin_manager.process(key, header, self)
+            pass
         
         if False:
             # find the header blocks (includes #E and #S lines)

@@ -192,14 +192,21 @@ class SPEC_Scan(ControlLineHandler):
 
     key = '#S'
     
-    def process(self, part, spec_obj, *args, **kws):
-        header = spec_obj.parent.headers[-1]
-        scan = SpecDataFileScan(header, part, parent=spec_obj)
-        text = part.splitlines()[0].strip()
-        scan.S = strip_first_word(text)
+    def process(self, part, sdf, *args, **kws):
+        if len(sdf.headers) == 0:
+            # make a header if none exists now
+            raw = ""        # TODO: what default content to use?
+            header = SpecDataFileHeader(raw, parent=sdf)
+            sdf.headers.append(header)
+        else:
+            header = sdf.headers[-1]    # pick the most recent header
+
+        scan = SpecDataFileScan(header, part, parent=sdf)
+        scan.S = strip_first_word(part.splitlines()[0].strip())
         scan.scanNum = scan.S.split()[0]
         scan.scanCmd = strip_first_word(scan.S)
-        if scan.scanNum in header.parent.scans:
+        
+        if scan.scanNum in sdf.scans:
             # Before raising an exception, 
             #    Check for duplicate and create alternate name
             #    write as "%d.%d" % (scan.scanNum, index) 
@@ -209,14 +216,14 @@ class SPEC_Scan(ControlLineHandler):
             # Will a non-integer scanNum break anything?
             for i in range(1, len(scan.parent.scans)):
                 new_scanNum = "%s.%d" % (scan.scanNum, i)
-                if new_scanNum not in spec_obj.scans:
+                if new_scanNum not in sdf.scans:
                     scan.scanNum = new_scanNum
                     break
         scan.scanNum = str(scan.scanNum)
-        if scan.scanNum in header.parent.scans:
-            msg = str(scan.scanNum) + ' in ' + header.parent.fileName
+        if scan.scanNum in sdf.scans:
+            msg = str(scan.scanNum) + ' in ' + sdf.fileName
             raise DuplicateSpecScanNumber(msg)
-        header.parent.scans[scan.scanNum] = scan
+        sdf.scans[scan.scanNum] = scan
 
 
 class SPEC_Geometry(ControlLineHandler):
