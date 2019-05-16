@@ -42,7 +42,7 @@ class TestNexus(unittest.TestCase):
         self.test_files = {
             "02_03_setup.dat":          "-f --verbose   -s 46",
             "33id_spec.dat":            "-f --verbose   -s 1",
-            "spectra_example.dat":      "-f --verbose   -s 1",
+            "spec_from_spock.spc":      "-f --verbose   -s 116",
             "mca_spectra_example.dat":  "-f --verbose   -s 1",
             "xpcs_plugin_sample.spec":  "-f --verbose   -s 1",
             }
@@ -60,41 +60,10 @@ class TestNexus(unittest.TestCase):
         for fn, args in self.test_files.items():
             shutil.copy2(os.path.join(self.data_path, fn), self.tempdir)
             cmd = fn + "  " + args
-            sys.argv = [self.sys_argv0,] + [cmd for cmd in args.split()]
+            _argv = sys.argv = [self.sys_argv0,] + [c for c in cmd.split()]
 
-            # FIXME: nexus.main()
-            # pydev debugger: starting (pid: 14288)
-            # usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-v] [-s SCAN_LIST]
-            #                   [--quiet | --verbose]
-            #                   infile [infile ...]
-            # spec2nexus: error: the following arguments are required: infile
-            # E
-            # ======================================================================
-            # ERROR: test_trivial (__main__.TestNexus)
-            # ----------------------------------------------------------------------
-            # Traceback (most recent call last):
-            #   File "C:\Users\Pete\Documents\eclipse\spec2nexus\tests\test_nexus.py", line 65, in test_trivial
-            #     nexus.main()
-            #   File "C:\Users\Pete\Documents\eclipse\spec2nexus\src\spec2nexus\nexus.py", line 159, in main
-            #     user_parms = get_user_parameters()
-            #   File "C:\Users\Pete\Documents\eclipse\spec2nexus\src\spec2nexus\nexus.py", line 112, in get_user_parameters
-            #     return parser.parse_args()
-            #   File "C:\Users\Pete\Apps\Anaconda\lib\argparse.py", line 1734, in parse_args
-            #     args, argv = self.parse_known_args(args, namespace)
-            #   File "C:\Users\Pete\Apps\Anaconda\lib\argparse.py", line 1766, in parse_known_args
-            #     namespace, args = self._parse_known_args(args, namespace)
-            #   File "C:\Users\Pete\Apps\Anaconda\lib\argparse.py", line 2001, in _parse_known_args
-            #     ', '.join(required_actions))
-            #   File "C:\Users\Pete\Apps\Anaconda\lib\argparse.py", line 2393, in error
-            #     self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
-            #   File "C:\Users\Pete\Apps\Anaconda\lib\argparse.py", line 2380, in exit
-            #     _sys.exit(status)
-            # SystemExit: 2
-            # 
-            # ----------------------------------------------------------------------
-            # Ran 1 test in 80.857s
-            # 
-            # FAILED (errors=1)
+            print(f"Testing NeXus conversion of SPEC data file: {fn}")
+            nexus.main()
 
 
 def suite(*args, **kw):
