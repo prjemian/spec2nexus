@@ -103,7 +103,7 @@ class Issue123(unittest.TestCase):
         self.assertGreater(len(header.raw), 0, "raw content")
         self.assertGreater(len(header.date), 0, "defined date")
         self.assertEqual(header.epoch, 1058427452, "expected epoch")
-        self.assertEqual(len(header.comments), 2, "expected number of header comments")
+        self.assertEqual(len(header.comments), 1, "expected number of header comments")
         self.assertEqual(len(header.O), 4, "defined positioner label rows")
         self.assertEqual(len(header.H), 21, "defined metadata label rows")
 

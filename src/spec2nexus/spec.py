@@ -304,13 +304,6 @@ class SpecDataFile(object):
                         if key in ("#D",):
                             self.plugin_manager.process(key, line, scan)
                             break
-
-            elif key == "#E":
-                header = self.headers[-1]
-                for line in header.raw.splitlines()[1:]:
-                    if len(line) > 0:
-                        key = line.split()[0]
-                        self.plugin_manager.process(key, line, header)
     
     def getScan(self, scan_number=0):
         """return the scan number indicated, None if not found"""
