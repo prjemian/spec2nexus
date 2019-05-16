@@ -281,16 +281,16 @@ class SpecDataFile(object):
     #         scans.append("\n".join(block))
     # 
     #     return scans, "\n".join(header)
-    
-    def _make_default_header_buffer(self):
-        t = time.time()
-        dt = datetime.datetime.fromtimestamp(t)
-        buf = []
-        # buf.append("#F " + self.fileName)
-        buf.append("#E %d" % int(t))
-        buf.append("#D " + dt.strftime("%c"))
-        buf.append("#C default header")
-        return "\n".join(buf)
+    # 
+    # def _make_default_header_buffer(self):
+    #     t = time.time()
+    #     dt = datetime.datetime.fromtimestamp(t)
+    #     buf = []
+    #     # buf.append("#F " + self.fileName)
+    #     buf.append("#E %d" % int(t))
+    #     buf.append("#D " + dt.strftime("%c"))
+    #     buf.append("#C default header")
+    #     return "\n".join(buf)
 
     def get_sections(self, buf):
         """
