@@ -40,14 +40,14 @@ class TestExampleData_to_Nexus(unittest.TestCase):
         self.tempdir = tempfile.mkdtemp()
         os.chdir(self.tempdir)
 
-        noise = "verbose"   # for developer
-        noise = "quiet"     # for travis-ci
+        self.noise = "verbose"   # for developer
+        self.noise = "quiet"     # for travis-ci
         self.test_files = {
-            "02_03_setup.dat":          f"-f --{noise}   -s 46",
-            "33id_spec.dat":            f"-f --{noise}   -s 1,3-5,8",
-            "spec_from_spock.spc":      f"-f --{noise}   -s 116",
-            "mca_spectra_example.dat":  f"-f --{noise}   -s 1",
-            "xpcs_plugin_sample.spec":  f"-f --{noise}   -s 1",
+            "02_03_setup.dat":          "-f --%s   -s 46",
+            "33id_spec.dat":            "-f --%s   -s 1,3-5,8",
+            "spec_from_spock.spc":      "-f --%s   -s 116",
+            "mca_spectra_example.dat":  "-f --%s   -s 1",
+            "xpcs_plugin_sample.spec":  "-f --%s   -s 1",
             }
 
     def tearDown(self):
@@ -62,7 +62,7 @@ class TestExampleData_to_Nexus(unittest.TestCase):
         
         for fn, args in self.test_files.items():
             shutil.copy2(os.path.join(self.data_path, fn), self.tempdir)
-            cmd = fn + "  " + args
+            cmd = fn + "  " + args % self.noise
             _argv = sys.argv = [self.sys_argv0,] + [c for c in cmd.split()]
 
             nexus.main()
@@ -81,13 +81,13 @@ class TestExampleData_to_Nexus(unittest.TestCase):
 
                 nxentry = root[default]
                 self.assertNotEqual(nxentry, None, "HDF5 file has NXentry group")
-                self.assertTrue(isinstance(nxentry, h5py.Group), f"{default} is HDF5 Group")
+                self.assertTrue(isinstance(nxentry, h5py.Group), default + " is HDF5 Group")
 
                 default = nxentry.attrs.get("default")
-                self.assertNotEqual(default, None, f"{default} group has default attribute")
+                self.assertNotEqual(default, None, default + " group has default attribute")
                 nxdata = nxentry[default]
                 self.assertNotEqual(nxdata, None, "NXentry group has NXdata group")
-                self.assertTrue(isinstance(nxdata, h5py.Group), f"{default} is HDF5 Group")
+                self.assertTrue(isinstance(nxdata, h5py.Group), default + " is HDF5 Group")
 
 
 def suite(*args, **kw):
