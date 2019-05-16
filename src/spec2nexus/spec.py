@@ -359,7 +359,13 @@ class SpecDataFile(object):
                         if key in ("#D",):
                             self.plugin_manager.process(key, line, scan)
                             break
-                        # TODO: need first-step processing of scans for date and ...
+
+            elif key == "#E":
+                header = self.headers[-1]
+                for line in header.raw.splitlines()[1:]:
+                    if len(line) > 0:
+                        key = line.split()[0]
+                        self.plugin_manager.process(key, line, header)
         
         # if False:
         #     # TODO: must mesh with LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES and interpret()

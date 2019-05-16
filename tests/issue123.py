@@ -52,6 +52,8 @@ class Issue123(unittest.TestCase):
         scans = specData.getScanNumbers()
         self.assertEqual(len(scans), 171, "expected number of scans")
         
+        self.assertEqual(len(specData.headers), 1, "expected number of headers")
+        self.assertEqual(len(specData.headers[0].raw), 0, "no raw content")
         # TODO: test more content
 
     def test_33id_file(self):
@@ -69,6 +71,7 @@ class Issue123(unittest.TestCase):
         self.assertEqual(len(scans), 106, "expected number of scans")
         
         # TODO: test more content
+        self.assertEqual(len(specData.headers), 1, "expected number of headers")
 
 
 def suite(*args, **kw):
