@@ -15,6 +15,8 @@ Production
        eznx `makeDataset()` now recognizes if data is `ndarray`
     * `#123 <https://github.com/prjemian/spec2nexus/issues/123>`_
        Accept data files with no header control lines (#F #E #D #C sequence)
+    * `#70 <https://github.com/prjemian/spec2nexus/issues/70>`_
+       remove h5toText, find this now in `punx` package
 
 :2019.0503.0: 2019.05.03, tag
 
