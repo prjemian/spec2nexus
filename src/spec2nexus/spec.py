@@ -294,7 +294,7 @@ class SpecDataFile(object):
             self.plugin_manager.process(key, block, self)
             
             if key == "#S":
-                scan = self.scans.values()[-1]
+                scan = list(self.scans.values())[-1]
                 for line in scan.raw.splitlines()[1:]:
                     if len(line) > 0:
                         key = line.split()[0]
