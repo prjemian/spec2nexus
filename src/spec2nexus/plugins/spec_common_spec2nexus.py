@@ -22,6 +22,7 @@ SPEC data file standard control lines
 from collections import OrderedDict
 import datetime
 import re
+import time
 
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
@@ -121,6 +122,7 @@ class SPEC_Date(ControlLineHandler):
             sdf_object.addH5writer(self.key, self.writer)
             if len(sdf_object.header.date.strip()) == 0:
                 sdf_object.header.date = text
+                sdf_object.header.epoch = sdf_object.epoch
             # TODO: what if header date is greater than this scan's date?
     
     def writer(self, h5parent, writer, sdf_object, *args, **kws):

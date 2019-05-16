@@ -53,8 +53,8 @@ class Issue123(unittest.TestCase):
         header = specData.headers[0]
         self.assertTrue(isinstance(header, spec.SpecDataFileHeader))
         self.assertEqual(len(header.raw), 0, "no raw content")
-        self.assertEqual(len(header.date), 0, "default date")
-        self.assertEqual(header.epoch, 0, "default epoch")
+        self.assertNotEqual(len(header.date), 0, "default date")
+        self.assertEqual(header.epoch, 1505468350, "default epoch")
         self.assertEqual(len(header.comments), 0, "expected number of header comments")
         self.assertEqual(len(header.O), 0, "defined positioner label rows")
         self.assertEqual(len(header.H), 0, "defined metadata label rows")
