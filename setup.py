@@ -58,7 +58,6 @@ setup (
          # create & install scripts in <python>/bin
          'console_scripts': [
              'spec2nexus=spec2nexus.nexus:main',
-             'h5toText=spec2nexus.h5toText:main',
              'extractSpecScan=spec2nexus.extractSpecScan:main',
              'specplot=spec2nexus.specplot:main',
              'specplot_gallery=spec2nexus.specplot_gallery:main',

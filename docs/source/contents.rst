@@ -6,7 +6,6 @@ Contents
    :glob:
    
    spec2nexus
-   h5toText
    extractSpecScan
    specplot
    specplot_gallery

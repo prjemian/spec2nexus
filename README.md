@@ -16,8 +16,6 @@ Provides
 -   **spec2nexus** : command-line tool: Convert
     [SPEC](http://certif.com) data files to
     [NeXus](http://nexusformat.org) [HDF5](http://hdfgroup.org)
--   **h5toText** : command-line tool: Print the structure of an HDF5
-    file
 -   **extractSpecScan** : command-line tool: Save columns from SPEC data
     file scan(s) to TSV files
 -   **spec** : library: python binding to read SPEC data files

@@ -7,7 +7,6 @@
 
 
 import os
-from spec2nexus import h5toText
 from spec2nexus import writer
 from spec2nexus import spec
 
@@ -29,4 +28,3 @@ if __name__ == '__main__':
     specfile = spec.SpecDataFile(file1)
     writer = writer.Writer(specfile)
     writer.save(hfile, sorted(specfile.getScanNumbers()))
-    h5toText.do_filelist([hfile, ], None)
