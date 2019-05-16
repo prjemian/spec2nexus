@@ -153,10 +153,13 @@ def is_spec_file(filename):
     """
     if not os.path.exists(filename) or not os.path.isfile(filename):
         return False
-    with open(filename, "r") as fp:
-        for line in fp.readlines():
-            if line.startswith("#S "):
-                return True
+    try:
+        with open(filename, "r") as fp:
+            for line in fp.readlines():
+                if line.startswith("#S "):
+                    return True
+    except Exception:
+        pass
     return False
 
 
