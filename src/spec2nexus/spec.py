@@ -237,38 +237,6 @@ class SpecDataFile(object):
     def __str__(self):
         return self.fileName or 'None'
 
-    def get_sections(self, buf):
-        """
-        divide (SPEC data file text) buffer into sections
-        
-        internal: A *block* starts with either #F | #E | #S
-        
-        PARAMETERS
-        
-        buf : str
-            the contents of the SPEC data file
-        
-        RETURNS
-        
-        sections : [[str]]
-            list of blocks where each block is the text from `buf`
-        
-        """
-        sections, block = [], []
-        
-        for _line_num, text in enumerate(buf.splitlines()):
-            if len(text.strip()) > 0:
-                f = text.split()[0]
-                if len(f) == 2 and f in ("#E", "#F", "#S"):
-                    if len(block) > 0:
-                        sections.append("\n".join(block))
-                    block = []
-            block.append(text)
-
-        if len(block) > 0:
-            sections.append("\n".join(block))
-        return sections
-
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
         try:
@@ -285,11 +253,39 @@ class SpecDataFile(object):
 
         return buf.replace('\r\n', '\n').replace('\r', '\n')
 
-    def read(self):
-        """Reads and parses a spec data file"""
+    def dissect_file(self):
+        """
+        divide (SPEC data file text) buffer into sections
+        
+        internal: A *block* starts with either #F | #E | #S
+        
+        RETURNS
+        
+        [block]
+            list of blocks where each block is one or more lines of 
+            text with one of the above control lines at its start 
+        
+        """
         buf = self._read_file_(self.fileName)
         
-        sections = self.get_sections(buf)
+        sections, block = [], []
+        
+        for _line_num, text in enumerate(buf.splitlines()):
+            if len(text.strip()) > 0:
+                f = text.split()[0]
+                if len(f) == 2 and f in ("#E", "#F", "#S"):
+                    if len(block) > 0:
+                        sections.append("\n".join(block))
+                    block = []
+            block.append(text)
+
+        if len(block) > 0:
+            sections.append("\n".join(block))
+        return sections
+
+    def read(self):
+        """Reads and parses a spec data file"""
+        sections = self.dissect_file()
         for block in sections:
             if len(block) == 0:
                 continue
