@@ -19,6 +19,7 @@ SPEC data file standard control lines
 
 """
 
+from collections import OrderedDict
 import datetime
 import re
 import time
@@ -598,7 +599,7 @@ class SPEC_Positioners(ControlLineHandler):
         
         :param SpecDataFileScan scan: data from a single SPEC scan
         """
-        scan.positioner = {}
+        scan.positioner = OrderedDict()
         for row, values in enumerate(scan.P):
             if row >= len(scan.header.O):
                 scan.add_interpreter_comment('#P%d found without #O%d' % (row, row))

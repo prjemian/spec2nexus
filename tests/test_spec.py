@@ -112,12 +112,13 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.data[y][-1], 0.0)
         scan = sfile.getScan(-1)
         self.assertEqual(len(scan.positioner), 22)
-        x = 'yt3'
-        y = 'zt1'
-        self.assertEqual(scan.positioner.keys()[0], x)
-        self.assertEqual(scan.positioner.keys()[-1], y)
-        self.assertEqual(scan.positioner[x], 0.499275)
-        self.assertEqual(scan.positioner[y], -113.52071)
+        x = '2-theta'
+        y = 'm22'
+        keys = list(scan.positioner.keys())
+        self.assertEqual(keys[0], x)
+        self.assertEqual(keys[-1], y)
+        self.assertEqual(scan.positioner[x], 67.78225)
+        self.assertEqual(scan.positioner[y], 1230.0415)
         # TODO: apply file-specific tests (see README.txt)
         # test hklscan (#14), hklmesh (#17)
 
@@ -279,13 +280,15 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.data[x][-1], 27.1075)
         self.assertEqual(scan.data[y][-1], 7.0)
         scan = sfile.getScan(-1)
+        self.assertEqual(scan.scanCmd, "ascan  phi -180 180  720 0.5")
         self.assertEqual(len(scan.positioner), 26)
-        x = 'yt2'
-        y = 'wst'
-        self.assertEqual(scan.positioner.keys()[0], x)
-        self.assertEqual(scan.positioner.keys()[-1], y)
-        self.assertEqual(scan.positioner[x], -6.25e-05)
-        self.assertEqual(scan.positioner[y], 2.9999031)
+        x = '2-theta'
+        y = 'chSens'
+        keys = list(scan.positioner.keys())
+        self.assertEqual(keys[0], x)
+        self.assertEqual(keys[-1], y)
+        self.assertEqual(scan.positioner[x], 18.8)
+        self.assertEqual(scan.positioner[y], 5.0)
         # TODO: apply file-specific tests (see README.txt)
         # 1-D scans, text in #V35.2 metadata (powderMotor="theta" others are float), also has #UIM control lines
 
