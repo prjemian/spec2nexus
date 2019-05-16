@@ -34,7 +34,7 @@ class XPCS_VA(ControlLineHandler):
         group = makeGroup(h5parent, 'VA', nxclass,description=desc)
         dd = {}
         for item, value in scan.VA.items():
-            dd[item] = map(str, value.split())
+            dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
 class XPCS_VD(ControlLineHandler):
@@ -57,7 +57,7 @@ class XPCS_VD(ControlLineHandler):
         group = makeGroup(h5parent, 'VD', nxclass, description=desc)
         dd = {}
         for item, value in scan.VD.items():
-            dd[item] = map(str, value.split())
+            dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
 class XPCS_VE(ControlLineHandler):
@@ -80,7 +80,7 @@ class XPCS_VE(ControlLineHandler):
         group = makeGroup(h5parent, 'VE', nxclass,description=desc)
         dd = {}
         for item, value in scan.VE.items():
-            dd[item] = map(str, value.split())
+            dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
 class XPCS_XPCS(ControlLineHandler):
