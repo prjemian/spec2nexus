@@ -11,6 +11,8 @@ Production
 
     * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
        test more content from headers
+    * `#144 <https://github.com/prjemian/spec2nexus/issues/144>`_
+       eznx `makeDataset()` now recognizes if data is `ndarray`
     * `#123 <https://github.com/prjemian/spec2nexus/issues/123>`_
        Accept data files with no header control lines (#F #E #D #C sequence)
 
