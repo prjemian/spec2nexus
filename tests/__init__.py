@@ -28,6 +28,7 @@ def suite(*args, **kw):
     from tests import test_extractSpecScan
     from tests import test_md_apstools_specwriter
     from tests import test_multiple_headers
+    from tests import test_nexus
     from tests import test_plugin
     from tests import test_scanf
     from tests import test_spec
@@ -40,12 +41,13 @@ def suite(*args, **kw):
     from tests import issue107
     from tests import issue119
     from tests import issue123
-    test_suite = unittest.TestSuite()
+
     test_list = [
         data_03_06_JanTest,
         test_extractSpecScan,
         test_md_apstools_specwriter,
         test_multiple_headers,
+        test_nexus,
         test_plugin,
         test_scanf,
         test_spec,
@@ -60,6 +62,7 @@ def suite(*args, **kw):
         issue123,
         ]
 
+    test_suite = unittest.TestSuite()
     for test in test_list:
         test_suite.addTest(test.suite())
     return test_suite
