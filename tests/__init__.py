@@ -26,6 +26,7 @@ if _path not in sys.path:
 def suite(*args, **kw):
     from tests import data_03_06_JanTest
     from tests import test_extractSpecScan
+    from tests import test_eznx
     from tests import test_md_apstools_specwriter
     from tests import test_multiple_headers
     from tests import test_nexus
@@ -45,6 +46,7 @@ def suite(*args, **kw):
     test_list = [
         data_03_06_JanTest,
         test_extractSpecScan,
+        test_eznx,
         test_md_apstools_specwriter,
         test_multiple_headers,
         test_nexus,
