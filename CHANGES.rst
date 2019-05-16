@@ -7,6 +7,13 @@ Change History
 Production
 **********
 
+:2020.0.0: *tba*, release
+
+    * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
+       test more content from headers
+    * `#123 <https://github.com/prjemian/spec2nexus/issues/123>`_
+       Accept data files with no header control lines (#F #E #D #C sequence)
+
 :2019.0503.0: 2019.05.03, tag
 
     * `#142 <https://github.com/prjemian/spec2nexus/issues/142>`_
