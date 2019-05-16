@@ -324,6 +324,22 @@ class SpecDataFile(object):
             sections.append("\n".join(block))
         return sections
 
+    def _read_file_(self, spec_file_name):
+        """Reads a spec data file"""
+        try:
+            buf = open(spec_file_name, 'r').read()
+        except IOError:
+            msg = 'Could not open spec file: ' + str(spec_file_name)
+            raise SpecDataFileCouldNotOpen(msg)
+        if not is_spec_file(spec_file_name):
+            msg = 'Not a spec data file: ' + str(spec_file_name)
+            raise NotASpecDataFile(msg)
+
+        # caution: some files may have EOL = \r\n
+        # convert all '\r\n' to '\n', then all '\r' to '\n'
+
+        return buf.replace('\r\n', '\n').replace('\r', '\n')
+
     def read(self):
         """Reads and parses a spec data file"""
         buf = self._read_file_(self.fileName)
@@ -405,22 +421,6 @@ class SpecDataFile(object):
         #             self.plugin_manager.process(key, part, self)
         #         else:
         #             raise UnknownSpecFilePart(part.splitlines()[0].strip())
-
-    def _read_file_(self, spec_file_name):
-        """Reads a spec data file"""
-        try:
-            buf = open(spec_file_name, 'r').read()
-        except IOError:
-            msg = 'Could not open spec file: ' + str(spec_file_name)
-            raise SpecDataFileCouldNotOpen(msg)
-        if not is_spec_file(spec_file_name):
-            msg = 'Not a spec data file: ' + str(spec_file_name)
-            raise NotASpecDataFile(msg)
-
-        # caution: some files may have EOL = \r\n
-        # convert all '\r\n' to '\n', then all '\r' to '\n'
-
-        return buf.replace('\r\n', '\n').replace('\r', '\n')
     
     def getScan(self, scan_number=0):
         """return the scan number indicated, None if not found"""
