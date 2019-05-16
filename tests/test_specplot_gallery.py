@@ -58,6 +58,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('writer_1_3.h5'))
         specplot_gallery.main()
+        # this is HDF5 file, not SPEC, so not much content
         children = os.listdir(self.tempdir)
         self.assertEqual(len(children), 1)
         self.assertEqual(children[0], 'specplot_files_processing.log')
