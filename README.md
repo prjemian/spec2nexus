@@ -50,6 +50,7 @@ Package Information
 -   **build badges**:
     [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
     [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)
+    [![Total alerts](https://img.shields.io/lgtm/alerts/g/prjemian/spec2nexus.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prjemian/spec2nexus/alerts/)
 
 -   **release badges**:
     [![image](https://img.shields.io/pypi/pyversions/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus)
