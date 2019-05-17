@@ -7,7 +7,7 @@ Change History
 Production
 **********
 
-:2020.0.0: *tba*, major release
+:2020.0.0: *2019.05.16*, major release
 
     * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
        unit tests for header content
