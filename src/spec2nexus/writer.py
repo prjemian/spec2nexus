@@ -162,16 +162,19 @@ class Writer(object):
         """*internal*: store the scan data"""
         scan_type = scan.scanCmd.split()[0]
 
-        signal, axes = '', ['',]
         if scan_type in ('mesh', 'hklmesh'):
             # hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
             signal, axes = self.mesh(nxdata, scan)
         elif scan_type in ('hscan', 'kscan', 'lscan', 'hklscan'):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
             h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
-            if   h_0 != h_N: axes = ['H',]
-            elif k_0 != k_N: axes = ['K',]
-            elif l_0 != l_N: axes = ['L',]
+            # TODO: why bother defining axes here?  Not used.  issue #155
+            if h_0 != h_N: 
+                axes = ['H',]
+            elif k_0 != k_N: 
+                axes = ['K',]
+            elif l_0 != l_N: 
+                axes = ['L',]
             signal, axes = self.oneD(nxdata, scan)
         else:
             signal, axes = self.oneD(nxdata, scan)
@@ -245,7 +248,6 @@ class Writer(object):
         #  hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
-        signal, axes = '', ['',]
         
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = scan.scanCmd.split()[1:]
         if label1 not in scan.data:
