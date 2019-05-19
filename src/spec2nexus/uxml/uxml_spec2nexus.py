@@ -83,7 +83,6 @@ class Dataset(object):
     def __init__(self, xml_node):
         self.name = xml_node.get('name')
         ds = eznx.makeDataset(None, self.name, 'test')
-        pass
 
 
 class Group(object):
@@ -97,7 +96,6 @@ class Group(object):
 #         group = h5py.Group()
 #         group.create_group(self.name)
         #openGroup(None, self.name, self.NX_class)
-        pass
 
 
 class Hardlink(object):
