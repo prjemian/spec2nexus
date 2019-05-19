@@ -135,7 +135,7 @@ class Writer(object):
             c = header0.comments[0]
             user = c[c.find('User = '):].split('=')[1].strip()
             dd['SPEC_user'] = user
-        except:
+        except Exception:
             pass
         return dd
     
@@ -162,16 +162,19 @@ class Writer(object):
         """*internal*: store the scan data"""
         scan_type = scan.scanCmd.split()[0]
 
-        signal, axes = '', ['',]
         if scan_type in ('mesh', 'hklmesh'):
             # hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
             signal, axes = self.mesh(nxdata, scan)
         elif scan_type in ('hscan', 'kscan', 'lscan', 'hklscan'):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
             h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
-            if   h_0 != h_N: axes = ['H',]
-            elif k_0 != k_N: axes = ['K',]
-            elif l_0 != l_N: axes = ['L',]
+            # TODO: why bother defining axes here?  Not used.  issue #155
+            if h_0 != h_N: 
+                axes = ['H',]
+            elif k_0 != k_N: 
+                axes = ['K',]
+            elif l_0 != l_N: 
+                axes = ['L',]
             signal, axes = self.oneD(nxdata, scan)
         else:
             signal, axes = self.oneD(nxdata, scan)
@@ -234,6 +237,7 @@ class Writer(object):
                 channels = np.arange(1, len(spectrum[0])+1, dtype=int)
                 _mca_x_ = a + channels * (b + channels * c)
                 self.write_ds(nxdata, ds_name + 'channel_', channels, units = 'channel')
+                self.write_ds(nxdata, ds_name + 'channel_scaled_x', _mca_x_, units = '')
     
     def mesh(self, nxdata, scan):
         """*internal*: data parser for 2-D mesh and hklmesh"""
@@ -245,7 +249,6 @@ class Writer(object):
         #  hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
-        signal, axes = '', ['',]
         
         label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = scan.scanCmd.split()[1:]
         if label1 not in scan.data:
@@ -255,7 +258,7 @@ class Writer(object):
         axis1 = scan.data.get(label1)
         axis2 = scan.data.get(label2)
         intervals1, intervals2 = map(int, (intervals1, intervals2))
-        start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
+        # unused: start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
         if len(axis1) < intervals1:     # stopped scan before second row started
             signal, axes = self.oneD(nxdata, scan)        # fallback support
         else:

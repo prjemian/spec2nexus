@@ -21,8 +21,6 @@ SPEC data file standard control lines
 
 from collections import OrderedDict
 import datetime
-import re
-import time
 
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler

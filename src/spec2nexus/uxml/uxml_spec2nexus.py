@@ -82,8 +82,7 @@ class Dataset(object):
 
     def __init__(self, xml_node):
         self.name = xml_node.get('name')
-        ds = eznx.makeDataset(None, self.name, 'test')
-        pass
+        eznx.makeDataset(None, self.name, 'test')
 
 
 class Group(object):
@@ -97,7 +96,6 @@ class Group(object):
 #         group = h5py.Group()
 #         group.create_group(self.name)
         #openGroup(None, self.name, self.NX_class)
-        pass
 
 
 class Hardlink(object):
@@ -156,11 +154,11 @@ class UXML_metadata(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        desc = 'UXML metadata'
+        #desc = 'UXML metadata'
         #eznx.write_dataset(h5parent, "counting_basis", desc)
         #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
         # TODO: parse the XML and store
         selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
         for item in scan.UXML_root:
-            obj = selector[item.tag](item)
-            #print item.tag, item.get('name'), obj, obj.name
+            _obj = selector[item.tag](item)
+            #print item.tag, item.get('name'), _obj, obj.name

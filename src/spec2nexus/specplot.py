@@ -680,7 +680,7 @@ class MeshPlotter(ImageMaker):
         axis1 = self.scan.data.get(label1)
         axis2 = self.scan.data.get(label2)
         intervals1, intervals2 = map(int, (intervals1, intervals2))
-        start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
+        # unused: start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
 
         if len(axis1) < intervals1 and min(axis2) == max(axis2):
             # stopped scan before second row started, 1-D plot is better (issue #82)

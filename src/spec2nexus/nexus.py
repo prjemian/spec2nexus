@@ -18,9 +18,8 @@
 
 __url__ = 'http://spec2nexus.readthedocs.org/en/latest/spec2nexus.html'
 
-import os                           #@UnusedImport
-import sys                          #@UnusedImport
-import numpy as np                  #@UnusedImport
+import os
+import sys
 
 if __name__ == "__main__":
     # put us on the path for developers

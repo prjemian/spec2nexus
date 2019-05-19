@@ -10,10 +10,10 @@
 SPEC data file control lines unique to the APS XPCS instrument
 """
 
-from spec2nexus.plugin import ControlLineHandler, strip_first_word
+from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.eznx import makeGroup
-from spec2nexus.spec import SpecDataFileHeader
-from spec2nexus.spec import SpecDataFileScan
+from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan
+from spec2nexus.utils import strip_first_word
 
 class XPCS_VA(ControlLineHandler):
     """**#VA**"""
