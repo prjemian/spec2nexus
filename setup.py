@@ -11,9 +11,8 @@
 # The full license is in the file LICENSE, distributed with this software.
 #-----------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
-import re
 import sys
 
 import versioneer
@@ -44,7 +43,6 @@ setup (
     install_requires = spec2nexus.__install_requires__,
     package_dir      = {'': 'src'},
     packages         = ['spec2nexus', 'spec2nexus.plugins', ],
-    #packages=find_packages(),
     package_data     = {
          'spec2nexus': [
             'data/02_03_setup_fly/*',

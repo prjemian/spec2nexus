@@ -44,13 +44,10 @@ It is optional to:
 """
 
 
-import os                           #@UnusedImport
-import sys                          #@UnusedImport
-import imp                          #@UnusedImport
-import inspect                      #@UnusedImport
-import pprint                       #@UnusedImport
-import re                           #@UnusedImport
-from spec2nexus.utils import strip_first_word #@UnusedImport
+import os
+import imp
+import inspect
+import re
 
 
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'

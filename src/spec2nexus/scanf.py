@@ -136,7 +136,8 @@ def scanf(fmt, s=None):
     or None if the format does not match.
     """
 
-    if s == None: s = sys.stdin
+    if s is None:
+        s = sys.stdin
     if hasattr(s, "readline"): 
         s = s.readline()
 

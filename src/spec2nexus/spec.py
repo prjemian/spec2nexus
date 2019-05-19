@@ -114,10 +114,7 @@ Try to read a file that does not exist:
 """
 
 from collections import OrderedDict
-import datetime
-import os       #@UnusedImport
-import re       #@UnusedImport
-import sys      #@UnusedImport
+import os
 import time
 from spec2nexus.utils import get_all_plugins
 
