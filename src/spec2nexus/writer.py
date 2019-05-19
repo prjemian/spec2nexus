@@ -135,7 +135,7 @@ class Writer(object):
             c = header0.comments[0]
             user = c[c.find('User = '):].split('=')[1].strip()
             dd['SPEC_user'] = user
-        except:
+        except Exception:
             pass
         return dd
     
@@ -237,6 +237,7 @@ class Writer(object):
                 channels = np.arange(1, len(spectrum[0])+1, dtype=int)
                 _mca_x_ = a + channels * (b + channels * c)
                 self.write_ds(nxdata, ds_name + 'channel_', channels, units = 'channel')
+                self.write_ds(nxdata, ds_name + 'channel_scaled_x', _mca_x_, units = '')
     
     def mesh(self, nxdata, scan):
         """*internal*: data parser for 2-D mesh and hklmesh"""
