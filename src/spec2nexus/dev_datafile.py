@@ -14,11 +14,11 @@ from spec2nexus import spec
 if __name__ == '__main__':
     pwd = os.path.abspath(os.getcwd())
     prefix = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data'))
-    file1 = prefix + '.dat'
+    # file1 = prefix + '.dat'
     hfile = prefix + '.hdf5'
-    # lmn40.spe has two header sections, 2nd is just before "#S 8"
-    prefix = os.path.abspath(os.path.join(pwd, 'data', 'lmn40'))
-    file1 = prefix + '.spe'
+    # # lmn40.spe has two header sections, 2nd is just before "#S 8"
+    # prefix = os.path.abspath(os.path.join(pwd, 'data', 'lmn40'))
+    # file1 = prefix + '.spe'
 
     # CdOsO has four header sections and two #S 1 scans
     prefix = os.path.abspath(os.path.join(pwd, 'data', 'CdOsO'))
