@@ -258,7 +258,7 @@ class Writer(object):
         axis1 = scan.data.get(label1)
         axis2 = scan.data.get(label2)
         intervals1, intervals2 = map(int, (intervals1, intervals2))
-        start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
+        # unused: start1, end1, start2, end2, time = map(float, (start1, end1, start2, end2, time))
         if len(axis1) < intervals1:     # stopped scan before second row started
             signal, axes = self.oneD(nxdata, scan)        # fallback support
         else:
