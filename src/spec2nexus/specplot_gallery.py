@@ -65,6 +65,12 @@ import sys
 from spec2nexus import spec
 from spec2nexus import specplot
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError     # py27 compatibility
+
+
 MTIME_CACHE_FILE = 'mtime_cache.txt'
 HTML_INDEX_FILE = 'index.html'
 DOC_URL = 'http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html'
@@ -139,7 +145,7 @@ class PlotSpecFileScans(object):
             logger('    mtime_specFile: ' + str(mtime_specFile))
             logger('    mtime_pngdir:   ' + str(mtime_pngdir))
             sd = specplot.openSpecFile(specFile)
-        except:
+        except FileNotFoundError:
             return    # could not open file, be silent about it
         if len(sd.headers) == 0:    # no scan header found, again, silence
             return
