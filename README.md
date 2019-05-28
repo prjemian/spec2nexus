@@ -62,3 +62,4 @@ Package Information
 -   **community badges**
     [![image](http://depsy.org/api/package/pypi/spec2nexus/badge.svg)](http://depsy.org/package/python/spec2nexus)
     [![Join the chat at https://gitter.im/spec2nexus/Lobby](https://badges.gitter.im/spec2nexus/Lobby.svg)](https://gitter.im/spec2nexus/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+    [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2858/badge)](https://bestpractices.coreinfrastructure.org/projects/2858)
