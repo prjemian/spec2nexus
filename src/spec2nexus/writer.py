@@ -166,7 +166,8 @@ class Writer(object):
             signal, axes = self.mesh(nxdata, scan)
         elif scan_type in ('hscan', 'kscan', 'lscan', 'hklscan'):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
-            h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
+            # FIXME:
+            # h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
             # TODO: why bother defining axes here?  Not used.  issue #155
             # if h_0 != h_N: 
             #     axes = ['H',]
