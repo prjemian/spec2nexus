@@ -169,12 +169,12 @@ class Writer(object):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
             h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
             # TODO: why bother defining axes here?  Not used.  issue #155
-            if h_0 != h_N: 
-                axes = ['H',]
-            elif k_0 != k_N: 
-                axes = ['K',]
-            elif l_0 != l_N: 
-                axes = ['L',]
+            # if h_0 != h_N: 
+            #     axes = ['H',]
+            # elif k_0 != k_N: 
+            #     axes = ['K',]
+            # elif l_0 != l_N: 
+            #     axes = ['L',]
             signal, axes = self.oneD(nxdata, scan)
         else:
             signal, axes = self.oneD(nxdata, scan)
