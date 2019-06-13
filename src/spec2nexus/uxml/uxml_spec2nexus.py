@@ -158,7 +158,8 @@ class UXML_metadata(ControlLineHandler):
         #eznx.write_dataset(h5parent, "counting_basis", desc)
         #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
         # TODO: parse the XML and store
-        selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
-        for item in scan.UXML_root:
-            _obj = selector[item.tag](item)
+        # selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
+        # for item in scan.UXML_root:
+            # _obj = selector[item.tag](item)
             #print item.tag, item.get('name'), _obj, obj.name
+        pass
