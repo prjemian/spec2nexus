@@ -162,4 +162,4 @@ class UXML_metadata(ControlLineHandler):
         # for item in scan.UXML_root:
             # _obj = selector[item.tag](item)
             #print item.tag, item.get('name'), _obj, obj.name
-        pass
+        raise NotImplementedError("uxml writer() not yet implemented")
