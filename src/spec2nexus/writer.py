@@ -19,7 +19,6 @@ import h5py
 import numpy as np
 
 import spec2nexus.eznx as eznx
-import spec2nexus
 import spec2nexus.spec as spec
 import spec2nexus.utils as utils
  
@@ -167,15 +166,17 @@ class Writer(object):
             signal, axes = self.mesh(nxdata, scan)
         elif scan_type in ('hscan', 'kscan', 'lscan', 'hklscan'):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
-            h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
+            # FIXME:
+            # h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
             # TODO: why bother defining axes here?  Not used.  issue #155
-            if h_0 != h_N: 
-                axes = ['H',]
-            elif k_0 != k_N: 
-                axes = ['K',]
-            elif l_0 != l_N: 
-                axes = ['L',]
-            signal, axes = self.oneD(nxdata, scan)
+            # if h_0 != h_N: 
+            #     axes = ['H',]
+            # elif k_0 != k_N: 
+            #     axes = ['K',]
+            # elif l_0 != l_N: 
+            #     axes = ['L',]
+            # FIXME: signal, axes = self.oneD(nxdata, scan)
+            raise NotImplementedError("hklscan save_data() not yet implemented")
         else:
             signal, axes = self.oneD(nxdata, scan)
 
