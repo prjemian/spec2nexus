@@ -45,7 +45,7 @@ Package Information
 
 
 -   **citation**:
-    [![image](https://zenodo.org/badge/16967699.svg)](https://zenodo.org/badge/latestdoi/16967699)
+    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3246491.svg)](https://doi.org/10.5281/zenodo.3246491)
 
 -   **build badges**:
     [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
