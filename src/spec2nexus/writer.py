@@ -175,7 +175,7 @@ class Writer(object):
             #     axes = ['K',]
             # elif l_0 != l_N: 
             #     axes = ['L',]
-            signal, axes = self.oneD(nxdata, scan)
+            # FIXME: signal, axes = self.oneD(nxdata, scan)
             raise NotImplementedError("hklscan save_data() not yet implemented")
         else:
             signal, axes = self.oneD(nxdata, scan)
