@@ -2,7 +2,9 @@
 
 ## Define Release
 
-    RELEASE=2020.0.0
+    RELEASE=`python ./setup.py version | grep "^Version: " | cut -d' ' -f2`
+    # next line will show if ANY changes since tag
+    echo ${RELEASE} | grep +
 
 ## PyPI upload
 
