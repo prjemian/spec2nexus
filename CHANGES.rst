@@ -7,8 +7,10 @@ Change History
 Production
 **********
 
-:2020.0.1: expected *2019.07.11*, bug fixes and code review suggestions
+:2020.0.1: expected *2019.07.09*, bug fixes and code review suggestions
 
+    * `#161 <https://github.com/prjemian/spec2nexus/issues/161>`_
+       read files with no #E control line
     * `#156 <https://github.com/prjemian/spec2nexus/issues/156>`_
        LGTM code review
     * `#153 <https://github.com/prjemian/spec2nexus/issues/153>`_
