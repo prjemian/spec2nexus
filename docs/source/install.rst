@@ -8,42 +8,16 @@ If you have ``pip`` installed, then you can install::
 
     $ pip install spec2nexus 
 
-If you are using Anaconda Python and have ``conda`` installed, then you can install::
+If you are using Anaconda Python and have ``conda`` installed, 
+then you can install with either of these::
 
-    $ conda install -c http://conda.anaconda.org/prjemian spec2nexus
+    $ conda install -c aps-anl-tag spec2nexus
+    $ conda install -c aps-anl-dev spec2nexus
+    $ conda install -c prjemian spec2nexus
 
-..  build the conda kit *after* pushing a new update to PyPI
-    use conda skeleton pypi::
-
-    cd /tmp
-    mkdir conda
-    cd conda
-    conda skeleton pypi spec2nexus
-    conda build spec2nexus
-    conda convert --platform all /local/Apps/anaconda/conda-bld/linux-64/spec2nexus-2016.0601.0-py27_0.tar.bz2 -o /tmp/conda
-    
-    jemian@gov /tmp/conda $ ll -R *-*
-		linux-32:
-		total 5.8M
-		-rw-r--r-- 1 jemian aesbc 5.8M Jun  1 15:12 spec2nexus-2016.0601.0-py27_0.tar.bz2
-		
-		linux-64:
-		total 5.8M
-		-rw-r--r-- 1 jemian aesbc 5.8M Jun  1 15:12 spec2nexus-2016.0601.0-py27_0.tar.bz2
-		
-		osx-64:
-		total 5.8M
-		-rw-r--r-- 1 jemian aesbc 5.8M Jun  1 15:11 spec2nexus-2016.0601.0-py27_0.tar.bz2
-		
-		win-32:
-		total 5.8M
-		-rw-r--r-- 1 jemian aesbc 5.8M Jun  1 15:12 spec2nexus-2016.0601.0-py27_0.tar.bz2
-		
-		win-64:
-		total 5.8M
-		-rw-r--r-- 1 jemian aesbc 5.8M Jun  1 15:12 spec2nexus-2016.0601.0-py27_0.tar.bz2
-	jemian@gov /tmp/conda $ 
-    
+Note that channel `aps-anl-tag` is for production versions
+while channel `aps-anl-dev` is for development/testing versions.
+The channel `prjemian` is an alternate with all versions available.
 
 The latest development versions of spec2nexus can be downloaded from the
 GitHub repository listed above::

@@ -9,6 +9,8 @@ Production
 
 :2020.0.1: expected *2019.07.09*, bug fixes and code review suggestions
 
+    * `#164 <https://github.com/prjemian/spec2nexus/issues/164>`_
+       post conda packages to `aps-anl-tag` channel
     * `#161 <https://github.com/prjemian/spec2nexus/issues/161>`_
        read files with no #E control line
     * `#156 <https://github.com/prjemian/spec2nexus/issues/156>`_
