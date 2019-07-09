@@ -7,6 +7,13 @@ Change History
 Production
 **********
 
+:2020.0.1: expected *2019.07.11*, bug fixes and code review suggestions
+
+    * `#156 <https://github.com/prjemian/spec2nexus/issues/156>`_
+       LGTM code review
+    * `#153 <https://github.com/prjemian/spec2nexus/issues/153>`_
+       LGTM code review
+
 :2020.0.0: *2019.05.16*, major release
 
     * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
