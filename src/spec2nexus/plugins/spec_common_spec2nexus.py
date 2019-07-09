@@ -21,6 +21,7 @@ SPEC data file standard control lines
 
 from collections import OrderedDict
 import datetime
+import time
 
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup
 from spec2nexus.plugin import ControlLineHandler
@@ -116,6 +117,11 @@ class SPEC_Date(ControlLineHandler):
             text = datetime.datetime.fromtimestamp(float(text))
             text = text.strftime("%c")
         sdf_object.date = text
+        if not hasattr(sdf_object, "epoch"):
+            # Mon Jul 08 13:35:50 2019
+            spec_fmt = '%a %b %d %H:%M:%S %Y'
+            ts = time.strptime(text, spec_fmt)
+            sdf_object.epoch = time.mktime(ts)
         if isinstance(sdf_object, SpecDataFileScan):
             sdf_object.addH5writer(self.key, self.writer)
             if len(sdf_object.header.date.strip()) == 0:
