@@ -4,7 +4,7 @@
 
 ## Define the release
 
-PACKAGE=apstools
+PACKAGE=spec2nexus
 RELEASE=`python setup.py --version`
 
 ## PyPI Build and upload::
@@ -16,13 +16,18 @@ twine upload dist/${PACKAGE}-${RELEASE}*
 
 ### Conda channels
 
+# `prjemian`    personal channel
 # `aps-anl-tag` production releases
 # `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
-CHANNEL=aps-anl-tag
+CHANNEL=prjemian
 
 ### publish
 
+CONDA_BLD_PATH=/tmp/conda-bld
+/bin/rm -rf ${CONDA_BLD_PATH}
+/bin/mkdir ${CONDA_BLD_PATH}
+
 conda build ./conda-recipe/
-CONDA_BASE=$(dirname $(dirname `which anaconda`))
-BUILD_DIR=${CONDA_BASE}/conda-bld/noarch
-anaconda upload -u ${CHANNEL} ${BUILD_DIR}/${PACKAGE}-${RELEASE}-py_0.tar.bz2
+BUILD_DIR=${CONDA_BLD_PATH}/noarch
+BUNDLE=${BUILD_DIR}/${PACKAGE}-${RELEASE}-py*_0.tar.bz2
+anaconda upload -u ${CHANNEL} ${BUNDLE}
