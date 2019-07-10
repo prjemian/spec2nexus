@@ -24,7 +24,6 @@ twine upload dist/${PACKAGE}-${RELEASE}*
 
 ### Conda channels
 
-# if [[ ${RELEASE} == \'*\' ]]
 if [[ ${RELEASE} == *rc* ]] ; then
   # anything else, such as: pre-release, release candidates, or testing purposes
   CHANNEL=aps-anl-dev
