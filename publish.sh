@@ -4,12 +4,13 @@
 
 ## Define the release
 
-PACKAGE=spec2nexus
+PACKAGE=`python setup.py --name`
 RELEASE=`python setup.py --version`
-if [[ ${RELEASE} == *dirty ]] ; then
+if [[ ${RELEASE} == *dirty || ${RELEASE} == *+* ]] ; then
   echo "version: ${RELEASE} not ready to publish"
   exit 1
 fi
+
 ## PyPI Build and upload::
 
 python setup.py sdist bdist_wheel
@@ -31,12 +32,12 @@ fi
 ### publish (from linux)
 
 export CONDA_BLD_PATH=/tmp/conda-bld
-/bin/rm -rf ${CONDA_BLD_PATH}
 /bin/mkdir -p ${CONDA_BLD_PATH}
 
 conda build ./conda-recipe/
 BUILD_DIR=${CONDA_BLD_PATH}/noarch
-BUNDLE=${BUILD_DIR}/${PACKAGE}-${RELEASE}-*_0.tar.bz2
+_package_=$(echo ${PACKAGE} | tr '[:upper:]' '[:lower:]')
+BUNDLE=${BUILD_DIR}/${_package_}-${RELEASE}-*_0.tar.bz2
 anaconda upload -u ${CHANNEL} ${BUNDLE}
 
 # also post to my personal channel
