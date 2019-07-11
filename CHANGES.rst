@@ -7,8 +7,16 @@ Change History
 Production
 **********
 
-:2020.0.2: expected *2019.07.09*, bug fixes and code review suggestions
+:2020.0.2: *2019.07.09*, bug fixes and code review suggestions
 
+    * `#166 <https://github.com/prjemian/spec2nexus/issues/166>`_
+       fix conda packaging
+
+:2020.0.2: *2019.07.09*, bug fixes and code review suggestions
+
+    NOTE: conda package is broken (no plugins directory).  
+    Only use ``pip install spec2nexus`` with this release.
+    
     * `#164 <https://github.com/prjemian/spec2nexus/issues/164>`_
        post conda packages to `aps-anl-tag` channel
     * `#161 <https://github.com/prjemian/spec2nexus/issues/161>`_
