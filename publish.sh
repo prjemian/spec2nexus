@@ -39,12 +39,12 @@ echo "Building for upload to conda"
 export CONDA_BLD_PATH=/tmp/conda-bld
 /bin/mkdir -p ${CONDA_BLD_PATH}
 
-conda build ./conda-recipe/
-BUILD_DIR=${CONDA_BLD_PATH}/noarch
+export LOG_FILE=${CONDA_BLD_PATH}/${PACKAGE}-${RELEASE}-conda-build.log
+conda build ./conda-recipe/ 2>&1 | tee ${LOG_FILE}
+
+echo "upload to conda CHANNEL: ${CHANNEL}"
 _package_=$(echo ${PACKAGE} | tr '[:upper:]' '[:lower:]')
-BUNDLE=${BUILD_DIR}/${_package_}-${RELEASE}-*_0.tar.bz2
-echo "upload to conda"
-echo "CHANNEL: ${CHANNEL}"
+BUNDLE=${CONDA_BLD_PATH}/noarch/${_package_}-${RELEASE}-*_0.tar.bz2
 anaconda upload -u ${CHANNEL} ${BUNDLE}
 
 # also post to my personal channel
