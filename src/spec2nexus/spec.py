@@ -116,7 +116,6 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from .utils import get_all_plugins
 from . import plugin
 
 
@@ -226,7 +225,7 @@ class SpecDataFile(object):
             raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
 
-        self.plugin_manager = plugin_manager or get_all_plugins()
+        self.plugin_manager = plugin_manager or plugin.load_plugins()
 
         self.read()
     

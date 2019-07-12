@@ -17,7 +17,7 @@
 .. autosummary::
 
     ~clean_name
-    ~get_all_plugins
+    ~load_plugins
     ~iso8601
     ~strip_first_word
     ~sanitize_name
@@ -66,18 +66,6 @@ def clean_name(key):
     if txt[0].isdigit():
         txt = replacement + txt # can't start with a digit
     return txt
-
-
-def get_all_plugins():
-    """load all spec2nexus plugin modules"""
-    from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
-    
-    table = plugin.get_registry_table()
-    logger.debug(str(table))
-
-    manager = plugin.PluginManager()
-    # TODO: remove    manager.load_plugins()
-    return manager
 
 
 def iso8601(date):
@@ -135,15 +123,7 @@ def sanitize_name(group, key):      # for legacy support only
     An easier expression might be:  ``[\w_]*`` but this will not pass
     the rule that valid names cannot start with a digit.
     """
-    # see: http://download.nexusformat.org/doc/html/datarules.html
-    # clean name fits this regexp:  [A-Za-z_][\w_]*
-    # easier:  [\w_]* but cannot start with a digit
-    replacement = '_'
-    noncompliance = '[^\w_]'
-    txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
-    if txt[0].isdigit():
-        txt = replacement + txt # can't start with a digit
-    return txt
+    return clean_name(key)
 
 
 def reshape_data(scan_data, scan_shape):

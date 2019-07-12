@@ -27,6 +27,15 @@ It is optional to:
 * define :meth:`writer`
 * define :meth:`match_key`
 
+.. rubric:: Functions
+
+.. autosummary::
+
+  ~get_registry
+  ~get_registry_table
+  ~load_plugins
+  ~register_control_line_handler
+
 .. rubric:: Classes
 
 .. autosummary::
@@ -96,6 +105,7 @@ def get_registry():
 
 
 def get_registry_table(print_it=False):
+    """return a table of all the known plugins"""
     import pyRestTable
     tbl = pyRestTable.Table()
     tbl.addLabel("control line")
@@ -106,6 +116,17 @@ def get_registry_table(print_it=False):
         print("Plugin registry")
         print(tbl)
     return tbl
+
+
+def load_plugins():
+    """load all spec2nexus plugin modules"""
+    from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
+    
+    table = plugin.get_registry_table()
+    logger.debug(str(table))
+
+    manager = plugin.PluginManager()
+    return manager
 
 
 def register_control_line_handler(handler):

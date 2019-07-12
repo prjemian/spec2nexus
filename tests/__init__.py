@@ -35,6 +35,7 @@ def suite(*args, **kw):
     from tests import test_spec
     from tests import test_specplot
     from tests import test_specplot_gallery
+    from tests import test_utils
     from tests import test_writer
     from tests import test_XPCSplugin
     from tests import issue64
@@ -56,6 +57,7 @@ def suite(*args, **kw):
         test_spec,
         test_specplot,
         test_specplot_gallery,
+        test_utils,
         test_writer,
         test_XPCSplugin,
         issue64,
