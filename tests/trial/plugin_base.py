@@ -32,8 +32,8 @@ def register_plugin(name, cls):
 
     if key in registry:
         emsg = f"duplicate key={key}: {obj.__class__}"
-        obj = registry[key]()
-        emsg += f", previously defined: {obj.__class__}"
+        previous = registry[key]()
+        emsg += f", previously defined: {previous.__class__}"
         raise PluginDuplicateKeyError(emsg)
     
     if len(key.strip().split()) != 1:
