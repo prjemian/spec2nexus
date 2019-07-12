@@ -8,16 +8,16 @@ see:
 * https://www.pythoncentral.io/how-metaclasses-work-technically-in-python-2-and-3/
 """
 
-from plugin_base import Plugin
+from plugin_base import AutoRegister, Parent
 
-class File(metaclass=Plugin):
+class File(Parent, metaclass=AutoRegister):
     key = "#F"
 
-class Date(metaclass=Plugin):
+class Date(Parent, metaclass=AutoRegister):
     key = "#D"
 
-class Epoch(metaclass=Plugin):
+class Epoch(Parent, metaclass=AutoRegister):
     key = "#E"
 
-class Comment(metaclass=Plugin):
+class Comment(Parent, metaclass=AutoRegister):
     key = "#C"

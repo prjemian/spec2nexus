@@ -19,7 +19,8 @@ logger.info("-"*40)
 
 # loop over registered plugins
 for key, cls in plugins.get_registry().items():
-    if cls is not plugins.plugin_base.Plugin:
-        logger.info(f"key={key}  class={cls}")
+    if cls is not plugins.plugin_base.AutoRegister:
+        obj = cls()
+        logger.info(f"key={key}  class={cls}  obj={obj}")
 
 logger.info("-"*40)

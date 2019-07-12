@@ -8,7 +8,7 @@ see:
 * https://www.pythoncentral.io/how-metaclasses-work-technically-in-python-2-and-3/
 """
 
-from plugin_base import Plugin
+from plugin_base import AutoRegister, Parent
 
-class Scan(metaclass=Plugin):
+class Scan(Parent, metaclass=AutoRegister):
     key = "#S"

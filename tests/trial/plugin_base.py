@@ -43,7 +43,7 @@ def register_plugin(cls):
     registry[key] = cls
 
 
-class Plugin(type):
+class AutoRegister(type):
     __key__ = None
     def __init__(cls, name, bases, dict):
         logger.debug(" "*4 + "."*10)
@@ -60,3 +60,11 @@ class Plugin(type):
         logger.debug(f'__new__: baseclasses={baseclasses}')
         logger.debug(f'__new__: attrs={attrs}')
         return type.__new__(metaname, classname, baseclasses, attrs)
+
+
+class Parent:
+    key = None
+    def __str__(self):
+        return(f"{self.__class__.__name__}(key='{self.key}')")
+    def do_this(self):
+        print(self.__class__.__name__)
