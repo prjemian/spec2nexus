@@ -41,9 +41,10 @@ It is optional to:
   ~DuplicateControlLineKey
   ~DuplicateControlLinePlugin
   ~DuplicatePlugin
-  ~PluginKeyNotDefined
+  ~PluginBadKeyError
   ~PluginDuplicateKeyError
-  ~PluginBadKeyError 
+  ~PluginKeyNotDefined
+  ~PluginProcessMethodNotDefined
 
 """
 
@@ -76,6 +77,9 @@ class DuplicatePlugin(PluginException):
 
 class PluginKeyNotDefined(PluginException): 
     """Must define 'key' in class declaration."""
+
+class PluginProcessMethodNotDefined(PluginException): 
+    """Must define 'process()' method in class declaration."""
 
 class PluginDuplicateKeyError(PluginException): 
     """This plugin key has been used before."""
@@ -127,6 +131,10 @@ def register_control_line_handler(handler):
     if len(key.strip().split()) != 1:
         emsg = f"badly-formed 'key': received '{key}'"
         raise PluginBadKeyError(emsg)
+
+    if not hasattr(obj, "process") :
+        emsg = f"'process()' method not defined: {obj.__class__}"
+        raise PluginProcessMethodNotDefined(emsg)
 
     registry[key] = handler
 
