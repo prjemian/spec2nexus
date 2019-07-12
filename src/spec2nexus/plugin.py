@@ -138,23 +138,23 @@ def register_control_line_handler(handler):
     obj = handler()
 
     if not hasattr(obj, "key") or obj.key is None:
-        emsg = f"'key' not defined: {obj.__class__}"
+        emsg = "'key' not defined: " + obj.__class__.__name__
         raise PluginKeyNotDefined(emsg)
 
     key = obj.key
 
     if key in registry:
-        emsg = f"duplicate key={key}: {obj.__class__}"
+        emsg = "duplicate key=%s: %s" % (key, obj.__class__)
         previous = registry[key]()
-        emsg += f", previously defined: {previous.__class__}"
+        emsg += ", previously defined: " + previous.__class__.__name__
         raise PluginDuplicateKeyError(emsg)
     
     if len(key.strip().split()) != 1:
-        emsg = f"badly-formed 'key': received '{key}'"
+        emsg = "badly-formed 'key': received '%d'" % key
         raise PluginBadKeyError(emsg)
 
     if not hasattr(obj, "process") :
-        emsg = f"'process()' method not defined: {obj.__class__}"
+        emsg = "'process()' method not defined:" + obj.__class__.__name__
         raise PluginProcessMethodNotDefined(emsg)
 
     registry[key] = handler
@@ -175,20 +175,20 @@ class ControlLineHandler(type):
     
     key = None
 
-    def __init__(cls, name, bases, dict):
-        logger.debug(" "*4 + "."*10)
-        logger.debug(f"__init__: cls={cls}")
-        logger.debug(f"__init__: name={name}")
-        logger.debug(f"__init__: bases={bases}")
-        logger.debug(f"__init__: dict={dict}")
+    def __init__(cls, *args):       # args: name, bases, dict
+        # logger.debug(" "*4 + "."*10)
+        # logger.debug(f"__init__: cls={cls}")
+        # logger.debug(f"__init__: name={name}")
+        # logger.debug(f"__init__: bases={bases}")
+        # logger.debug(f"__init__: dict={dict}")
         register_control_line_handler(cls)
 
     def __new__(metaname, classname, baseclasses, attrs):
-        logger.debug(" "*4 + "."*10)
-        logger.debug(f'__new__: metaname={metaname}')
-        logger.debug(f'__new__: classname={classname}')
-        logger.debug(f'__new__: baseclasses={baseclasses}')
-        logger.debug(f'__new__: attrs={attrs}')
+        # logger.debug(" "*4 + "."*10)
+        # logger.debug(f'__new__: metaname={metaname}')
+        # logger.debug(f'__new__: classname={classname}')
+        # logger.debug(f'__new__: baseclasses={baseclasses}')
+        # logger.debug(f'__new__: attrs={attrs}')
         return type.__new__(metaname, classname, baseclasses, attrs)
 
     def __str__(self):
