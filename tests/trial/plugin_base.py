@@ -11,16 +11,48 @@ see:
 import logging
 logger = logging.getLogger(__name__)
 
-registry = {} # dictionary of subclasses
+
+class PluginError(RuntimeError): ...
+class PluginKeyNotDefined(PluginError): ...
+class PluginDuplicateKeyError(PluginError): ...
+class PluginBadKeyError(PluginError): ...
+
+
+registry = {} # dictionary of known Plugin subclasses
+
+
+def register_plugin(name, cls):
+    obj = cls()
+
+    if not hasattr(obj, "key") or obj.key is None:
+        emsg = f"'key' not defined: {obj.__class__}"
+        raise PluginKeyNotDefined(emsg)
+
+    key = obj.key
+
+    if key in registry:
+        emsg = f"duplicate key={key}: {obj.__class__}"
+        obj = registry[key]()
+        emsg += f", previously defined: {obj.__class__}"
+        raise PluginDuplicateKeyError(emsg)
+    
+    if len(key.strip().split()) != 1:
+        emsg = f"badly-formed 'key': received '{key}'"
+        raise PluginBadKeyError(emsg)
+
+    registry[key] = cls
+
 
 class Plugin(type):
+    __key__ = None
     def __init__(cls, name, bases, dict):
         logger.debug(" "*4 + "."*10)
         logger.debug(f"__init__: cls={cls}")
         logger.debug(f"__init__: name={name}")
         logger.debug(f"__init__: bases={bases}")
         logger.debug(f"__init__: dict={dict}")
-        registry[name] = cls
+        # registry[name] = cls
+        register_plugin(name, cls)
 
     def __new__(metaname, classname, baseclasses, attrs):
         logger.debug(" "*4 + "."*10)

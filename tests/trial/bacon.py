@@ -10,8 +10,14 @@ see:
 
 from plugin_base import Plugin
 
-class BaconPlugin(metaclass=Plugin):
-    pass
+class File(metaclass=Plugin):
+    key = "#F"
 
-class FloppyBacon(metaclass=Plugin):
-    pass
+class Date(metaclass=Plugin):
+    key = "#D"
+
+class Epoch(metaclass=Plugin):
+    key = "#E"
+
+class Comment(metaclass=Plugin):
+    key = "#C"

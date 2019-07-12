@@ -10,5 +10,5 @@ see:
 
 from plugin_base import Plugin
 
-class SpamPlugin(metaclass=Plugin):
-    pass
+class Scan(metaclass=Plugin):
+    key = "#S"

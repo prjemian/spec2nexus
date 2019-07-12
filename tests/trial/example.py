@@ -18,8 +18,8 @@ logger.setLevel(logging.DEBUG)
 logger.info("-"*40)
 
 # loop over registered plugins
-for name, cls in plugins.get_registry().items():
+for key, cls in plugins.get_registry().items():
     if cls is not plugins.plugin_base.Plugin:
-        logger.info(f"name={name}  class={cls}")
+        logger.info(f"key={key}  class={cls}")
 
 logger.info("-"*40)
