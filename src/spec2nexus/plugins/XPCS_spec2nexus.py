@@ -10,12 +10,13 @@
 SPEC data file control lines unique to the APS XPCS instrument
 """
 
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.eznx import makeGroup
-from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan
-from spec2nexus.utils import strip_first_word
+from ..plugin import ControlLineHandler
+from ..eznx import makeGroup
+from ..spec import SpecDataFileHeader, SpecDataFileScan
+from ..utils import strip_first_word
 
-class XPCS_VA(ControlLineHandler):
+
+class XPCS_VA(metaclass=ControlLineHandler):
     """**#VA**"""
 
     key = '#VA\d+'
@@ -37,7 +38,8 @@ class XPCS_VA(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
-class XPCS_VD(ControlLineHandler):
+
+class XPCS_VD(metaclass=ControlLineHandler):
     """**#VD** """
 
     key = '#VD\d+'
@@ -60,7 +62,8 @@ class XPCS_VD(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
-class XPCS_VE(ControlLineHandler):
+
+class XPCS_VE(metaclass=ControlLineHandler):
     """**#VE** """
 
     key = '#VE\d+'
@@ -83,7 +86,8 @@ class XPCS_VE(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
-class XPCS_XPCS(ControlLineHandler):
+
+class XPCS_XPCS(metaclass=ControlLineHandler):
     """#XPCS"""
     
     key = '#XPCS'
@@ -100,7 +104,7 @@ class XPCS_XPCS(ControlLineHandler):
         pass
     
 
-class XPCS_CCD(ControlLineHandler):
+class XPCS_CCD(metaclass=ControlLineHandler):
     """#CCD"""
     
     key = '#CCD'

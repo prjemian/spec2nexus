@@ -16,11 +16,14 @@ Fallback handling for any SPEC data file control lines not recognized by other h
 """
 
 from collections import OrderedDict
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.eznx import makeGroup
-from spec2nexus.spec import SpecDataFileHeader, UNRECOGNIZED_KEY, SpecDataFileScan
+from ..plugin import ControlLineHandler
+from ..eznx import makeGroup
+from ..spec import UNRECOGNIZED_KEY
+from ..spec import SpecDataFileHeader
+from ..spec import SpecDataFileScan
 
-class UnrecognizedControlLine(ControlLineHandler):
+
+class UnrecognizedControlLine(metaclass=ControlLineHandler):
     
     """unrecognized control line"""
 
@@ -38,7 +41,14 @@ class UnrecognizedControlLine(ControlLineHandler):
         """write the data in a NeXus group named ``unrecognized``"""
         desc = "SPEC data file control lines not otherwise recognized"
         nxclass = 'NXnote'
-        group = makeGroup(h5parent, 'unrecognized', nxclass, description=desc)
+        i = 0
+        success = False
+        while not success:
+            i += 1
+            nm = 'unrecognized_' + str(i)
+            if nm not in h5parent.keys():
+                group = makeGroup(h5parent, nm, nxclass, description=desc)
+                success = True
         dd = OrderedDict()
         for i, value in enumerate(scan._unrecognized):
             dd['u' + str(i)] = value

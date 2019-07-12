@@ -32,10 +32,10 @@
 """
 
 from collections import OrderedDict
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus import eznx
+from ..plugin import ControlLineHandler
+from .. import eznx
 
-class MD_apstools(ControlLineHandler):
+class MD_apstools(metaclass=ControlLineHandler):
 
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 

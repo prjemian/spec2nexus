@@ -14,17 +14,18 @@
 """
 define the plug-in architecture
 
-Create a subclass of :class:`spec2nexus.plugin.ControlLineHandler`
-for each SPEC control line.  In each subclass, it is necessary to:
+Use :class:`spec2nexus.plugin.ControlLineHandler` as a metaclass
+to create a plugin handler class for each SPEC control line.  
+In each such class, it is necessary to:
 
 * define a string value for the ``key`` (class attribute)
 * override the definition of :meth:`process`
 
 It is optional to:
 
-* override the definition of :meth:`match_key`
-* override the definition of :meth:`postprocess`
-* override the definition of :meth:`writer`
+* define :meth:`postprocess`
+* define :meth:`writer`
+* define :meth:`match_key`
 
 .. rubric:: Classes
 
@@ -40,137 +41,129 @@ It is optional to:
   ~DuplicateControlLineKey
   ~DuplicateControlLinePlugin
   ~DuplicatePlugin
+  ~PluginKeyNotDefined
+  ~PluginDuplicateKeyError
+  ~PluginBadKeyError 
 
 """
 
 
+from collections import OrderedDict
 import os
 import imp
 import inspect
+import logging
 import re
 
 
+logger = logging.getLogger(__name__)
 PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
 PLUGIN_INTERNAL_SUBDIRECTORY = 'plugins'
 PATH_DELIMITER = ','
 FILE_NAME_ENDING = '_spec2nexus.py'
 
+class PluginException(Exception):
+    """parent exception for this module"""
 
-class DuplicateControlLinePlugin(Exception): 
+class DuplicateControlLinePlugin(PluginException): 
     """This control line handler has been used more than once."""
 
-
-class DuplicateControlLineKey(Exception): 
+class DuplicateControlLineKey(PluginException): 
     """This control line key regular expression has been used more than once."""
 
-
-class DuplicatePlugin(Exception): 
+class DuplicatePlugin(PluginException): 
     """This plugin file name has been used more than once."""
 
+class PluginKeyNotDefined(PluginException): 
+    """Must define 'key' in class declaration."""
 
-class ControlLineHandler(object):
+class PluginDuplicateKeyError(PluginException): 
+    """This plugin key has been used before."""
+
+class PluginBadKeyError(PluginException): 
+    """The plugin 'key' value is not acceptable."""
+
+
+registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
+
+
+def get_registry():
+    return registry
+
+
+def get_registry_table(print_it=False):
+    import pyRestTable
+    tbl = pyRestTable.Table()
+    tbl.addLabel("control line")
+    tbl.addLabel("handler class")
+    for k, v in get_registry().items():
+        tbl.addRow((k, v))
+    if print_it:
+        print("Plugin registry")
+        print(tbl)
+    return tbl
+
+
+def register_control_line_handler(handler):
+    """
+    auto-registry of all ControlLineHandler plugins
+    
+    Called from ControlLineHandler.__init__
+    """
+    obj = handler()
+
+    if not hasattr(obj, "key") or obj.key is None:
+        emsg = f"'key' not defined: {obj.__class__}"
+        raise PluginKeyNotDefined(emsg)
+
+    key = obj.key
+
+    if key in registry:
+        emsg = f"duplicate key={key}: {obj.__class__}"
+        previous = registry[key]()
+        emsg += f", previously defined: {previous.__class__}"
+        raise PluginDuplicateKeyError(emsg)
+    
+    if len(key.strip().split()) != 1:
+        emsg = f"badly-formed 'key': received '{key}'"
+        raise PluginBadKeyError(emsg)
+
+    registry[key] = handler
+
+
+class ControlLineHandler(type):
 
     """
-    Plugin to handle a single control line in a SPEC data file
+    plugin to handle a single control line in a SPEC data file
+    
+    This class is a metaclass to auto-register plugins to handle
+    various parts of a SPEC data file.  
+    See :module:`~spec2nexus.plugins.spec_common_spec2nexus` for many examples.
 
     :param str key: regular expression to match a control line key, up to the first space
     :returns: None
-
-    .. rubric:: Class Methods
-    
-    .. autosummary::
-    
-      ~getKey
-      ~match_key
-      ~process
-      ~postprocess
-      ~writer
-  
     """
     
     key = None
-    
-    def getKey(self):
-        """return this handler's unique identifying key"""
-        return str(self.key)
-    
-    def match_key(self, text):
-        """
-        test if this plugin's key matches the supplied text
-        
-        :param str text: first word on the line, 
-            up to but not including the first whitespace
-        
-        The default test is to apply a regular expression match
-        using ``self.key`` as the regular expression to match.
 
-        If this method is to be used, then override this method in the 
-        plugin or a :class:`NotImplementedError` exception will be raised.
-        """
-        # ensure that #X and #XPCS do not both match #X
-        full_pattern = '^' + self.key + '$'
-        t = re.match(full_pattern, text)
-        # test regexp match to avoid false positives
-        # ensures that beginning and end are different positions
-        return t and t.regs[0][1] != t.regs[0][0]
+    def __init__(cls, name, bases, dict):
+        logger.debug(" "*4 + "."*10)
+        logger.debug(f"__init__: cls={cls}")
+        logger.debug(f"__init__: name={name}")
+        logger.debug(f"__init__: bases={bases}")
+        logger.debug(f"__init__: dict={dict}")
+        register_control_line_handler(cls)
+
+    def __new__(metaname, classname, baseclasses, attrs):
+        logger.debug(" "*4 + "."*10)
+        logger.debug(f'__new__: metaname={metaname}')
+        logger.debug(f'__new__: classname={classname}')
+        logger.debug(f'__new__: baseclasses={baseclasses}')
+        logger.debug(f'__new__: attrs={attrs}')
+        return type.__new__(metaname, classname, baseclasses, attrs)
 
     def __str__(self):
         return str(self.__name__)
-    
-    def process(self, *args, **kw):
-        """
-        Parse this text from the SPEC data file according to the control line key.
-        
-        A plugin will receive *text* and one of these objects: 
-        * :class:`~spec2nexus.spec.SpecDataFile`
-        * :class:`~spec2nexus.spec.SpecDataFileHeader`
-        * :class:`~spec2nexus.spec.SpecDataFileScan`
-        
-        The plugin will parse the text and store the content into the object.
-
-        All plugins **must** override this method 
-        or a :class:`NotImplementedError` exception will be raised.
-        """
-        
-        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
-    
-    def postprocess(self, *args, **kw):
-        """
-        apply additional interpretation after all control lines have been read
-
-        queue this method by calling::
-        
-            scan.addPostProcessor('unique label', self.postprocess)
-        
-        in the :meth:`process` method.  It will be called
-        called after all control lines in a scan have been read.
-
-        .. tip:  One suggestion for the unique label is ``self.key``.
-
-        If this method is to be used, then override this method in the 
-        plugin or a :class:`NotImplementedError` exception will be raised.
-        """
-        
-        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
-    
-    def writer(self, *args, **kw):
-        """
-        write in-memory structure to HDF5+NeXus data file
-        
-        queue this by calling::
-        
-            scan.addWriter('unique_label', self.writer)
-        
-        in the process() method.  It will be called
-        called as the HDF5 file is being constructed.
-
-        .. tip:  One suggestion for the unique label is ``self.key``.
-
-        If this method is to be used, then override this method in the 
-        plugin or a :class:`NotImplementedError` exception will be raised.
-        """
-        
-        raise NotImplementedError(self.__class__)       # MUST implement in the subclass
 
 
 class PluginManager(object):
@@ -182,26 +175,16 @@ class PluginManager(object):
     
     .. autosummary::
     
-      ~register
-      ~hasKey
-      ~getKey
       ~get
-      ~load_plugins
+      ~getKey
+      ~hasKey
+      ~match_key
       ~process
   
     """
     
     def __init__(self):
-        self.handler_dict = {}
-    
-    def register(self, handler):
-        """add this handler to the list of known handlers"""
-        handler_key = handler().getKey()
-        if handler_key is None:
-            raise NotImplementedError('Must define **key** in ' + self.__class__)
-#         if handler_key in self.handler_dict:
-#             raise DuplicateControlLineKey(handler_key)
-        self.handler_dict[handler_key] = handler
+        self.handler_dict = registry
     
     def hasKey(self, key):
         """Is this key known?"""
@@ -219,90 +202,44 @@ class PluginManager(object):
         text = spec_data_file_line[:pos]
         
         # try to locate the key directly
-        handler = self.handler_dict.get(text)
-        if handler is not None:
+        if text in self.handler_dict:
             return text
         
-        # search and match using regular expressions
+        # brute force search and match using regular expressions
+        return self.match_key(text)
+
+    def match_key(self, text):
+        """
+        test if any handler's key matches text
+        
+        :param str text: first word on the line, 
+            up to but not including the first whitespace
+        :returns: key or None
+        
+        Applies a regular expression match using each handler's
+        ``key`` as the regular expression to match with ``text``.
+        """
+        def _match_(text, handler):
+            try:
+                if handler().match_key(text):
+                    return handler.key
+            except AttributeError:
+                # ensure that #X and #XPCS do not both match #X
+                full_pattern = '^' + handler.key + '$'
+                t = re.match(full_pattern, text)
+                # test regexp match to avoid false positives
+                # ensures that beginning and end are different positions
+                return t and t.regs[0][1] != t.regs[0][0]
+
         for key, handler in self.handler_dict.items():
-            if handler().match_key(text):
+            if _match_(text, handler):
                 return key
         
-        # give up
         return None
 
     def get(self, key):
         """return the handler identified by key or None"""
-        if not self.hasKey(key):
-            return None
-        return self.handler_dict[key]
-    
-    def load_plugins(self):
-        """
-        Call this once to load all plugins that handle SPEC control lines
-        """
-        env_var = PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE
-        internal_dir = PLUGIN_INTERNAL_SUBDIRECTORY
-        control_line_search_path = self._getSearchPath(internal_dir, env_var)
-        self._register_control_line_plugins(control_line_search_path)
-    
-    def _getSearchPath(self, internal_path, env_var_name):
-        """
-        construct the list of directories in which Control Line plugins may be found
-        """
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), internal_path)
-        control_line_search_path = [path, ]
-        search_path = os.environ.get(env_var_name, None)
-        def cleanup_name(txt):
-            return txt.strip()
-        if search_path is not None:
-            # ALWAYS add the custom search path AFTER the internal one
-            control_line_search_path += map(cleanup_name, search_path.split(PATH_DELIMITER))
-        return control_line_search_path
-    
-    def _register_control_line_plugins(self, plugin_path_list):
-        """
-        register all plugin classes, keyed by control line key
-        """
-        module_dict = self._getPluginFiles(plugin_path_list)
-        def isControlLineHandler(obj):
-            def cname(thing):
-                return str(thing.__name__)
-            return 'ControlLineHandler' in map(cname, inspect.getmro(obj))
-        for k, v in module_dict.items():
-            module_obj = imp.load_source(k, v)
-            try:
-                member_list = inspect.getmembers(module_obj)
-                for kk, class_obj in member_list:
-                    if not inspect.isclass(class_obj):
-                        continue
-                    if not isControlLineHandler(class_obj):
-                        continue
-                    if kk is 'ControlLineHandler':
-                        continue
-                    self.register(class_obj)
-            except AttributeError:
-                pass
-
-    def _getPluginFiles(self, plugin_path_list):
-        """
-        build dictionary of modules containing plugin classes, keyed by module name
-        """
-        module_dict = {}
-        for path in plugin_path_list:
-            if not os.path.exists(path):
-                continue
-            for fname in os.listdir(path):
-                full_name = os.path.join(path, fname)
-                if not os.path.isfile(full_name):
-                    continue
-                if not fname.endswith(FILE_NAME_ENDING):
-                    continue
-                module_name = os.path.splitext(fname)[0]
-                if module_name in module_dict:
-                    raise DuplicatePlugin(module_name + ' in ' + full_name)
-                module_dict[module_name] = full_name
-        return module_dict
+        return self.handler_dict.get(key)
     
     def process(self, key, *args, **kw):
         """pick the control line handler by key and call its process() method"""

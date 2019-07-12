@@ -23,19 +23,21 @@ from collections import OrderedDict
 import datetime
 import time
 
-from spec2nexus.eznx import write_dataset, makeGroup, openGroup
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.scanf import scanf
-from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
-from spec2nexus.utils import strip_first_word, iso8601, split_column_labels
-from spec2nexus.writer import CONTAINER_CLASS
+from ..eznx import write_dataset, makeGroup, openGroup
+from ..plugin import ControlLineHandler
+from ..scanf import scanf
+from ..spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
+from ..utils import strip_first_word, iso8601, split_column_labels
+from ..writer import CONTAINER_CLASS
 
+
+SCAN_DATA_KEY = 'scan_data'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # header block
 
-class SPEC_File(ControlLineHandler):
+class SPEC_File(metaclass=ControlLineHandler):
     
     """
     **#F** -- original data file name (starts a file header block)
@@ -61,7 +63,7 @@ class SPEC_File(ControlLineHandler):
             spec_file_obj.specFile = strip_first_word(text)
 
 
-class SPEC_Epoch(ControlLineHandler):
+class SPEC_Epoch(metaclass=ControlLineHandler):
     
     """
     **#E** -- the UNIX epoch (seconds from 00:00 GMT 1/1/70)
@@ -91,7 +93,7 @@ class SPEC_Epoch(ControlLineHandler):
         header.interpret()                  # parse the full header
 
 
-class SPEC_Date(ControlLineHandler):
+class SPEC_Date(metaclass=ControlLineHandler):
     
     """
     **#D** -- date/time stamp
@@ -134,7 +136,7 @@ class SPEC_Date(ControlLineHandler):
         write_dataset(h5parent, "date", iso8601(sdf_object.date)  )
 
 
-class SPEC_Comment(ControlLineHandler):
+class SPEC_Comment(metaclass=ControlLineHandler):
     
     """
     **#C** -- any comment either in the scan header or somewhere in the scan
@@ -172,7 +174,7 @@ class SPEC_Comment(ControlLineHandler):
 # scan block
 
 
-class SPEC_Scan(ControlLineHandler):
+class SPEC_Scan(metaclass=ControlLineHandler):
     
     """
     **#S** -- SPEC scan
@@ -235,7 +237,7 @@ class SPEC_Scan(ControlLineHandler):
         sdf.scans[scan.scanNum] = scan
 
 
-class SPEC_Geometry(ControlLineHandler):
+class SPEC_Geometry(metaclass=ControlLineHandler):
     
     """
     **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
@@ -275,7 +277,7 @@ class SPEC_Geometry(ControlLineHandler):
         writer.save_dict(group, dd)
 
 
-class SPEC_NormalizingFactor(ControlLineHandler):
+class SPEC_NormalizingFactor(metaclass=ControlLineHandler):
     
     """
     **#I** -- intensity normalizing factor
@@ -300,7 +302,7 @@ class SPEC_NormalizingFactor(ControlLineHandler):
             writer.write_dataset(h5parent, "intensity_factor", scan.I)
 
 
-class SPEC_CounterNames(ControlLineHandler):
+class SPEC_CounterNames(metaclass=ControlLineHandler):
     
     """
     **#J** -- names of counters (each separated by two spaces) (new with SPEC v6)
@@ -343,7 +345,7 @@ class SPEC_CounterNames(ControlLineHandler):
             write_dataset(group, key, value)
 
 
-class SPEC_CounterMnemonics(ControlLineHandler):
+class SPEC_CounterMnemonics(metaclass=ControlLineHandler):
     
     """
     **#j** -- mnemonics of counter  (new with SPEC v6)
@@ -397,7 +399,7 @@ def counter_xref_postprocessing(header):
             header.counter_xref[mne] = name_row[column_number]
 
 
-class SPEC_Labels(ControlLineHandler):
+class SPEC_Labels(metaclass=ControlLineHandler):
     
     """
     **#L** -- data column labels
@@ -409,9 +411,10 @@ class SPEC_Labels(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
-      
-      * datasets with names supplied in **L**, array values collected in **data_lines**
+    * *NXdata* group named **data** in the *NXentry* group, 
+      such as */S1/data*
+    * datasets with names supplied in **L**, array values 
+      collected in **data_lines**
 
     """
 
@@ -433,7 +436,7 @@ class SPEC_Labels(ControlLineHandler):
         scan.column_last = scan.L[-1]
 
 
-class SPEC_Monitor(ControlLineHandler):
+class SPEC_Monitor(metaclass=ControlLineHandler):
     
     """
     **#M** -- counting against this constant monitor count (see #T)
@@ -467,7 +470,7 @@ class SPEC_Monitor(ControlLineHandler):
         write_dataset(h5parent, "M", float(scan.M), units='counts', description = desc)
 
 
-class SPEC_NumColumns(ControlLineHandler):
+class SPEC_NumColumns(metaclass=ControlLineHandler):
     
     """
     **#N** -- number of columns of data [ num2 sets per row ]
@@ -488,7 +491,7 @@ class SPEC_NumColumns(ControlLineHandler):
         scan.N = list(map(int, strip_first_word(text).split()))
 
 
-class SPEC_PositionerNames(ControlLineHandler):
+class SPEC_PositionerNames(metaclass=ControlLineHandler):
     
     """
     **#O** -- positioner names (numbered rows: #O0, #O1, ...)
@@ -521,7 +524,7 @@ class SPEC_PositionerNames(ControlLineHandler):
         sdf_object.O.append(split_column_labels(strip_first_word(text)))
 
 
-class SPEC_PositionerMnemonics(ControlLineHandler):
+class SPEC_PositionerMnemonics(metaclass=ControlLineHandler):
     
     """
     **#o** -- positioner mnemonics (new with SPEC v6)
@@ -575,7 +578,7 @@ def positioner_xref_postprocessing(header):
             header.positioner_xref[mne] = name_row[column_number]
 
 
-class SPEC_Positioners(ControlLineHandler):
+class SPEC_Positioners(metaclass=ControlLineHandler):
     
     """
     **#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)
@@ -630,7 +633,7 @@ class SPEC_Positioners(ControlLineHandler):
         writer.save_dict(group, scan.positioner)
 
 
-class SPEC_HKL(ControlLineHandler):
+class SPEC_HKL(metaclass=ControlLineHandler):
     
     """
     **#Q** -- :math:`Q` (:math:`hkl`) at start of scan
@@ -658,7 +661,7 @@ class SPEC_HKL(ControlLineHandler):
         write_dataset(h5parent, "Q", scan.Q, description = desc)
 
 
-class SPEC_CountTime(ControlLineHandler):
+class SPEC_CountTime(metaclass=ControlLineHandler):
     
     """
     **#T** -- counting against this constant number of seconds (see #M)
@@ -692,7 +695,7 @@ class SPEC_CountTime(ControlLineHandler):
         write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
 
 
-class SPEC_UserReserved(ControlLineHandler):
+class SPEC_UserReserved(metaclass=ControlLineHandler):
     
     """
     **#U** -- Reserved for user
@@ -733,7 +736,7 @@ class SPEC_UserReserved(ControlLineHandler):
             write_dataset(group, key, text, description = "#U line %d" % (i+1))
 
 
-class SPEC_TemperatureSetPoint(ControlLineHandler):
+class SPEC_TemperatureSetPoint(metaclass=ControlLineHandler):
     
     """
     **#X** -- Temperature Set Point (desired temperature)
@@ -785,10 +788,10 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
             write_dataset(h5parent, "DEGC_SP", scan.DEGC_SP, units='C', description='temperature set point (C)')
 
 
-class SPEC_DataLine(ControlLineHandler):
+class SPEC_DataLine(metaclass=ControlLineHandler):
     
     """
-    **(scan data)** -- scan data line
+    **(scan_data)** -- scan data line
     
     Scan data could include interspersed MCA data or
     even describe 2-D or 3-D data.  T
@@ -803,15 +806,17 @@ class SPEC_DataLine(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
+    * *NXdata* group named **data** in the *NXentry* group,
+      such as */S1/data*
       
-      * datasets with names supplied in **L**, array values collected in **data_lines**
+    * datasets with names supplied in **L**, array values
+      collected in **data_lines**
 
     """
 
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
-    key = r'scan data'
+    key = SCAN_DATA_KEY
     def match_key(self, text):
         """
         Easier to try conversion to number than construct complicated regexp
@@ -825,8 +830,9 @@ class SPEC_DataLine(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         scan.data_lines.append(text)
         
-        # defer processing since comments and MCA data may intersperse the scan data
-        scan.addPostProcessor('scan data', self.postprocess)
+        # defer processing since comments and MCA data may 
+        # intersperse the scan data
+        scan.addPostProcessor(SCAN_DATA_KEY, self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
         data_lines_postprocessing(scan)
@@ -839,7 +845,7 @@ class SPEC_DataLine(ControlLineHandler):
 # see ESRF BLISS group: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
 
-class SPEC_MCA(ControlLineHandler):
+class SPEC_MCA(metaclass=ControlLineHandler):
     
     """
     **#@MCA** -- MCA data formatting declaration (ignored for now)
@@ -872,7 +878,7 @@ class SPEC_MCA(ControlLineHandler):
         pass        # not sure how to handle this, ignore it for now
 
 
-class SPEC_MCA_Array(ControlLineHandler):
+class SPEC_MCA_Array(metaclass=ControlLineHandler):
     
     """
     **@A** -- MCA Array data
@@ -910,13 +916,13 @@ class SPEC_MCA_Array(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         # acquire like numerical data, handle in postprocessing
         scan.data_lines.append(text)
-        scan.addPostProcessor('scan data', self.postprocess)
+        scan.addPostProcessor(SCAN_DATA_KEY, self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
         data_lines_postprocessing(scan)
 
 
-class SPEC_MCA_Calibration(ControlLineHandler):
+class SPEC_MCA_Calibration(metaclass=ControlLineHandler):
     
     """
     **#@CALIB** -- coefficients to compute a scale based on the MCA channel number
@@ -970,7 +976,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
                         write_dataset(mca_group, 'calib_' + key, calib_dict[key])
 
 
-class SPEC_MCA_ChannelInformation(ControlLineHandler):
+class SPEC_MCA_ChannelInformation(metaclass=ControlLineHandler):
     
     """
     **#@CHANN** -- MCA channel information 
@@ -1019,7 +1025,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
                     write_dataset(mca_group, key, mca[key])
 
 
-class SPEC_MCA_CountTime(ControlLineHandler):
+class SPEC_MCA_CountTime(metaclass=ControlLineHandler):
     
     """
     **#@CTIME** -- MCA count times
@@ -1064,7 +1070,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
                     write_dataset(mca_group, key, mca[key], units='s')
 
 
-class SPEC_MCA_RegionOfInterest(ControlLineHandler):
+class SPEC_MCA_RegionOfInterest(metaclass=ControlLineHandler):
     
     """
     **#@ROI** -- MCA ROI (Region Of Interest) channel information
@@ -1168,7 +1174,7 @@ def data_lines_postprocessing(scan):
                         scan.data[label].append(val)
             except ValueError as _exc:
                 pass    # ignore bad data lines (could save it as such ...)
-    scan.addH5writer('scan data', data_lines_writer)
+    scan.addH5writer(SCAN_DATA_KEY, data_lines_writer)
 
 
 def data_lines_writer(h5parent, writer, scan, *args, **kws):

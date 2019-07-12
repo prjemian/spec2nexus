@@ -21,7 +21,7 @@ class PluginBadKeyError(PluginError): ...
 registry = {} # dictionary of known Plugin subclasses
 
 
-def register_plugin(name, cls):
+def register_plugin(cls):
     obj = cls()
 
     if not hasattr(obj, "key") or obj.key is None:
@@ -51,8 +51,7 @@ class Plugin(type):
         logger.debug(f"__init__: name={name}")
         logger.debug(f"__init__: bases={bases}")
         logger.debug(f"__init__: dict={dict}")
-        # registry[name] = cls
-        register_plugin(name, cls)
+        register_plugin(cls)
 
     def __new__(metaname, classname, baseclasses, attrs):
         logger.debug(" "*4 + "."*10)

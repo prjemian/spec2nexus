@@ -35,9 +35,14 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import logging
 import numpy
 import re
 import time
+
+from . import plugin
+
+logger = logging.getLogger(__name__)
 
 
 def clean_name(key):
@@ -65,9 +70,13 @@ def clean_name(key):
 
 def get_all_plugins():
     """load all spec2nexus plugin modules"""
-    import spec2nexus.plugin as plugin
+    from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
+    
+    table = plugin.get_registry_table()
+    logger.debug(str(table))
+
     manager = plugin.PluginManager()
-    manager.load_plugins()
+    # TODO: remove    manager.load_plugins()
     return manager
 
 
