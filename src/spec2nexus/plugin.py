@@ -59,9 +59,6 @@ It is optional to:
 
 
 from collections import OrderedDict
-import os
-import imp
-import inspect
 import logging
 import re
 
@@ -122,10 +119,10 @@ def load_plugins():
     """load all spec2nexus plugin modules"""
     from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
     
-    table = plugin.get_registry_table()
+    table = get_registry_table()
     logger.debug(str(table))
 
-    manager = plugin.PluginManager()
+    manager = PluginManager()
     return manager
 
 

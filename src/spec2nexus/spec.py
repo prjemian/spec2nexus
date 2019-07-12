@@ -116,7 +116,7 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from . import plugin
+from . import plugin        # lgtm [py/unused-import] - false alert, it's used!
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
