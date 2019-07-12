@@ -6,13 +6,12 @@ see: https://www.effbot.org/zone/metaclass-plugins.htm
 """
 
 import plugins
-import plugin_base
 
 print("-"*40)
 
 # loop over registered plugins
-for name, cls in plugin_base.registry:
-    if cls is not Plugin:
+for name, cls in plugins.get_registry():
+    if cls is not plugins.plugin_base.Plugin:
         print(f"name={name}  class={cls}")
 
 print("-"*40)

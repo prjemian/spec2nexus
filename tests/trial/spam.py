@@ -7,5 +7,5 @@ see: https://www.effbot.org/zone/metaclass-plugins.htm
 
 from plugin_base import Plugin
 
-class SpamPlugin(Plugin):
+class SpamPlugin(metaclass=Plugin):
     pass
