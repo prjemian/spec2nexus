@@ -116,11 +116,12 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from spec2nexus.utils import get_all_plugins
+from .utils import get_all_plugins
+from . import plugin
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
-UNRECOGNIZED_KEY = 'unrecognized control line'
+UNRECOGNIZED_KEY = 'unrecognized_control_line'
 MCA_DATA_KEY = '_mca_'
 
 

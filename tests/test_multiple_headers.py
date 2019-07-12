@@ -17,17 +17,15 @@ import os
 import sys
 import unittest
 
-_src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-if _src_path not in sys.path:
-    sys.path.insert(0, _src_path)
-_src_path = os.path.join(_src_path, 'spec2nexus')
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+_path = os.path.abspath(os.path.join(_test_path, 'src'))
+
+sys.path.insert(0, _path)
+sys.path.insert(0, _test_path)
 
 import spec2nexus.extractSpecScan
 import spec2nexus.spec
 
-_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if _test_path not in sys.path:
-    sys.path.insert(0, _test_path)
 import tests.common
 
 
@@ -35,7 +33,7 @@ class Issue143(unittest.TestCase):
    
     def setUp(self):
         path = os.path.dirname(__file__)
-        self.testfile = os.path.join(_src_path, 'data', '05_02_test.dat')
+        self.testfile = os.path.join(_path, 'spec2nexus', 'data', '05_02_test.dat')
         self.sys_argv0 = sys.argv[0]
 
     def tearDown(self):

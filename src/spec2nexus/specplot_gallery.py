@@ -62,8 +62,8 @@ import os
 import shutil
 import sys
 
-from spec2nexus import spec
-from spec2nexus import specplot
+from . import spec
+from . import specplot
 
 try:
     FileNotFoundError

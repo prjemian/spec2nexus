@@ -19,14 +19,14 @@ import tempfile
 import unittest
 
 
-_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-if _path not in sys.path:
-    sys.path.insert(0, _path)
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+_path = os.path.abspath(os.path.join(_test_path, 'src'))
+
+sys.path.insert(0, _path)
+sys.path.insert(0, _test_path)
+
 from spec2nexus import specplot_gallery, spec
 
-_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if _test_path not in sys.path:
-    sys.path.insert(0, _test_path)
 import tests.common
 
 
