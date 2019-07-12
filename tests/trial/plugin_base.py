@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-registry = [] # list of subclasses
+registry = {} # dictionary of subclasses
 
 class Plugin(type):
     def __init__(cls, name, bases, dict):
@@ -18,7 +18,7 @@ class Plugin(type):
         logger.debug(f"__init__: name={name}")
         logger.debug(f"__init__: bases={bases}")
         logger.debug(f"__init__: dict={dict}")
-        registry.append((name, cls))
+        registry[name] = cls
 
     def __new__(metaname, classname, baseclasses, attrs):
         logger.debug(" "*4 + "."*10)
