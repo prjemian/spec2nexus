@@ -64,10 +64,7 @@ import re
 
 
 logger = logging.getLogger(__name__)
-PLUGIN_SEARCH_PATH_ENVIRONMENT_VARIABLE = 'SPEC2NEXUS_PLUGIN_PATH'
-PLUGIN_INTERNAL_SUBDIRECTORY = 'plugins'
-PATH_DELIMITER = ','
-FILE_NAME_ENDING = '_spec2nexus.py'
+
 
 class PluginException(Exception):
     """parent exception for this module"""

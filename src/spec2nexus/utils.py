@@ -17,7 +17,6 @@
 .. autosummary::
 
     ~clean_name
-    ~load_plugins
     ~iso8601
     ~strip_first_word
     ~sanitize_name
@@ -40,7 +39,6 @@ import numpy
 import re
 import time
 
-from . import plugin
 
 logger = logging.getLogger(__name__)
 
