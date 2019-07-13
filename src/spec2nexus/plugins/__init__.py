@@ -8,9 +8,9 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-from . import spec_common_spec2nexus
-from . import fallback_spec2nexus
-from . import apstools_specwriter_spec2nexus
-from . import uim_spec2nexus
-from . import unicat_spec2nexus
-from . import XPCS_spec2nexus
+from . import spec_common
+from . import fallback
+from . import apstools_specwriter
+from . import uim
+from . import unicat
+from . import XPCS
