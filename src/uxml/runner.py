@@ -10,7 +10,7 @@ import spec2nexus.writer
 # load all the supplied plugins BEFORE your custom plugins
 spec2nexus.plugin.load_plugins()
 
-import uxml_plugin
+import uxml_plugin       # lgtm
 
 spec_data_file = spec2nexus.spec.SpecDataFile("test_3.spec")
 

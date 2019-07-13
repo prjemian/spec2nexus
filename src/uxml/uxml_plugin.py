@@ -86,35 +86,97 @@ XML_SCHEMA = os.path.join(_path, "uxml.xsd")
 
 class UXML_Error(Exception): ...
 
+
+link_ids = None
+
+# TODO: does not need to be separate classes here
 class Dataset(object):
     
     """HDF5/NeXus dataset specification"""
 
-    def __init__(self, xml_node):
-        self.name = xml_node.get('name')
-        eznx.makeDataset(None, self.name, 'test')
+    def __init__(self, h5parent, xml_node):
+        attrs = dict(xml_node.attrib)
+
+        self.name = attrs.get('name')
+        if self.name is not None:
+            del attrs["name"]
+
+        data_type = attrs.get('type')
+        if data_type is None:
+            data_type = "str"
+        else:
+            del attrs["type"]
+
+        # TODO: unique_id attribute?
+
+        self.value = xml_node.text
+
+        eznx.makeDataset(h5parent, self.name, self.value, **attrs)
 
 
 class Group(object):
     
     """HDF5/NeXus group specification"""
 
-    def __init__(self, xml_node):
-        self.name = xml_node.get('name')
-        self.NX_class = xml_node.get('NX_class')
-#         import h5py
-#         group = h5py.Group()
-#         group.create_group(self.name)
-        #openGroup(None, self.name, self.NX_class)
+    def __init__(self, h5parent, xml_node):
+        global link_ids
+        _links = link_ids
+
+        attrs = dict(xml_node.attrib)
+
+        self.name = attrs.get('name')
+        if self.name is not None:
+            del attrs["name"]
+
+        self.NX_class = attrs.get('NX_class')
+        if self.NX_class is not None:
+            del attrs["NX_class"]
+
+        self.unique_id = attrs.get('unique_id')
+        if self.unique_id is not None:
+            # TODO: store unique_id in a dict
+            #   make sure that dict is cleared with each new scan
+            del attrs["unique_id"]
+
+        self.group = eznx.makeGroup(
+            h5parent, 
+            self.name, 
+            self.NX_class, 
+            **attrs)
+
+        if self.unique_id is not None:
+            link_ids[self.unique_id] = self.group.name
+        
+        build_HDF5_tree(self.group, xml_node)
 
 
 class Hardlink(object):
     
     """HDF5/NeXus hard link specification"""
 
-    def __init__(self, xml_node):
-        self.name = xml_node.get('name')
-        self.target_id = xml_node.get('target_id')
+    def __init__(self, h5parent, xml_node):
+        global link_ids
+
+        attrs = dict(xml_node.attrib)
+
+        self.name = attrs.get('name')
+        if self.name is not None:
+            del attrs["name"]
+
+        if "target_id" in attrs:
+            self.target_id = attrs["target_id"]
+            del attrs["target_id"]
+            # TODO: need to make the links *AFTER* all unique_id have been found
+            if self.target_id in link_ids:
+                source = link_ids[self.target_id]
+                z = 2
+
+
+def build_HDF5_tree(h5parent, xml_node):
+    selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
+    for item in xml_node:
+        obj = selector[item.tag](h5parent, item)
+        print(item.tag, item.get('name'), obj, obj.name)
 
 
 @six.add_metaclass(AutoRegister)
@@ -178,14 +240,14 @@ class UXML_metadata(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
+        global link_ids
+        link_ids = {}       # clear with each new scan
+
         # FIXME:
         desc = 'UXML metadata'
         group = eznx.makeGroup(h5parent, 'UXML', 'NXentry', default='data')
         eznx.write_dataset(group, "counting_basis", desc)
         eznx.write_dataset(group, "T", float(scan.T), units='s', description = desc)
-        # TODO: parse the XML and store
-        selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
-        for item in scan.UXML_root:
-            obj = selector[item.tag](item)
-            print(item.tag, item.get('name'), obj, obj.name)
-        # raise NotImplementedError("uxml writer() not yet implemented")
+        
+        # parse the XML and store
+        build_HDF5_tree(group, scan.UXML_root)
