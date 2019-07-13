@@ -178,13 +178,14 @@ class UXML_metadata(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        # TODO: safe to proceed parsing the file
+        # FIXME:
         desc = 'UXML metadata'
-        #eznx.write_dataset(h5parent, "counting_basis", desc)
-        #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
+        group = eznx.makeGroup(h5parent, 'UXML', 'NXentry', default='data')
+        eznx.write_dataset(group, "counting_basis", desc)
+        eznx.write_dataset(group, "T", float(scan.T), units='s', description = desc)
         # TODO: parse the XML and store
-        # selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
-        # for item in scan.UXML_root:
-            # _obj = selector[item.tag](item)
-            #print item.tag, item.get('name'), _obj, obj.name
-        raise NotImplementedError("uxml writer() not yet implemented")
+        selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
+        for item in scan.UXML_root:
+            obj = selector[item.tag](item)
+            print(item.tag, item.get('name'), obj, obj.name)
+        # raise NotImplementedError("uxml writer() not yet implemented")
