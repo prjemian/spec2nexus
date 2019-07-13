@@ -68,7 +68,9 @@ Excerpt::
 
 
 from lxml import etree
+import os
 import six
+import sys
 
 from spec2nexus import eznx
 from spec2nexus.plugin import AutoRegister
@@ -78,7 +80,11 @@ from spec2nexus.utils import strip_first_word
 
 DEFAULT_XML_ROOT_TAG = 'UXML'
 UXML_SUPPLIES_ROOT_TAG = False
+_path = os.path.dirname(__file__)
+XML_SCHEMA = os.path.join(_path, "uxml.xsd")
 
+
+class UXML_Error(Exception): ...
 
 class Dataset(object):
     
@@ -154,7 +160,22 @@ class UXML_metadata(ControlLineHandler):
             root = etree.fromstring(xml_text)
     
         scan.UXML_root = root
-        # TODO: validate against the schema
+        # validate against the schema
+        xml_schema_tree = etree.parse(XML_SCHEMA)
+        xml_schema = etree.XMLSchema(xml_schema_tree)
+
+        if not xml_schema.validate(root):
+            # XML file is not valid, let lxml report what is wrong as an exception
+            #log = xmlschema.error_log    # access more details
+            try:
+                xml_schema.assertValid(root)   # basic exception report
+            except etree.DocumentInvalid as exc:
+                emsg = "UXML error: " + str(exc)
+                # logger.warn(emsg)
+                raise UXML_Error(emsg)
+
+        # TODO: safe to proceed parsing the file
+
         scan.addH5writer('UXML_metadata', self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):

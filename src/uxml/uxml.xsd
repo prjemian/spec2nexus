@@ -20,7 +20,6 @@
   <xs:element name="dataset">
     <xs:complexType mixed="true">
       <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <!-- 
       <xs:attribute name="array_port" type="xs:NCName"/>
       <xs:attribute name="input_port" type="xs:NCName"/>
       <xs:attribute name="number" type="xs:integer"/>
@@ -28,7 +27,6 @@
       <xs:attribute name="type" type="xs:NCName"/>
       <xs:attribute name="units" type="xs:NCName"/>
       <xs:attribute name="value_description" type="xs:NCName"/>
-       -->
     </xs:complexType>
   </xs:element>
 
@@ -39,7 +37,6 @@
       </xs:choice>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
       <xs:attribute name="_exists_" type="xs:boolean" default="false" use="optional"/>
-      <!-- 
       <xs:attribute name="NX_class" use="required" type="xs:NCName"/>
       <xs:attribute name="array_port" type="xs:NCName"/>
       <xs:attribute name="description"/>
@@ -49,7 +46,6 @@
       <xs:attribute name="pv_prefix" type="xs:NMTOKEN"/>
       <xs:attribute name="roi_prefix" type="xs:NMTOKEN"/>
       <xs:attribute name="unique_id" type="xs:NMTOKEN"/>
-       -->
     </xs:complexType>
   </xs:element>
 
