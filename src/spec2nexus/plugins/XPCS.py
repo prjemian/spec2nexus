@@ -10,13 +10,16 @@
 SPEC data file control lines unique to the APS XPCS instrument
 """
 
-from ..plugin import ControlLineHandler
+import six
+
 from ..eznx import makeGroup
+from ..plugin import AutoRegister, ControlLineHandler
 from ..spec import SpecDataFileHeader, SpecDataFileScan
 from ..utils import strip_first_word
 
 
-class XPCS_VA(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class XPCS_VA(ControlLineHandler):
     """**#VA**"""
 
     key = '#VA\d+'
@@ -39,7 +42,8 @@ class XPCS_VA(metaclass=ControlLineHandler):
         writer.save_dict(group, dd)
 
 
-class XPCS_VD(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class XPCS_VD(ControlLineHandler):
     """**#VD** """
 
     key = '#VD\d+'
@@ -63,7 +67,8 @@ class XPCS_VD(metaclass=ControlLineHandler):
         writer.save_dict(group, dd)
 
 
-class XPCS_VE(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class XPCS_VE(ControlLineHandler):
     """**#VE** """
 
     key = '#VE\d+'
@@ -87,7 +92,8 @@ class XPCS_VE(metaclass=ControlLineHandler):
         writer.save_dict(group, dd)
 
 
-class XPCS_XPCS(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class XPCS_XPCS(ControlLineHandler):
     """#XPCS"""
     
     key = '#XPCS'
@@ -104,7 +110,8 @@ class XPCS_XPCS(metaclass=ControlLineHandler):
         pass
     
 
-class XPCS_CCD(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class XPCS_CCD(ControlLineHandler):
     """#CCD"""
     
     key = '#CCD'

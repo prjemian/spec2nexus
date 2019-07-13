@@ -20,12 +20,15 @@ in the scans using #H/#V pairs of labels/values.
 
 
 import re
-from ..plugin import ControlLineHandler
-from ..utils import strip_first_word
+import six
+
 from .. import eznx
+from ..plugin import AutoRegister, ControlLineHandler
+from ..utils import strip_first_word
 
 
-class UNICAT_MetadataMnemonics(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class UNICAT_MetadataMnemonics(ControlLineHandler):
 
     """
     **#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)
@@ -58,7 +61,8 @@ class UNICAT_MetadataMnemonics(metaclass=ControlLineHandler):
         spec_obj.H.append(labels)
 
 
-class UNICAT_MetadataValues(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class UNICAT_MetadataValues(ControlLineHandler):
 
     """
     **#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)

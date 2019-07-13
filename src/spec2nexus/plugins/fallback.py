@@ -16,14 +16,15 @@ Fallback handling for any SPEC data file control lines not recognized by other h
 """
 
 from collections import OrderedDict
-from ..plugin import ControlLineHandler
+import six
+
 from ..eznx import makeGroup
-from ..spec import UNRECOGNIZED_KEY
-from ..spec import SpecDataFileHeader
-from ..spec import SpecDataFileScan
+from ..plugin import AutoRegister, ControlLineHandler
+from ..spec import UNRECOGNIZED_KEY, SpecDataFileHeader, SpecDataFileScan
 
 
-class UnrecognizedControlLine(metaclass=ControlLineHandler):
+@six.add_metaclass(AutoRegister)
+class UnrecognizedControlLine(ControlLineHandler):
     
     """unrecognized control line"""
 

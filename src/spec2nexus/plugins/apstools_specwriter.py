@@ -32,10 +32,14 @@
 """
 
 from collections import OrderedDict
-from ..plugin import ControlLineHandler
-from .. import eznx
+import six
 
-class MD_apstools(metaclass=ControlLineHandler):
+from .. import eznx
+from ..plugin import AutoRegister, ControlLineHandler
+
+
+@six.add_metaclass(AutoRegister)
+class MD_apstools(ControlLineHandler):
 
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 

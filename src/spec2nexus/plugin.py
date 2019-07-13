@@ -125,9 +125,9 @@ def load_plugins():
 
 def register_control_line_handler(handler):
     """
-    auto-registry of all ControlLineHandler plugins
+    auto-registry of all AutoRegister plugins
     
-    Called from ControlLineHandler.__init__
+    Called from AutoRegister.__init__
     """
     obj = handler()
 
@@ -154,14 +154,14 @@ def register_control_line_handler(handler):
     registry[key] = handler
 
 
-class ControlLineHandler(type):
+class AutoRegister(type):
 
     """
     plugin to handle a single control line in a SPEC data file
     
     This class is a metaclass to auto-register plugins to handle
     various parts of a SPEC data file.  
-    See :module:`~spec2nexus.plugins.spec_common_spec2nexus` for many examples.
+    See :module:`~spec2nexus.plugins.spec_common` for many examples.
 
     :param str key: regular expression to match a control line key, up to the first space
     :returns: None
@@ -188,6 +188,11 @@ class ControlLineHandler(type):
     def __str__(self):
         return str(self.__name__)
 
+
+class ControlLineHandler(object):
+    key = None
+    def process(self, text, spec_file_obj, *args, **kws):
+        raise NotImplementedError("must override in subclass")
 
 class PluginManager(object):
 
