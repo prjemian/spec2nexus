@@ -215,7 +215,6 @@ class PluginManager(object):
     
       ~get
       ~getKey
-      ~hasKey
       ~match_key
       ~process
   
@@ -223,10 +222,6 @@ class PluginManager(object):
     
     def __init__(self):
         self.handler_dict = registry
-    
-    def hasKey(self, key):
-        """Is this key known?"""
-        return key in self.handler_dict
     
     def getKey(self, spec_data_file_line):
         """
