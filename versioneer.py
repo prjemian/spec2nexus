@@ -1626,7 +1626,7 @@ def get_cmdclass():
         from distutils.command.sdist import sdist as _sdist
 
     class cmd_sdist(_sdist):
-        def run(self):              # gtm [py/similar-function]
+        def run(self):              # lgtm [py/similar-function]
             versions = get_versions()
             self._versioneer_generated_versions = versions
             # unless we update this, the command will keep using the old
