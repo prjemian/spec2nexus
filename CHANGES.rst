@@ -4,6 +4,12 @@
 Change History
 ##############
 
+.. note:: Python 2 end of support
+
+   spec2nexus will stop development for Python 2 by 2019-12-31.
+   For more information, visit https://python3statement.org/.
+
+
 Production
 **********
 
