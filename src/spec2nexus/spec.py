@@ -116,11 +116,11 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from spec2nexus.utils import get_all_plugins
+from . import plugin        # lgtm [py/unused-import] - false alert, it's used!
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
-UNRECOGNIZED_KEY = 'unrecognized control line'
+UNRECOGNIZED_KEY = 'unrecognized_control_line'
 MCA_DATA_KEY = '_mca_'
 
 
@@ -225,9 +225,7 @@ class SpecDataFile(object):
             raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
 
-        if plugin_manager is None:
-            plugin_manager = get_all_plugins()
-        self.plugin_manager = plugin_manager
+        self.plugin_manager = plugin_manager or plugin.load_plugins()
 
         self.read()
     
@@ -236,6 +234,8 @@ class SpecDataFile(object):
 
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
+        if not os.path.exists(spec_file_name):
+            raise SpecDataFileNotFound('file does not exist: ' + str(spec_file_name))
         try:
             buf = open(spec_file_name, 'r').read()
         except IOError:
@@ -347,8 +347,7 @@ class SpecDataFile(object):
     
     def getScanCommands(self, scan_list=None):
         """return all the scan commands as a list, with scan number"""
-        if scan_list is None:
-            scan_list = self.getScanNumbers()
+        scan_list = scan_list or self.getScanNumbers()
         commands = []
         for key in scan_list:
             scan = self.getScan(key)

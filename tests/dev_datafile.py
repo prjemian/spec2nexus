@@ -7,12 +7,14 @@
 
 
 import os
+import sys
+sys.path.insert(0, os.path.abspath("../src"))
 from spec2nexus import writer
 from spec2nexus import spec
 
 
 if __name__ == '__main__':
-    pwd = os.path.abspath(os.getcwd())
+    pwd = os.path.abspath(os.path.join("..", "src", "spec2nexus"))
     prefix = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data'))
     # file1 = prefix + '.dat'
     hfile = prefix + '.hdf5'

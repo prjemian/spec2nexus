@@ -21,20 +21,24 @@ SPEC data file standard control lines
 
 from collections import OrderedDict
 import datetime
+import six
 import time
 
-from spec2nexus.eznx import write_dataset, makeGroup, openGroup
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.scanf import scanf
-from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
-from spec2nexus.utils import strip_first_word, iso8601, split_column_labels
-from spec2nexus.writer import CONTAINER_CLASS
+from ..eznx import write_dataset, makeGroup, openGroup
+from ..plugin import AutoRegister, ControlLineHandler
+from ..scanf import scanf
+from ..spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
+from ..utils import strip_first_word, iso8601, split_column_labels
+from ..writer import CONTAINER_CLASS
 
+
+SCAN_DATA_KEY = 'scan_data'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # header block
 
+@six.add_metaclass(AutoRegister)
 class SPEC_File(ControlLineHandler):
     
     """
@@ -61,6 +65,7 @@ class SPEC_File(ControlLineHandler):
             spec_file_obj.specFile = strip_first_word(text)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Epoch(ControlLineHandler):
     
     """
@@ -91,6 +96,7 @@ class SPEC_Epoch(ControlLineHandler):
         header.interpret()                  # parse the full header
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Date(ControlLineHandler):
     
     """
@@ -134,6 +140,7 @@ class SPEC_Date(ControlLineHandler):
         write_dataset(h5parent, "date", iso8601(sdf_object.date)  )
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Comment(ControlLineHandler):
     
     """
@@ -172,6 +179,7 @@ class SPEC_Comment(ControlLineHandler):
 # scan block
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Scan(ControlLineHandler):
     
     """
@@ -235,6 +243,7 @@ class SPEC_Scan(ControlLineHandler):
         sdf.scans[scan.scanNum] = scan
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Geometry(ControlLineHandler):
     
     """
@@ -275,6 +284,7 @@ class SPEC_Geometry(ControlLineHandler):
         writer.save_dict(group, dd)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_NormalizingFactor(ControlLineHandler):
     
     """
@@ -300,6 +310,7 @@ class SPEC_NormalizingFactor(ControlLineHandler):
             writer.write_dataset(h5parent, "intensity_factor", scan.I)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_CounterNames(ControlLineHandler):
     
     """
@@ -343,6 +354,7 @@ class SPEC_CounterNames(ControlLineHandler):
             write_dataset(group, key, value)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_CounterMnemonics(ControlLineHandler):
     
     """
@@ -397,6 +409,7 @@ def counter_xref_postprocessing(header):
             header.counter_xref[mne] = name_row[column_number]
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Labels(ControlLineHandler):
     
     """
@@ -409,9 +422,10 @@ class SPEC_Labels(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
-      
-      * datasets with names supplied in **L**, array values collected in **data_lines**
+    * *NXdata* group named **data** in the *NXentry* group, 
+      such as */S1/data*
+    * datasets with names supplied in **L**, array values 
+      collected in **data_lines**
 
     """
 
@@ -433,6 +447,7 @@ class SPEC_Labels(ControlLineHandler):
         scan.column_last = scan.L[-1]
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Monitor(ControlLineHandler):
     
     """
@@ -467,6 +482,7 @@ class SPEC_Monitor(ControlLineHandler):
         write_dataset(h5parent, "M", float(scan.M), units='counts', description = desc)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_NumColumns(ControlLineHandler):
     
     """
@@ -488,6 +504,7 @@ class SPEC_NumColumns(ControlLineHandler):
         scan.N = list(map(int, strip_first_word(text).split()))
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_PositionerNames(ControlLineHandler):
     
     """
@@ -521,6 +538,7 @@ class SPEC_PositionerNames(ControlLineHandler):
         sdf_object.O.append(split_column_labels(strip_first_word(text)))
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_PositionerMnemonics(ControlLineHandler):
     
     """
@@ -575,6 +593,7 @@ def positioner_xref_postprocessing(header):
             header.positioner_xref[mne] = name_row[column_number]
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_Positioners(ControlLineHandler):
     
     """
@@ -630,6 +649,7 @@ class SPEC_Positioners(ControlLineHandler):
         writer.save_dict(group, scan.positioner)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_HKL(ControlLineHandler):
     
     """
@@ -658,6 +678,7 @@ class SPEC_HKL(ControlLineHandler):
         write_dataset(h5parent, "Q", scan.Q, description = desc)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_CountTime(ControlLineHandler):
     
     """
@@ -692,6 +713,7 @@ class SPEC_CountTime(ControlLineHandler):
         write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_UserReserved(ControlLineHandler):
     
     """
@@ -733,6 +755,7 @@ class SPEC_UserReserved(ControlLineHandler):
             write_dataset(group, key, text, description = "#U line %d" % (i+1))
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_TemperatureSetPoint(ControlLineHandler):
     
     """
@@ -785,10 +808,11 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
             write_dataset(h5parent, "DEGC_SP", scan.DEGC_SP, units='C', description='temperature set point (C)')
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_DataLine(ControlLineHandler):
     
     """
-    **(scan data)** -- scan data line
+    **(scan_data)** -- scan data line
     
     Scan data could include interspersed MCA data or
     even describe 2-D or 3-D data.  T
@@ -803,15 +827,17 @@ class SPEC_DataLine(ControlLineHandler):
     
     HDF5/NeXus REPRESENTATION
     
-    * *NXdata* group named **data** in the *NXentry* group, such as */S1/data*
+    * *NXdata* group named **data** in the *NXentry* group,
+      such as */S1/data*
       
-      * datasets with names supplied in **L**, array values collected in **data_lines**
+    * datasets with names supplied in **L**, array values
+      collected in **data_lines**
 
     """
 
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
-    key = r'scan data'
+    key = SCAN_DATA_KEY
     def match_key(self, text):
         """
         Easier to try conversion to number than construct complicated regexp
@@ -825,8 +851,9 @@ class SPEC_DataLine(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         scan.data_lines.append(text)
         
-        # defer processing since comments and MCA data may intersperse the scan data
-        scan.addPostProcessor('scan data', self.postprocess)
+        # defer processing since comments and MCA data may 
+        # intersperse the scan data
+        scan.addPostProcessor(SCAN_DATA_KEY, self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
         data_lines_postprocessing(scan)
@@ -839,6 +866,7 @@ class SPEC_DataLine(ControlLineHandler):
 # see ESRF BLISS group: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA(ControlLineHandler):
     
     """
@@ -872,6 +900,7 @@ class SPEC_MCA(ControlLineHandler):
         pass        # not sure how to handle this, ignore it for now
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA_Array(ControlLineHandler):
     
     """
@@ -910,12 +939,13 @@ class SPEC_MCA_Array(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         # acquire like numerical data, handle in postprocessing
         scan.data_lines.append(text)
-        scan.addPostProcessor('scan data', self.postprocess)
+        scan.addPostProcessor(SCAN_DATA_KEY, self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
         data_lines_postprocessing(scan)
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA_Calibration(ControlLineHandler):
     
     """
@@ -970,6 +1000,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
                         write_dataset(mca_group, 'calib_' + key, calib_dict[key])
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA_ChannelInformation(ControlLineHandler):
     
     """
@@ -1019,6 +1050,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
                     write_dataset(mca_group, key, mca[key])
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA_CountTime(ControlLineHandler):
     
     """
@@ -1064,6 +1096,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
                     write_dataset(mca_group, key, mca[key], units='s')
 
 
+@six.add_metaclass(AutoRegister)
 class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     
     """
@@ -1168,7 +1201,7 @@ def data_lines_postprocessing(scan):
                         scan.data[label].append(val)
             except ValueError as _exc:
                 pass    # ignore bad data lines (could save it as such ...)
-    scan.addH5writer('scan data', data_lines_writer)
+    scan.addH5writer(SCAN_DATA_KEY, data_lines_writer)
 
 
 def data_lines_writer(h5parent, writer, scan, *args, **kws):

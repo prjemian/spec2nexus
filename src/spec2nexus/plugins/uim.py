@@ -41,8 +41,12 @@
 #UIMC10 imsca4 4 MaxValue
 """
 
-from spec2nexus.plugin import ControlLineHandler
 
+import six
+from ..plugin import AutoRegister, ControlLineHandler
+
+
+@six.add_metaclass(AutoRegister)
 class UIM_generic(ControlLineHandler):
 
     """**#UIM** -- various image header information"""

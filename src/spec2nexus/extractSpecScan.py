@@ -32,7 +32,7 @@ __url__ = 'http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html'
 
 import os
 import sys
-from spec2nexus import spec
+from . import spec
 
 
 #-------------------------------------------------------------------------------------------

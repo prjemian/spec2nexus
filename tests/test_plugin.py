@@ -15,10 +15,15 @@ unit tests for the plugin module
 import unittest
 import os, sys
 
-_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-if _path not in sys.path:
-    sys.path.insert(0, _path)
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+_path = os.path.abspath(os.path.join(_test_path, 'src'))
+
+sys.path.insert(0, _path)
+sys.path.insert(0, _test_path)
+
+from spec2nexus import spec
 from spec2nexus import plugin
+from spec2nexus import plugins
 
 
 class TestPlugin(unittest.TestCase):
@@ -28,7 +33,7 @@ class TestPlugin(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.manager = plugin.PluginManager()
-        self.manager.load_plugins()
+        # self.manager.load_plugins()
 
 #     def tearDown(self):
 #         pass
@@ -37,9 +42,9 @@ class TestPlugin(unittest.TestCase):
 #         pass
     
     def test_handler_keys(self):
-        h = plugin.ControlLineHandler()
-        self.assertEqual(h.key, None)
-        self.assertEqual(str(h.key), h.getKey())
+        registry = plugin.get_registry()
+        h = registry["#F"]
+        self.assertEqual(h.key, "#F")
     
     def test_sample_control_line_keys(self):
         spec_data = {
@@ -56,10 +61,10 @@ class TestPlugin(unittest.TestCase):
             #r'@A\d*'       : r'@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             r'@A\d*'       : r'@A1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             #r'@A\d*'       : r'@A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
-            'scan data'    : r' 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'.lstrip(),
+            'scan_data'    : r' 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'.lstrip(),
             '#H\\d+'       : r'#H4 FB_o2_on FB_o2_r FB_o2_sp',
             None           : r'#Pete wrote this stuff',
-            'scan data'    : r'43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225',
+            'scan_data'    : r'43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225',
             '#@[cC][aA][lL][iI][bB]'  : r'#@CALIB 1 2 3',
             '#@[cC][aA][lL][iI][bB]'  : r'#@Calib 0.0501959 0.0141105 0 mca1',
         }

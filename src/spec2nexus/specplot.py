@@ -35,10 +35,10 @@ Exceptions:
 import os
 import numpy
 
-from spec2nexus import charts
-from spec2nexus import spec             # read SPEC data files
-from spec2nexus import singletons
-from spec2nexus import utils
+from . import charts
+from . import spec             # read SPEC data files
+from . import singletons
+from . import utils
 
 
 class UnexpectedObjectTypeError(RuntimeError): 
