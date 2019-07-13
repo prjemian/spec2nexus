@@ -174,13 +174,12 @@ class UXML_metadata(ControlLineHandler):
                 # logger.warn(emsg)
                 raise UXML_Error(emsg)
 
-        # TODO: safe to proceed parsing the file
-
         scan.addH5writer('UXML_metadata', self.writer)
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        #desc = 'UXML metadata'
+        # TODO: safe to proceed parsing the file
+        desc = 'UXML metadata'
         #eznx.write_dataset(h5parent, "counting_basis", desc)
         #eznx.write_dataset(h5parent, "T", float(scan.T), units='s', description = desc)
         # TODO: parse the XML and store
