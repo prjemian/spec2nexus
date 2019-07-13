@@ -9,8 +9,10 @@ Production
 
 :2021.0.0: *2019.07.12*, API change affecting plugins
 
-    API change:
+    **API change**:
     Changed how plugins are defined and registered.
+    Custom plugins must be modified and import code revised
+    to work with new system.
     
     * `#168 <https://github.com/prjemian/spec2nexus/pull/168>`_
        plugins are now self-registering
