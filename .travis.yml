@@ -27,6 +27,7 @@ before_script:
   - which conda
   - python --version
   - pip install coveralls
+  - pip install pyRestTable
   - which coveralls
 
 # command to run tests

@@ -20,11 +20,14 @@ in the scans using #H/#V pairs of labels/values.
 
 
 import re
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.utils import strip_first_word
-from spec2nexus import eznx
+import six
+
+from .. import eznx
+from ..plugin import AutoRegister, ControlLineHandler
+from ..utils import strip_first_word
 
 
+@six.add_metaclass(AutoRegister)
 class UNICAT_MetadataMnemonics(ControlLineHandler):
 
     """
@@ -58,6 +61,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
         spec_obj.H.append(labels)
 
 
+@six.add_metaclass(AutoRegister)
 class UNICAT_MetadataValues(ControlLineHandler):
 
     """

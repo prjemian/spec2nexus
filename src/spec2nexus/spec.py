@@ -116,11 +116,11 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from spec2nexus.utils import get_all_plugins
+from . import plugin        # lgtm [py/unused-import] - false alert, it's used!
 
 
 plugin_manager = None   # will initialize when SpecDataFile is first called
-UNRECOGNIZED_KEY = 'unrecognized control line'
+UNRECOGNIZED_KEY = 'unrecognized_control_line'
 MCA_DATA_KEY = '_mca_'
 
 
@@ -225,7 +225,7 @@ class SpecDataFile(object):
             raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
 
-        self.plugin_manager = plugin_manager or get_all_plugins()
+        self.plugin_manager = plugin_manager or plugin.load_plugins()
 
         self.read()
     

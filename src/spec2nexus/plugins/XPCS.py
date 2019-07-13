@@ -10,11 +10,15 @@
 SPEC data file control lines unique to the APS XPCS instrument
 """
 
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.eznx import makeGroup
-from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan
-from spec2nexus.utils import strip_first_word
+import six
 
+from ..eznx import makeGroup
+from ..plugin import AutoRegister, ControlLineHandler
+from ..spec import SpecDataFileHeader, SpecDataFileScan
+from ..utils import strip_first_word
+
+
+@six.add_metaclass(AutoRegister)
 class XPCS_VA(ControlLineHandler):
     """**#VA**"""
 
@@ -37,6 +41,8 @@ class XPCS_VA(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
+
+@six.add_metaclass(AutoRegister)
 class XPCS_VD(ControlLineHandler):
     """**#VD** """
 
@@ -60,6 +66,8 @@ class XPCS_VD(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
+
+@six.add_metaclass(AutoRegister)
 class XPCS_VE(ControlLineHandler):
     """**#VE** """
 
@@ -83,6 +91,8 @@ class XPCS_VE(ControlLineHandler):
             dd[item] = list(map(str, value.split()))
         writer.save_dict(group, dd)
 
+
+@six.add_metaclass(AutoRegister)
 class XPCS_XPCS(ControlLineHandler):
     """#XPCS"""
     
@@ -100,6 +110,7 @@ class XPCS_XPCS(ControlLineHandler):
         pass
     
 
+@six.add_metaclass(AutoRegister)
 class XPCS_CCD(ControlLineHandler):
     """#CCD"""
     

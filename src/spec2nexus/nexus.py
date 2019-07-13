@@ -26,8 +26,8 @@ if __name__ == "__main__":
     path = os.path.join('..', os.path.dirname(__file__))
     sys.path.insert(0, os.path.abspath(path))
 
-from spec2nexus import spec
-from spec2nexus import writer
+from . import spec
+from . import writer
 
 
 hdf5_extension = '.hdf5'

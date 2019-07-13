@@ -18,16 +18,15 @@ import os
 import sys
 import unittest
 
-_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-if _path not in sys.path:
-    sys.path.insert(0, _path)
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+_path = os.path.abspath(os.path.join(_test_path, 'src'))
+
+sys.path.insert(0, _path)
+sys.path.insert(0, _test_path)
 
 import spec2nexus.extractSpecScan
 import spec2nexus.spec
 
-_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if _path not in sys.path:
-    sys.path.insert(0, _path)
 import tests.common
 
 
