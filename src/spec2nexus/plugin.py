@@ -114,12 +114,13 @@ def get_registry_table(print_it=False):
 
 def load_plugins():
     """load all spec2nexus plugin modules"""
+    from . import spec
     from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
     
     table = get_registry_table()
     logger.debug(str(table))
 
-    manager = PluginManager()
+    manager = spec.plugin_manager or PluginManager()
     return manager
 
 
@@ -197,10 +198,37 @@ class ControlLineHandler(object):
 
     :param str key: regular expression to match a control line key, up to the first space
     :returns: None
+
+    EXAMPLE of ``match_key`` method:
+    
+    Declaration of the ``match_key`` method is optional in a subclass.
+    This is used to test a given line from a SPEC data file against the
+    ``key`` of each ``ControlLineHandler``.
+    
+    If this method is defined in the subclass, it will be called
+    instead of :meth:`~spec2nexus.plugin.PluginManager.match_key()`.
+    This is the example used by 
+    :class:`~spec2nexus.plugins.spec_common.SPEC_DataLine`::
+
+        def match_key(self, text):
+            try:
+                float( text.strip().split()[0] )
+                return True
+            except ValueError:
+                return False
     """
     key = None
     
     def process(self, text, spec_file_obj, *args, **kws):
+        """*required:* handle this line from a SPEC data file"""
+        raise NotImplementedError("must override in subclass")
+
+    def postprocess(self, header, *args, **kws):
+        """*optional:* additional processing deferred until *after* data file has been read"""
+        raise NotImplementedError("must override in subclass")
+
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        """*optional:* Describe how to store this data in an HDF5 NeXus file"""
         raise NotImplementedError("must override in subclass")
 
 
