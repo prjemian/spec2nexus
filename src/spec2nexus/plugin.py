@@ -190,9 +190,19 @@ class AutoRegister(type):
 
 
 class ControlLineHandler(object):
+    """
+    base class for SPEC data file control line handler plugins
+    
+    define one ControlLineHandler class for each different type of control line
+
+    :param str key: regular expression to match a control line key, up to the first space
+    :returns: None
+    """
     key = None
+    
     def process(self, text, spec_file_obj, *args, **kws):
         raise NotImplementedError("must override in subclass")
+
 
 class PluginManager(object):
 
