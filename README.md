@@ -12,6 +12,11 @@ Writes `path/to/file/specfile.hdf5`
 - Conda install:  `conda install -c aps-anl-dev spec2nexus` (development)
 - Pip install:  `pip install spec2nexus`
 
+**NOTE**
+
+spec2nexus will stop development for Python 2 by 2019-12-31. 
+For more information, visit https://python3statement.org/.
+
 Provides
 --------
 
