@@ -3,7 +3,10 @@
 ########################
 
 An extensible plug-in architecture is used to handle the different possible
+:index:`!control line`
 control lines (such as **#F**, **#E**, **#S**, ...) in a SPEC data file.
+
+A SPEC *control line* provides metadata about the SPEC scan or SPEC data file.
 
 Plugins can be used to parse or ignore certain control lines in SPEC data files.
 Through this architecture, it is possible to support custom control lines, 
@@ -43,7 +46,7 @@ Writing a custom plugin
 ***********************
 
 While **spec2nexus** provides a comprehensive set of plugins
-to handle the common SPEC control lines, custom control lines
+to handle the common SPEC :index:`control line` control lines, custom control lines
 are used at many facilities to write additional scan data
 and scan metadata into the SPEC data file.  Custom plugins
 are written to process these additions.
@@ -54,6 +57,7 @@ are written to process these additions.
 
    how_to_write_plugin
 
+.. _control_line_table:
 
 Overview of the supplied **spec** plugins
 *****************************************

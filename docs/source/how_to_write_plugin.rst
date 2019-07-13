@@ -4,47 +4,112 @@
 How to write a custom plugin module
 ###################################
 
-.. warning::  This documentation must be revised for releases 2021.0.0 and beyond.
+.. sidebar:: The code to write plugins has changed with release 2021.0.0.
 
-   It describes how to write plugins up to release 2020.0.2.
+   The changes are summarized in the
+   section below titled :ref:`howto_changes_plugin_2021_release`.
+
+**Sections**
+
+* :ref:`howto_load_plugin`
+* :ref:`howto_write_plugin`
+* :ref:`howto_example_PV_control_line`
+* :ref:`howto_example_Y_control_line`
+* :ref:`howto_postprocessing`
+* :ref:`howto_example_postprocessing`
+* :ref:`howto_summary_example`
+* :ref:`howto_writer`
+* :ref:`custom_key_match_function`
+* :ref:`howto_summary_requirements`
+* :ref:`howto_changes_plugin_2021_release`
+* :ref:`howto_footnotes`
+
+A custom plugin module for :mod:`spec2nexus.spec` is provided in 
+a python module (Python source code file).
+In this custom plugin module are subclasses for each *new* 
+:ref:`control line <control_line_table>` 
+to be supported.  An exception will 
+be raised if a custom plugin module tries to provide support 
+for an existing control line.  
+
+
+.. _howto_load_plugin:
+
+Load a plugin module
+******************** 
+
+Control line handling plugins for *spec2nexus* will automatically
+register themselves when their module is imported.
+
+.. code-block:: python
+   :linenos:
+
+   import spec2nexus.plugin
+   import spec2nexus.spec
    
-   * SAME: The basics of writing the plugins remains the same.
-   * CHANGED: The method of registering the plugins has changed.
-   * CHANGED: The declaration of each plugin has changed.
-   * CHANGED: The name of each plugin file has been relaxed.
-   * CHANGED: Plugin files do not have to be in their own directory.
-   * REMOVED: The ``SPEC2NEXUS_PLUGIN_PATH`` environment variable has been eliminated.
+   # load all the supplied plugins BEFORE your custom plugins
+   spec2nexus.plugin.load_plugins()
+   
+   import MY_PLUGIN_MODULE
+   # ... more if needed ...
+   
+   # read a SPEC data file, scan 5
+   spec_data_file = spec2nexus.spec.SpecDataFile("path/to/spec/datafile")
+   scan5 = spec_data_file.getScan(5)
 
-A custom plugin module for :mod:`spec2nexus.spec` is provided in a python module (Python source code file).
-In this custom plugin module are subclasses for each *new* control line to be supported.  An exception will 
-be raised if a custom plugin module tries to provide support for an existing control line.  
+.. _howto_write_plugin:
+
+Write a plugin module
+*********************
 
 Give the custom plugin module a name ending with ``.py``.
 As with any Python module, the name must be unique within a directory.
-There must be a ``__init__.py`` file in the same directory (even if 
+If the plugin is not in your working directory,
+there must be a ``__init__.py`` file in the same directory (even if 
 that file is empty) so that your plugin module can be loaded with ``import <MODULE>``.
+
+**Plugin module setup**
+
+.. sidebar:: The ``six`` package
+
+   The ``six`` package is used to make our plugins run with either
+   Python 2.7 or Python 3.5+.
 
 Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common`
 for examples.  The custom plugin module should contain, at minimum one subclass of  
-:class:`spec2nexus.plugin.ControlLineHandler`.  A custom plugin module
-can contain many such handlers, as needs dictate.
+:class:`spec2nexus.plugin.ControlLineHandler` which is decorated
+with ``@six.add_metaclass(spec2nexus.plugin.AutoRegister)``.  
+The ``add_metaclass`` decorator allows our custom ControlLineHandlers 
+to register themselves when their module is imported.
+A custom plugin module can contain many such handlers, as needs dictate.
 
-.. note::  It is also useful to import the utility method
-   :meth:`spec2nexus.plugin.strip_first_word`
+.. sidebar::  Useful ``import``
 
-To get :class:`spec2nexus.plugin.ControlLineHandler`,
-it will be necessary to import in some form, such as::
+   It is also useful to import the 
+   :meth:`~spec2nexus.utils.strip_first_word` 
+   utility method.
 
-   from spec2nexus.plugin import ControlLineHandler, strip_first_word
+These imports are necessary to to write plugins for *spec2nexus*:
+
+.. code-block:: python
+   :linenos:
+
+   import six
+   from spec2nexus.plugin import AutoRegister
+   from spec2nexus.plugin import ControlLineHandler
+   from spec2nexus.utils import strip_first_word
 
 .. sidebar:: regular expressions
 
    There are several regular expression testers available on the web.
    Try this one, for example: http://regexpal.com/
 
-Each subclass must define ``key`` as a regular expression match for the 
-control line key.  It is possible to override any of the supplied plugins 
-for scan control lines.
+**Plugin custom ControlLineHandler: ``key``**
+
+Each subclass must define :index:`!key` ``key`` as a regular expression match for the 
+control line key.  
+It is possible to override any of the supplied plugins for scan :index:`control line`
+control lines.
 Caution is advised to avoid introducing instability.
 
 .. A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
@@ -58,59 +123,93 @@ the function that matches for a particular control line key.  Override the
 handler's :meth:`match_key` method.
 For more details, see the section :ref:`custom_key_match_function`.
 
-.. note:: The ``six`` package is used to make our plugins run with either
-   Python 2.7 or Python 3.5+.
+.. _howto_example_PV_control_line:
 
-Example for **#U** control line
-*******************************
+Full Example: **#PV** control line
+**********************************
 
-Consider the **#U** user data control line that allows the user to
-put any data in the scan file header.  The content is to be decided 
-by the user.
+Consider a SPEC data file (named ``pv_data.txt``) with the contrived 
+example of a **#PV** control 
+line that associates a mnemonic with an EPICS process variable (PV).
+Suppose we take this control line content to be two words (text 
+with no whitespace):
 
-Suppose we take this content to be three floating 
-point numbers, this subclass could be written::
+.. literalinclude:: _static/pv_data.txt
+    :tab-width: 4
+    :linenos:
+    :emphasize-lines: 14-16
+    :language: text
 
-   from spec2nexus.plugin import ControlLineHandler, strip_first_word
-   
-   class User_ControlLine(ControlLineHandler):
-       '''**#U** -- User data (#U user1 user2 user3)'''
-   
-       key = '#U'
-       
-       def process(self, text, spec_obj, *args, **kws):
-           args = strip_first_word(text).split()
-           user1 = float(args[0])
-           user2 = float(args[1])
-           user3 = float(args[2])
-           spec_obj.U = [user1, user2, user3]
+A plugin (named ``pv_plugin.py``) to handle the ``#PV`` control lines could be written as:
 
-When the scan parser encounters a **#U** line in a SPEC data file, it will call this
-:meth:`process()` code with the full text of the line and the object where this data 
-should be stored.  We will choose to store this (following the pattern of other data 
-names in :class:`spec2nexus.spec.SpecDataFileScan`) as ``scan_obj.U`` using a list.
+.. literalinclude:: _static/pv_plugin.py
+    :tab-width: 4
+    :linenos:
+    :language: python
 
-It is up to the user what to do with the ``scan_obj.U`` data.
+When the scan parser encounters the **#PV** lines in our SPEC data file, 
+it will call this
+:meth:`process()` code with the full text of the line and the 
+spec scan object where 
+this data should be stored.  
+We will choose to store this (following the pattern of other data 
+names in :class:`~spec2nexus.spec.SpecDataFileScan`) as 
+``scan_obj.EPICS_PV`` using a dictionary.
+
+It is up to the user what to do with the ``scan_obj.EPICS_PV`` data.
+We will not consider the ``write()`` method in this example.
+(We will not write this infromation to a NeXus HDF5 file.)
+
+We can then write a python program (named ``pv_example.py``) that will 
+load the data file and interpret it using our custom plugin:
+
+.. literalinclude:: _static/pv_example.py
+    :tab-width: 4
+    :linenos:
+    :language: python
+
+
+The output of our program:
+
+.. code-block:: text
+	:linenos:
+
+	known:  False
+	known:  True
+	False
+	True
+	OrderedDict([('mr', 'ioc:m1'), ('ay', 'ioc:m2'), ('dy', 'ioc:m3')])
+
+
+.. _howto_example_Y_control_line:
 
 Example to ignore a **#Y** control line
 ***************************************
 
-Suppose it is necessary to ignore a control line found in a SPEC file.
-Consider that one SPEC file contains the control line: ``#Y 1 2 3 4 5``.
-Since there is no standard handler for this control line, we create one that
-ignores processing by doing nothing::
+Suppose a control line in a SPEC data file must be ignored.
+For example, suppose a SPEC file contains this control line: ``#Y 1 2 3 4 5``.
+Since there is no standard handler for this control line, 
+we create one that ignores processing by doing nothing:
+
+.. code-block:: python
+   :linenos:
 
    import six
-   from spec2nexus.plugin import AutoRegister, ControlLineHandler
+   from spec2nexus.plugin import AutoRegister
+   from spec2nexus.plugin import ControlLineHandler
    
    @six.add_metaclass(AutoRegister)
    class Ignore_Y_ControlLine(ControlLineHandler):
-       '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
+       '''
+       **#Y** -- as in ``#Y 1 2 3 4 5``
+       
+       example: ignore any and all #Y control lines
+       '''
    
        key = '#Y'
        
        def process(self, text, spec_obj, *args, **kws):
-           pass
+           pass	# do nothing
 
 .. _howto_postprocessing:
 
@@ -134,20 +233,25 @@ UNICAT metadata uses the **metadata** attribute, ...)  This attribute will defin
 where and how the data from the plugin is available.  The :meth:`writer` method
 (see :ref:`below <howto_writer>`) is one example of a user of this attribute.
 
-.. [#] The key name must be unique amongst all postprocessing functions.
-   A good choice is the name of the postprocessing function itself.
-   
+
+.. _howto_example_postprocessing:
 
 Example postprocessing
 ======================
 
 Consider the **#U** control line example above.  For some contrived reason,
 we wish to store the sum of the numbers as a separate number, but only after 
-all the scan data has been read.  This can be done with the simple expression::
+all the scan data has been read.  This can be done with the simple expression:
+
+.. code-block:: python
+   :linenos:
 
    spec_obj.U_sum = sum(spec_obj.U)
 
-To build a postprocessing method, we write::
+To build a postprocessing method, we write:
+
+.. code-block:: python
+   :linenos:
 
    def contrived_summation(scan):
        '''
@@ -158,18 +262,27 @@ To build a postprocessing method, we write::
        scan.U_sum = sum(scan.U)
 
 To register this postprocessing method, place this line in the :meth:`process`
-of the handler::
+of the handler:
+
+.. code-block:: python
+   :linenos:
 
    spec_obj.addPostProcessor('contrived_summation', contrived_summation)
+
+.. _howto_summary_example:
 
 Summary Example Custom Plugin with postprocessing
 =================================================
 
-Gathering all parts of the examples above, the custom plugin module is::
+Gathering all parts of the examples above, the custom plugin module is:
+
+.. code-block:: python
+   :linenos:
 
    import six
-   from spec2nexus.plugin import strip_first_word
-   from spec2nexus.plugin import AutoRegister, ControlLineHandler
+   from spec2nexus.plugin import AutoRegister
+   from spec2nexus.plugin import ControlLineHandler
+   from spec2nexus.utils import strip_first_word
    
    @six.add_metaclass(AutoRegister)
    class User_ControlLine(ControlLineHandler):
@@ -195,6 +308,7 @@ Gathering all parts of the examples above, the custom plugin module is::
        scan.U_sum = sum(scan.U)
    
    
+   @six.add_metaclass(AutoRegister)
    class Ignore_Y_ControlLine(ControlLineHandler):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
@@ -228,7 +342,10 @@ written by the custom HDF5 writer.
 One responsibility of a custom HDF5 writer method is to create
 *unique* names for every object written in the *h5parent* group.
 Usually, this will be a *NXentry* [#]_ group.  You can determine the
-NeXus base class of this group using code such as this::
+NeXus base class of this group using code such as this:
+
+.. code-block:: python
+   :linenos:
 
    >>> print h5parent.attrs['NX_class']
    <<< NXentry
@@ -241,16 +358,14 @@ But, you are encouraged to find one of the other NeXus base classes that
 best fits your data.  Look at the source code of the supplied plugins
 for examples.
 
-.. [#] http://nexusformat.org
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
-
 The writer uses the :mod:`spec2nexus.eznx` module to create and write
 the various parts of the HDF5 file.
 
 Here is an example :meth:`writer` method from the
-:mod:`spec2nexus.plugins.unicat_spec2nexus` module::
+:mod:`spec2nexus.plugins.unicat` module:
+
+.. code-block:: python
+   :linenos:
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         '''Describe how to store this data in an HDF5 NeXus file'''
@@ -285,7 +400,8 @@ The default test that a given line
 matches a specific :class:`spec2nexus.plugin.ControlLineHandler` subclass
 is to use a regular expression match.  
 
-::
+.. code-block:: python
+   :linenos:
 
     def match_key(self, text):
         '''default regular expression match, based on self.key'''
@@ -301,7 +417,11 @@ prove tedious or difficult, such as when testing for a
 floating point number with optional preceding white space
 at the start of a line.  This is typical for data lines in a scan
 or continued lines from an MCA spectrum.  in such cases, the handler
-can override the :meth:`match_key()` method.  Here is an example::
+can override the :meth:`match_key()` method.  Here is an example
+from :class:`~spec2nexus.plugins.spec_common.SPEC_DataLine`:
+
+.. code-block:: python
+   :linenos:
 
     def match_key(self, text):
         '''
@@ -314,10 +434,12 @@ can override the :meth:`match_key()` method.  Here is an example::
             return False
 
 
+.. _howto_summary_requirements:
+
 Summary Requirements for custom plugin
 **************************************
 
-* file can go in any directory that has ``__init__.py`` file
+* file can go in your working directory or any directory that has ``__init__.py`` file
 * multiple control line handlers can go in a single file
 * for each control line:
 
@@ -328,8 +450,8 @@ Summary Requirements for custom plugin
   * define ``key`` with a regular expression to match [#]_
   
     * ``key`` is used to identify control line handlers
-    * redefine existing supported control lines to replace supplied behavior (use caution!)
-    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine`
+    * redefine existing supported :index:`control line` control lines to replace supplied behavior (use caution!)
+    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.plugins.spec_common.SPEC_DataLine`
   
   * define :meth:`process` to handle the supplied text
   * define :meth:`writer` to write the in-memory data structure from this plugin to HDF5+NeXus data file
@@ -340,6 +462,41 @@ Summary Requirements for custom plugin
   * write the function
   * register the function with spec_obj.addPostProcessor(key_name, the_function) in the handler's :meth:`process`
 
+
+----------
+
+.. _howto_changes_plugin_2021_release:
+
+Changes in plugin format with release 2021.0.0
+**********************************************
+
+With release *2021.0.0*, the code to setup plugins has changed.
+The new code allows all plugins in a module to auto-register themselves
+*as long as the module is imported*.
+**All** custom plugins must be modified and import code revised
+to work with new system.
+See the :mod:`spec2nexus.plugins.spec_common` source code for many examples.
+
+* SAME: The basics of writing the plugins remains the same.
+* CHANGED: The method of registering the plugins has changed.
+* CHANGED: The declaration of each plugin has changed.
+* CHANGED: The name of each plugin file has been relaxed.
+* CHANGED: Plugin files do not have to be in their own directory.
+* REMOVED: The ``SPEC2NEXUS_PLUGIN_PATH`` environment variable has been eliminated.
+
+----------
+
+.. _howto_footnotes:
+
+Footnotes
+*********
+
+.. [#] The key name must be unique amongst all postprocessing functions.
+   A good choice is the name of the postprocessing function itself.
+.. [#] http://nexusformat.org
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
+.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
    :meth:`~spec2nexus.plugins.spec_common.SPEC_DataLine.match_key()`
