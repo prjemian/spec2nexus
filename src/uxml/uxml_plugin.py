@@ -67,14 +67,13 @@ Excerpt::
 """
 
 
-from collections import OrderedDict
 from lxml import etree
 import six
 
-from .. import eznx
-from ..plugin import AutoRegister
-from ..plugin import ControlLineHandler
-from ..plugin import strip_first_word
+from spec2nexus import eznx
+from spec2nexus.plugin import AutoRegister
+from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.utils import strip_first_word
 
 
 DEFAULT_XML_ROOT_TAG = 'UXML'
@@ -133,7 +132,7 @@ class UXML_metadata(ControlLineHandler):
     
     def process(self, text, scan, *args, **kws):
         if not hasattr(scan, 'UXML'):
-            scan.UXML = OrderedDict()
+            scan.UXML = []
 
         line = strip_first_word(text)
         scan.UXML.append( line )
