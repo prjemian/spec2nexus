@@ -20,13 +20,14 @@ before_script:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH=$HOME/miniconda/bin:$PATH
   - export PY_ENV=travis-$TRAVIS_PYTHON_VERSION
-  - conda create -y -n $PY_ENV python=$TRAVIS_PYTHON_VERSION numpy MatPlotLib h5py coverage docopt -c aps-anl-tag pyRestTable
+  - conda create -y -n $PY_ENV python=$TRAVIS_PYTHON_VERSION numpy MatPlotLib h5py coverage docopt
   - source activate $PY_ENV
   - which pip
   - which python
   - which conda
   - python --version
   - pip install coveralls
+  - pip install pyRestTable
   - which coveralls
 
 # command to run tests
