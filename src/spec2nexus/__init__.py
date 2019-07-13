@@ -35,6 +35,7 @@ __documentation_mocks__ = [
     'matplotlib', 
     'matplotlib.backends', 
     'matplotlib.backends.backend_agg',
+    'matplotlib.figure', 
     # do NOT mock the "six" package!
 ]
 __classifiers__ = [

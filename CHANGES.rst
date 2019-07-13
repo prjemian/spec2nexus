@@ -7,8 +7,13 @@ Change History
 Production
 **********
 
-:2020.0.2: *2019.07.09*, bug fixes and code review suggestions
+:2021.0.0: *2019.07.12*, API change affecting plugins
 
+    API change:
+    Changed how plugins are defined and registered.
+    
+    * `#168 <https://github.com/prjemian/spec2nexus/pull/168>`_
+       plugins are now self-registering
     * `#166 <https://github.com/prjemian/spec2nexus/issues/166>`_
        fix conda packaging
 

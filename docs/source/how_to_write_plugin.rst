@@ -4,23 +4,28 @@
 How to write a custom plugin module
 ###################################
 
+.. warning::  This documentation must be revised for releases 2021.0.0 and beyond.
+
+   It describes how to write plugins up to release 2020.0.2.
+   
+   * SAME: The basics of writing the plugins remains the same.
+   * CHANGED: The method of registering the plugins has changed.
+   * CHANGED: The declaration of each plugin has changed.
+   * CHANGED: The name of each plugin file has been relaxed.
+   * CHANGED: Plugin files do not have to be in their own directory.
+   * REMOVED: The ``SPEC2NEXUS_PLUGIN_PATH`` environment variable has been eliminated.
+
 A custom plugin module for :mod:`spec2nexus.spec` is provided in a python module (Python source code file).
 In this custom plugin module are subclasses for each *new* control line to be supported.  An exception will 
 be raised if a custom plugin module tries to provide support for an existing control line.  
 
-Give the custom plugin module a name ending with ``_spec2nexus.py``.
-Ensure this name is different than any other plugin module you will use
-(currently, avoid ``spec_common_spec2nexus.py``, ``uim_spec2nexus.py``, 
-and ``unicat_spec2nexus.py``) to avoid possible duplication.
+Give the custom plugin module a name ending with ``.py``.
+As with any Python module, the name must be unique within a directory.
+There must be a ``__init__.py`` file in the same directory (even if 
+that file is empty) so that your plugin module can be loaded with ``import <MODULE>``.
 
-The custom plugin module can be stored in any directory that is convenient.
-Define the environment variable ``SPEC2NEXUS_PLUGIN_PATH`` with the
-directory (directories, comma delimited) where your plugin file(s) reside.
-On linux, with the bash shell, this might be::
-
-    export SPEC2NEXUS_PLUGIN_PATH="/home/jemian/.spec2nexus_plugins, /tmp"
-
-The custom plugin module should contain, at minimum one subclass of  
+Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common`
+for examples.  The custom plugin module should contain, at minimum one subclass of  
 :class:`spec2nexus.plugin.ControlLineHandler`.  A custom plugin module
 can contain many such handlers, as needs dictate.
 
@@ -52,6 +57,9 @@ For difficult regular expressions (or other situations), it is possible to repla
 the function that matches for a particular control line key.  Override the
 handler's :meth:`match_key` method.
 For more details, see the section :ref:`custom_key_match_function`.
+
+.. note:: The ``six`` package is used to make our plugins run with either
+   Python 2.7 or Python 3.5+.
 
 Example for **#U** control line
 *******************************
@@ -92,8 +100,10 @@ Consider that one SPEC file contains the control line: ``#Y 1 2 3 4 5``.
 Since there is no standard handler for this control line, we create one that
 ignores processing by doing nothing::
 
-   from spec2nexus.plugin import ControlLineHandler
+   import six
+   from spec2nexus.plugin import AutoRegister, ControlLineHandler
    
+   @six.add_metaclass(AutoRegister)
    class Ignore_Y_ControlLine(ControlLineHandler):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
@@ -115,7 +125,7 @@ The postprocessing method is registered from the control line handler by calling
 :meth:`addPostProcessor` method of the ``spec_obj`` argument received by the 
 handler's :meth:`process` method.  A key name [#]_ is supplied when registering to avoid 
 registering this same code more than once.  The postprocessing function will be called 
-with the instance of :class:`spec2nexus.spec.SpecDataFileScan` as its only argument.
+with the instance of :class:`~spec2nexus.spec.SpecDataFileScan` as its only argument.
 
 An important role of the postprocessing is to store the result in the scan object.
 It is important not to modify other data in the scan object.  Pick an attribute
@@ -157,8 +167,11 @@ Summary Example Custom Plugin with postprocessing
 
 Gathering all parts of the examples above, the custom plugin module is::
 
-   from spec2nexus.plugin import ControlLineHandler, strip_first_word
+   import six
+   from spec2nexus.plugin import strip_first_word
+   from spec2nexus.plugin import AutoRegister, ControlLineHandler
    
+   @six.add_metaclass(AutoRegister)
    class User_ControlLine(ControlLineHandler):
        '''**#U** -- User data (#U user1 user2 user3)'''
    
@@ -304,13 +317,13 @@ can override the :meth:`match_key()` method.  Here is an example::
 Summary Requirements for custom plugin
 **************************************
 
-* file name must end in ``_spec2nexus.py``
-* file can go in any directory
-* add directory to ``SPEC2NEXUS_PLUGIN_PATH`` environment variable (comma-delimited for multiple directories)
+* file can go in any directory that has ``__init__.py`` file
 * multiple control line handlers can go in a single file
 * for each control line:
 
   * subclass :class:`spec2nexus.plugin.ControlLineHandler`
+  * add ``@six.add_metaclass(AutoRegister)`` decorator to auto-register the plugin
+  * import the module you defined (FIXME:  check this and revise)
   * identify the control line pattern
   * define ``key`` with a regular expression to match [#]_
   
@@ -318,9 +331,9 @@ Summary Requirements for custom plugin
     * redefine existing supported control lines to replace supplied behavior (use caution!)
     * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine`
   
-  * (optional) define :meth:`match_key` to override the default regular expression to match the key
   * define :meth:`process` to handle the supplied text
   * define :meth:`writer` to write the in-memory data structure from this plugin to HDF5+NeXus data file
+  * (optional) define :meth:`match_key` to override the default regular expression to match the key
 
 * for each postprocessing function:
 
@@ -329,5 +342,5 @@ Summary Requirements for custom plugin
 
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
-   :meth:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_DataLine.match_key()`
+   :meth:`~spec2nexus.plugins.spec_common.SPEC_DataLine.match_key()`
    method for an example.

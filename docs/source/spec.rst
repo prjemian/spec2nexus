@@ -317,7 +317,7 @@ the next line is read as part of this line.)
 
 This is an example of a 91-channel MCA data array with trivial (zero) values:
 
-.. code-block:: guess
+.. code-block:: text
    :linenos:
    
    @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
@@ -331,7 +331,7 @@ Several MCA spectra may be written to a scan.  In this case, a number
 follows **@A** indicating which spectrum, such as in this example with
 four spectra:
 
-.. code-block:: guess
+.. code-block:: text
    :linenos:
 
 	@A1 0 0 0 0 0 0 35 0 0 35

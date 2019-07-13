@@ -4,6 +4,6 @@
 UIM plugin
 ##########
 
-.. automodule:: spec2nexus.plugins.uim_spec2nexus
+.. automodule:: spec2nexus.plugins.uim
     :members: 
     :synopsis: UIM - Image header information from EPICS areaDetector.

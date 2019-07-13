@@ -161,7 +161,7 @@ class AutoRegister(type):
     
     This class is a metaclass to auto-register plugins to handle
     various parts of a SPEC data file.  
-    See :module:`~spec2nexus.plugins.spec_common` for many examples.
+    See :mod:`~spec2nexus.plugins.spec_common` for many examples.
 
     :param str key: regular expression to match a control line key, up to the first space
     :returns: None

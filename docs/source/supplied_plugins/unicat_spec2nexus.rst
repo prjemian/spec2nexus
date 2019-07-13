@@ -4,6 +4,6 @@
 UNICAT metadata plugin
 ######################
 
-.. automodule:: spec2nexus.plugins.unicat_spec2nexus
+.. automodule:: spec2nexus.plugins.unicat
     :members: 
     :synopsis: Metadata in SPEC data files as defined by APS UNICAT.
