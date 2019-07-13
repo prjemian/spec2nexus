@@ -28,16 +28,6 @@ __url__          = u'http://spec2nexus.readthedocs.org'
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5', 'MatPlotLib']
 
 __install_requires__ = ('h5py', 'numpy', 'six', 'matplotlib')
-__documentation_mocks__ = [
-    'h5py',    
-    'numpy', 
-    'numpy.ma',
-    'matplotlib', 
-    'matplotlib.backends', 
-    'matplotlib.backends.backend_agg',
-    'matplotlib.figure', 
-    # do NOT mock the "six" package!
-]
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',

@@ -196,19 +196,5 @@ todo_include_todos = True
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# picked from http://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules  # noqa
-try:
-    from unittest.mock import MagicMock
-except ImportError:
-    # py < 3.3 needs to: pip install mock
-    from mock import Mock as MagicMock
-
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-        return MagicMock()
- 
-sys.modules.update(
-    (mod_name, Mock()) 
-    for mod_name in spec2nexus.__documentation_mocks__
-    )
+# http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autodoc_mock_imports
+autodoc_mock_imports = "h5py numpy matplotlib pyRestTable".split()
