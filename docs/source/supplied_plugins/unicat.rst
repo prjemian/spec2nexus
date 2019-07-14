@@ -1,8 +1,8 @@
 
 .. _unicat_plugin:
 
-UNICAT metadata plugin
-######################
+unicat plugin
+##########################
 
 .. automodule:: spec2nexus.plugins.unicat
     :members: 
