@@ -4,7 +4,13 @@
 apstools SpecWriterCallback metadata plugin
 ###########################################
 
--tba-
+Looks for ``#MD`` :index:`control line` control lines.
+These lines contain metadata supplied to the bluesky ``RunEngine``
+and recorded during the execution of a scan.  The data are stored
+in a dictionary of each scan: ``scan.MD``.  If there are no
+``#MD`` control lines, then ``scan.MD`` does not exist.
+
+**see** https://apstools.readthedocs.io/en/latest/source/_filewriters.html#apstools.filewriters.SpecWriterCallback
 
 ----
 
