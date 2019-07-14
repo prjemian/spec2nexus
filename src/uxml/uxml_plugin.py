@@ -99,7 +99,7 @@ class UXML_metadata(ControlLineHandler):
 
         scan.addH5writer('UXML_metadata', self.writer)
     
-    def writer(self, h5parent, writer, scan, *args, **kws):
+    def writer(self, nxentry, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         self.unique_id = {}
         self.target_id = {}
@@ -107,14 +107,15 @@ class UXML_metadata(ControlLineHandler):
             dataset=self.dataset, 
             group=self.group, 
             hardlink=self.hardlink)
-
-        desc = 'UXML metadata'
-        group = eznx.makeGroup(h5parent, 'UXML', 'NXnote', default='data')
-        eznx.write_dataset(group, "counting_basis", desc)
-        eznx.write_dataset(group, "T", float(scan.T), units='s', description = desc)
         
         # parse the XML and store
-        self.walk_xml_tree(group, scan.UXML_root)
+        self.walk_xml_tree(
+            eznx.makeGroup(
+                nxentry, 
+                "UXML", 
+                "NXnote", 
+                desc='UXML metadata'), 
+            scan.UXML_root)
         self.make_NeXus_links()
 
     def walk_xml_tree(self, h5parent, xml_node):
