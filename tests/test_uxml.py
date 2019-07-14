@@ -13,7 +13,9 @@ unit tests for the UXML control lines
 #-----------------------------------------------------------------------------
 
 
+import h5py
 from lxml import etree
+import numpy
 import unittest
 import os
 import sys
@@ -27,7 +29,7 @@ sys.path.insert(0, _test_path)
 from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
 
-from spec2nexus.plugins.uxml import UXML_metadata
+from spec2nexus.plugins.uxml import UXML_metadata, UXML_Error
 
 SPEC_DATA_FILE_LINES = """
 #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
@@ -79,8 +81,7 @@ class TestPlugin(unittest.TestCase):
 		self.assertEqual(self.scan.UXML, [txt])
 		
 	def test_parse(self):
-		# test that UXML lines are parsed
-		# TODO: must test bad UXML as well
+		"""test that UXML lines are parsed"""
 
 		self.scan = SpecDataFileScan(None, '')
 		uxml = UXML_metadata()
@@ -141,7 +142,101 @@ class TestPlugin(unittest.TestCase):
 		self.assertTrue(result)
 
 
-# TODO: test_3.spec
+class TestData_error(unittest.TestCase):
+
+	def setUp(self):
+		self.basepath, self.uxml_path = get_paths()
+		self.fname = os.path.join(_test_path, "tests", "data", "test_3_error.spec")
+		basename = os.path.splitext(self.fname)[0]
+		self.hname = basename + '.hdf5'
+
+	def tearDown(self):
+		for tname in (self.hname,):
+			if os.path.exists(tname):
+				os.remove(tname)
+
+	def testName(self):
+		spec_data = SpecDataFile(self.fname)
+		self.assertTrue(isinstance(spec_data, SpecDataFile))
+		scan = spec_data.getScan(1)
+
+		with self.assertRaises(UXML_Error) as context:
+			scan.interpret()
+		received = str(context.exception)
+		expected = "UXML error: Element 'group': "
+		expected += "Character content other than whitespace is not allowed "
+		expected += "because the content type is 'element-only'."
+		self.assertTrue(received.startswith(expected))
+
+
+class TestData_3(unittest.TestCase):
+
+	def setUp(self):
+		self.basepath, self.uxml_path = get_paths()
+		self.fname = os.path.join(_test_path, "tests", "data", "test_3.spec")
+		basename = os.path.splitext(self.fname)[0]
+		self.hname = basename + '.hdf5'
+
+	def tearDown(self):
+		for tname in (self.hname,):
+			if os.path.exists(tname):
+				os.remove(tname)
+
+	def test_contents(self):
+		spec_data = SpecDataFile(self.fname)
+		self.assertTrue(isinstance(spec_data, SpecDataFile))
+		out = writer.Writer(spec_data)
+		scan_list = [1, ]
+		out.save(self.hname, scan_list)
+		
+		# text that UXML group defined as expected
+		self.assertTrue(os.path.exists(self.hname))
+		h5_file = h5py.File(self.hname)
+		self.assertTrue("S1" in h5_file)
+		nxentry = h5_file["/S1"]
+		self.assertTrue("UXML" in nxentry)
+		uxml = nxentry["UXML"]
+		self.assertTrue("NX_class" in uxml.attrs)
+		self.assertEqual(uxml.attrs["NX_class"], "NXnote")
+		
+		# spot-check a couple items
+		# group: attenuator_set
+		self.assertTrue("attenuator_set" in uxml)
+		group = uxml["attenuator_set"]
+		prefix = group.attrs.get("prefix")
+		description = group.attrs.get("description")
+		unique_id = group.attrs.get("unique_id")
+		self.assertEqual(prefix, "33idd:filter:")
+		self.assertEqual(description, "33-ID-D Filters")
+		self.assertEqual(unique_id, None)
+		
+		# <dataset name="corrdet_counter">corrdet</dataset>
+		self.assertTrue("corrdet_counter" in group)
+		ds = group["corrdet_counter"]
+		# http://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
+		value = ds[()]		# ds.value deprecated in h5py
+		self.assertEqual(value, [b"corrdet"])
+		
+		# <dataset name="wait_time" type="float" units="s">0.500</dataset>
+		self.assertTrue("wait_time" in group)
+		ds = group["wait_time"]
+		attrs = dict(ds.attrs)
+		self.assertEqual(ds.attrs.get("units"), "s")
+		value = ds[()]		# ds.value deprecated in h5py
+		self.assertEqual(value, numpy.array([.5]))
+
+		# <hardlink name="attenuator1" target_id="33idd:filter:Fi1:"/>
+		self.assertTrue("attenuator1" in group)
+		attenuator1 = group["attenuator1"]
+		target = attenuator1.attrs.get("target")
+		self.assertNotEqual(target, attenuator1.name)
+		self.assertEqual(target, uxml["attenuator1"].name)
+
+		addr = "/S1/UXML/ad_file_info/file_format"
+		self.assertTrue(addr in h5_file)
+		ds = h5_file[addr]
+		value = ds[()]		# ds.value deprecated in h5py
+		self.assertEqual(value, [b"TIFF"])
 
 
 class TestData_4(unittest.TestCase):
@@ -157,25 +252,34 @@ class TestData_4(unittest.TestCase):
 			if os.path.exists(tname):
 				os.remove(tname)
 
-	def testName(self):
+	def test_contents(self):
 		spec_data = SpecDataFile(self.fname)
 		self.assertTrue(isinstance(spec_data, SpecDataFile))
 		out = writer.Writer(spec_data)
 		scan_list = [1, ]
 		out.save(self.hname, scan_list)
-		# TODO: make tests of other things in the Writer
-		dd = out.root_attributes()
-		self.assertTrue(isinstance(dd, dict))
 		
-		# scan = spec_data.scans[1]
-		# scan.interpret()
-		# print(etree.tostring(scan.UXML_root))
+		# the ONLY structural difference between test_3.spec 
+		# and test_4.spec is the presence of this hardlink
+		self.assertTrue(os.path.exists(self.hname))
+		h5_file = h5py.File(self.hname)
+		source = h5_file["/S1/UXML/ad_detector/beam_center_x"]
+		link = h5_file["/S1/UXML/beam_center_x"]
+		target = source.attrs.get("target")
+
+		self.assertNotEqual(source.name, link.name)
+		self.assertNotEqual(target, None)
+		self.assertEqual(target, source.name)
+		self.assertEqual(target, link.attrs.get("target"))
 
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestPlugin,
+        TestData_error,
+        TestData_3,
+        TestData_4,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
