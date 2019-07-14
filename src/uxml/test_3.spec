@@ -91,7 +91,7 @@
 #P9 0 0 2.5 0 0 0 0 8
 #P10 25.5 0.5 0 -1.5 0 -0.9 0 0
 #P11 0 
-#UXML <group name="attenuator_set" NX_class="NXcollection" prefix="33idd:filter:" description="33-ID-D Filters" unique_id="33idd:filter:">
+#UXML <group name="attenuator_set" NX_class="NXnote" prefix="33idd:filter:" description="33-ID-D Filters" unique_id="33idd:filter:">
 #UXML   <dataset name="attenuator_count" type="int">16</dataset>
 #UXML   <dataset name="energy_input">Mono</dataset>
 #UXML   <dataset name="energy_value" type="float" units="keV">16.00035</dataset>
@@ -250,29 +250,29 @@
 #UXML   <dataset name="beam_center_x" type="int">234</dataset>
 #UXML   <dataset name="beam_center_y" type="int">103</dataset>
 #UXML </group>
-#UXML <group name="ad_regions_of_interest" NX_class="NXcollection" prefix="S33-PILATUS1:">
-#UXML   <group name="roi1" NX_class="NXcollection" number="1" description="" roi_prefix="S33-PILATUS1:ROI1:" array_port="ROI1" input_port="PIL">
+#UXML <group name="ad_regions_of_interest" NX_class="NXnote" prefix="S33-PILATUS1:">
+#UXML   <group name="roi1" NX_class="NXnote" number="1" description="" roi_prefix="S33-PILATUS1:ROI1:" array_port="ROI1" input_port="PIL">
 #UXML     <dataset name="min_x" type="int">205</dataset>
 #UXML     <dataset name="size_x" type="int">21</dataset>
 #UXML     <dataset name="min_y" type="int">79</dataset>
 #UXML     <dataset name="size_y" type="int">21</dataset>
 #UXML     <dataset name="size_bg" type="int">0</dataset>
 #UXML   </group>
-#UXML   <group name="roi2" NX_class="NXcollection" number="2" description="" roi_prefix="S33-PILATUS1:ROI2:" array_port="ROI2" input_port="PIL">
+#UXML   <group name="roi2" NX_class="NXnote" number="2" description="" roi_prefix="S33-PILATUS1:ROI2:" array_port="ROI2" input_port="PIL">
 #UXML     <dataset name="min_x" type="int">205</dataset>
 #UXML     <dataset name="size_x" type="int">21</dataset>
 #UXML     <dataset name="min_y" type="int">79</dataset>
 #UXML     <dataset name="size_y" type="int">21</dataset>
 #UXML     <dataset name="size_bg" type="int">0</dataset>
 #UXML   </group>
-#UXML   <group name="roi3" NX_class="NXcollection" number="3" description="" roi_prefix="S33-PILATUS1:ROI3:" array_port="ROI3" input_port="PIL">
+#UXML   <group name="roi3" NX_class="NXnote" number="3" description="" roi_prefix="S33-PILATUS1:ROI3:" array_port="ROI3" input_port="PIL">
 #UXML     <dataset name="min_x" type="int">195</dataset>
 #UXML     <dataset name="size_x" type="int">41</dataset>
 #UXML     <dataset name="min_y" type="int">69</dataset>
 #UXML     <dataset name="size_y" type="int">41</dataset>
 #UXML     <dataset name="size_bg" type="int">0</dataset>
 #UXML   </group>
-#UXML   <group name="roi4" NX_class="NXcollection" number="4" description="" roi_prefix="S33-PILATUS1:ROI4:" array_port="ROI4" input_port="PIL">
+#UXML   <group name="roi4" NX_class="NXnote" number="4" description="" roi_prefix="S33-PILATUS1:ROI4:" array_port="ROI4" input_port="PIL">
 #UXML     <dataset name="min_x" type="int">175</dataset>
 #UXML     <dataset name="size_x" type="int">81</dataset>
 #UXML     <dataset name="min_y" type="int">49</dataset>
@@ -280,7 +280,7 @@
 #UXML     <dataset name="size_bg" type="int">0</dataset>
 #UXML   </group>
 #UXML </group>
-#UXML <group name="ad_counters" NX_class="NXcollection" prefix="S33-PILATUS1:">
+#UXML <group name="ad_counters" NX_class="NXnote" prefix="S33-PILATUS1:">
 #UXML   <dataset name="ad_counter1" number="1" stats_prefix="S33-PILATUS1:Stats5:" array_port="STATS5" input_port="PIL" value_description="Total">imtot</dataset>
 #UXML   <dataset name="ad_counter2" number="2" stats_prefix="S33-PILATUS1:Stats5:" array_port="STATS5" input_port="PIL" value_description="MaxValue">immax</dataset>
 #UXML   <dataset name="ad_counter3" number="3" stats_prefix="S33-PILATUS1:Stats1:" array_port="STATS1" input_port="ROI1" value_description="Net">imroi1</dataset>
@@ -335,7 +335,7 @@
 2.12572 7 2 70 98 2 0 1 0 15.999994 0 0 0 0 0 0 0 0 0 0 0 0 0.100001 0
 2.38861 8 2 70 101 2 0 1 0 15.999994 0 0 0 0 0 0 0 0 0 0 0 0 0.100001 0
 #C Mon Oct 20 17:05:31 2014.  Globals saved in "/home/33id/data/schlepuetz/20141020/test/autosave/spec_autosave20141020_170531.sav".
-#UXML <group name="ad_detector" NX_class="NXdetetor" prefix="S33-PILATUS1:" array_port="PIL">
+#UXML <group name="ad_detector" NX_class="NXdetector" prefix="S33-PILATUS1:" array_port="PIL">
 #UXML   <dataset name="local_name">S33-PILATUS1:cam1:</dataset>
 #UXML   <dataset name="description">Model: Pilatus, Manufacturer: Dectris</dataset>
 #UXML   <dataset name="type">pixel</dataset>
@@ -347,7 +347,7 @@
 #UXML   <dataset name="gain_setting">5-18KeV/Med/MedG</dataset>
 #UXML   <dataset name="detector_readout_time" type="float" units="ms">3.6</dataset>
 #UXML </group>
-#UXML <group name="ad_file_info" NX_class="NXcollection" prefix="S33-PILATUS1:">
+#UXML <group name="ad_file_info" NX_class="NXnote" prefix="S33-PILATUS1:">
 #UXML   <dataset name="file_format">TIFF</dataset>
 #UXML   <dataset name="file_path">/home/33id/data/schlepuetz/20141020/test/images/test_3/S001/</dataset>
 #UXML   <dataset name="file_name">test_3_S001_00009</dataset>
