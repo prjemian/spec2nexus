@@ -121,7 +121,7 @@ class UXML_metadata(ControlLineHandler):
         """parse the XML node into HDF5 objects"""
         for item in xml_node:
             handler = self.selector[item.tag]
-            obj = handler(h5parent, item)
+            handler(h5parent, item)
     
     def make_NeXus_links(self):
         """create all the hardlinks as directed"""
@@ -179,7 +179,6 @@ class UXML_metadata(ControlLineHandler):
         attrs = dict(xml_node.attrib)
         nm = attrs.get('name')
         target_id = attrs.get('target_id')
-        attrs = self.prune_dict(attrs, "name target_id".split())
 
         if target_id is not None:
             self.target_id[target_id] = (h5parent, nm)
