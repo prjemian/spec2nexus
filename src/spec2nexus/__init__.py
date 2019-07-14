@@ -27,7 +27,7 @@ __author_email__ = __email__
 __url__          = u'http://spec2nexus.readthedocs.org'
 __keywords__     = ['SPEC', 'diffraction', 'data acquisition', 'NeXus', 'HDF5', 'MatPlotLib']
 
-__install_requires__ = ('h5py', 'numpy', 'six', 'matplotlib')
+__install_requires__ = ('h5py', 'numpy', 'six', 'matplotlib', 'lxml')
 __classifiers__ = [
      'Development Status :: 5 - Production/Stable',
      'Environment :: Console',
