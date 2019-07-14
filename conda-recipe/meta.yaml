@@ -31,17 +31,17 @@ requirements:
     - python
     - setuptools
     - h5py
-    - numpy
-    - matplotlib
-    - six
     - lxml
+    - matplotlib
+    - numpy
+    - six
 
   run:
     - h5py
-    - numpy
-    - matplotlib
-    - six
     - lxml
+    - matplotlib
+    - numpy
+    - six
 
 test:
 
