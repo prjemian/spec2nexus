@@ -34,12 +34,14 @@ requirements:
     - numpy
     - matplotlib
     - six
+    - lxml
 
   run:
     - h5py
     - numpy
     - matplotlib
     - six
+    - lxml
 
 test:
 
