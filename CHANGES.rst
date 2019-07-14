@@ -18,6 +18,17 @@ Production
     * `#159 <https://github.com/prjemian/spec2nexus/issues/159>`_
        handle #UXML metadata control lines
 
+:2021.0.1: *2019.07.13*, plugin loading  and documentation
+
+    * `#170 <https://github.com/prjemian/spec2nexus/issues/170>`_
+       describe how to write & load Control Line Handler plugins
+    * `#169 <https://github.com/prjemian/spec2nexus/issues/169>`_
+       announce deprecation of python 2
+    * `#165 <https://github.com/prjemian/spec2nexus/issues/165>`_
+       resolve conda build error
+    * `#149 <https://github.com/prjemian/spec2nexus/issues/149>`_
+       unit tests: ``units`` module
+
 :2021.0.0: *2019.07.12*, API change affecting plugins
 
     **API change**:
