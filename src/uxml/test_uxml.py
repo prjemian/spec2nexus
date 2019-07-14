@@ -13,11 +13,14 @@ unit tests for the UXML control lines
 #-----------------------------------------------------------------------------
 
 
+from lxml import etree
 import unittest
 import os
+
 from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
-from lxml import etree
+
+from uxml_plugin import UXML_metadata
 
 SPEC_DATA_FILE_LINES = """
 #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
@@ -41,23 +44,16 @@ class TestPlugin(unittest.TestCase):
 
 	def setUp(self):
 		self.basepath, self.uxml_path = get_paths()
-		os.environ['SPEC2NEXUS_PLUGIN_PATH'] = self.uxml_path
-		if 'PYTHONPATH' not in os.environ:
-			os.environ['PYTHONPATH'] = ''
-		os.environ['PYTHONPATH'] += ':' + self.uxml_path
-		self.pythonpath = os.environ['PYTHONPATH']
 
 	def tearDown(self):
 		pass
 
-	def test_01_process(self):
+	def test_process(self):
 		"""test the :meth:`process` method"""
 		self.scan = SpecDataFileScan(None, '')
 		self.assertTrue(isinstance(self.scan, SpecDataFileScan))
 
 		# test create instance
-		os.environ['PYTHONPATH'] = self.pythonpath
-		from uxml_spec2nexus import UXML_metadata
 		uxml = UXML_metadata()
 		self.assertTrue(isinstance(uxml, UXML_metadata))
 		
@@ -70,24 +66,28 @@ class TestPlugin(unittest.TestCase):
 		uxml.process('#UXML ' + txt, self.scan)
 		self.assertTrue(hasattr(self.scan, 'UXML'))
 		self.assertTrue('UXML_metadata' in self.scan.postprocessors)
-		self.assertEquals(self.scan.postprocessors['UXML_metadata'], uxml.postprocess)
+		self.assertEqual(self.scan.postprocessors['UXML_metadata'], uxml.postprocess)
 		self.assertTrue(isinstance(self.scan.UXML, list))
-		self.assertEquals(self.scan.UXML, [txt])
+		self.assertEqual(self.scan.UXML, [txt])
 		
+	def test_parse(self):
 		# test that UXML lines are parsed
 		# TODO: must test bad UXML as well
+
 		self.scan = SpecDataFileScan(None, '')
+		uxml = UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():
 			txt = line.strip()
 			if len(txt) > 0:
 				uxml.process(txt, self.scan)
 		self.assertTrue(hasattr(self.scan, 'UXML'))
 		#print ('\n'.join([ '%3d: %s' % (i,j) for i,j in enumerate(self.scan.UXML) ]))
-		self.assertEquals(9, len(self.scan.UXML))
+		self.assertEqual(9, len(self.scan.UXML))
 		self.assertTrue(hasattr(self.scan, 'h5writers'))
 		self.assertFalse('UXML_metadata' in self.scan.h5writers)
 		self.assertFalse(hasattr(self.scan, 'UXML_root'))
-	
+		
+	def test_postprocess(self):	
 		"""test the :meth:`postprocess` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = UXML_metadata()
@@ -102,17 +102,18 @@ class TestPlugin(unittest.TestCase):
 		root = self.scan.UXML_root
 		self.assertFalse(isinstance(root, str))
 		self.assertTrue(isinstance(root, etree._Element))
-		self.assertEquals('UXML', root.tag)
+		self.assertEqual('UXML', root.tag)
 		node = root[0]
-		self.assertEquals('group', node.tag)
-		self.assertEquals('attenuator1', node.get('name'))
-		self.assertEquals('NXattenuator', node.get('NX_class'))
-		self.assertEquals(7, len(node))
+		self.assertEqual('group', node.tag)
+		self.assertEqual('attenuator1', node.get('name'))
+		self.assertEqual('NXattenuator', node.get('NX_class'))
+		self.assertEqual(7, len(node))
 		node = node[0]
-		self.assertEquals('dataset', node.tag)
-		self.assertEquals('enable', node.get('name'))
-		self.assertEquals('find_me', node.get('unique_id'))
+		self.assertEqual('dataset', node.tag)
+		self.assertEqual('enable', node.get('name'))
+		self.assertEqual('find_me', node.get('unique_id'))
 	
+	def test_writer(self):	
 		"""test the :meth:`writer` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = UXML_metadata()
@@ -132,11 +133,10 @@ class TestPlugin(unittest.TestCase):
 		self.assertTrue(result)
 
 
-class TestData(unittest.TestCase):
+class TestData_4(unittest.TestCase):
 
 	def setUp(self):
 		self.basepath, self.uxml_path = get_paths()
-		os.environ['SPEC2NEXUS_PLUGIN_PATH'] = self.uxml_path
 		self.fname = os.path.join(self.uxml_path, 'test_4.spec')
 		basename = os.path.splitext(self.fname)[0]
 		self.hname = basename + '.hdf5'
