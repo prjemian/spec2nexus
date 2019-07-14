@@ -172,5 +172,16 @@ class TestData_4(unittest.TestCase):
 		# print(etree.tostring(scan.UXML_root))
 
 
+def suite(*args, **kw):
+    test_suite = unittest.TestSuite()
+    test_list = [
+        TestPlugin,
+        ]
+    for test_case in test_list:
+        test_suite.addTest(unittest.makeSuite(test_case))
+    return test_suite
+
+
 if __name__ == "__main__":
-	unittest.main()
+    runner=unittest.TextTestRunner()
+    runner.run(suite())
