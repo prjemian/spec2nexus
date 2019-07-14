@@ -22,10 +22,10 @@ from lxml import etree
 import os
 import six
 
-from spec2nexus import eznx
-from spec2nexus.plugin import AutoRegister
-from spec2nexus.plugin import ControlLineHandler
-from spec2nexus.utils import strip_first_word
+from .. import eznx
+from ..plugin import AutoRegister
+from ..plugin import ControlLineHandler
+from ..utils import strip_first_word
 
 
 DEFAULT_XML_ROOT_TAG = 'UXML'

@@ -13,4 +13,5 @@ from . import fallback
 from . import apstools_specwriter
 from . import uim
 from . import unicat
+from . import uxml
 from . import XPCS

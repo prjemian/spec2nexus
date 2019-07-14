@@ -16,11 +16,18 @@ unit tests for the UXML control lines
 from lxml import etree
 import unittest
 import os
+import sys
+
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+_path = os.path.abspath(os.path.join(_test_path, 'src'))
+
+sys.path.insert(0, _path)
+sys.path.insert(0, _test_path)
 
 from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
 
-from uxml_plugin import UXML_metadata
+from spec2nexus.plugins.uxml import UXML_metadata
 
 SPEC_DATA_FILE_LINES = """
 #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
@@ -35,7 +42,8 @@ SPEC_DATA_FILE_LINES = """
 	"""
 
 def get_paths():
-	uxml_path = os.path.abspath(os.path.dirname(__file__))
+	import spec2nexus.plugins
+	uxml_path = os.path.abspath(os.path.dirname(spec2nexus.plugins.__file__))
 	basepath = os.path.join(uxml_path, '..')
 	return basepath, uxml_path
 
@@ -133,11 +141,14 @@ class TestPlugin(unittest.TestCase):
 		self.assertTrue(result)
 
 
+# TODO: test_3.spec
+
+
 class TestData_4(unittest.TestCase):
 
 	def setUp(self):
 		self.basepath, self.uxml_path = get_paths()
-		self.fname = os.path.join(self.uxml_path, 'test_4.spec')
+		self.fname = os.path.join(_test_path, "tests", "data", "test_4.spec")
 		basename = os.path.splitext(self.fname)[0]
 		self.hname = basename + '.hdf5'
 
@@ -145,8 +156,6 @@ class TestData_4(unittest.TestCase):
 		for tname in (self.hname,):
 			if os.path.exists(tname):
 				os.remove(tname)
-				#print ("removed test file: %s" % tname)
-				pass
 
 	def testName(self):
 		spec_data = SpecDataFile(self.fname)
@@ -158,14 +167,10 @@ class TestData_4(unittest.TestCase):
 		dd = out.root_attributes()
 		self.assertTrue(isinstance(dd, dict))
 		
-		#scan = spec_data.scans[1]
-		#print (etree.tostring(scan.UXML_root))
+		# scan = spec_data.scans[1]
+		# scan.interpret()
+		# print(etree.tostring(scan.UXML_root))
 
 
 if __name__ == "__main__":
-	#import sys;sys.argv = ['', 'Test.testName']
 	unittest.main()
-	
-# 	for test_classes in (TestPlugin, TestData):
-# 		suite = unittest.TestLoader().loadTestsFromTestCase(test_classes)
-# 		unittest.TextTestRunner(verbosity=2).run(suite)
