@@ -33,7 +33,7 @@ UXML_PROVIDES_ROOT_TAG = False
 XML_SCHEMA = os.path.join(os.path.dirname(__file__), "uxml.xsd")
 
 
-class UXML_Error(Exception): ...
+class UXML_Error(Exception): pass
 
 
 @six.add_metaclass(AutoRegister)
