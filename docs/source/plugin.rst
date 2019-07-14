@@ -31,8 +31,10 @@ These plugin modules are supplied:
    
    ~spec2nexus.plugins.spec_common
    ~spec2nexus.plugins.fallback
+   ~spec2nexus.plugins.apstools_specwriter
    ~spec2nexus.plugins.unicat
    ~spec2nexus.plugins.uim
+   ~spec2nexus.plugins.uxml
    ~spec2nexus.plugins.XPCS
    
 .. toctree::

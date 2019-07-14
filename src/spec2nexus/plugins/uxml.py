@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-UXML header information
-
-TODO: Document the UXML Language
+UXML structured metadata
 """
 
 #-----------------------------------------------------------------------------
