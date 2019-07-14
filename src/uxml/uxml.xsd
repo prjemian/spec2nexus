@@ -28,6 +28,7 @@
       <xs:attribute name="type" type="xs:NCName"/>
       <xs:attribute name="units" type="xs:NCName"/>
       <xs:attribute name="value_description" type="xs:NCName"/>
+      <xs:attribute name="unique_id" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
 
