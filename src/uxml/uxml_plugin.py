@@ -1,76 +1,26 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
+"""
+UXML header information
+
+Document the UXML Language
+"""
+
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2016, Pete R. Jemian
+# :copyright: (c) 2014-2019, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-"""
-UXML header information
-
-Document the UXML Language
-
-Describe the Validation Process
-
-Excerpt::
-
-    #UXML <group name="attenuator_set" NX_class="NXcollection" prefix="33idd:filter:" description="33-ID-D Filters" unique_id="33idd:filter:">
-    #UXML   <dataset name="attenuator_count" type="int">16</dataset>
-    #UXML   <dataset name="energy_input">Mono</dataset>
-    #UXML   <dataset name="energy_value" type="float" units="keV">16.00002</dataset>
-    #UXML   <dataset name="wait_time" type="float" units="s">0.500</dataset>
-    #UXML   <dataset name="transmission" type="float">1.00000000e+00</dataset>
-    #UXML   <dataset name="binary_mask" type="int">0</dataset>
-    #UXML   <dataset name="transmission_counter">trans</dataset>
-    #UXML   <dataset name="mask_counter">filters</dataset>
-    #UXML   <dataset name="corrdet_counter">corrdet</dataset>
-    #UXML   <hardlink name="attenuator1" target_id="33idd:filter:Fi1:"/>
-    #UXML   <hardlink name="attenuator2" target_id="33idd:filter:Fi2:"/>
-    #UXML   <hardlink name="attenuator3" target_id="33idd:filter:Fi3:"/>
-    #UXML   <hardlink name="attenuator4" target_id="33idd:filter:Fi4:"/>
-    #UXML   <hardlink name="attenuator5" target_id="33idd:filter:Fi5:"/>
-    #UXML   <hardlink name="attenuator6" target_id="33idd:filter:Fi6:"/>
-    #UXML   <hardlink name="attenuator7" target_id="33idd:filter:Fi7:"/>
-    #UXML   <hardlink name="attenuator8" target_id="33idd:filter:Fi8:"/>
-    #UXML   <hardlink name="attenuator9" target_id="33idd:filter:Fi9:"/>
-    #UXML   <hardlink name="attenuator10" target_id="33idd:filter:Fi10:"/>
-    #UXML   <hardlink name="attenuator11" target_id="33idd:filter:Fi11:"/>
-    #UXML   <hardlink name="attenuator12" target_id="33idd:filter:Fi12:"/>
-    #UXML   <hardlink name="attenuator13" target_id="33idd:filter:Fi13:"/>
-    #UXML   <hardlink name="attenuator14" target_id="33idd:filter:Fi14:"/>
-    #UXML   <hardlink name="attenuator15" target_id="33idd:filter:Fi15:"/>
-    #UXML   <hardlink name="attenuator16" target_id="33idd:filter:Fi16:"/>
-    #UXML </group>
-    #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
-    #UXML   <dataset name="enable">Enable</dataset>
-    #UXML   <dataset name="lock">Lock</dataset>
-    #UXML   <dataset name="type">Ti</dataset>
-    #UXML   <dataset name="thickness" type="float" units="micron">251.000</dataset>
-    #UXML   <dataset name="attenuator_transmission" type="float">3.55764458e-02</dataset>
-    #UXML   <dataset name="status">Out</dataset>
-    #UXML </group>
-    #UXML <group name="attenuator2" NX_class="NXattenuator" number="2" pv_prefix="33idd:filter:Fi2:" unique_id="33idd:filter:Fi2:">
-    #UXML   <dataset name="enable">Enable</dataset>
-    #UXML   <dataset name="lock">Lock</dataset>
-    #UXML   <dataset name="type">Ti</dataset>
-    #UXML   <dataset name="thickness" type="float" units="micron">512.000</dataset>
-    #UXML   <dataset name="attenuator_transmission" type="float">1.10816011e-03</dataset>
-    #UXML   <dataset name="status">Out</dataset>
-    #UXML </group>
-
-"""
-
 
 from lxml import etree
 import os
 import six
-import sys
 
 from spec2nexus import eznx
 from spec2nexus.plugin import AutoRegister
@@ -79,104 +29,11 @@ from spec2nexus.utils import strip_first_word
 
 
 DEFAULT_XML_ROOT_TAG = 'UXML'
-UXML_SUPPLIES_ROOT_TAG = False
-_path = os.path.dirname(__file__)
-XML_SCHEMA = os.path.join(_path, "uxml.xsd")
+UXML_PROVIDES_ROOT_TAG = False
+XML_SCHEMA = os.path.join(os.path.dirname(__file__), "uxml.xsd")
 
 
 class UXML_Error(Exception): ...
-
-
-link_ids = None
-
-# TODO: does not need to be separate classes here
-class Dataset(object):
-    
-    """HDF5/NeXus dataset specification"""
-
-    def __init__(self, h5parent, xml_node):
-        attrs = dict(xml_node.attrib)
-
-        self.name = attrs.get('name')
-        if self.name is not None:
-            del attrs["name"]
-
-        data_type = attrs.get('type')
-        if data_type is None:
-            data_type = "str"
-        else:
-            del attrs["type"]
-
-        # TODO: unique_id attribute?
-
-        self.value = xml_node.text
-
-        eznx.makeDataset(h5parent, self.name, self.value, **attrs)
-
-
-class Group(object):
-    
-    """HDF5/NeXus group specification"""
-
-    def __init__(self, h5parent, xml_node):
-        global link_ids
-        _links = link_ids
-
-        attrs = dict(xml_node.attrib)
-
-        self.name = attrs.get('name')
-        if self.name is not None:
-            del attrs["name"]
-
-        self.NX_class = attrs.get('NX_class')
-        if self.NX_class is not None:
-            del attrs["NX_class"]
-
-        self.unique_id = attrs.get('unique_id')
-        if self.unique_id is not None:
-            # TODO: store unique_id in a dict
-            #   make sure that dict is cleared with each new scan
-            del attrs["unique_id"]
-
-        self.group = eznx.makeGroup(
-            h5parent, 
-            self.name, 
-            self.NX_class, 
-            **attrs)
-
-        if self.unique_id is not None:
-            link_ids[self.unique_id] = self.group.name
-        
-        build_HDF5_tree(self.group, xml_node)
-
-
-class Hardlink(object):
-    
-    """HDF5/NeXus hard link specification"""
-
-    def __init__(self, h5parent, xml_node):
-        global link_ids
-
-        attrs = dict(xml_node.attrib)
-
-        self.name = attrs.get('name')
-        if self.name is not None:
-            del attrs["name"]
-
-        if "target_id" in attrs:
-            self.target_id = attrs["target_id"]
-            del attrs["target_id"]
-            # TODO: need to make the links *AFTER* all unique_id have been found
-            if self.target_id in link_ids:
-                source = link_ids[self.target_id]
-                z = 2
-
-
-def build_HDF5_tree(h5parent, xml_node):
-    selector = dict(dataset=Dataset, group=Group, hardlink=Hardlink)
-    for item in xml_node:
-        obj = selector[item.tag](h5parent, item)
-        print(item.tag, item.get('name'), obj, obj.name)
 
 
 @six.add_metaclass(AutoRegister)
@@ -197,7 +54,11 @@ class UXML_metadata(ControlLineHandler):
     """
 
     key = '#UXML'
-    
+    unique_id = {}
+    target_id = {}
+    selector = None
+    converters = dict(int=int, float=float, str=str)
+
     def process(self, text, scan, *args, **kws):
         if not hasattr(scan, 'UXML'):
             scan.UXML = []
@@ -213,7 +74,7 @@ class UXML_metadata(ControlLineHandler):
         :param SpecDataFileScan scan: data from a single SPEC scan
         """
         xml_text = '\n'.join(scan.UXML)
-        if UXML_SUPPLIES_ROOT_TAG:
+        if UXML_PROVIDES_ROOT_TAG:
             root = etree.fromstring(xml_text)
             # read root_tag from supplied UXML lines
         else:
@@ -240,14 +101,85 @@ class UXML_metadata(ControlLineHandler):
     
     def writer(self, h5parent, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        global link_ids
-        link_ids = {}       # clear with each new scan
+        self.unique_id = {}
+        self.target_id = {}
+        self.selector = dict(
+            dataset=self.dataset, 
+            group=self.group, 
+            hardlink=self.hardlink)
 
-        # FIXME:
         desc = 'UXML metadata'
         group = eznx.makeGroup(h5parent, 'UXML', 'NXentry', default='data')
         eznx.write_dataset(group, "counting_basis", desc)
         eznx.write_dataset(group, "T", float(scan.T), units='s', description = desc)
         
         # parse the XML and store
-        build_HDF5_tree(group, scan.UXML_root)
+        self.walk_xml_tree(group, scan.UXML_root)
+        self.make_NeXus_links()
+
+    def walk_xml_tree(self, h5parent, xml_node):
+        """parse the XML node into HDF5 objects"""
+        for item in xml_node:
+            handler = self.selector[item.tag]
+            obj = handler(h5parent, item)
+    
+    def make_NeXus_links(self):
+        """create all the hardlinks as directed"""
+        for target_id in self.target_id.keys():
+            if target_id in self.unique_id:
+                target_group, target_name = self.target_id[target_id]
+                source = self.unique_id[target_id]
+                eznx.makeLink(target_group, source, target_name)
+    
+    def prune_dict(self, d, keys):
+        """remove keys from dictionary d"""
+        return {k: v for k, v in d.items() if k not in keys}
+    
+    def dataset(self, h5parent, xml_node):
+        """HDF5/NeXus dataset specification"""
+        attrs = dict(xml_node.attrib)
+        nm = attrs.get('name')
+        data_type = attrs.get('type', 'str')
+        unique_id = attrs.get('unique_id')
+        attrs = self.prune_dict(attrs, "name type unique_id".split())
+
+        if data_type in self.converters:
+            converter = self.converters[data_type]
+            value = converter(xml_node.text)
+        else:
+            emsg = "unexpected type='%s'" % data_type
+            raise UXML_Error(emsg)
+
+        ds = eznx.makeDataset(h5parent, nm, value, **attrs)
+
+        if unique_id is not None:
+            self.unique_id[unique_id] = ds
+        
+        return ds
+    
+    def group(self, h5parent, xml_node):
+        """HDF5/NeXus group specification"""
+        attrs = dict(xml_node.attrib)
+        nm = attrs.get('name')
+        NX_class = attrs.get('NX_class')
+        unique_id = attrs.get('unique_id')
+        attrs = self.prune_dict(attrs, "name NX_class unique_id".split())
+
+        group = eznx.makeGroup(h5parent, nm, NX_class, **attrs)
+
+        if unique_id is not None:
+            self.unique_id[unique_id] = group
+        
+        self.walk_xml_tree(group, xml_node)
+        
+        return group
+    
+    def hardlink(self, h5parent, xml_node):
+        """HDF5/NeXus hard link specification"""
+        attrs = dict(xml_node.attrib)
+        nm = attrs.get('name')
+        target_id = attrs.get('target_id')
+        attrs = self.prune_dict(attrs, "name target_id".split())
+
+        if target_id is not None:
+            self.target_id[target_id] = (h5parent, nm)
