@@ -237,7 +237,8 @@ class SpecDataFile(object):
         if not os.path.exists(spec_file_name):
             raise SpecDataFileNotFound('file does not exist: ' + str(spec_file_name))
         try:
-            buf = open(spec_file_name, 'r').read()
+            with open(spec_file_name, 'r') as fp:
+                buf = fp.read()
         except IOError:
             msg = 'Could not open spec file: ' + str(spec_file_name)
             raise SpecDataFileCouldNotOpen(msg)
