@@ -4,7 +4,7 @@
 """
 UXML header information
 
-Document the UXML Language
+TODO: Document the UXML Language
 """
 
 #-----------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class UXML_metadata(ControlLineHandler):
             hardlink=self.hardlink)
 
         desc = 'UXML metadata'
-        group = eznx.makeGroup(h5parent, 'UXML', 'NXentry', default='data')
+        group = eznx.makeGroup(h5parent, 'UXML', 'NXnote', default='data')
         eznx.write_dataset(group, "counting_basis", desc)
         eznx.write_dataset(group, "T", float(scan.T), units='s', description = desc)
         
