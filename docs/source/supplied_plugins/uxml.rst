@@ -1,8 +1,8 @@
 
 .. _uxml_plugin:
 
-UXML metadata plugin
-####################
+#UXML: UXML metadata plugin
+#############################
 
 Looks for ``#UXML`` :index:`control line` control lines.
 These lines contain metadata written as XML structures
@@ -33,4 +33,4 @@ use of ``#UXML`` in a SPEC data file:
 
 .. automodule:: spec2nexus.plugins.uxml
     :members: 
-    :synopsis: UXML structured metadata.
+    :synopsis: #UXML: UXML structured metadata.

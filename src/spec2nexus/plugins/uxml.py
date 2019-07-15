@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-UXML structured metadata
+#UXML: UXML structured metadata
 """
 
 #-----------------------------------------------------------------------------
