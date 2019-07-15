@@ -188,16 +188,21 @@ class Writer(object):
         #  @axes="H:K"       INCOREECT
         #  @axes="H", "K"    CORRECT
         if axes.find(':') >= 0:
-            axes = [v.encode("ascii", "ignore") for v in axes.split(":")]
+            def fixer(s):
+                # h5py requires list of strings to be encoded
+                # see: https://stackoverflow.com/questions/23220513/storing-a-list-of-strings-to-a-hdf5-dataset-from-python
+                return s.encode("ascii", "ignore")
+            axes = list(map(fixer, axes.split(":")))
         eznx.addAttributes(nxdata, signal=signal, axes=axes)
-        #eznx.addAttributes(nxdata[signal], signal=1, axes=axes)    # deprecated now
-        # assume here that "axis_name" has rank=1
-        # TODO: test that scan.data[axis_name] has rank=1
         indices = [0,]     # 0-based reference
         if isinstance(axes, str):
             eznx.addAttributes(nxdata, **{axes+'_indices': indices})
         else:
             for axis_name in axes:
+                axis_name = axis_name.decode("utf-8") 
+                # assume here that "axis_name" has rank=1
+                # if scan.data[axis_name] != 1:
+                #     pass    # TODO: and do what?
                 k = "%s%s" % (axis_name, '_indices')
                 eznx.addAttributes(nxdata, **{k: indices})
     
