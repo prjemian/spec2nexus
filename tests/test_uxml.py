@@ -191,52 +191,52 @@ class TestData_3(unittest.TestCase):
 		
 		# text that UXML group defined as expected
 		self.assertTrue(os.path.exists(self.hname))
-		h5_file = h5py.File(self.hname)
-		self.assertTrue("S1" in h5_file)
-		nxentry = h5_file["/S1"]
-		self.assertTrue("UXML" in nxentry)
-		uxml = nxentry["UXML"]
-		self.assertTrue("NX_class" in uxml.attrs)
-		self.assertEqual(uxml.attrs["NX_class"], "NXnote")
-		
-		# spot-check a couple items
-		# group: attenuator_set
-		self.assertTrue("attenuator_set" in uxml)
-		group = uxml["attenuator_set"]
-		prefix = group.attrs.get("prefix")
-		description = group.attrs.get("description")
-		unique_id = group.attrs.get("unique_id")
-		self.assertEqual(prefix, "33idd:filter:")
-		self.assertEqual(description, "33-ID-D Filters")
-		self.assertEqual(unique_id, None)
-		
-		# <dataset name="corrdet_counter">corrdet</dataset>
-		self.assertTrue("corrdet_counter" in group)
-		ds = group["corrdet_counter"]
-		# http://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
-		value = ds[()]		# ds.value deprecated in h5py
-		self.assertEqual(value, [b"corrdet"])
-		
-		# <dataset name="wait_time" type="float" units="s">0.500</dataset>
-		self.assertTrue("wait_time" in group)
-		ds = group["wait_time"]
-		attrs = dict(ds.attrs)
-		self.assertEqual(ds.attrs.get("units"), "s")
-		value = ds[()]		# ds.value deprecated in h5py
-		self.assertEqual(value, numpy.array([.5]))
-
-		# <hardlink name="attenuator1" target_id="33idd:filter:Fi1:"/>
-		self.assertTrue("attenuator1" in group)
-		attenuator1 = group["attenuator1"]
-		target = attenuator1.attrs.get("target")
-		self.assertNotEqual(target, attenuator1.name)
-		self.assertEqual(target, uxml["attenuator1"].name)
-
-		addr = "/S1/UXML/ad_file_info/file_format"
-		self.assertTrue(addr in h5_file)
-		ds = h5_file[addr]
-		value = ds[()]		# ds.value deprecated in h5py
-		self.assertEqual(value, [b"TIFF"])
+		with h5py.File(self.hname) as h5_file:
+			self.assertTrue("S1" in h5_file)
+			nxentry = h5_file["/S1"]
+			self.assertTrue("UXML" in nxentry)
+			uxml = nxentry["UXML"]
+			self.assertTrue("NX_class" in uxml.attrs)
+			self.assertEqual(uxml.attrs["NX_class"], "NXnote")
+			
+			# spot-check a couple items
+			# group: attenuator_set
+			self.assertTrue("attenuator_set" in uxml)
+			group = uxml["attenuator_set"]
+			prefix = group.attrs.get("prefix")
+			description = group.attrs.get("description")
+			unique_id = group.attrs.get("unique_id")
+			self.assertEqual(prefix, "33idd:filter:")
+			self.assertEqual(description, "33-ID-D Filters")
+			self.assertEqual(unique_id, None)
+			
+			# <dataset name="corrdet_counter">corrdet</dataset>
+			self.assertTrue("corrdet_counter" in group)
+			ds = group["corrdet_counter"]
+			# http://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
+			value = ds[()]		# ds.value deprecated in h5py
+			self.assertEqual(value, [b"corrdet"])
+			
+			# <dataset name="wait_time" type="float" units="s">0.500</dataset>
+			self.assertTrue("wait_time" in group)
+			ds = group["wait_time"]
+			attrs = dict(ds.attrs)
+			self.assertEqual(ds.attrs.get("units"), "s")
+			value = ds[()]		# ds.value deprecated in h5py
+			self.assertEqual(value, numpy.array([.5]))
+	
+			# <hardlink name="attenuator1" target_id="33idd:filter:Fi1:"/>
+			self.assertTrue("attenuator1" in group)
+			attenuator1 = group["attenuator1"]
+			target = attenuator1.attrs.get("target")
+			self.assertNotEqual(target, attenuator1.name)
+			self.assertEqual(target, uxml["attenuator1"].name)
+	
+			addr = "/S1/UXML/ad_file_info/file_format"
+			self.assertTrue(addr in h5_file)
+			ds = h5_file[addr]
+			value = ds[()]		# ds.value deprecated in h5py
+			self.assertEqual(value, [b"TIFF"])
 
 
 class TestData_4(unittest.TestCase):
@@ -262,15 +262,15 @@ class TestData_4(unittest.TestCase):
 		# the ONLY structural difference between test_3.spec 
 		# and test_4.spec is the presence of this hardlink
 		self.assertTrue(os.path.exists(self.hname))
-		h5_file = h5py.File(self.hname)
-		source = h5_file["/S1/UXML/ad_detector/beam_center_x"]
-		link = h5_file["/S1/UXML/beam_center_x"]
-		target = source.attrs.get("target")
-
-		self.assertNotEqual(source.name, link.name)
-		self.assertNotEqual(target, None)
-		self.assertEqual(target, source.name)
-		self.assertEqual(target, link.attrs.get("target"))
+		with h5py.File(self.hname) as h5_file:
+			source = h5_file["/S1/UXML/ad_detector/beam_center_x"]
+			link = h5_file["/S1/UXML/beam_center_x"]
+			target = source.attrs.get("target")
+	
+			self.assertNotEqual(source.name, link.name)
+			self.assertNotEqual(target, None)
+			self.assertEqual(target, source.name)
+			self.assertEqual(target, link.attrs.get("target"))
 
 
 def suite(*args, **kw):

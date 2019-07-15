@@ -143,7 +143,8 @@ def makeDataset(parent, name, data = None, **attr):
     :return: h5py dataset object
     '''
     if data is None:
-        obj = parent.create_dataset(name)
+        obj = parent.create_dataset(name, data="")
+        attr["NOTE"] = "no data supplied, value set to empty string"
     else:
         # storing-a-list-of-strings-to-a-hdf5-dataset-from-python
         # https://stackoverflow.com/questions/23220513/
@@ -167,12 +168,11 @@ def write_dataset(parent, name, data, **attr):
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
     """
-    try:
-        dset = parent[name]
-        dset[:] = data
-        addAttributes(dset, **attr)
-    except (KeyError, TypeError):
-        dset = makeDataset(parent, name, data, **attr)
+    if name in parent:
+        # dataset already exists
+        # delete it, any links to it may break
+        del parent[name]
+    dset = makeDataset(parent, name, data, **attr)
     return dset
 
 
@@ -236,10 +236,9 @@ def read_nexus_field(parent, dataset_name, astype=None):
     :param str dataset_name: name of the dataset (NeXus field) to be read
     :param obj astype: option to return as different data type
     """
-    try:
-        dataset = parent[dataset_name]
-    except KeyError:
+    if dataset_name not in parent:
         return None
+    dataset = parent[dataset_name]
     dtype = dataset.dtype
     if astype is not None:
         dtype = astype
