@@ -44,8 +44,6 @@ class TestEznx(unittest.TestCase):
             shutil.rmtree(self.tempdir, ignore_errors=True)
 
     def test_example(self):
-        self.assertTrue(True, "trivial assertion - always True")
-        
         root = eznx.makeFile('test.h5', creator='eznx', default='entry')
         nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
         ds = eznx.write_dataset(nxentry, 'title', 'simple test data')
@@ -111,8 +109,6 @@ class TestEznx(unittest.TestCase):
             self.assertEqual(tth[2], [10.0, 10.1, 10.2, 10.3][2])
 
     def test_create_dataset_None(self):
-        self.assertTrue(True, "trivial assertion - always True")
-        
         root = eznx.makeFile('test.h5', creator='eznx', default='entry')
         nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
         ds = eznx.makeDataset(nxentry, "data_is_None", None)
@@ -129,6 +125,45 @@ class TestEznx(unittest.TestCase):
             self.assertTrue("NOTE" in ds.attrs)
             note =  "no data supplied, value set to empty string"
             self.assertEqual(ds.attrs["NOTE"],  note)
+
+    def test_write_dataset_existing(self):
+        root = eznx.makeFile('test.h5', creator='eznx', default='entry')
+        nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
+        ds = eznx.write_dataset(nxentry, "text", "some text")
+        ds = eznx.write_dataset(nxentry, "text", "replacement text")
+
+        with h5py.File("test.h5", "r") as hp:
+            root = hp["/"]
+            nxentry = root["entry"]
+            self.assertTrue("text" in nxentry)
+            ds = nxentry["text"]
+            value = ds[()]        # ds.value deprecated in h5py
+            self.assertEqual(value, [b"replacement text"])
+
+    def test_makeExternalLink(self):
+        external = eznx.makeFile('external.h5', creator='eznx', default='entry')
+        ds = eznx.write_dataset(external, "text", "some text")
+
+        root = eznx.makeFile('test.h5', creator='eznx', default='entry')
+        nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
+        eznx.makeExternalLink(root, 'external.h5', "/text", nxentry.name + "/external_text")
+
+        # check the external file first
+        with h5py.File("external.h5", "r") as hp:
+            root = hp["/"]
+            self.assertTrue("text" in root)
+            ds = root["text"]
+            value = ds[()]        # ds.value deprecated in h5py
+            self.assertEqual(value, [b"some text"])
+
+        # check the file with the external link
+        with h5py.File("test.h5", "r") as hp:
+            root = hp["/"]
+            nxentry = root["entry"]
+            self.assertTrue("external_text" in nxentry)
+            ds = nxentry["external_text"]
+            value = ds[()]        # ds.value deprecated in h5py
+            self.assertEqual(value, [b"some text"])
 
 
 def suite(*args, **kw):

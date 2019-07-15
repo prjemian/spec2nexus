@@ -168,12 +168,11 @@ def write_dataset(parent, name, data, **attr):
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
     """
-    try:
-        dset = parent[name]
-        dset[:] = data
-        addAttributes(dset, **attr)
-    except (KeyError, TypeError):
-        dset = makeDataset(parent, name, data, **attr)
+    if name in parent:
+        # dataset already exists
+        # delete it, any links to it may break
+        del parent[name]
+    dset = makeDataset(parent, name, data, **attr)
     return dset
 
 
