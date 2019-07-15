@@ -143,7 +143,8 @@ def makeDataset(parent, name, data = None, **attr):
     :return: h5py dataset object
     '''
     if data is None:
-        obj = parent.create_dataset(name)
+        obj = parent.create_dataset(name, data="")
+        attr["NOTE"] = "no data supplied, value set to empty string"
     else:
         # storing-a-list-of-strings-to-a-hdf5-dataset-from-python
         # https://stackoverflow.com/questions/23220513/

@@ -110,6 +110,26 @@ class TestEznx(unittest.TestCase):
             self.assertEqual(len(tth), 4)
             self.assertEqual(tth[2], [10.0, 10.1, 10.2, 10.3][2])
 
+    def test_create_dataset_None(self):
+        self.assertTrue(True, "trivial assertion - always True")
+        
+        root = eznx.makeFile('test.h5', creator='eznx', default='entry')
+        nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
+        ds = eznx.makeDataset(nxentry, "data_is_None", None)
+
+        with h5py.File("test.h5", "r") as hp:
+            root = hp["/"]
+            nxentry = root["entry"]
+            self.assertTrue("data_is_None" in nxentry)
+
+            ds = nxentry["data_is_None"]
+            value = ds[()]        # ds.value deprecated in h5py
+            self.assertEqual(len(value), 0)
+            self.assertEqual(value, "")
+            self.assertTrue("NOTE" in ds.attrs)
+            note =  "no data supplied, value set to empty string"
+            self.assertEqual(ds.attrs["NOTE"],  note)
+
 
 def suite(*args, **kw):
     test_list = [
