@@ -17,6 +17,12 @@ Production
     
     * `#159 <https://github.com/prjemian/spec2nexus/issues/159>`_
        handle #UXML metadata control lines
+    * `#155 <https://github.com/prjemian/spec2nexus/issues/155>`_
+       module: writer - recognize hklscan
+    * `#150 <https://github.com/prjemian/spec2nexus/issues/150>`_
+       module: writer - increase coverage of unit tests: mesh, hklmesh
+    * `#148 <https://github.com/prjemian/spec2nexus/issues/148>`_
+       module: eznx - increase coverage of unit tests
 
 :2021.0.1: *2019.07.13*, plugin loading and documentation
 
