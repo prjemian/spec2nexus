@@ -49,6 +49,23 @@ class UXML_metadata(ControlLineHandler):
     * various items below the *NXentry* parent group,
       as indicated in the UXML
 
+    .. rubric:: Public methods
+
+    .. autosummary::
+    
+          ~process
+
+    .. rubric:: Internal methods
+
+    .. autosummary::
+    
+          ~walk_xml_tree
+          ~make_NeXus_links
+          ~prune_dict
+          ~dataset
+          ~group
+          ~hardlink
+
     """
 
     key = '#UXML'
@@ -58,6 +75,7 @@ class UXML_metadata(ControlLineHandler):
     converters = dict(int=int, float=float, str=str)
 
     def process(self, text, scan, *args, **kws):
+        """read #UXML lines from SPEC data file into ``scan.UXML``"""
         if not hasattr(scan, 'UXML'):
             scan.UXML = []
 
@@ -67,7 +85,7 @@ class UXML_metadata(ControlLineHandler):
     
     def postprocess(self, scan, *args, **kws):
         """
-        convert the list of UXML text into a single text block
+        convert the UXML text into an XML object (``scan.UXML_root``)
         
         :param SpecDataFileScan scan: data from a single SPEC scan
         """

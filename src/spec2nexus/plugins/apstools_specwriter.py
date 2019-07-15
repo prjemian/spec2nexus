@@ -46,6 +46,7 @@ class MD_apstools(ControlLineHandler):
     key = '#MD\w*'
     
     def process(self, text, scan, *args, **kws):
+        """read #MD lines from SPEC data file"""
         if not hasattr(scan, 'MD'):
             scan.MD = OrderedDict()
 
