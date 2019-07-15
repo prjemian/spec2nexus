@@ -48,6 +48,7 @@ setup (
             'data/02_03_setup_fly/*',
             'data/*.*',
             'data/Cd*',
+            'plugins/*.xsd',
             'LICENSE.txt',
             ],
          },
