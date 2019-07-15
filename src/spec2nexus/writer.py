@@ -181,8 +181,8 @@ class Writer(object):
             signal, axes = self.oneD(nxdata, scan)
 
         # these locations suggested to NIAC, easier to parse than attached to dataset!
-        if len(signal) == 0:
-            pass
+        # if len(signal) == 0:
+        #     pass
         
         # Syntax of axes attribute (http://wiki.nexusformat.org/2014_axes_and_uncertainties):
         #  @axes="H:K"       INCOREECT
@@ -290,8 +290,8 @@ class Writer(object):
                 if label not in nxdata:
                     axis = np.array( scan.data.get(label) )
                     self.write_ds(nxdata, label, utils.reshape_data(axis, data_shape))
-                else:
-                    pass
+                # else:
+                #     pass
 
             signal = utils.clean_name(scan.column_last)
             axes = ':'.join([label1, label2])
