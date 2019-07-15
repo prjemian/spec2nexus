@@ -23,7 +23,7 @@ package:
 
 build:
   noarch: python
-  script: python setup.py install
+  script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
   
@@ -31,14 +31,16 @@ requirements:
     - python
     - setuptools
     - h5py
-    - numpy
+    - lxml
     - matplotlib
+    - numpy
     - six
 
   run:
     - h5py
-    - numpy
+    - lxml
     - matplotlib
+    - numpy
     - six
 
 test:

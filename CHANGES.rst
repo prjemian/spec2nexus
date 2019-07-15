@@ -13,7 +13,12 @@ Change History
 Production
 **********
 
-:2021.0.1: *2019.07.13*, plugin loading  and documentation
+:2021.1.0: expected *2019.08*, handle #UXML control lines
+    
+    * `#159 <https://github.com/prjemian/spec2nexus/issues/159>`_
+       handle #UXML metadata control lines
+
+:2021.0.1: *2019.07.13*, plugin loading and documentation
 
     * `#170 <https://github.com/prjemian/spec2nexus/issues/170>`_
        describe how to write & load Control Line Handler plugins
