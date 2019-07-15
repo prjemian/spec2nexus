@@ -188,7 +188,7 @@ class Writer(object):
         #  @axes="H:K"       INCOREECT
         #  @axes="H", "K"    CORRECT
         if axes.find(':') >= 0:
-            axes = axes.split(':')
+            axes = [v.encode("ascii", "ignore") for v in axes.split(":")]
         eznx.addAttributes(nxdata, signal=signal, axes=axes)
         #eznx.addAttributes(nxdata[signal], signal=1, axes=axes)    # deprecated now
         # assume here that "axis_name" has rank=1
@@ -198,7 +198,8 @@ class Writer(object):
             eznx.addAttributes(nxdata, **{axes+'_indices': indices})
         else:
             for axis_name in axes:
-                eznx.addAttributes(nxdata, **{axis_name+'_indices': indices})
+                k = "%s%s" % (axis_name, '_indices')
+                eznx.addAttributes(nxdata, **{k: indices})
     
     def oneD(self, nxdata, scan):
         """*internal*: generic data parser for 1-D column data, returns signal and axis"""
