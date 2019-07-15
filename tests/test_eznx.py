@@ -137,9 +137,8 @@ class TestEznx(unittest.TestCase):
             root = hp["/"]
             nxentry = root["entry"]
             self.assertTrue("text" in nxentry)
-            ds = nxentry["text"]
-            value = ds[()]        # ds.value deprecated in h5py
-            self.assertEqual(value, [b"replacement text"])
+            value = eznx.read_nexus_field(nxentry, "text", astype=str)
+            self.assertEqual(value, "replacement text")
 
     def test_makeExternalLink(self):
         external = eznx.makeFile('external.h5', creator='eznx', default='entry')
@@ -162,9 +161,10 @@ class TestEznx(unittest.TestCase):
             root = hp["/"]
             nxentry = root["entry"]
             self.assertTrue("external_text" in nxentry)
-            ds = nxentry["external_text"]
-            value = ds[()]        # ds.value deprecated in h5py
-            self.assertEqual(value, [b"some text"])
+            value = eznx.read_nexus_field(nxentry, "external_text")
+            self.assertEqual(value, b"some text")
+            value = eznx.read_nexus_field(nxentry, "external_text", astype=str)
+            self.assertEqual(value, "some text")
 
     def test_read_nexus_field_alternatives(self):
         root = eznx.makeFile('test.h5', creator='eznx', default='entry')
