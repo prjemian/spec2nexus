@@ -236,10 +236,9 @@ def read_nexus_field(parent, dataset_name, astype=None):
     :param str dataset_name: name of the dataset (NeXus field) to be read
     :param obj astype: option to return as different data type
     """
-    try:
-        dataset = parent[dataset_name]
-    except KeyError:
+    if dataset_name not in parent:
         return None
+    dataset = parent[dataset_name]
     dtype = dataset.dtype
     if astype is not None:
         dtype = astype

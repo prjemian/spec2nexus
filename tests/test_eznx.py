@@ -13,6 +13,7 @@ unit tests for the writer module
 #-----------------------------------------------------------------------------
 
 import h5py
+import numpy
 import os
 import shutil
 import sys
@@ -129,8 +130,8 @@ class TestEznx(unittest.TestCase):
     def test_write_dataset_existing(self):
         root = eznx.makeFile('test.h5', creator='eznx', default='entry')
         nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
-        ds = eznx.write_dataset(nxentry, "text", "some text")
-        ds = eznx.write_dataset(nxentry, "text", "replacement text")
+        eznx.write_dataset(nxentry, "text", "some text")
+        eznx.write_dataset(nxentry, "text", "replacement text")
 
         with h5py.File("test.h5", "r") as hp:
             root = hp["/"]
@@ -142,7 +143,7 @@ class TestEznx(unittest.TestCase):
 
     def test_makeExternalLink(self):
         external = eznx.makeFile('external.h5', creator='eznx', default='entry')
-        ds = eznx.write_dataset(external, "text", "some text")
+        eznx.write_dataset(external, "text", "some text")
 
         root = eznx.makeFile('test.h5', creator='eznx', default='entry')
         nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
@@ -164,6 +165,44 @@ class TestEznx(unittest.TestCase):
             ds = nxentry["external_text"]
             value = ds[()]        # ds.value deprecated in h5py
             self.assertEqual(value, [b"some text"])
+
+    def test_read_nexus_field_alternatives(self):
+        root = eznx.makeFile('test.h5', creator='eznx', default='entry')
+        nxentry = eznx.makeGroup(root, 'entry', 'NXentry', default='data')
+        eznx.write_dataset(nxentry, "text", "some text")
+        eznx.write_dataset(nxentry, "number", 42)
+        eznx.write_dataset(nxentry, "array", [[1,2,3], [4,5,6]])
+
+        # check the file with the external link
+        with h5py.File("test.h5", "r") as hp:
+            root = hp["/"]
+            nxentry = root["entry"]
+            
+            value = eznx.read_nexus_field(nxentry, "key_error")
+            self.assertEqual(value, None)
+            
+            value = eznx.read_nexus_field(nxentry, "text")
+            self.assertEqual(value, b"some text")
+            value = eznx.read_nexus_field(nxentry, "text", astype=str)
+            self.assertEqual(value, "some text")
+            
+            value = eznx.read_nexus_field(nxentry, "number")
+            self.assertEqual(value, 42)
+            value = eznx.read_nexus_field(nxentry, "number", astype=float)
+            self.assertEqual(value, 42)
+            value = eznx.read_nexus_field(nxentry, "number", astype=str)
+            self.assertEqual(value, "42")
+            
+            ds = nxentry["array"]
+            value = ds[()]        # ds.value deprecated in h5py
+            expected = numpy.array([[1,2,3], [4,5,6]])
+            self.assertTrue((value == expected).any())
+
+            with self.assertRaises(RuntimeError) as context:
+                value = eznx.read_nexus_field(nxentry, "array")
+            received = str(context.exception)
+            expected = "unexpected 2-D data"
+            self.assertTrue(received.startswith(expected))
 
 
 def suite(*args, **kw):
