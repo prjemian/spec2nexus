@@ -52,9 +52,29 @@ class TestWriter(unittest.TestCase):
         out = writer.Writer(spec_data)
         scan_list = [1, 5, 7]
         out.save(self.hname, scan_list)
-        # TODO: make tests of other things in the Writer
+
         dd = out.root_attributes()
         self.assertTrue(isinstance(dd, dict))
+        
+        # TODO: test writer's various functions and methods
+
+        # test file written by Writer
+        with h5py.File(self.hname, "r") as hp:
+            root = hp["/"]
+            default = root.attrs.get("default")
+            self.assertNotEqual(default, None)
+            self.assertTrue(default in root)
+            nxentry = root[default]
+
+            default = nxentry.attrs.get("default")
+            self.assertNotEqual(default, None)
+            self.assertTrue(default in nxentry)
+            nxdata = nxentry[default]
+
+            signal = nxdata.attrs.get("signal")
+            self.assertNotEqual(signal, None)
+            self.assertTrue(signal in nxdata)
+
 
 class TestMeshes(unittest.TestCase):
 
@@ -69,9 +89,6 @@ class TestMeshes(unittest.TestCase):
         if os.path.exists(self.tempdir):
             shutil.rmtree(self.tempdir, ignore_errors=True)
 
-        # mesh:    data/33id_spec.dat  scan 22
-        # hklmesh: data/33bm_spec.dat  scan 17
-
     def test_save_data_mesh(self):
         # #S 22  mesh  eta 57 57.1 10  chi 90.9 91 10  1
         fname = os.path.join(_path, "spec2nexus", 'data', '33id_spec.dat')
@@ -83,12 +100,30 @@ class TestMeshes(unittest.TestCase):
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S22/data"]
-            self.assertEqual(nxdata["I0"][()].shape, (11, 11))
+            signal = nxdata.attrs["signal"]
+            self.assertEqual(nxdata[signal][()].shape, (11, 11))
+
             ds = nxdata["_mca_"]
             self.assertEqual(ds[()].shape, (11, 11, 91))
             self.assertEqual(ds.attrs["axes"], "eta:chi:_mca_channel_")
             self.assertEqual(ds.attrs["spec_name"], "_mca_")
             self.assertEqual(ds.attrs["units"], "counts")
+
+    def test_save_data_hklmesh(self):
+        # #S 17  hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
+        fname = os.path.join(_path, "spec2nexus", 'data', '33bm_spec.dat')
+        hname = "test.h5"
+        spec_data = spec.SpecDataFile(fname)
+        out = writer.Writer(spec_data)
+        out.save(hname, [17])
+  
+        with h5py.File(hname, "r") as hp:
+            root = hp["/"]
+            nxdata = root["/S17/data"]
+            signal = nxdata.attrs["signal"]
+            axes = nxdata.attrs["axes"]
+            self.assertEqual(axes[0], b"H")
+            self.assertEqual(axes[1], b"K")
 
 # --------------
 
