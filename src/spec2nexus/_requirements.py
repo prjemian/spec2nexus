@@ -8,7 +8,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-
+REQUIREMENTS = "requirements.txt"
 
 def learn_requirements():
     """
@@ -16,12 +16,10 @@ def learn_requirements():
     
     ALL packages & version restrictions stated in requirements.txt
     """
-    req_file = 'requirements.txt'
-    reqs = []
-
     import os
     path = os.path.dirname(__file__)
-    req_file = os.path.join(path, '..', req_file)
+    req_file = os.path.join(path, '..', '..', REQUIREMENTS)
+    reqs = []
     if not os.path.exists(req_file):
         # not needed with installed package
         return reqs
