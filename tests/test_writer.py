@@ -12,6 +12,7 @@ unit tests for the writer module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import h5py
 import os
 import shutil
 import sys
@@ -68,20 +69,26 @@ class TestMeshes(unittest.TestCase):
         if os.path.exists(self.tempdir):
             shutil.rmtree(self.tempdir, ignore_errors=True)
 
+        # mesh:    data/33id_spec.dat  scan 22
+        # hklmesh: data/33bm_spec.dat  scan 17
+
     def test_save_data_mesh(self):
         # #S 22  mesh  eta 57 57.1 10  chi 90.9 91 10  1
         fname = os.path.join(_path, "spec2nexus", 'data', '33id_spec.dat')
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
-#         out.save(hname, [22])
-#  
-#         with h5py.File("test.h5", "r") as hp:
-#             root = hp["/"]
-#             nxentry = root["S22"]
-#             self.assertTrue("text" in nxentry)
-#             value = eznx.read_nexus_field(nxentry, "text", astype=str)
-#             self.assertEqual(value, "replacement text")
+        out.save(hname, [22])
+  
+        with h5py.File(hname, "r") as hp:
+            root = hp["/"]
+            nxdata = root["/S22/data"]
+            self.assertEqual(nxdata["I0"][()].shape, (11, 11))
+            ds = nxdata["_mca_"]
+            self.assertEqual(ds[()].shape, (11, 11, 91))
+            self.assertEqual(ds.attrs["axes"], "eta:chi:_mca_channel_")
+            self.assertEqual(ds.attrs["spec_name"], "_mca_")
+            self.assertEqual(ds.attrs["units"], "counts")
 
 # --------------
 
