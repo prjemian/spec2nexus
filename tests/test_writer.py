@@ -90,7 +90,7 @@ class TestMeshes(unittest.TestCase):
             shutil.rmtree(self.tempdir, ignore_errors=True)
 
     def test_save_data_mesh(self):
-        # #S 22  mesh  eta 57 57.1 10  chi 90.9 91 10  1
+        #S 22  mesh  eta 57 57.1 10  chi 90.9 91 10  1
         fname = os.path.join(_path, "spec2nexus", 'data', '33id_spec.dat')
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
@@ -110,7 +110,7 @@ class TestMeshes(unittest.TestCase):
             self.assertEqual(ds.attrs["units"], "counts")
 
     def test_save_data_hklmesh(self):
-        # #S 17  hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
+        #S 17  hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
         fname = os.path.join(_path, "spec2nexus", 'data', '33bm_spec.dat')
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
@@ -125,12 +125,19 @@ class TestMeshes(unittest.TestCase):
             self.assertEqual(axes[0], b"H")
             self.assertEqual(axes[1], b"K")
 
-# --------------
+    def test_save_data_hklscan(self):
+        #S 104 hklscan -0.0500048 -0.0500048 0.05 0.2 12.0002 12.0002 30 2
+        fname = os.path.join(_path, "spec2nexus", 'data', '33id_spec.dat')
+        hname = "test.h5"
+        spec_data = spec.SpecDataFile(fname)
+        out = writer.Writer(spec_data)
 
-#     sys.argv.append(os.path.join('data', 'APS_spec_data.dat'))
-#     sys.argv.append(os.path.join('data', '33id_spec.dat'))
-#     sys.argv.append(os.path.join('data', '33bm_spec.dat'))
-#     sys.argv.append(os.path.join('data', 'lmn40.spe'))
+        with self.assertRaises(NotImplementedError) as context:
+            out.save(hname, [104])
+        received = str(context.exception)
+        expected = "hklscan save_data() not yet implemented"
+        self.assertTrue(received.startswith(expected))
+        # FIXME:
 
 
 def suite(*args, **kw):
