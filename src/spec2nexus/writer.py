@@ -166,17 +166,16 @@ class Writer(object):
             signal, axes = self.mesh(nxdata, scan)
         elif scan_type in ('hscan', 'kscan', 'lscan', 'hklscan'):
             # hklscan  1.00133 1.00133  1.00133 1.00133  2.85 3.05  200 -400000
-            # FIXME:
-            # h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
-            # TODO: why bother defining axes here?  Not used.  issue #155
-            # if h_0 != h_N: 
-            #     axes = ['H',]
-            # elif k_0 != k_N: 
-            #     axes = ['K',]
-            # elif l_0 != l_N: 
-            #     axes = ['L',]
-            # FIXME: signal, axes = self.oneD(nxdata, scan)
-            raise NotImplementedError("hklscan save_data() not yet implemented")
+            signal = self.oneD(nxdata, scan)[0]
+            axes = []
+            h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
+            if h_0 != h_N:
+                axes.append('H')
+            elif k_0 != k_N:
+                axes.append('K')
+            elif l_0 != l_N:
+                axes.append('L')
+            axes = ":".join(axes)
         else:
             signal, axes = self.oneD(nxdata, scan)
 
