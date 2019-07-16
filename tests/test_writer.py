@@ -125,21 +125,62 @@ class TestMeshes(unittest.TestCase):
             self.assertEqual(axes[0], b"H")
             self.assertEqual(axes[1], b"K")
 
-    def test_save_data_hklscan(self):
-        #S 104 hklscan -0.0500048 -0.0500048 0.05 0.2 12.0002 12.0002 30 2
-        fname = os.path.join(_path, "spec2nexus", 'data', '33id_spec.dat')
+    def test_save_data_hscan(self):
+        # hklscan moving H
+        test_file = 'lmn40.spe'
+        scan_number = 74
+        
+        fname = os.path.join(_path, "spec2nexus", 'data', test_file)
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
-        out.save(hname, [104])
+        out.save(hname, [scan_number])
         
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
-            nxdata = root["/S104/data"]
+            nxdata = root["/S%d/data" % scan_number]
+            signal = nxdata.attrs["signal"]
+            axes = nxdata.attrs["axes"]
+            self.assertEqual(signal, "NaI")
+            self.assertEqual(axes, "H")
+
+    def test_save_data_kscan(self):
+        # hklscan moving K
+        test_file = '33id_spec.dat'
+        scan_number = 104
+        
+        fname = os.path.join(_path, "spec2nexus", 'data', test_file)
+        hname = "test.h5"
+        spec_data = spec.SpecDataFile(fname)
+        out = writer.Writer(spec_data)
+        out.save(hname, [scan_number])
+        
+        with h5py.File(hname, "r") as hp:
+            root = hp["/"]
+            nxdata = root["/S%d/data" % scan_number]
             signal = nxdata.attrs["signal"]
             axes = nxdata.attrs["axes"]
             self.assertEqual(signal, "I0")
             self.assertEqual(axes, "K")
+
+    def test_save_data_lscan(self):
+        # hklscan moving L
+        test_file = '33bm_spec.dat'
+        scan_number = 14
+        
+        fname = os.path.join(_path, "spec2nexus", 'data', test_file)
+        hname = "test.h5"
+        spec_data = spec.SpecDataFile(fname)
+        out = writer.Writer(spec_data)
+        out.save(hname, [scan_number])
+        
+        with h5py.File(hname, "r") as hp:
+            root = hp["/"]
+            nxdata = root["/S%d/data" % scan_number]
+            signal = nxdata.attrs["signal"]
+            axes = nxdata.attrs["axes"]
+            self.assertEqual(signal, "signal")
+            self.assertEqual(axes, "L")
 
 
 def suite(*args, **kw):
