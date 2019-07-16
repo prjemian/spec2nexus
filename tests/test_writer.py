@@ -131,13 +131,15 @@ class TestMeshes(unittest.TestCase):
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
-
-        with self.assertRaises(NotImplementedError) as context:
-            out.save(hname, [104])
-        received = str(context.exception)
-        expected = "hklscan save_data() not yet implemented"
-        self.assertTrue(received.startswith(expected))
-        # FIXME:
+        out.save(hname, [104])
+        
+        with h5py.File(hname, "r") as hp:
+            root = hp["/"]
+            nxdata = root["/S104/data"]
+            signal = nxdata.attrs["signal"]
+            axes = nxdata.attrs["axes"]
+            self.assertEqual(signal, "I0")
+            self.assertEqual(axes, "K")
 
 
 def suite(*args, **kw):
