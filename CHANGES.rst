@@ -13,7 +13,13 @@ Change History
 Production
 **********
 
-:2021.1.0: expected *2019.08*, handle #UXML control lines
+:2021.1.0: *2019.07.15*, new features
+    
+    **NEW**
+    
+    * support for ``#UXML`` metadata
+    * support for ``hklscan`` scans
+    * improved support for ``mesh`` and ``hklmesh`` scans
     
     * `#159 <https://github.com/prjemian/spec2nexus/issues/159>`_
        handle #UXML metadata control lines
