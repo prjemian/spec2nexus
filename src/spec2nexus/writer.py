@@ -171,9 +171,9 @@ class Writer(object):
             h_0, h_N, k_0, k_N, l_0, l_N = scan.scanCmd.split()[1:7]
             if h_0 != h_N:
                 axes.append('H')
-            elif k_0 != k_N:
+            if k_0 != k_N:
                 axes.append('K')
-            elif l_0 != l_N:
+            if l_0 != l_N:
                 axes.append('L')
             axes = ":".join(axes)
         else:
