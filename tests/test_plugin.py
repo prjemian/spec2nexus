@@ -23,7 +23,6 @@ sys.path.insert(0, _test_path)
 
 from spec2nexus import spec
 from spec2nexus import plugin
-from spec2nexus import plugins
 
 
 class TestPlugin(unittest.TestCase):
