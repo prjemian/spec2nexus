@@ -13,6 +13,11 @@ Change History
 Production
 **********
 
+:2021.1.1: expected *2019.08.01*, bug fix
+    
+    * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
+       revised lazy load technique
+
 :2021.1.0: *2019.07.15*, new features
     
     **NEW**
