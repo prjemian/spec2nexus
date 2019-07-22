@@ -91,13 +91,24 @@ class PluginBadKeyError(PluginException):
     """The plugin 'key' value is not acceptable."""
 
 
+# TODO: move into PluginManager
 registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
+plugin_manager = None    # TODO:
 
 
+def get_plugin_manager():
+    """get the instance of the plugin_manager, define if necessary"""
+    global plugin_manager
+    plugin_manager = plugin_manager or PluginManager()
+    return plugin_manager
+
+
+# TODO: move into PluginManager
 def get_registry():
     return registry
 
 
+# TODO: move into PluginManager
 def get_registry_table(print_it=False):
     """return a table of all the known plugins"""
     import pyRestTable
@@ -120,8 +131,7 @@ def load_plugins():
     table = get_registry_table()
     logger.debug(str(table))
 
-    manager = spec.plugin_manager or PluginManager()
-    return manager
+    return get_plugin_manager()
 
 
 def register_control_line_handler(handler):
@@ -151,6 +161,11 @@ def register_control_line_handler(handler):
     if not hasattr(obj, "process") :
         emsg = "'process()' method not defined:" + obj.__class__.__name__
         raise PluginProcessMethodNotDefined(emsg)
+
+    manager = get_plugin_manager()
+    for att in obj.scan_attributes_defined:
+        if att not in manager.lazy_attributes:
+            manager.lazy_attributes.append(att)
 
     registry[key] = handler
 
@@ -252,6 +267,7 @@ class PluginManager(object):
     
     def __init__(self):
         self.handler_dict = registry
+        self.lazy_attributes = []
     
     def getKey(self, spec_data_file_line):
         """

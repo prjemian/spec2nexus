@@ -116,10 +116,9 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from . import plugin        # lgtm [py/unused-import] - false alert, it's used!
+from . import plugin
 
 
-plugin_manager = None   # will initialize when SpecDataFile is first called
 UNRECOGNIZED_KEY = 'unrecognized_control_line'
 MCA_DATA_KEY = '_mca_'
 
@@ -214,7 +213,6 @@ class SpecDataFile(object):
     readOK = -1
 
     def __init__(self, filename):
-        global plugin_manager
         self.fileName = None
         self.headers = []
         self.scans = OrderedDict()
@@ -224,8 +222,6 @@ class SpecDataFile(object):
         if not is_spec_file(filename):
             raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
-
-        self.plugin_manager = plugin_manager or plugin.load_plugins()
 
         self.read()
     
@@ -283,12 +279,13 @@ class SpecDataFile(object):
 
     def read(self):
         """Reads and parses a spec data file"""
+        manager = plugin.get_plugin_manager()
         sections = self.dissect_file()
         for block in sections:
             if len(block) == 0:
                 continue
-            key = self.plugin_manager.getKey(block.splitlines()[0])
-            self.plugin_manager.process(key, block, self)
+            key = manager.getKey(block.splitlines()[0])
+            manager.process(key, block, self)
             
             if key == "#S":
                 scan = list(self.scans.values())[-1]
@@ -296,7 +293,7 @@ class SpecDataFile(object):
                     if len(line) > 0:
                         key = line.split()[0]
                         if key in ("#D",):
-                            self.plugin_manager.process(key, line, scan)
+                            manager.process(key, line, scan)
                             break
         
         # fix any missing parts
@@ -381,21 +378,22 @@ class SpecDataFileHeader(object):
 
     def interpret(self):
         """ interpret the supplied buffer with the spec data file header"""
+        manager = plugin.get_plugin_manager()
         for _i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
-            key = self.parent.plugin_manager.getKey(line)
+            key = manager.getKey(line)
             if key is None:
                 # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
                 # raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))
                 key = UNRECOGNIZED_KEY
-                self.parent.plugin_manager.process(key, line, self)
+                manager.process(key, line, self)
             elif key == '#E':
                 pass    # avoid recursion
             else:
                 # most of the work is done here
-                self.parent.plugin_manager.process(key, line, self)
+                manager.process(key, line, self)
 
         # call any post-processing hook functions from the plugins
         for func in self.postprocessors.values():
@@ -501,6 +499,7 @@ class SpecDataFileScan(object):
 
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
+        manager = plugin.get_plugin_manager()
         if self.__interpreted__:    # do not do this twice
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
@@ -508,7 +507,7 @@ class SpecDataFileScan(object):
         for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
-            key = self.parent.plugin_manager.getKey(line.lstrip())
+            key = manager.getKey(line.lstrip())
             if key is None:
                 # __s__ = '<' + line + '>'
                 # _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)
@@ -516,10 +515,10 @@ class SpecDataFileScan(object):
                 # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
                 key = UNRECOGNIZED_KEY
-                self.parent.plugin_manager.process(key, line, self)
+                manager.process(key, line, self)
             elif key != '#S':        # avoid recursion
                 # most of the work is done here
-                self.parent.plugin_manager.process(key, line, self)
+                manager.process(key, line, self)
 
         # call any post-processing hook functions from the plugins
         for func in self.postprocessors.values():

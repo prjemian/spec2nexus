@@ -32,7 +32,7 @@ class TestPlugin(unittest.TestCase):
         os.environ['SPEC2NEXUS_PLUGIN_PATH'] = 'C://Users//Pete//Desktop, /tmp'
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
-        self.manager = plugin.PluginManager()
+        self.manager = plugin.get_plugin_manager()
         # self.manager.load_plugins()
 
 #     def tearDown(self):
