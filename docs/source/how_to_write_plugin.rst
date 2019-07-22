@@ -179,6 +179,9 @@ Then, define a ``writer()`` method in your handler.  Here's an example::
         group = makeGroup(h5parent, 'positioners', nxclass, description=desc)
         writer.save_dict(group, scan.positioner)
 
+See section :ref:`howto_writer` below for more details.
+
+
 .. _howto_example_PV_control_line:
 
 Full Example: **#PV** control line
