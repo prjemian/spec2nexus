@@ -73,10 +73,59 @@ class TestPlugin(unittest.TestCase):
             self.assertEqual(k, self.manager.getKey(v))
 
 
+class TestCustomPlugin(unittest.TestCase):
+    """test a custom plugin"""
+    
+    def test_custom_plugin(self):
+        manager = plugin.get_plugin_manager()
+        self.assertNotEqual(manager, None)
+        self.assertTrue(isinstance(manager, plugin.PluginManager))
+        num_known_control_lines_before = len(manager.lazy_attributes)
+        self.assertNotEqual(num_known_control_lines_before, 0)
+        
+        _p = os.path.dirname(__file__)
+        _p = os.path.join(_p, "custom_plugins")
+        _filename = os.path.join(_p, "specfile.txt")
+        custom_key = "#TEST"            # in SPEC data file
+        custom_attribute = "MyTest"     # in python, scan.MyTest
+        
+        # first, test data with custom control line without plugin loaded
+        self.assertFalse("#TEST" in manager.registry)
+        self.assertFalse("MyTest" in manager.lazy_attributes)
+        sdf = spec.SpecDataFile(_filename)
+        scan = sdf.getScan(50)
+        self.assertTrue("G0" in scan.G)
+
+        self.assertFalse(hasattr(scan, "MyTest"))
+        with self.assertRaises(AttributeError) as exc:
+            self.assertEqual(len(scan.MyTest), 1)
+        expected = "'SpecDataFileScan' object has no attribute 'MyTest'"
+        self.assertEqual(exc.exception.args[0], expected)
+        
+        # next, test again after loading plugin
+        from tests.custom_plugins import process_only_plugin
+        num_known_control_lines_after = len(manager.lazy_attributes)
+        self.assertGreater(
+            num_known_control_lines_after, 
+            num_known_control_lines_before)
+        self.assertTrue("#TEST" in manager.registry)
+        self.assertTrue("MyTest" in manager.lazy_attributes)
+        
+        sdf = spec.SpecDataFile(_filename)
+        scan = sdf.getScan(50)
+        self.assertTrue("G0" in scan.G)
+
+        self.assertTrue(hasattr(scan, "MyTest"))
+        self.assertEqual(len(scan.MyTest), 1)
+        expected = "this is a custom control line to be found"
+        self.assertEqual(scan.MyTest[0], expected)
+
+
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestPlugin,
+        TestCustomPlugin,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
