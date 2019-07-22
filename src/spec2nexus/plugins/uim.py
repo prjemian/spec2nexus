@@ -52,6 +52,7 @@ class UIM_generic(ControlLineHandler):
     """**#UIM** -- various image header information"""
 
     key = '#UIM\w*'
+    scan_attributes_defined = ['UIM']
     
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'UIM'):

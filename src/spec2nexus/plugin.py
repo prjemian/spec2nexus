@@ -27,15 +27,6 @@ It is optional to:
 * define :meth:`writer`
 * define :meth:`match_key`
 
-.. rubric:: Functions
-
-.. autosummary::
-
-  ~get_registry
-  ~get_registry_table
-  ~load_plugins
-  ~register_control_line_handler
-
 .. rubric:: Classes
 
 .. autosummary::
@@ -91,68 +82,23 @@ class PluginBadKeyError(PluginException):
     """The plugin 'key' value is not acceptable."""
 
 
-registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
+plugin_manager = None
 
 
-def get_registry():
-    return registry
-
-
-def get_registry_table(print_it=False):
-    """return a table of all the known plugins"""
-    import pyRestTable
-    tbl = pyRestTable.Table()
-    tbl.addLabel("control line")
-    tbl.addLabel("handler class")
-    for k, v in get_registry().items():
-        tbl.addRow((k, v))
-    if print_it:
-        print("Plugin registry")
-        print(tbl)
-    return tbl
-
-
-def load_plugins():
-    """load all spec2nexus plugin modules"""
-    from . import spec
-    from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
-    
-    table = get_registry_table()
-    logger.debug(str(table))
-
-    manager = spec.plugin_manager or PluginManager()
-    return manager
-
-
-def register_control_line_handler(handler):
+def get_plugin_manager():
     """
-    auto-registry of all AutoRegister plugins
+    get the instance of the plugin_manager (a singleton)
     
-    Called from AutoRegister.__init__
+    Create instance of PluginManager() if necessary.
+    Also, 
     """
-    obj = handler()
-
-    if not hasattr(obj, "key") or obj.key is None:
-        emsg = "'key' not defined: " + obj.__class__.__name__
-        raise PluginKeyNotDefined(emsg)
-
-    key = obj.key
-
-    if key in registry:
-        emsg = "duplicate key=%s: %s" % (key, obj.__class__)
-        previous = registry[key]()
-        emsg += ", previously defined: " + previous.__class__.__name__
-        raise PluginDuplicateKeyError(emsg)
-    
-    if len(key.strip().split()) != 1:
-        emsg = "badly-formed 'key': received '%d'" % key
-        raise PluginBadKeyError(emsg)
-
-    if not hasattr(obj, "process") :
-        emsg = "'process()' method not defined:" + obj.__class__.__name__
-        raise PluginProcessMethodNotDefined(emsg)
-
-    registry[key] = handler
+    global plugin_manager
+    if plugin_manager is None:
+        plugin_manager = PluginManager()
+        if len(plugin_manager.registry) == 0:
+            # Now is the time to load all plugins
+            plugin_manager.load_plugins()
+    return plugin_manager
 
 
 class AutoRegister(type):
@@ -176,7 +122,8 @@ class AutoRegister(type):
         # logger.debug(f"__init__: name={name}")
         # logger.debug(f"__init__: bases={bases}")
         # logger.debug(f"__init__: dict={dict}")
-        register_control_line_handler(cls)
+        manager = get_plugin_manager()
+        manager.register_control_line_handler(cls)
 
     def __new__(metaname, classname, baseclasses, attrs):
         # logger.debug(" "*4 + "."*10)
@@ -197,6 +144,7 @@ class ControlLineHandler(object):
     define one ControlLineHandler class for each different type of control line
 
     :param str key: regular expression to match a control line key, up to the first space
+    :param [str] scan_attributes_defined: list of scan attributes defined in this class
     :returns: None
 
     EXAMPLE of ``match_key`` method:
@@ -218,6 +166,7 @@ class ControlLineHandler(object):
                 return False
     """
     key = None
+    scan_attributes_defined = []
     
     def process(self, text, spec_file_obj, *args, **kws):
         """*required:* handle this line from a SPEC data file"""
@@ -243,13 +192,35 @@ class PluginManager(object):
     
       ~get
       ~getKey
+      ~get_registry
+      ~get_registry_table
+      ~load_plugins
       ~match_key
       ~process
+      ~register_control_line_handler
   
     """
-    
+ 
     def __init__(self):
-        self.handler_dict = registry
+        global plugin_manager
+        if plugin_manager is None:
+            plugin_manager = self
+        self.registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
+        self.lazy_attributes = []
+
+    def load_plugins(self):
+        """
+        load all spec2nexus plugin modules
+        
+        called from :func:`spec2nexus.plugin.get_plugin_manager()`
+        """
+        from . import spec
+        from . import plugins   # issue #166: plugins are loaded here, NOT any earlier!
+        
+        table = self.get_registry_table()
+        logger.debug(str(table))
+    
+        return self
     
     def getKey(self, spec_data_file_line):
         """
@@ -263,7 +234,7 @@ class PluginManager(object):
         text = spec_data_file_line[:pos]
         
         # try to locate the key directly
-        if text in self.handler_dict:
+        if text in self.registry:
             return text
         
         # brute force search and match using regular expressions
@@ -292,7 +263,7 @@ class PluginManager(object):
                 # ensures that beginning and end are different positions
                 return t and t.regs[0][1] != t.regs[0][0]
 
-        for key, handler in self.handler_dict.items():
+        for key, handler in self.registry.items():
             if _match_(text, handler):
                 return key
         
@@ -300,10 +271,60 @@ class PluginManager(object):
 
     def get(self, key):
         """return the handler identified by key or None"""
-        return self.handler_dict.get(key)
+        return self.registry.get(key)
     
     def process(self, key, *args, **kw):
         """pick the control line handler by key and call its process() method"""
         handler = self.get(key)
         if handler is not None:
             handler().process(*args, **kw)
+
+    def get_registry(self):
+        return self.registry
+
+    def get_registry_table(self, print_it=False):
+        """return a table of all the known plugins"""
+        import pyRestTable
+        tbl = pyRestTable.Table()
+        tbl.addLabel("control line")
+        tbl.addLabel("handler class")
+        for k, v in self.registry.items():
+            tbl.addRow((k, v))
+        if print_it:
+            print("Plugin registry")
+            print(tbl)
+        return tbl
+
+    def register_control_line_handler(self, handler):
+        """
+        auto-registry of all AutoRegister plugins
+        
+        Called from AutoRegister.__init__
+        """
+        obj = handler()
+    
+        if not hasattr(obj, "key") or obj.key is None:
+            emsg = "'key' not defined: " + obj.__class__.__name__
+            raise PluginKeyNotDefined(emsg)
+    
+        key = obj.key
+    
+        if key in self.registry:
+            emsg = "duplicate key=%s: %s" % (key, obj.__class__)
+            previous = self.registry[key]()
+            emsg += ", previously defined: " + previous.__class__.__name__
+            raise PluginDuplicateKeyError(emsg)
+        
+        if len(key.strip().split()) != 1:
+            emsg = "badly-formed 'key': received '%d'" % key
+            raise PluginBadKeyError(emsg)
+    
+        if not hasattr(obj, "process") :
+            emsg = "'process()' method not defined:" + obj.__class__.__name__
+            raise PluginProcessMethodNotDefined(emsg)
+    
+        for att in obj.scan_attributes_defined:
+            if att not in self.lazy_attributes:
+                self.lazy_attributes.append(att)
+    
+        self.registry[key] = handler

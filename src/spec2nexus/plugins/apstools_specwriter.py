@@ -44,6 +44,7 @@ class MD_apstools(ControlLineHandler):
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 
     key = '#MD\w*'
+    scan_attributes_defined = ['MD']
     
     def process(self, text, scan, *args, **kws):
         """read #MD lines from SPEC data file"""

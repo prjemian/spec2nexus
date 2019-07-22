@@ -39,7 +39,10 @@ Load a plugin module
 ******************** 
 
 Control line handling plugins for *spec2nexus* will automatically
-register themselves when their module is imported.
+register themselves when their module is imported.  Be sure that
+you call :func:`~spec2nexus.plugin.get_plugin_manager()` **before**
+you ``import`` your plugin code.  This step sets up the
+plugin manager to automatically register your new plugin.
 
 .. code-block:: python
    :linenos:
@@ -47,8 +50,8 @@ register themselves when their module is imported.
    import spec2nexus.plugin
    import spec2nexus.spec
    
-   # load all the supplied plugins BEFORE your custom plugins
-   spec2nexus.plugin.load_plugins()
+   # get the plugin manager BEFORE you import any custom plugins
+   manager = plugin.get_plugin_manager()
    
    import MY_PLUGIN_MODULE
    # ... more if needed ...
@@ -104,7 +107,7 @@ These imports are necessary to to write plugins for *spec2nexus*:
    There are several regular expression testers available on the web.
    Try this one, for example: http://regexpal.com/
 
-**Plugin custom ControlLineHandler: ``key``**
+**Attribute: ``key`` (required)**
 
 Each subclass must define :index:`!key` ``key`` as a regular expression match for the 
 control line key.  
@@ -115,13 +118,66 @@ Caution is advised to avoid introducing instability.
 .. A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
    exception is raised if ``key`` is not defined.
 
+**Attribute: ``scan_attributes_defined`` (optional)**
+
+If your plugin creates any attributes to the 
+:class:`spec2nexus.spec.SpecDataScan` object
+(such as the hypotetical ``scan.hdf5_path`` and ``scan.hdf5_file``), 
+you declare the new attributes in the
+``scan_attributes_defined`` list.  Such as this:
+
+.. code-block:: python
+   :linenos:
+
+   scan_attributes_defined = ['hdf5_path', 'hdf5_file']
+
+**Method: ``process()`` (required)**
+
 Each subclass must also define a :meth:`process` method to process the control line.
 A :class:`NotImplementedError` exception is raised if ``key`` is not defined.
+
+**Method: ``match_key()`` (optional)**
 
 For difficult regular expressions (or other situations), it is possible to replace
 the function that matches for a particular control line key.  Override the
 handler's :meth:`match_key` method.
 For more details, see the section :ref:`custom_key_match_function`.
+
+**Method: ``postprocess()`` (optional)**
+
+For some types of control lines, processing can only be completed
+*after* all lines of the scan have been read.  In such cases, add
+a line such as this to the ``process()`` method::
+
+    scan.addPostProcessor(self.key, self.postprocess)
+
+(You *could* replace ``self.key`` here with some other text.  
+If you do, make sure that text will be unique as it is used 
+internally as a python dictionary key.)
+Then, define a ``postprocess()`` method in your handler::
+
+    def postprocess(self, scan, *args, **kws):
+    	# handle your custom info here
+
+See section :ref:`howto_postprocessing` below for more details.
+See :mod:`spec2nexus.plugins.spec_common` for many examples.
+
+**Method: ``writer()`` (optional)**
+
+Writing a NeXus HDF5 data file is one of the main goals of the *spec2nexus*
+package.  If you intend data from your custom control line handler to
+end up in the HDF5 data file, add a line such as this to either the ``process()``
+or ``postprocess()`` method::
+
+	scan.addH5writer(self.key, self.writer)
+
+Then, define a ``writer()`` method in your handler.  Here's an example::
+
+    def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
+        """Describe how to store this data in an HDF5 NeXus file"""
+        desc='SPEC positioners (#P & #O lines)'
+        group = makeGroup(h5parent, 'positioners', nxclass, description=desc)
+        writer.save_dict(group, scan.positioner)
 
 .. _howto_example_PV_control_line:
 

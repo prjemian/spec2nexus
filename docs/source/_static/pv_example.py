@@ -1,25 +1,20 @@
 import spec2nexus.plugin
 import spec2nexus.spec
 
-# load all the supplied plugins BEFORE your custom plugins
-spec2nexus.plugin.load_plugins()
-registry = spec2nexus.plugin.get_registry()
+# call get_plugin_manager() BEFORE you import any custom plugins
+manager = spec2nexus.plugin.get_plugin_manager()
 
 # show our plugin is not loaded
-print("known: ", "#PV" in registry) # expect False
+print("known: ", "#PV" in manager.registry) # expect False
 
 import pv_plugin
 # show that our plugin is registered
-print("known: ", "#PV" in registry) # expect True
+print("known: ", "#PV" in manager.registry) # expect True
 
-# read a SPEC data file, scan 5
+# read a SPEC data file, scan 1
 spec_data_file = spec2nexus.spec.SpecDataFile("pv_data.txt")
 scan = spec_data_file.getScan(1)
 
 # Do we have our PV data?
-print(hasattr(scan, "EPICS_PV"))    # expect False
-
-# must parse full scan before our custom plugin is processed
-scan.interpret()
 print(hasattr(scan, "EPICS_PV"))    # expect True
 print(scan.EPICS_PV)
