@@ -429,13 +429,6 @@ class SpecDataFileHeader(object):
 
 #-------------------------------------------------------------------------------------------
 
-LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES = [
-    'comments', 'data', 'data_lines', 'G', 'I',
-    'L', 'M', 'positioner', 'N', 'P', 'Q', 'T', 'U',
-    'column_first', 'column_last',
-]
-
-
 class SpecDataFileScan(object):
     """contents of a spec data file scan (#S) section"""
 
@@ -476,8 +469,8 @@ class SpecDataFileScan(object):
         self.postprocessors = {}
         self.h5writers = {}
     
-        # the attributes defined in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES
-        # (and perhaps others) are set only after a call to self.interpret()
+        # the attributes defined in PluginManager().lazy_attributes
+        # are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
         self.__lazy_interpret__ = True
         self.__interpreted__ = False
@@ -486,7 +479,8 @@ class SpecDataFileScan(object):
         return self.S
     
     def __getattribute__(self, attr):
-        if attr in LAZY_INTERPRET_SCAN_DATA_ATTRIBUTES:
+        manager = plugin.get_plugin_manager()
+        if attr in manager.lazy_attributes:
             if self.__lazy_interpret__:
                 self.interpret()
         return object.__getattribute__(self, attr)
