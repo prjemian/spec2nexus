@@ -13,7 +13,7 @@ Change History
 Production
 **********
 
-:2021.1.1: expected *2019.08.01*, bug fix
+:2021.1.1: *2019.07.22*, refactor
     
     * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
        revised technique to load control line handlers
