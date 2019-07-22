@@ -26,10 +26,10 @@ _path = os.path.abspath(os.path.join(_test_path, 'src'))
 sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
 
+import spec2nexus
 from spec2nexus import writer
 from spec2nexus.spec import SpecDataFile, SpecDataFileScan
 
-from spec2nexus.plugins.uxml import UXML_metadata, UXML_Error
 
 SPEC_DATA_FILE_LINES = """
 #UXML <group name="attenuator1" NX_class="NXattenuator" number="1" pv_prefix="33idd:filter:Fi1:" unique_id="33idd:filter:Fi1:">
@@ -44,10 +44,9 @@ SPEC_DATA_FILE_LINES = """
 	"""
 
 def get_paths():
-	import spec2nexus.plugins
-	uxml_path = os.path.abspath(os.path.dirname(spec2nexus.plugins.__file__))
-	basepath = os.path.join(uxml_path, '..')
-	return basepath, uxml_path
+	_p = os.path.abspath(os.path.dirname(writer.__file__))
+	uxml_path = os.path.join(_p, 'plugins')
+	return _p, uxml_path
 
 
 class TestPlugin(unittest.TestCase):
@@ -64,8 +63,8 @@ class TestPlugin(unittest.TestCase):
 		self.assertTrue(isinstance(self.scan, SpecDataFileScan))
 
 		# test create instance
-		uxml = UXML_metadata()
-		self.assertTrue(isinstance(uxml, UXML_metadata))
+		uxml = spec2nexus.plugins.uxml.UXML_metadata()
+		self.assertTrue(isinstance(uxml, spec2nexus.plugins.uxml.UXML_metadata))
 		
 		# test that specific attributes not yet defined
 		txt = 'this is text'
@@ -84,7 +83,7 @@ class TestPlugin(unittest.TestCase):
 		"""test that UXML lines are parsed"""
 
 		self.scan = SpecDataFileScan(None, '')
-		uxml = UXML_metadata()
+		uxml = spec2nexus.plugins.uxml.UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():
 			txt = line.strip()
 			if len(txt) > 0:
@@ -99,7 +98,7 @@ class TestPlugin(unittest.TestCase):
 	def test_postprocess(self):	
 		"""test the :meth:`postprocess` method"""
 		self.scan = SpecDataFileScan(None, '')
-		uxml = UXML_metadata()
+		uxml = spec2nexus.plugins.uxml.UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():
 			txt = line.strip()
 			if len(txt) > 0:
@@ -125,7 +124,7 @@ class TestPlugin(unittest.TestCase):
 	def test_writer(self):	
 		"""test the :meth:`writer` method"""
 		self.scan = SpecDataFileScan(None, '')
-		uxml = UXML_metadata()
+		uxml = spec2nexus.plugins.uxml.UXML_metadata()
 		for line in SPEC_DATA_FILE_LINES.strip().splitlines():
 			txt = line.strip()
 			if len(txt) > 0:
@@ -160,7 +159,7 @@ class TestData_error(unittest.TestCase):
 		self.assertTrue(isinstance(spec_data, SpecDataFile))
 		scan = spec_data.getScan(1)
 
-		with self.assertRaises(UXML_Error) as context:
+		with self.assertRaises(spec2nexus.plugins.uxml.UXML_Error) as context:
 			scan.interpret()
 		received = str(context.exception)
 		expected = "UXML error: Element 'group': "
