@@ -857,7 +857,7 @@ class SPEC_DataLine(ControlLineHandler):
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
     key = SCAN_DATA_KEY
-    scan_attributes_defined = ['data_lines']
+    scan_attributes_defined = ['data', 'data_lines']
 
     def match_key(self, text):
         """
