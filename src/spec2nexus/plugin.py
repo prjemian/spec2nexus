@@ -27,12 +27,6 @@ It is optional to:
 * define :meth:`writer`
 * define :meth:`match_key`
 
-.. rubric:: Functions
-
-.. autosummary::
-
-  ~register_control_line_handler
-
 .. rubric:: Classes
 
 .. autosummary::
@@ -92,50 +86,19 @@ plugin_manager = None
 
 
 def get_plugin_manager():
-    """get the instance of the plugin_manager, define if necessary"""
+    """
+    get the instance of the plugin_manager (a singleton)
+    
+    Create instance of PluginManager() if necessary.
+    Also, 
+    """
     global plugin_manager
-    plugin_manager = plugin_manager or PluginManager()
-    if len(plugin_manager.registry) == 0:
-        plugin_manager.load_plugins()
+    if plugin_manager is None:
+        plugin_manager = PluginManager()
+        if len(plugin_manager.registry) == 0:
+            # Now is the time to load all plugins
+            plugin_manager.load_plugins()
     return plugin_manager
-
-
-def register_control_line_handler(handler):
-    """
-    auto-registry of all AutoRegister plugins
-    
-    Called from AutoRegister.__init__
-    """
-    manager = get_plugin_manager()
-    registry = manager.registry
-
-    obj = handler()
-
-    if not hasattr(obj, "key") or obj.key is None:
-        emsg = "'key' not defined: " + obj.__class__.__name__
-        raise PluginKeyNotDefined(emsg)
-
-    key = obj.key
-
-    if key in registry:
-        emsg = "duplicate key=%s: %s" % (key, obj.__class__)
-        previous = registry[key]()
-        emsg += ", previously defined: " + previous.__class__.__name__
-        raise PluginDuplicateKeyError(emsg)
-    
-    if len(key.strip().split()) != 1:
-        emsg = "badly-formed 'key': received '%d'" % key
-        raise PluginBadKeyError(emsg)
-
-    if not hasattr(obj, "process") :
-        emsg = "'process()' method not defined:" + obj.__class__.__name__
-        raise PluginProcessMethodNotDefined(emsg)
-
-    for att in obj.scan_attributes_defined:
-        if att not in manager.lazy_attributes:
-            manager.lazy_attributes.append(att)
-
-    registry[key] = handler
 
 
 class AutoRegister(type):
@@ -159,7 +122,8 @@ class AutoRegister(type):
         # logger.debug(f"__init__: name={name}")
         # logger.debug(f"__init__: bases={bases}")
         # logger.debug(f"__init__: dict={dict}")
-        register_control_line_handler(cls)
+        manager = get_plugin_manager()
+        manager.register_control_line_handler(cls)
 
     def __new__(metaname, classname, baseclasses, attrs):
         # logger.debug(" "*4 + "."*10)
@@ -233,6 +197,7 @@ class PluginManager(object):
       ~load_plugins
       ~match_key
       ~process
+      ~register_control_line_handler
   
     """
  
@@ -242,12 +207,15 @@ class PluginManager(object):
             plugin_manager = self
         self.registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
         self.lazy_attributes = []
-        # self.load_plugins()
 
     def load_plugins(self):
-        """load all spec2nexus plugin modules"""
+        """
+        load all spec2nexus plugin modules
+        
+        called from :func:`spec2nexus.plugin.get_plugin_manager()`
+        """
         from . import spec
-        from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
+        from . import plugins   # issue #166: plugins are loaded here, NOT any earlier!
         
         table = self.get_registry_table()
         logger.debug(str(table))
@@ -327,3 +295,36 @@ class PluginManager(object):
             print(tbl)
         return tbl
 
+    def register_control_line_handler(self, handler):
+        """
+        auto-registry of all AutoRegister plugins
+        
+        Called from AutoRegister.__init__
+        """
+        obj = handler()
+    
+        if not hasattr(obj, "key") or obj.key is None:
+            emsg = "'key' not defined: " + obj.__class__.__name__
+            raise PluginKeyNotDefined(emsg)
+    
+        key = obj.key
+    
+        if key in self.registry:
+            emsg = "duplicate key=%s: %s" % (key, obj.__class__)
+            previous = self.registry[key]()
+            emsg += ", previously defined: " + previous.__class__.__name__
+            raise PluginDuplicateKeyError(emsg)
+        
+        if len(key.strip().split()) != 1:
+            emsg = "badly-formed 'key': received '%d'" % key
+            raise PluginBadKeyError(emsg)
+    
+        if not hasattr(obj, "process") :
+            emsg = "'process()' method not defined:" + obj.__class__.__name__
+            raise PluginProcessMethodNotDefined(emsg)
+    
+        for att in obj.scan_attributes_defined:
+            if att not in self.lazy_attributes:
+                self.lazy_attributes.append(att)
+    
+        self.registry[key] = handler
