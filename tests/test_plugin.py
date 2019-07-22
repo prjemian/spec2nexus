@@ -33,7 +33,6 @@ class TestPlugin(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.manager = plugin.get_plugin_manager()
-        # self.manager.load_plugins()
 
 #     def tearDown(self):
 #         pass
@@ -42,8 +41,8 @@ class TestPlugin(unittest.TestCase):
 #         pass
     
     def test_handler_keys(self):
-        registry = plugin.get_registry()
-        h = registry["#F"]
+        manager = plugin.get_plugin_manager()
+        h = manager.registry["#F"]
         self.assertEqual(h.key, "#F")
     
     def test_sample_control_line_keys(self):

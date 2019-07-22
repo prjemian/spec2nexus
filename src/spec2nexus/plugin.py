@@ -31,9 +31,6 @@ It is optional to:
 
 .. autosummary::
 
-  ~get_registry
-  ~get_registry_table
-  ~load_plugins
   ~register_control_line_handler
 
 .. rubric:: Classes
@@ -91,47 +88,16 @@ class PluginBadKeyError(PluginException):
     """The plugin 'key' value is not acceptable."""
 
 
-# TODO: move into PluginManager
-registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
-plugin_manager = None    # TODO:
+plugin_manager = None
 
 
 def get_plugin_manager():
     """get the instance of the plugin_manager, define if necessary"""
     global plugin_manager
     plugin_manager = plugin_manager or PluginManager()
+    if len(plugin_manager.registry) == 0:
+        plugin_manager.load_plugins()
     return plugin_manager
-
-
-# TODO: move into PluginManager
-def get_registry():
-    return registry
-
-
-# TODO: move into PluginManager
-def get_registry_table(print_it=False):
-    """return a table of all the known plugins"""
-    import pyRestTable
-    tbl = pyRestTable.Table()
-    tbl.addLabel("control line")
-    tbl.addLabel("handler class")
-    for k, v in get_registry().items():
-        tbl.addRow((k, v))
-    if print_it:
-        print("Plugin registry")
-        print(tbl)
-    return tbl
-
-
-def load_plugins():
-    """load all spec2nexus plugin modules"""
-    from . import spec
-    from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
-    
-    table = get_registry_table()
-    logger.debug(str(table))
-
-    return get_plugin_manager()
 
 
 def register_control_line_handler(handler):
@@ -140,6 +106,9 @@ def register_control_line_handler(handler):
     
     Called from AutoRegister.__init__
     """
+    manager = get_plugin_manager()
+    registry = manager.registry
+
     obj = handler()
 
     if not hasattr(obj, "key") or obj.key is None:
@@ -162,7 +131,6 @@ def register_control_line_handler(handler):
         emsg = "'process()' method not defined:" + obj.__class__.__name__
         raise PluginProcessMethodNotDefined(emsg)
 
-    manager = get_plugin_manager()
     for att in obj.scan_attributes_defined:
         if att not in manager.lazy_attributes:
             manager.lazy_attributes.append(att)
@@ -260,14 +228,31 @@ class PluginManager(object):
     
       ~get
       ~getKey
+      ~get_registry
+      ~get_registry_table
+      ~load_plugins
       ~match_key
       ~process
   
     """
-    
+ 
     def __init__(self):
-        self.handler_dict = registry
+        global plugin_manager
+        if plugin_manager is None:
+            plugin_manager = self
+        self.registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
         self.lazy_attributes = []
+        # self.load_plugins()
+
+    def load_plugins(self):
+        """load all spec2nexus plugin modules"""
+        from . import spec
+        from . import plugins   # issue #166: plugins are loaded here, NOT earlier!
+        
+        table = self.get_registry_table()
+        logger.debug(str(table))
+    
+        return self
     
     def getKey(self, spec_data_file_line):
         """
@@ -281,7 +266,7 @@ class PluginManager(object):
         text = spec_data_file_line[:pos]
         
         # try to locate the key directly
-        if text in self.handler_dict:
+        if text in self.registry:
             return text
         
         # brute force search and match using regular expressions
@@ -310,7 +295,7 @@ class PluginManager(object):
                 # ensures that beginning and end are different positions
                 return t and t.regs[0][1] != t.regs[0][0]
 
-        for key, handler in self.handler_dict.items():
+        for key, handler in self.registry.items():
             if _match_(text, handler):
                 return key
         
@@ -318,10 +303,27 @@ class PluginManager(object):
 
     def get(self, key):
         """return the handler identified by key or None"""
-        return self.handler_dict.get(key)
+        return self.registry.get(key)
     
     def process(self, key, *args, **kw):
         """pick the control line handler by key and call its process() method"""
         handler = self.get(key)
         if handler is not None:
             handler().process(*args, **kw)
+
+    def get_registry(self):
+        return self.registry
+
+    def get_registry_table(self, print_it=False):
+        """return a table of all the known plugins"""
+        import pyRestTable
+        tbl = pyRestTable.Table()
+        tbl.addLabel("control line")
+        tbl.addLabel("handler class")
+        for k, v in self.registry.items():
+            tbl.addRow((k, v))
+        if print_it:
+            print("Plugin registry")
+            print(tbl)
+        return tbl
+
