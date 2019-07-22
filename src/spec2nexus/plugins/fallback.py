@@ -29,6 +29,7 @@ class UnrecognizedControlLine(ControlLineHandler):
     """unrecognized control line"""
 
     key = UNRECOGNIZED_KEY
+    scan_attributes_defined = ['_unrecognized']
 
     def process(self, text, spec_obj, *args, **kws):
         ' '

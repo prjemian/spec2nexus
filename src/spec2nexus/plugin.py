@@ -197,7 +197,7 @@ class ControlLineHandler(object):
     define one ControlLineHandler class for each different type of control line
 
     :param str key: regular expression to match a control line key, up to the first space
-    :param [str] scan_attributes: list of scan attributes defined in this class
+    :param [str] scan_attributes_defined: list of scan attributes defined in this class
     :returns: None
 
     EXAMPLE of ``match_key`` method:
@@ -219,7 +219,7 @@ class ControlLineHandler(object):
                 return False
     """
     key = None
-    scan_attributes = []
+    scan_attributes_defined = []
     
     def process(self, text, spec_file_obj, *args, **kws):
         """*required:* handle this line from a SPEC data file"""

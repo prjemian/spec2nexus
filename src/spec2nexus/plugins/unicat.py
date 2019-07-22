@@ -54,6 +54,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
     """
 
     key = '#H\d+'
+    scan_attributes_defined = ['H']
     
     def process(self, text, spec_obj, *args, **kws):
         row_text = strip_first_word(text)
@@ -92,6 +93,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
     """
 
     key = '#V\d+'
+    scan_attributes_defined = ['V', 'metadata']
     
     def process(self, text, scan, *args, **kws):
         index = len(scan.V)

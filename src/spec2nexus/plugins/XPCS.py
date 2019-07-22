@@ -23,6 +23,7 @@ class XPCS_VA(ControlLineHandler):
     """**#VA**"""
 
     key = '#VA\d+'
+    scan_attributes_defined = ['VA']
 
     def process(self, text, spec_obj, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -47,6 +48,7 @@ class XPCS_VD(ControlLineHandler):
     """**#VD** """
 
     key = '#VD\d+'
+    scan_attributes_defined = ['VD']
 
     def process(self, text, spec_obj, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -72,6 +74,7 @@ class XPCS_VE(ControlLineHandler):
     """**#VE** """
 
     key = '#VE\d+'
+    scan_attributes_defined = ['VE']
 
     def process(self, text, spec_obj, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -97,6 +100,7 @@ class XPCS_XPCS(ControlLineHandler):
     """#XPCS"""
     
     key = '#XPCS'
+    scan_attributes_defined = ['XPCS']
     
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'XPCS'):
@@ -115,6 +119,7 @@ class XPCS_CCD(ControlLineHandler):
     """#CCD"""
     
     key = '#CCD'
+    scan_attributes_defined = ['CCD']
     
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'CCD'):

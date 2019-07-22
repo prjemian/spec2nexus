@@ -57,6 +57,7 @@ class SPEC_File(ControlLineHandler):
     """
 
     key = '#F'
+    # do NOT add F to scan_attributes_defined
     
     def process(self, text, spec_file_obj, *args, **kws):
         if not hasattr(spec_file_obj, "specFile"):
@@ -84,6 +85,7 @@ class SPEC_Epoch(ControlLineHandler):
     """
 
     key = '#E'
+    # do NOT add E to scan_attributes_defined
     
     def process(self, buf, sdf_object, *args, **kws):
         header = SpecDataFileHeader(buf, parent=sdf_object)
@@ -112,6 +114,7 @@ class SPEC_Date(ControlLineHandler):
     """
 
     key = '#D'
+    # do NOT add epoch and date to scan_attributes_defined
     
     def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
@@ -161,6 +164,7 @@ class SPEC_Comment(ControlLineHandler):
     """
 
     key = '#C'
+    scan_attributes_defined = ['comments']
     
     def process(self, text, scan, *args, **kws):
         scan.comments.append( strip_first_word(text) )
@@ -208,6 +212,7 @@ class SPEC_Scan(ControlLineHandler):
     """
 
     key = '#S'
+    # do NOT add S to scan_attributes_defined
     
     def process(self, part, sdf, *args, **kws):
         if len(sdf.headers) == 0:
@@ -265,6 +270,7 @@ class SPEC_Geometry(ControlLineHandler):
     """
 
     key = '#G\d+'
+    scan_attributes_defined = ['G']
     
     def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -300,6 +306,7 @@ class SPEC_NormalizingFactor(ControlLineHandler):
     """
 
     key = '#I'
+    scan_attributes_defined = ['I']
 
     def process(self, text, scan, *args, **kws):
         scan.I = float(strip_first_word(text))
@@ -329,6 +336,7 @@ class SPEC_CounterNames(ControlLineHandler):
     """
 
     key = '#J\d+'
+    scan_attributes_defined = ['J']
     
     def process(self, text, header, *args, **kws):
         if not hasattr(header, 'J'):
@@ -373,6 +381,7 @@ class SPEC_CounterMnemonics(ControlLineHandler):
     """
 
     key = '#j\d+'
+    scan_attributes_defined = ['j']
     
     def process(self, text, header, *args, **kws):
         if not hasattr(header, 'j'):
@@ -430,6 +439,7 @@ class SPEC_Labels(ControlLineHandler):
     """
 
     key = '#L'
+    scan_attributes_defined = ['L', 'column_first', 'column_last']
     
     def process(self, text, scan, *args, **kws):
         # Some folks use more than two spaces!  Use regular expression(re) module
@@ -466,6 +476,7 @@ class SPEC_Monitor(ControlLineHandler):
     """
 
     key = '#M'
+    scan_attributes_defined = ['M', 'monitor_name']
     
     def process(self, text, scan, *args, **kws):
         text = strip_first_word(text)
@@ -499,6 +510,7 @@ class SPEC_NumColumns(ControlLineHandler):
 
     key = '#N'
     # TODO: Needs an example data file to test (issue #8)
+    scan_attributes_defined = ['N']
     
     def process(self, text, scan, *args, **kws):
         scan.N = list(map(int, strip_first_word(text).split()))
@@ -528,6 +540,7 @@ class SPEC_PositionerNames(ControlLineHandler):
     """
 
     key = '#O\d+'
+    scan_attributes_defined = ['O']
     
     def process(self, text, sdf_object, *args, **kws):
         if isinstance(sdf_object, SpecDataFileScan):
@@ -557,6 +570,7 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
     """
 
     key = '#o\d+'
+    scan_attributes_defined = ['o']
     
     def process(self, text, header, *args, **kws):
         if not hasattr(header, 'o'):
@@ -613,6 +627,7 @@ class SPEC_Positioners(ControlLineHandler):
     """
 
     key = '#P\d+'
+    scan_attributes_defined = ['P', 'positioner']
     
     def process(self, text, scan, *args, **kws):
         if isinstance(scan, SpecDataFileHeader):
@@ -665,6 +680,7 @@ class SPEC_HKL(ControlLineHandler):
     """
 
     key = '#Q'
+    scan_attributes_defined = ['Q']
     
     def process(self, text, scan, *args, **kws):
         s = strip_first_word(text)
@@ -697,6 +713,7 @@ class SPEC_CountTime(ControlLineHandler):
     """
 
     key = '#T'
+    scan_attributes_defined = ['T', 'time_name']
     
     def process(self, text, scan, *args, **kws):
         text = strip_first_word(text)
@@ -733,6 +750,7 @@ class SPEC_UserReserved(ControlLineHandler):
     """
 
     key = '#U'
+    scan_attributes_defined = ['U']
     
     def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
@@ -786,6 +804,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler):
     """
 
     key = '#X'
+    scan_attributes_defined = ['TEMP_SP', 'DEGC_SP']
     
     def process(self, text, scan, *args, **kws):
         # Try a list of formats until one succeeds
@@ -838,6 +857,8 @@ class SPEC_DataLine(ControlLineHandler):
     # key = r'[+-]?\d*\.?\d?'
     # use custom key match since regexp for floats is tedious!
     key = SCAN_DATA_KEY
+    scan_attributes_defined = ['data_lines']
+
     def match_key(self, text):
         """
         Easier to try conversion to number than construct complicated regexp
@@ -932,6 +953,7 @@ class SPEC_MCA_Array(ControlLineHandler):
     key = r'@A\d*'
     # continued lines will be matched by SPEC_DataLine
     # process these lines only after all lines have been read
+    scan_attributes_defined = ['data_lines']
 
     # TODO: need more examples of MCA spectra in SPEC files to improve this
     # Are there any other MCA spectra (such as @B) possible?
@@ -972,6 +994,7 @@ class SPEC_MCA_Calibration(ControlLineHandler):
     # accept upper or lower case variants
     # https://certif.com/spec_help/scans.html
     key = '#@[cC][aA][lL][iI][bB]'
+    scan_attributes_defined = ['MCA']
     
     def process(self, text, scan, *args, **kws):
         # #@CALIB a b c
@@ -1024,6 +1047,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
     """
 
     key = '#@CHANN'
+    scan_attributes_defined = ['MCA']
     
     def process(self, text, scan, *args, **kws):
         # #@CHANN 1201 1110 1200 1
@@ -1073,6 +1097,7 @@ class SPEC_MCA_CountTime(ControlLineHandler):
     """
 
     key = '#@CTIME'
+    scan_attributes_defined = ['MCA']
     
     def process(self, text, scan, *args, **kws):
         s = strip_first_word(text).split()
@@ -1119,6 +1144,7 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
     """
 
     key = '#@ROI'
+    scan_attributes_defined = ['MCA']
     
     def process(self, text, scan, *args, **kws):
         text = strip_first_word(text)
