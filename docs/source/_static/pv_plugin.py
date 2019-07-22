@@ -9,6 +9,7 @@ class PV_ControlLine(ControlLineHandler):
     '''**#PV** -- EPICS PV associates mnemonic with PV'''
     
     key = '#PV'
+    scan_attributes_defined = ['EPICS_PV']
     
     def process(self, text, spec_obj, *args, **kws):
         args = strip_first_word(text).split()
