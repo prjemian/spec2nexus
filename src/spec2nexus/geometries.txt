@@ -49,10 +49,18 @@
                         'Alpha fixed, Mu varies',
                         'Beta fixed, Mu varies',
                         'Specular'],
-             'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'],
              'numgeo': 5,
-             'variants': True,
-             'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': ['del', 'th', 'chi', 'phi', 'mu'],
+             		'other-motors': []
+             	},
+             	'kappa': {
+             		'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'],
+             		'other-motors': []
+             	}
+			 }
+		},
   'fourc': { 'G': [ ('g_mode', 'spectrometer mode'),
                     ('g_sect', 'sector'),
                     ('g_frz', 'freeze'),
@@ -152,8 +160,13 @@
              'Q': [],
              'modes': [],
              'numgeo': 0,
-             'variants': False,
-             'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': [], 
+             		'other-motors': []
+             	}
+			 }
+		},
   'pi1go': { 'G': [('g_mode', 'spectrometer mode')],
              'Q': [ ('H', ''),
                     ('K', ''),
@@ -166,7 +179,6 @@
                     ('CUT_ALF', '')],
              'modes': [],
              'numgeo': 3,
-             'variants': False,
              'variations': { 'standard': { 'motors': ['ome', 'alf', 'gam'],
                                            'other-motors': []}}},
   'psic': { 'G': [ ('g_prefer', 'sector preference scheme'),
@@ -228,10 +240,30 @@
                    ('CUT_KAP', ''),
                    ('CUT_KPHI', '')],
             'modes': [],
-            'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu', 'daz'],
             'numgeo': 6,
-            'variants': True,
-            'variations': {'standard': {'motors': [], 'other-motors': []}}},
+            'variations': {
+             	'standard': {
+             		'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu'], 
+             		'other-motors': []
+             	},
+             	'standard+daz': {
+             		'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu', 'daz'], 
+             		'other-motors': []
+             	},
+             	's2d2': {
+             		'motors': ['del', 'eta', 'nu', 'mu'], 
+             		'other-motors': []
+             	},
+             	's2d2+daz': {
+             		'motors': ['del', 'eta', 'nu', 'mu', 'daz'], 
+             		'other-motors': []
+             	},
+             	'kappa': {
+             		'motors': ['del', 'eta', 'kap', 'keta', 'kphi'], 
+             		'other-motors': []
+             	}
+			 }
+		},
   's1d2': { 'G': [ ('g_len', 'distance from sample to tau when tau = 0'),
                    ('g_track', 'set if tracking tauR and tauT with tau')],
             'Q': [ ('H', ''),
@@ -244,7 +276,6 @@
                    ('CUT_TAU', '')],
             'modes': [],
             'numgeo': 3,
-            'variants': False,
             'variations': { 'standard': { 'motors': ['ome', 'sig', 'tau'],
                                           'other-motors': []}}},
   's2d2': { 'G': [ ('g_mode', 'spectrometer mode'),
@@ -272,7 +303,6 @@
                    ('CUT_PHI', '')],
             'modes': [],
             'numgeo': 4,
-            'variants': False,
             'variations': { 'standard': { 'motors': [ 'gam',
                                                       'del',
                                                       'chi',
@@ -322,7 +352,6 @@
                        'Alpha = Beta, Chi fixed',
                        'Phi fixed, Chi fixed'],
             'numgeo': 7,
-            'variants': False,
             'variations': { 'standard': { 'motors': [ 'rho',
                                                       'nu',
                                                       'del',
@@ -397,7 +426,6 @@
                        'Specular',
                        'Chi, Phi and Mu fixed'],
             'numgeo': 6,
-            'variants': False,
             'variations': { 'standard': { 'motors': [ 'del',
                                                       'th',
                                                       'chi',
@@ -409,8 +437,13 @@
             'Q': [],
             'modes': [],
             'numgeo': 0,
-            'variants': False,
-            'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': [], 
+             		'other-motors': []
+             	}
+			 }
+		},
   'surf': { 'G': [ ('g_mode', 'sign of phi rotation if allowed'),
                    ('g_h0', 'h units'),
                    ('g_k0', 'k units'),
@@ -424,8 +457,13 @@
                    ('BETA', '')],
             'modes': [],
             'numgeo': 0,
-            'variants': False,
-            'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': [], 
+             		'other-motors': []
+             	}
+			 }
+		},
   'suv': { 'G': [ ('g_mode', 'spectrometer mode'),
                   ('g_sect', 'sector'),
                   ('g_frz', 'freeze'),
@@ -462,7 +500,6 @@
                       'Beta_R fixed',
                       'Alpha_R equals Beta_R'],
            'numgeo': 6,
-           'variants': False,
            'variations': { 'standard': { 'motors': [ 'del',
                                                      'ome',
                                                      'alf',
@@ -474,14 +511,12 @@
             'Q': [('H', ''), ('K', ''), ('L', ''), ('LAMBDA', '')],
             'modes': [],
             'numgeo': 4,
-            'variants': False,
             'variations': { 'standard': { 'motors': ['tth', 'th', 'chi', 'phi'],
                                           'other-motors': []}}},
   'twoc': { 'G': [],
             'Q': [('H', ''), ('K', ''), ('LAMBDA', '')],
             'modes': [],
             'numgeo': 2,
-            'variants': False,
             'variations': { 'standard': { 'motors': ['tth', 'th'],
                                           'other-motors': []}}},
   'twoc_old': { 'G': [ ('g_h0', 'H units'),
@@ -494,7 +529,7 @@
                        ('BETA', '')],
                 'modes': [],
                 'numgeo': 2,
-                'variants': False,
+  
                 'variations': { 'standard': { 'motors': ['tth', 'th'],
                                               'other-motors': []}}},
   'w21h': { 'G': [ ('g_mode', 'spectrometer mode'),
@@ -521,10 +556,14 @@
                    ('CUT_ALF', ''),
                    ('CUT_BET', '')],
             'modes': [],
-            'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'],
             'numgeo': 4,
-            'variants': True,
-            'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'],
+             		'other-motors': []
+             	}
+			 }
+		},
   'w21v': { 'G': [ ('g_mode', 'spectrometer mode'),
                    ('g_sect', 'sector'),
                    ('g_frz', 'freeze'),
@@ -548,21 +587,26 @@
                    ('F_ALPHA', ''),
                    ('F_BETA', '')],
             'modes': [],
-            'motors': [ 'gam',
-                        'mu',
-                        'ome',
-                        'alf',
-                        'del',
-                        'gam',
-                        'om',
-                        'th',
-                        'phi',
-                        'psi',
-                        'ome',
-                        'the'],
             'numgeo': 4,
-            'variants': True,
-            'variations': {'standard': {'motors': [], 'other-motors': []}}},
+             'variations': {
+             	'standard': {
+             		'motors': ['gam', 'mu', 'ome', 'alf'], 
+             		'other-motors': []
+             	},
+             	'id10b': {
+             		'motors': ['del', 'gam', 'om', 'th'], 
+             		'other-motors': []
+             	},
+             	'd32': {
+             		'motors': ['phi', 'psi', 'ome', 'the', 'hgl', 'dht'], 
+             		'other-motors': []
+             	},
+             	'gmci': {
+             		'motors': ['phi', 'psi', 'ome', 'the'], 
+             		'other-motors': []
+             	}
+			 }
+		},
   'zaxis': { 'G': [ ('g_mode', 'spectrometer mode'),
                     ('g_sect', 'sector'),
                     ('g_frz', 'freeze'),
@@ -601,7 +645,6 @@
                         'Alpha=Beta',
                         'Theta fixed'],
              'numgeo': 4,
-             'variants': False,
              'variations': { 'standard': { 'motors': ['del', 'th', 'mu', 'gam'],
                                            'other-motors': []}}},
   'zaxis_old': { 'G': [ ('z_mode', 'spectrometer mode'),
@@ -611,11 +654,18 @@
                         ('z_l1', 'beta length')],
                  'Q': [('H', ''), ('K', ''), ('L', ''), ('LAMBDA', '')],
                  'modes': [],
-                 'motors': ['tth', 'th', 'alf', 'gam', 'beta'],
                  'numgeo': 4,
-                 'variants': True,
-                 'variations': { 'standard': { 'motors': [],
-                                               'other-motors': []}}},
+	             'variations': {
+	             	'standard': {
+	             		'motors': ['tth', 'th', 'alf', 'gam'], 
+	             		'other-motors': []
+	             	},
+	             	'beta': {
+	             		'motors': ['tth', 'th', 'alf', 'gam', 'beta'],
+	             		'other-motors': []
+	             	}
+				 }
+		},
   'zeta': { 'G': [ ('g_mode', 'spectrometer mode'),
                    ('g_sect', 'sector'),
                    ('g_frz', 'freeze')],
@@ -634,6 +684,5 @@
                    ('CUT_TH', '')],
             'modes': ['Alpha fixed', 'Beta fixed', 'Alpha=Beta'],
             'numgeo': 4,
-            'variants': False,
             'variations': { 'standard': { 'motors': ['nu', 'zeta', 'del', 'th'],
                                           'other-motors': []}}}}
