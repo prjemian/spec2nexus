@@ -112,16 +112,34 @@
                      'Alpha fixed',
                      'Beta fixed',
                      'Theta fixed'],
-           'motors': ['tth',
-                      'is_omega? om:th',
-                      'chi',
-                      'phi',
-                      'kth',
-                      'kap',
-                      'kphi',
-                      'xlhgt'],
            'numgeo': 4,
-           'variants': True},
+           'variations': {
+           		'standard': {
+           		    'motors': ['tth', 'th', 'chi', 'phi'],
+           		    'other-motors': []
+           		},
+           		'omega': {
+           		    'motors': ['tth', 'om', 'chi', 'phi'],
+           		    'other-motors': []
+           		},
+           		'kappa': {
+           		    'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
+           		    'other-motors': []
+           		},
+           		'xtalogic': {
+           		    'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
+           		    'other-motors': ['xlhgt',]
+           		},
+           		'picker': {
+           		    'motors': ['tth', 'th', 'chi', 'phi'],
+           		    'other-motors': ['chiR', 'phiR']
+           		},
+           		'3axis': {
+           		    'motors': ['tth', 'th', 'chi', 'phi'],
+           		    'other-motors': ['thR', 'tthR', 'sy', 'ay', 'dy', 'mth', 'ath']
+           		}
+           }
+           },
  'oscam': {'G': [],
            'Q': [],
            'modes': [],
