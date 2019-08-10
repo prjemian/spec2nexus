@@ -99,14 +99,7 @@ class DiffractometerGeometryCatalog:
         else:
             return variant in self.db[nm]["variations"]
     
-    def match(self, scan):
-        """
-        find the ``geo_name`` geometry that matches the ``scan``
-        
-        If there is more than one matching geometry, pick the first one.
-        """
-        match = []
-        
+    def _get_scan_positioners_(self, scan):
         scan_positioners = []
         if hasattr(scan.header, 'o'):       # prefer mnemonics
             for row in scan.header.o:
@@ -116,8 +109,31 @@ class DiffractometerGeometryCatalog:
                 scan_positioners += [k.lower() for k in row]
         else:
             scan_positioners = [k.lower() for k in scan.positioner.keys()]
-        if len(scan_positioners) > 0 and scan_positioners[0] == "2-theta":
-            scan_positioners[0] = 'tth'
+        if len(scan_positioners) > 0:
+            scan_positioners_new = []
+            for k in scan_positioners:
+                if k in ("delta",):
+                    k = "del"
+                elif k in ("theta",):
+                    k = "th"
+                elif k in ("2-theta", "two theta") or k.endswith("tth"):
+                    k = "tth"
+                elif k in ("gamma",):
+                    k = "gam"
+                scan_positioners_new.append(k)
+            scan_positioners = scan_positioners_new
+            
+        return scan_positioners
+
+    def match(self, scan):
+        """
+        find the ``geo_name`` geometry that matches the ``scan``
+        
+        If there is more than one matching geometry, pick the first one.
+        """
+        match = []
+        
+        scan_positioners = self._get_scan_positioners_(scan)
 
         try:
             scan_G0 = scan.G['G0'].split()
@@ -129,6 +145,11 @@ class DiffractometerGeometryCatalog:
             scan_G0, scan_G4 = [], []
 
         for geo_name, geometry in self.db.items():
+            if len(scan_G0) != len(geometry["G"]):
+                continue
+            if len(scan_G4) != len(geometry["Q"]):
+                continue
+            
             for var_name, variant in geometry["variations"].items():
                 n_motors = len(variant["motors"])
                 if scan_positioners[:n_motors] != variant["motors"]:
@@ -142,12 +163,8 @@ class DiffractometerGeometryCatalog:
                 if not others_match:
                     continue
 
-                if len(scan_G0) != len(geometry["G"]):
-                    continue
-                if len(scan_G4) != len(geometry["Q"]):
-                    continue
-
                 match.append("%s.%s" % (geo_name, var_name))
+
         if len(match) > 1:
             msg = "scan geometry match is not unique!"
             msg += "  Picking the first one from: " + str(match)
@@ -156,4 +173,5 @@ class DiffractometerGeometryCatalog:
             logger.debug(msg)
         elif len(match) == 0:
             match = [self.get_default_geometry()["name"]]
+
         return match[0]
