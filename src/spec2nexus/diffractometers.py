@@ -23,8 +23,11 @@ Describe SPEC #G control lines
 
 """
 
+import logging
 import os
 
+
+logger = logging.getLogger(__name__)
 _path = os.path.dirname(__file__)
 DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 
@@ -97,11 +100,23 @@ class DiffractometerGeometryCatalog:
     def match(self, scan):
         """
         find the ``geo_name`` geometry that matches the ``scan``
+        
+        If there is more than one matching geometry, pick the first one.
         """
         match = []
-        scan_positioners = [k.lower() for k in scan.positioner.keys()]
+        
+        scan_positioners = []
+        if hasattr(scan.header, 'o'):       # prefer mnemonics
+            for row in scan.header.o:
+                scan_positioners += row
+        elif hasattr(scan.header, 'O'):
+            for row in scan.header.O:
+                scan_positioners += [k.lower() for k in row]
+        else:
+            scan_positioners = [k.lower() for k in scan.positioner.keys()]
         if len(scan_positioners) > 0 and scan_positioners[0] == "2-theta":
             scan_positioners[0] = 'tth'
+
         try:
             scan_G0 = scan.G['G0'].split()
             scan_G4 = scan.G['G4'].split()
@@ -110,11 +125,13 @@ class DiffractometerGeometryCatalog:
         if scan_G0 == ['0',] and  scan_G4 == ['0',]:
             # no_hkl case
             scan_G0, scan_G4 = [], []
+
         for geo_name, geometry in self.db.items():
             for var_name, variant in geometry["variations"].items():
                 n_motors = len(variant["motors"])
                 if scan_positioners[:n_motors] != variant["motors"]:
                     continue
+
                 others_match = True
                 for mne in variant["other-motors"]:
                     if mne not in scan.positioner:
@@ -122,18 +139,19 @@ class DiffractometerGeometryCatalog:
                         break
                 if not others_match:
                     continue
-                # match length of scan's #G0 line
+
                 if len(scan_G0) != len(geometry["G"]):
                     continue
-                # match length of scan's #G4 line
                 if len(scan_G4) != len(geometry["Q"]):
                     continue
+
                 match.append(f"{geo_name}.{var_name}")
-        # if len(match) > 1:
-        #     print(f"file: {scan.specFile}")
-        #     print(f"scan: {scan}")
-        #     print(f"scan geometry match is not unique! {match}")
-        #     print("picking the first one")
-        if len(match) == 0:
+        if len(match) > 1:
+            msg = f"scan geometry match is not unique! {match}"
+            msg += ", picking the first one"
+            msg += f", file: {scan.specFile}"
+            msg += f", scan: {scan}"
+            logger.debug(msg)
+        elif len(match) == 0:
             match = [self._default_geometry["name"]]
         return match[0]
