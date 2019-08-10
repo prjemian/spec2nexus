@@ -23,6 +23,9 @@ Describe SPEC #G control lines
 
 """
 
+
+DICT_FILE = "diffractometer-geometries.dict"
+
 from collections import namedtuple
 
 
@@ -55,55 +58,72 @@ class DiffractometerVariation:
         self.additional_motors = others # required to be defined
 
 
-def main():
-    with open("diffractometer-geometries.dict", "r") as fp:
-        geom = eval(fp.read())
-
-    for geo_name, structure in geom.items():
-#         diffractometer = Diffractometer(geo_name)
-#         diffractometer.geometry = [Term(*t) for t in structure["G"]]
-#         diffractometer.constraints = [Term(*t) for t in structure["Q"]]
-#         diffractometer.modes = structure["modes"]
-#         diffractometer.variations = [
-#             DiffractometerVariation(k, v["motors"], v["other-motors"])
-#             for k, v in structure["variations"].items()
-#             ]
+class DiffractometerGeometryCatalog:
+    """
+    catalog of the diffractometer geometries known to SPEC
+    """
+    
+    db = {}
+    
+    def __init__(self):
+        with open(DICT_FILE, "r") as fp:
+            self.db = eval(fp.read())
+    
+    def __str__(self):
+        s = f"DiffractometerGeometryCatalog(number={len(self.db)})"
+        return s
+    
+    def geometries(self, variations=False):
+        """
+        list known geometries
         
-        print(f"class {geo_name.title()}Diffractometer(Diffractometer):")
-        print("    \"\"\"")
-        print(f"    diffractometer/spectrometer with {geo_name} geometry")
-        print("    \"\"\"")
-        print()
-        print(f"    def __init__(self, name):")
-        print(f"        self.geometry_name = '{geo_name}'")
-        print("        super().__init__(name)")
-        print()
-        print("        # different combinations of required motors")
-        print(f"        self.variations = []")
-        for var, spec in structure["variations"].items():
-            if len(spec['other-motors']) == 0:
-                if len(spec['motors']) == 0:
-                    s = f"DiffractometerVariation('{var}')"
-                else:
-                    s = f"DiffractometerVariation('{var}', {spec['motors']})"
+        PARAMETERS
+        
+        variations : bool
+            If True, also list known variations
+        """
+        result = []
+        for nm, geometry in self.db.items():
+            if variations:
+                result += [f"{nm}.{s}" for s in geometry["variations"].keys()]
             else:
-                s = f"DiffractometerVariation('{var}', {spec['motors']}, {spec['other-motors']})"
-            print(f"        self.variations.append({s})")
-        print()
-        print("        # Strings describing geometry modes")
-        print(f"        self.modes = {structure['modes']}")
-        print()
-        print("        #G0 geometry parameters from G[] array (geo mode, sector, etc)")
-        print(f"        self.geometry = []")
-        for t in structure["G"]:
-            print(f"        self.geometry.append(Term{t})")
-        print()
-        print("        #G4 geometry parameters from Q[] array (lambda, frozen angles, cut points, etc)")
-        print(f"        self.constraints = []")
-        for t in structure["Q"]:
-            print(f"        self.constraints.append(Term{t})")
-        print()
-        print()
+                result.append(nm)
+        return result
+    
+    def get(self, geo_name, default=None):
+        """
+        return dictionary for diffractometer geometry ``geo_name``
+        """
+        return self.db.get(geo_name, default)
+    
+    def hasGeometry(self, geo_name):
+        """
+        is the ``geo_name`` geometry defined?
+        """
+        try:
+            nm, variant = geo_name.split(".")
+            if nm in self.db:
+                return variant in self.db[nm]["variations"]
+            else:
+                return False
+        except ValueError:
+            return geo_name in self.db
+    
+    def match(self, scan):
+        """
+        find the ``geo_name`` geometry that matches the ``scan``
+        """
+        match = None
+        for geo_name, geometry in self.db.items():
+            pass
+
+
+def main():
+    dgc = DiffractometerGeometryCatalog()
+    # print("\n".join(dgc.geometries()))
+    # print("\n".join(dgc.geometries(True)))
+    for key in "fourc fivec sixc fourc.kappa fivec.kappa sixc.kappa".split():
+        print(key, dgc.hasGeometry(key))
 
 
 if __name__ == "__main__":
