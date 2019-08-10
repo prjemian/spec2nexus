@@ -123,11 +123,11 @@ class Test(unittest.TestCase):
             ['03_06_JanTest.dat', -1, 'spec.standard'],
             ['05_02_test.dat', -1, 'spec.standard'],
             ['33bm_spec.dat', -1, 'fourc.standard'],
-            ['33id_spec.dat', -1, 'spec.standard'],  # psic but predates #o (mnemonics) lines
+            ['33id_spec.dat', -1, 'spec'],  # psic but predates #o (mnemonics) lines
             ['APS_spec_data.dat', -1, 'spec.standard'],
             ['CdOsO', -1, 'fourc.standard'],
             ['CdSe', -1, 'fourc.standard'],
-            ['lmn40.spe', -1, 'spec.standard'],
+            ['lmn40.spe', -1, 'spec'],
             ['mca_spectra_example.dat', -1, 'spec.standard'],
             ['spec_from_spock.spc', -1, 'spec.standard'],
             ['startup_1.spec', 1, 'spec'],
