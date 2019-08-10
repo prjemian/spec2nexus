@@ -84,40 +84,61 @@ class Test(unittest.TestCase):
             self.assertTrue("name" in geom, msg)
             self.assertEqual(geom["name"], geo_name, msg)
         
-        # identify geometries in tests.data files
+    def test_tests_data(self):
+        """
+        identify geometries in tests.data files
+        """
+        dgc = diffractometers.DiffractometerGeometryCatalog()
+        
         test_files = [
             ['issue109_data.txt', 1, 'fourc.standard'],         # 8-ID-I
             ['issue119_data.txt', 1, 'spec.standard'],          # USAXS
             ['issue161_spock_spec_file', 1, 'spec.standard'],   # SPOCK
-            ['JL124_1.spc', 1, 'spec'],                         # 33-ID-D
+            ['JL124_1.spc', 1, 'spec'],                         # predates #o (mnemonics) lines
             #['test_3_error.spec', 1, 'spec'],                  # FIXME: #UXML, plugin has error
-            ['test_3.spec', 1, 'spec'],                         # 33-ID-D
-            ['test_4.spec', 1, 'spec'],                         # 33-ID-D
+            ['test_3.spec', 1, 'spec'],                         # predates #o (mnemonics) lines
+            ['test_4.spec', 1, 'spec'],                         # predates #o (mnemonics) lines
         ]
         for triplet in test_files:
-            fn, sn, geo_nm = triplet
+            filename, scan_number, geo_name = triplet
             scan = spec.SpecDataFile(os.path.join(
-                _test_path, "tests", "data", fn)
-            ).getScan(triplet[sn])
+                _test_path, "tests", "data", filename)
+            ).getScan(scan_number)
             geom = dgc.match(scan)
             self.assertIsNotNone(geom)
-            self.assertEqual(geom, geo_nm)
+            self.assertEqual(geom, geo_name)
         
-        # identify geometries in src.spec2nexus.data files
-        # FIXME: spec2nexus should use #o when available
+    def test_src_spec2nexus_data(self):
+        """
+        identify geometries in src.spec2nexus.data files
+        """
+        dgc = diffractometers.DiffractometerGeometryCatalog()
+        
         test_files = [
-            ['33bm_spec.dat', 1, 'spec'],           # TODO: matches fourc.standard?
-            ['33id_spec.dat', 1, 'spec.standard'],  # TODO: why not psic?
-            ['user6idd.dat', 1, 'spec'],            # TODO: why not a kappa or sixc?
+            ['02_03_setup.dat', 1, 'spec.standard'],
+            ['03_06_JanTest.dat', 1, 'spec.standard'],
+            ['05_02_test.dat', 1, 'spec.standard'],
+            ['33bm_spec.dat', 1, 'spec'],           # predates #o (mnemonics) lines
+            ['33id_spec.dat', 1, 'spec.standard'],  # psic but predates #o (mnemonics) lines
+            ['APS_spec_data.dat', 1, 'spec.standard'],
+            ['CdOsO', 1, 'spec'],
+            ['CdSe', 1, 'spec'],
+            ['lmn40.spe', 1, 'spec.standard'],
+            ['mca_spectra_example.dat', 1, 'spec.standard'],
+            ['spec_from_spock.spc', 1, 'spec.standard'],
+            ['startup_1.spec', 1, 'spec'],
+            ['usaxs-bluesky-specwritercallback.dat', 2, 'spec.standard'],
+            ['user6idd.dat', 1, 'spec'],            # predates #o (mnemonics) lines
+            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', 1, 'spec'],
         ]
         for triplet in test_files:
-            fn, sn, geo_nm = triplet
+            file_name, scan_number, geo_name = triplet
             scan = spec.SpecDataFile(os.path.join(
-                _path, "spec2nexus", "data", fn)
-            ).getScan(triplet[sn])
+                _path, "spec2nexus", "data", file_name)
+            ).getScan(scan_number)
             geom = dgc.match(scan)
-            self.assertIsNotNone(geom, fn)
-            self.assertEqual(geom, geo_nm, fn)
+            self.assertIsNotNone(geom, file_name)
+            self.assertEqual(geom, geo_name, file_name)
 
 
 def suite(*args, **kw):
