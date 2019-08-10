@@ -105,8 +105,8 @@ class Test(unittest.TestCase):
                 _test_path, "tests", "data", filename)
             ).getScan(scan_number)
             geom = dgc.match(scan)
-            self.assertIsNotNone(geom)
-            self.assertEqual(geom, geo_name)
+            self.assertIsNotNone(geom, filename)
+            self.assertEqual(geom, geo_name, filename)
         
     def test_src_spec2nexus_data(self):
         """

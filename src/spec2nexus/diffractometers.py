@@ -86,11 +86,12 @@ class DiffractometerGeometryCatalog:
         return self.db.get(nm, default)
     
     def get_default_geometry(self):
+        " "
         return self._default_geometry
     
     def hasGeometry(self, geo_name):
         """
-        is the ``geo_name`` geometry defined?
+        Is the ``geo_name`` geometry defined?  True or False
         """
         nm, variant = self._split_name_variation_(geo_name)
         if variant is None:
@@ -154,5 +155,5 @@ class DiffractometerGeometryCatalog:
             msg += ", scan: " + str(scan)
             logger.debug(msg)
         elif len(match) == 0:
-            match = [self._default_geometry["name"]]
+            match = [self.get_default_geometry()["name"]]
         return match[0]
