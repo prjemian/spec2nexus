@@ -140,14 +140,27 @@ class DiffractometerGeometryCatalog:
             scan_G4 = scan.G['G4'].split()
         except KeyError:
             scan_G0, scan_G4 = [], []
-        if scan_G0 == ['0',] and  scan_G4 == ['0',]:
-            # no_hkl case
-            scan_G0, scan_G4 = [], []
 
+        if hasattr(scan, "G"):
+            scan_G0 = scan.G.get("G0", "0").split()
+            if scan_G0 == ['0',]:
+                scan_G0 = []
+
+            if "G4" in scan.G:
+                scan_G4 = scan.G["G4"].split()
+                if scan_G4 == ['0',]:
+                    scan_G4 = []
+            else:
+                scan_G4 = None
+
+        else:
+            scan_G0, scan_G4 = None, None
+
+        debug = True
         for geo_name, geometry in self.db.items():
             if len(scan_G0) != len(geometry["G"]):
                 continue
-            if len(scan_G4) != len(geometry["Q"]):
+            if scan_G4 is not None and len(scan_G4) != len(geometry["Q"]):
                 continue
             
             for var_name, variant in geometry["variations"].items():
