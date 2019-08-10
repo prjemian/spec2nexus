@@ -1,4 +1,17 @@
-{ 'fivec': { 'name': "fivec",
+{
+  'spec': { 'name': "spec",
+             'G': [],
+            'Q': [],
+            'modes': [],
+            'numgeo': 0,
+             'variations': {
+             	'standard': {
+             		'motors': [], 
+             		'other-motors': []
+             	}
+			 }
+		},
+ 'fivec': { 'name': "fivec",
              'G': [ ('g_mode', 'spectrometer mode'),
                     ('g_sect', 'sector'),
                     ('g_frz', 'freeze'),
@@ -442,19 +455,6 @@
                                                       'mu',
                                                       'gam'],
                                           'other-motors': []}}},
-  'spec': { 'name': "spec",
-            'default': True,
-             'G': [],
-            'Q': [],
-            'modes': [],
-            'numgeo': 0,
-             'variations': {
-             	'standard': {
-             		'motors': [], 
-             		'other-motors': []
-             	}
-			 }
-		},
   'surf': { 'name': "surf",
              'G': [ ('g_mode', 'sign of phi rotation if allowed'),
                    ('g_h0', 'h units'),

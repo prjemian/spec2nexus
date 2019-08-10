@@ -28,37 +28,6 @@ import os
 _path = os.path.dirname(__file__)
 DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 
-# from collections import namedtuple
-# 
-# 
-# Term = namedtuple('Term', 'var description')
-# 
-# 
-# class Diffractometer:
-#     """
-#     Describe a diffractometer in SPEC
-#     """
-#     
-#     def __init__(self, name):
-#         self.geometry_name = None
-#         self.name = name
-#         self.variations = {}
-#         self.modes = []
-#         self.geometry = []          # G[], #G0
-#         self.constraints = []       # A[], #G4
-# 
-# 
-# 
-# class DiffractometerVariation:
-#     """
-#     lists of motors (mnemonics) that describe a diffractometer variation in SPEC
-#     """
-#     
-#     def __init__(self, name, motors=[], others=[]):
-#         self.name = name
-#         self.first_motors = motors      # required to come first, in order
-#         self.additional_motors = others # required to be defined
-
 
 class DiffractometerGeometryCatalog:
     """
@@ -71,10 +40,7 @@ class DiffractometerGeometryCatalog:
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
         
-        self._default_geometry = None
-        for geom in self.db.values():
-            if geom.get("default"):
-                self._default_geometry = geom
+        self._default_geometry = list(self.db.values())[0]
     
     def __str__(self):
         s = f"DiffractometerGeometryCatalog(number={len(self.db)})"
@@ -132,6 +98,42 @@ class DiffractometerGeometryCatalog:
         """
         find the ``geo_name`` geometry that matches the ``scan``
         """
-        match = None
+        match = []
+        scan_positioners = [k.lower() for k in scan.positioner.keys()]
+        if len(scan_positioners) > 0 and scan_positioners[0] == "2-theta":
+            scan_positioners[0] = 'tth'
+        try:
+            scan_G0 = scan.G['G0'].split()
+            scan_G4 = scan.G['G4'].split()
+        except KeyError:
+            scan_G0, scan_G4 = [], []
+        if scan_G0 == ['0',] and  scan_G4 == ['0',]:
+            # no_hkl case
+            scan_G0, scan_G4 = [], []
         for geo_name, geometry in self.db.items():
-            pass
+            for var_name, variant in geometry["variations"].items():
+                n_motors = len(variant["motors"])
+                if scan_positioners[:n_motors] != variant["motors"]:
+                    continue
+                others_match = True
+                for mne in variant["other-motors"]:
+                    if mne not in scan.positioner:
+                        others_match = False
+                        break
+                if not others_match:
+                    continue
+                # match length of scan's #G0 line
+                if len(scan_G0) != len(geometry["G"]):
+                    continue
+                # match length of scan's #G4 line
+                if len(scan_G4) != len(geometry["Q"]):
+                    continue
+                match.append(f"{geo_name}.{var_name}")
+        # if len(match) > 1:
+        #     print(f"file: {scan.specFile}")
+        #     print(f"scan: {scan}")
+        #     print(f"scan geometry match is not unique! {match}")
+        #     print("picking the first one")
+        if len(match) == 0:
+            match = [self._default_geometry["name"]]
+        return match[0]

@@ -84,17 +84,40 @@ class Test(unittest.TestCase):
             self.assertTrue("name" in geom, msg)
             self.assertEqual(geom["name"], geo_name, msg)
         
-        # default geometry declared if no specific geometry matches
-        self.assertIsNotNone(dgc._default_geometry)
-        self.assertEqual(dgc.get_default_geometry()["name"], "spec", msg)
+        # identify geometries in tests.data files
+        test_files = [
+            ['issue109_data.txt', 1, 'fourc.standard'],         # 8-ID-I
+            ['issue119_data.txt', 1, 'spec.standard'],          # USAXS
+            ['issue161_spock_spec_file', 1, 'spec.standard'],   # SPOCK
+            ['JL124_1.spc', 1, 'spec'],                         # 33-ID-D
+            #['test_3_error.spec', 1, 'spec'],                  # FIXME: #UXML, plugin has error
+            ['test_3.spec', 1, 'spec'],                         # 33-ID-D
+            ['test_4.spec', 1, 'spec'],                         # 33-ID-D
+        ]
+        for triplet in test_files:
+            fn, sn, geo_nm = triplet
+            scan = spec.SpecDataFile(os.path.join(
+                _test_path, "tests", "data", fn)
+            ).getScan(triplet[sn])
+            geom = dgc.match(scan)
+            self.assertIsNotNone(geom)
+            self.assertEqual(geom, geo_nm)
         
-#         # identify a known geometry
-#         sdf = spec.SpecDataFile(os.path.join(
-#             _test_path, "tests", "data", "issue109_data.txt"))
-#         scan = sdf.getScan(1)
-#         geom = dgc.match(scan)
-#         self.assertIsNotNone(geom)
-#         self.assertEqual(geom["name"], "fourc")
+        # identify geometries in src.spec2nexus.data files
+        # FIXME: spec2nexus should use #o when available
+        test_files = [
+            ['33bm_spec.dat', 1, 'spec'],           # TODO: matches fourc.standard?
+            ['33id_spec.dat', 1, 'spec.standard'],  # TODO: why not psic?
+            ['user6idd.dat', 1, 'spec'],            # TODO: why not a kappa or sixc?
+        ]
+        for triplet in test_files:
+            fn, sn, geo_nm = triplet
+            scan = spec.SpecDataFile(os.path.join(
+                _path, "spec2nexus", "data", fn)
+            ).getScan(triplet[sn])
+            geom = dgc.match(scan)
+            self.assertIsNotNone(geom, fn)
+            self.assertEqual(geom, geo_nm, fn)
 
 
 def suite(*args, **kw):
