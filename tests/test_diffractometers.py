@@ -36,6 +36,10 @@ class Test(unittest.TestCase):
         expected = "DiffractometerGeometryCatalog(number=20)"
         self.assertEqual(str(dgc), expected)
         
+        self.assertTrue(hasattr(dgc, "_default_geometry"))
+        self.assertIsNotNone(dgc._default_geometry)
+        self.assertEqual(dgc.get_default_geometry()["name"], "spec")
+        
         nm, variant = dgc._split_name_variation_("only")
         self.assertEqual(nm, "only")
         self.assertIsNone(variant)
@@ -57,11 +61,11 @@ class Test(unittest.TestCase):
         
         geos = dgc.geometries()
         expected = [
-            'fivec', 'fourc', 'oscam', 'pi1go', 'psic', 's1d2', 's2d2', 
-            'sevc', 'sixc', 'spec', 'surf', 'suv', 'trip', 'twoc', 
+            'spec', 'fivec', 'fourc', 'oscam', 'pi1go', 'psic', 's1d2', 's2d2', 
+            'sevc', 'sixc', 'surf', 'suv', 'trip', 'twoc', 
             'twoc_old', 'w21h', 'w21v', 'zaxis', 'zaxis_old', 'zeta']
         self.assertEqual(len(geos), 20)
-        self.assertEqual(sorted(geos), expected)
+        self.assertEqual(geos, expected)
 
         geos = dgc.geometries(True)
         expected = [
