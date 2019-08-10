@@ -23,39 +23,41 @@ Describe SPEC #G control lines
 
 """
 
+import os
 
-DICT_FILE = "diffractometer-geometries.dict"
+_path = os.path.dirname(__file__)
+DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 
-from collections import namedtuple
-
-
-Term = namedtuple('Term', 'var description')
-
-
-class Diffractometer:
-    """
-    Describe a diffractometer in SPEC
-    """
-    
-    def __init__(self, name):
-        self.geometry_name = None
-        self.name = name
-        self.variations = {}
-        self.modes = []
-        self.geometry = []          # G[], #G0
-        self.constraints = []       # A[], #G4
-
-
-
-class DiffractometerVariation:
-    """
-    lists of motors (mnemonics) that describe a diffractometer variation in SPEC
-    """
-    
-    def __init__(self, name, motors=[], others=[]):
-        self.name = name
-        self.first_motors = motors      # required to come first, in order
-        self.additional_motors = others # required to be defined
+# from collections import namedtuple
+# 
+# 
+# Term = namedtuple('Term', 'var description')
+# 
+# 
+# class Diffractometer:
+#     """
+#     Describe a diffractometer in SPEC
+#     """
+#     
+#     def __init__(self, name):
+#         self.geometry_name = None
+#         self.name = name
+#         self.variations = {}
+#         self.modes = []
+#         self.geometry = []          # G[], #G0
+#         self.constraints = []       # A[], #G4
+# 
+# 
+# 
+# class DiffractometerVariation:
+#     """
+#     lists of motors (mnemonics) that describe a diffractometer variation in SPEC
+#     """
+#     
+#     def __init__(self, name, motors=[], others=[]):
+#         self.name = name
+#         self.first_motors = motors      # required to come first, in order
+#         self.additional_motors = others # required to be defined
 
 
 class DiffractometerGeometryCatalog:
@@ -68,6 +70,11 @@ class DiffractometerGeometryCatalog:
     def __init__(self):
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
+        
+        self._default_geometry = None
+        for geom in self.db.values():
+            if geom.get("default"):
+                self._default_geometry = geom
     
     def __str__(self):
         s = f"DiffractometerGeometryCatalog(number={len(self.db)})"
@@ -90,24 +97,36 @@ class DiffractometerGeometryCatalog:
                 result.append(nm)
         return result
     
+    def _split_name_variation_(self, geo_name):
+        """
+        split geo_name into geometry name and variation
+        """
+        nm = geo_name
+        try:
+            nm, variant = geo_name.split(".")
+        except ValueError:
+            variant = None
+        return nm, variant
+    
     def get(self, geo_name, default=None):
         """
         return dictionary for diffractometer geometry ``geo_name``
         """
-        return self.db.get(geo_name, default)
+        nm = self._split_name_variation_(geo_name)[0]
+        return self.db.get(nm, default)
+    
+    def get_default_geometry(self):
+        return self._default_geometry
     
     def hasGeometry(self, geo_name):
         """
         is the ``geo_name`` geometry defined?
         """
-        try:
-            nm, variant = geo_name.split(".")
-            if nm in self.db:
-                return variant in self.db[nm]["variations"]
-            else:
-                return False
-        except ValueError:
-            return geo_name in self.db
+        nm, variant = self._split_name_variation_(geo_name)
+        if variant is None:
+            return nm in self.db
+        else:
+            return variant in self.db[nm]["variations"]
     
     def match(self, scan):
         """
@@ -116,15 +135,3 @@ class DiffractometerGeometryCatalog:
         match = None
         for geo_name, geometry in self.db.items():
             pass
-
-
-def main():
-    dgc = DiffractometerGeometryCatalog()
-    # print("\n".join(dgc.geometries()))
-    # print("\n".join(dgc.geometries(True)))
-    for key in "fourc fivec sixc fourc.kappa fivec.kappa sixc.kappa".split():
-        print(key, dgc.hasGeometry(key))
-
-
-if __name__ == "__main__":
-    main()
