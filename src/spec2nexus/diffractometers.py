@@ -159,13 +159,16 @@ class DiffractometerGeometryCatalog:
         debug = True
         for geo_name, geometry in self.db.items():
             if len(scan_G0) != len(geometry["G"]):
+                logger.debug("#G0 G[] did not match %s", geo_name)
                 continue
             if scan_G4 is not None and len(scan_G4) != len(geometry["Q"]):
+                logger.debug("#G4 Q[] did not match %s", geo_name)
                 continue
             
             for var_name, variant in geometry["variations"].items():
                 n_motors = len(variant["motors"])
                 if scan_positioners[:n_motors] != variant["motors"]:
+                    logger.debug("motors did not match %s", geo_name)
                     continue
 
                 others_match = True
@@ -174,6 +177,7 @@ class DiffractometerGeometryCatalog:
                         others_match = False
                         break
                 if not others_match:
+                    logger.debug("other-motors did not match %s (mne=%s)", geo_name, mne)
                     continue
 
                 match.append("%s.%s" % (geo_name, var_name))
