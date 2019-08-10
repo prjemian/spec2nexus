@@ -303,7 +303,7 @@ class SpecDataFile(object):
     def getScan(self, scan_number=0):
         """return the scan number indicated, None if not found"""
         if int(float(scan_number)) < 1:
-            # relative scan referrence
+            # relative scan reference
             scanlist = self.getScanNumbers()
             scan_number = list(scanlist)[int(scan_number)]
         scan_number = str(scan_number)

@@ -79,7 +79,7 @@ class Test(unittest.TestCase):
         self.assertEqual(sorted(geos), expected)
         
         for geo_name in dgc.geometries():
-            msg = f"name='{geo_name}' defined?"
+            msg = "name='%s' defined?" % geo_name
             geom = dgc.get(geo_name)
             self.assertTrue("name" in geom, msg)
             self.assertEqual(geom["name"], geo_name, msg)
@@ -91,13 +91,13 @@ class Test(unittest.TestCase):
         dgc = diffractometers.DiffractometerGeometryCatalog()
         
         test_files = [
-            ['issue109_data.txt', 1, 'fourc.standard'],         # 8-ID-I
-            ['issue119_data.txt', 1, 'spec.standard'],          # USAXS
-            ['issue161_spock_spec_file', 1, 'spec.standard'],   # SPOCK
-            ['JL124_1.spc', 1, 'spec'],                         # predates #o (mnemonics) lines
-            #['test_3_error.spec', 1, 'spec'],                  # FIXME: #UXML, plugin has error
-            ['test_3.spec', 1, 'spec'],                         # predates #o (mnemonics) lines
-            ['test_4.spec', 1, 'spec'],                         # predates #o (mnemonics) lines
+            ['issue109_data.txt', -1, 'fourc.standard'],         # 8-ID-I
+            ['issue119_data.txt', -1, 'spec.standard'],          # USAXS
+            ['issue161_spock_spec_file', -1, 'spec.standard'],   # SPOCK
+            ['JL124_1.spc', -1, 'spec'],                         # predates #o (mnemonics) lines
+            #['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
+            ['test_3.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
+            ['test_4.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
         ]
         for triplet in test_files:
             filename, scan_number, geo_name = triplet
@@ -115,21 +115,21 @@ class Test(unittest.TestCase):
         dgc = diffractometers.DiffractometerGeometryCatalog()
         
         test_files = [
-            ['02_03_setup.dat', 1, 'spec.standard'],
-            ['03_06_JanTest.dat', 1, 'spec.standard'],
-            ['05_02_test.dat', 1, 'spec.standard'],
-            ['33bm_spec.dat', 1, 'spec'],           # predates #o (mnemonics) lines
-            ['33id_spec.dat', 1, 'spec.standard'],  # psic but predates #o (mnemonics) lines
-            ['APS_spec_data.dat', 1, 'spec.standard'],
-            ['CdOsO', 1, 'spec'],
-            ['CdSe', 1, 'spec'],
-            ['lmn40.spe', 1, 'spec.standard'],
-            ['mca_spectra_example.dat', 1, 'spec.standard'],
-            ['spec_from_spock.spc', 1, 'spec.standard'],
+            ['02_03_setup.dat', -1, 'spec.standard'],
+            ['03_06_JanTest.dat', -1, 'spec.standard'],
+            ['05_02_test.dat', -1, 'spec.standard'],
+            ['33bm_spec.dat', -1, 'spec'],           # predates #o (mnemonics) lines
+            ['33id_spec.dat', -1, 'spec.standard'],  # psic but predates #o (mnemonics) lines
+            ['APS_spec_data.dat', -1, 'spec.standard'],
+            ['CdOsO', -1, 'spec'],
+            ['CdSe', -1, 'spec'],
+            ['lmn40.spe', -1, 'spec.standard'],
+            ['mca_spectra_example.dat', -1, 'spec.standard'],
+            ['spec_from_spock.spc', -1, 'spec.standard'],
             ['startup_1.spec', 1, 'spec'],
-            ['usaxs-bluesky-specwritercallback.dat', 2, 'spec.standard'],
-            ['user6idd.dat', 1, 'spec'],            # predates #o (mnemonics) lines
-            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', 1, 'spec'],
+            ['usaxs-bluesky-specwritercallback.dat', -1, 'spec.standard'],
+            ['user6idd.dat', -1, 'spec'],            # predates #o (mnemonics) lines
+            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', -1, 'spec'],
         ]
         for triplet in test_files:
             file_name, scan_number, geo_name = triplet

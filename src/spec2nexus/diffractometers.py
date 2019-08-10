@@ -46,7 +46,8 @@ class DiffractometerGeometryCatalog:
         self._default_geometry = list(self.db.values())[0]
     
     def __str__(self):
-        s = f"DiffractometerGeometryCatalog(number={len(self.db)})"
+        v = "number=" + str(len(self.db))
+        s = "DiffractometerGeometryCatalog(%s)" % v
         return s
     
     def geometries(self, variations=False):
@@ -61,7 +62,7 @@ class DiffractometerGeometryCatalog:
         result = []
         for nm, geometry in self.db.items():
             if variations:
-                result += [f"{nm}.{s}" for s in geometry["variations"].keys()]
+                result += ["%s.%s" % (nm, s) for s in geometry["variations"].keys()]
             else:
                 result.append(nm)
         return result
@@ -145,12 +146,12 @@ class DiffractometerGeometryCatalog:
                 if len(scan_G4) != len(geometry["Q"]):
                     continue
 
-                match.append(f"{geo_name}.{var_name}")
+                match.append("%s.%s" % (geo_name, var_name))
         if len(match) > 1:
-            msg = f"scan geometry match is not unique! {match}"
-            msg += ", picking the first one"
-            msg += f", file: {scan.specFile}"
-            msg += f", scan: {scan}"
+            msg = "scan geometry match is not unique!"
+            msg += "  Picking the first one from: " + str(match)
+            msg += ", file: " + scan.specFile
+            msg += ", scan: " + str(scan)
             logger.debug(msg)
         elif len(match) == 0:
             match = [self._default_geometry["name"]]
