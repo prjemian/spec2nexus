@@ -5,12 +5,9 @@
 		'Q': [],
 		'modes': [],
 		'numgeo': 0,
-		'variations': {
-			'standard': {
-				'motors': [], 
-				'other-motors': []
-			}
-		}
+		'variations': [
+			{'name': 'default', 'motors': [], 'other-motors': []}
+		]
 	},
 	'fivec': {
 		'name': "fivec",
@@ -66,16 +63,18 @@
 		           'Beta fixed, Mu varies',
 		           'Specular'],
 		'numgeo': 5,
-		'variations': {
-			'standard': {
-				'motors': ['del', 'th', 'chi', 'phi', 'mu'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['del', 'th', 'chi', 'phi', 'mu'], 
 				'other-motors': []
 			},
-			'kappa': {
-				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'],
+			{
+				'name': 'kappa', 
+				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'fourc': { 
 		'name': "fourc",
@@ -141,31 +140,38 @@
 		           'Beta fixed',
 		           'Theta fixed'],
 		'numgeo': 4,
-		'variations': { 
-			'3axis': { 
-				'motors': ['tth', 'th', 'chi', 'phi'],
-				'other-motors': [ 'thR', 'tthR', 'sy', 'ay', 'dy', 'mth', 'ath']},
-			'kappa': { 
-				'motors': [ 'tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['tth', 'th', 'chi', 'phi'], 
 				'other-motors': []
 			},
-			'omega': { 
-				'motors': ['tth', 'om', 'chi', 'phi'],
+			{
+				'name': 'kappa', 
+				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'], 
 				'other-motors': []
 			},
-			'picker': { 
-				'motors': ['tth', 'th', 'chi', 'phi'],
+			{
+				'name': 'omega', 
+				'motors': ['tth', 'om', 'chi', 'phi'], 
+				'other-motors': []
+			},
+			{
+				'name': 'picker', 
+				'motors': ['tth', 'th', 'chi', 'phi'], 
 				'other-motors': ['chiR', 'phiR']
 			},
-			'standard': { 
-				'motors': [ 'tth', 'th', 'chi', 'phi'],
-				'other-motors': []
+			{
+				'name': '3axis', 
+				'motors': ['tth', 'th', 'chi', 'phi'], 
+				'other-motors': ['thR', 'tthR', 'sy', 'ay', 'dy', 'mth', 'ath']
 			},
-			'xtalogic': { 
-				'motors': [ 'tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
+			{
+				'name': 'xtalogic', 
+				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'], 
 				'other-motors': ['xlhgt']
 			}
-		}
+		]
 	},
 	'oscam': {
 		'name': "oscam",
@@ -173,12 +179,9 @@
 		'Q': [],
 		'modes': [],
 		'numgeo': 0,
-		'variations': {
-			'standard': {
-				'motors': [], 
-				'other-motors': []
-			}
-		}
+		'variations': [
+			{'name': 'default', 'motors': [], 'other-motors': []}
+		]
 	},
 	'pi1go': { 
 		'name': "pi1go",
@@ -196,12 +199,13 @@
 		],
 		'modes': [],
 		'numgeo': 3,
-		'variations': { 
-			'standard': {
-				'motors': ['ome', 'alf', 'gam'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['ome', 'alf', 'gam'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'psic': {
 		'name': "psic",
@@ -268,28 +272,33 @@
 		],
 		'modes': [],
 		'numgeo': 6,
-		'variations': {
-			'standard': {
+		'variations': [
+			{
+				'name': 'default', 
 				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu'], 
 				'other-motors': []
 			},
-			'standard+daz': {
+			{
+				'name': 'kappa', 
+				'motors': ['del', 'eta', 'kap', 'keta', 'kphi'], 
+				'other-motors': []
+			},
+			{
+				'name': '+daz', 
 				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu', 'daz'], 
 				'other-motors': []
 			},
-			's2d2': {
+			{
+				'name': 's2d2', 
 				'motors': ['del', 'eta', 'nu', 'mu'], 
 				'other-motors': []
 			},
-			's2d2+daz': {
+			{
+				'name': 's2d2+daz', 
 				'motors': ['del', 'eta', 'nu', 'mu', 'daz'], 
 				'other-motors': []
-			},
-			'kappa': {
-				'motors': ['del', 'eta', 'kap', 'keta', 'kphi'], 
-				'other-motors': []
 			}
-		}
+		]
 	},
 	's1d2': {
 		'name': "s1d2",
@@ -309,11 +318,13 @@
 		],
 		'modes': [],
 		'numgeo': 3,
-		'variations': { 
-			'standard': { 'motors': ['ome', 'sig', 'tau'],
-			'other-motors': []
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['ome', 'sig', 'tau'], 
+				'other-motors': []
 			}
-		}
+		]
 	},
 	's2d2': { 
 		'name': "s2d2",
@@ -346,12 +357,13 @@
 		],
 		'modes': [],
 		'numgeo': 4,
-		'variations': { 
-			'standard': { 
-				'motors': [ 'gam', 'del', 'chi', 'phi'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['gam', 'del', 'chi', 'phi'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'sevc': { 
 		'name': "sevc",
@@ -404,12 +416,13 @@
 			'Phi fixed, Chi fixed'
 		],
 		'numgeo': 7,
-		'variations': { 
-			'standard': { 
-				'motors': [ 'rho', 'nu', 'del', 'mu', 'eta', 'chi', 'phi'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['rho', 'nu', 'del', 'mu', 'eta', 'chi', 'phi'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'sixc': { 
 		'name': "sixc",
@@ -482,12 +495,13 @@
 			'Chi, Phi and Mu fixed'
 		],
 		'numgeo': 6,
-		'variations': { 
-			'standard': { 
-				'motors': [ 'del', 'th', 'chi', 'phi', 'mu', 'gam'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'gam'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'surf': { 
 		'name': "surf",
@@ -508,12 +522,9 @@
 		],
 		'modes': [],
 		'numgeo': 0,
-		'variations': {
-			'standard': {
-				'motors': [], 
-				'other-motors': []
-			}
-		}
+		'variations': [
+			{'name': 'default', 'motors': [], 'other-motors': []}
+		]
 	},
 	'suv': { 
 		'name': "suv",
@@ -557,12 +568,13 @@
 			'Alpha_R equals Beta_R'
 		],
 		'numgeo': 6,
-		'variations': { 
-			'standard': { 
-				'motors': [ 'del', 'ome', 'alf', 'bet', 'khi1', 'khi2'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['del', 'ome', 'alf', 'bet', 'khi1', 'khi2'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'trip': { 
 		'name': "trip",
@@ -570,12 +582,13 @@
 		'Q': [('H', ''), ('K', ''), ('L', ''), ('LAMBDA', '')],
 		'modes': [],
 		'numgeo': 4,
-		'variations': { 
-			'standard': { 
-				'motors': ['tth', 'th', 'chi', 'phi'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['tth', 'th', 'chi', 'phi'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'twoc': { 
 		'name': "twoc",
@@ -583,12 +596,13 @@
 		'Q': [('H', ''), ('K', ''), ('LAMBDA', '')],
 		'modes': [],
 		'numgeo': 2,
-		'variations': { 
-			'standard': { 
-				'motors': ['tth', 'th'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['tth', 'th'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'twoc_old': { 
 		'name': "twoc_old",
@@ -606,12 +620,13 @@
 		],
 		'modes': [],
 		'numgeo': 2,
-		'variations': { 
-			'standard': { 
-				'motors': ['tth', 'th'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['tth', 'th'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'w21h': { 
 		'name': "w21h",
@@ -644,12 +659,13 @@
 		],
 		'modes': [],
 		'numgeo': 4,
-		'variations': {
-			'standard': {
-				'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'w21v': { 
 		'name': "w21v",
@@ -680,24 +696,28 @@
 		],
 		'modes': [],
 		'numgeo': 4,
-		'variations': {
-			'standard': {
+		'variations': [
+			{
+				'name': 'default', 
 				'motors': ['gam', 'mu', 'ome', 'alf'], 
 				'other-motors': []
 			},
-			'id10b': {
+			{
+				'name': 'id10b', 
 				'motors': ['del', 'gam', 'om', 'th'], 
 				'other-motors': []
 			},
-			'd32': {
+			{
+				'name': 'd32', 
 				'motors': ['phi', 'psi', 'ome', 'the', 'hgl', 'dht'], 
 				'other-motors': []
 			},
-			'gmci': {
+			{
+				'name': 'gmci', 
 				'motors': ['phi', 'psi', 'ome', 'the'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'zaxis': { 
 		'name': "zaxis",
@@ -744,12 +764,13 @@
 			'Theta fixed'
 		],
 		'numgeo': 4,
-		'variations': { 
-			'standard': { 
-				'motors': ['del', 'th', 'mu', 'gam'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['del', 'th', 'mu', 'gam'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'zaxis_old': {
 		'name': "zaxis_old",
@@ -763,16 +784,18 @@
 		'Q': [('H', ''), ('K', ''), ('L', ''), ('LAMBDA', '')],
 		'modes': [],
 		'numgeo': 4,
-		'variations': {
-			'standard': {
+		'variations': [
+			{
+				'name': 'default', 
 				'motors': ['tth', 'th', 'alf', 'gam'], 
 				'other-motors': []
 			},
-			'beta': {
-				'motors': ['tth', 'th', 'alf', 'gam', 'beta'],
+			{
+				'name': 'beta', 
+				'motors': ['tth', 'th', 'alf', 'gam', 'beta'], 
 				'other-motors': []
 			}
-		}
+		]
 	},
 	'zeta': { 
 		'name': "zeta",
@@ -798,11 +821,12 @@
 		],
 		'modes': ['Alpha fixed', 'Beta fixed', 'Alpha=Beta'],
 		'numgeo': 4,
-		'variations': {
-			'standard': {
-				'motors': ['nu', 'zeta', 'del', 'th'],
+		'variations': [
+			{
+				'name': 'default', 
+				'motors': ['nu', 'zeta', 'del', 'th'], 
 				'other-motors': []
 			}
-		}
+		]
 	}
 }
