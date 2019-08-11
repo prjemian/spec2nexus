@@ -1,3 +1,5 @@
+coverage
+docopt
 h5py
 lxml
 matplotlib
