@@ -32,6 +32,8 @@ class Test(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             diffractometers.DiffractometerGeometryCatalog()
         
+        self.assertTrue(os.path.exists(diffractometers.DICT_FILE))
+
         dgc = diffractometers.get_geometry_catalog()
         self.assertEqual(len(dgc.db), 20)
     
