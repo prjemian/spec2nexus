@@ -30,6 +30,18 @@ class Test(unittest.TestCase):
         dgc = diffractometers.get_geometry_catalog()
         self.assertEqual(len(dgc.db), 20)
     
+    def test_split_name_variation(self):
+        nm, variant = diffractometers.split_name_variation("only")
+        self.assertEqual(nm, "only")
+        self.assertIsNone(variant)
+        nm, variant = diffractometers.split_name_variation("two.parts")
+        self.assertEqual(nm, "two")
+        self.assertIsNotNone(variant)
+        self.assertEqual(variant, "parts")
+        nm, variant = diffractometers.split_name_variation("more.than.two.parts")
+        self.assertEqual(nm, "more.than.two.parts")
+        self.assertIsNone(variant)
+    
     def test_class_DiffractometerGeometryCatalog(self):
         dgc1 = diffractometers.get_geometry_catalog()
         self.assertEqual(dgc1, diffractometers._geometry_catalog)
@@ -51,17 +63,6 @@ class Test(unittest.TestCase):
         self.assertTrue(hasattr(dgc, "_default_geometry"))
         self.assertIsNotNone(dgc._default_geometry)
         self.assertEqual(dgc.get_default_geometry()["name"], "spec")
-        
-        nm, variant = diffractometers.split_name_variation("only")
-        self.assertEqual(nm, "only")
-        self.assertIsNone(variant)
-        nm, variant = diffractometers.split_name_variation("two.parts")
-        self.assertEqual(nm, "two")
-        self.assertIsNotNone(variant)
-        self.assertEqual(variant, "parts")
-        nm, variant = diffractometers.split_name_variation("more.than.two.parts")
-        self.assertEqual(nm, "more.than.two.parts")
-        self.assertIsNone(variant)
         
         # spot tests verify method has_geometry()
         self.assertTrue(dgc.has_geometry("fourc"))
