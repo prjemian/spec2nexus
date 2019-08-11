@@ -89,6 +89,9 @@ class Diffractometer:
                     key, description = gonio["G"][i]
                     G.append(KeyDescriptionValue(key, description, v))
         self.geometry = G
+        
+        # TODO: #G1 U[]
+        # TODO: #G3 UB[]
 
         Q = []
         if "G4" in scan.G:

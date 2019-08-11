@@ -135,6 +135,8 @@ class Test(unittest.TestCase):
             self.assertIsNotNone(gonio.geometry)
             self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
             self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
+            # TODO: #G1 U[]
+            # TODO: #G3 UB[]
             
     def test_src_spec2nexus_data(self):
         """
@@ -179,6 +181,8 @@ class Test(unittest.TestCase):
             self.assertIsNotNone(gonio.geometry)
             self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
             self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
+            # TODO: #G1 U[]
+            # TODO: #G3 UB[]
     
     def test_class_Diffractometer(self):
         gonio = diffractometers.Diffractometer("big.little")
