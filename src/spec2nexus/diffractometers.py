@@ -21,6 +21,14 @@ Describe SPEC #G control lines
   #G3 ...          geometry parameters from UB[] array (orientation matrix)
   #G4 ...          geometry parameters from Q[] array (lambda, frozen angles, cut points, etc)
 
+API
+
+.. autosummary::
+   
+    ~Diffractometer
+    ~DiffractometerGeometryCatalog
+    ~split_name_variation
+
 """
 
 import logging
@@ -47,19 +55,35 @@ def split_name_variation(geo_name):
 class Diffractometer:
     """
     describe the diffractometer for the scan
+
+    .. autosummary::
+       
+        ~parse
     """
     
     def __init__(self, geo_name):
+        self.geometry_name_full = geo_name
         self.geometry_name, self.variant = split_name_variation(geo_name)
         self.geometry = None        # #G0 / G[]
         self.orientation = None     # #G1 / U[]
         self.constraints = None     # #G3 / Q[]
         self.ub_matrix = None       # #G4 / UB[] orientation matrix
+    
+    def parse(self, scan):
+        pass
 
 
 class DiffractometerGeometryCatalog:
     """
     catalog of the diffractometer geometries known to SPEC
+
+    .. autosummary::
+       
+        ~geometries
+        ~get
+        ~get_default_geometry
+        ~has_geometry
+        ~match
     """
     
     db = {}
@@ -103,7 +127,7 @@ class DiffractometerGeometryCatalog:
         " "
         return self._default_geometry
     
-    def hasGeometry(self, geo_name):
+    def has_geometry(self, geo_name):
         """
         Is the ``geo_name`` geometry defined?  True or False
         """
@@ -126,12 +150,12 @@ class DiffractometerGeometryCatalog:
         if len(scan_positioners) > 0:
             scan_positioners_new = []
             for k in scan_positioners:
-                if k in ("delta",):
-                    k = "del"
+                if k in ("2-theta", "two theta") or k.endswith("tth"):
+                    k = "tth"
                 elif k in ("theta",):
                     k = "th"
-                elif k in ("2-theta", "two theta") or k.endswith("tth"):
-                    k = "tth"
+                elif k in ("delta",):
+                    k = "del"
                 elif k in ("gamma",):
                     k = "gam"
                 scan_positioners_new.append(k)

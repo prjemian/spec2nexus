@@ -51,13 +51,13 @@ class Test(unittest.TestCase):
         self.assertEqual(nm, "more.than.two.parts")
         self.assertIsNone(variant)
         
-        # spot tests verify method hasGeometry()
-        self.assertTrue(dgc.hasGeometry("fourc"))
-        self.assertTrue(dgc.hasGeometry("fourc.kappa"))
-        self.assertTrue(dgc.hasGeometry("spec"))
-        self.assertFalse(dgc.hasGeometry("spec.kappa"))
-        self.assertTrue(dgc.hasGeometry("psic.s2d2+daz"))
-        self.assertFalse(dgc.hasGeometry("s2d2.psic+daz"))
+        # spot tests verify method has_geometry()
+        self.assertTrue(dgc.has_geometry("fourc"))
+        self.assertTrue(dgc.has_geometry("fourc.kappa"))
+        self.assertTrue(dgc.has_geometry("spec"))
+        self.assertFalse(dgc.has_geometry("spec.kappa"))
+        self.assertTrue(dgc.has_geometry("psic.s2d2+daz"))
+        self.assertFalse(dgc.has_geometry("s2d2.psic+daz"))
         
         geos = dgc.geometries()
         expected = [
@@ -112,8 +112,8 @@ class Test(unittest.TestCase):
             self.assertIsNotNone(geom, filename)
             self.assertEqual(geom, geo_name, filename)
             
-#             gonio = diffractometers.Diffractometer(geom)
-#             gonio.parse(scan, geom)
+            gonio = diffractometers.Diffractometer(geom)
+            gonio.parse(scan)
             
     def test_src_spec2nexus_data(self):
         """
@@ -149,6 +149,7 @@ class Test(unittest.TestCase):
     
     def test_class_Diffractometer(self):
         gonio = diffractometers.Diffractometer("big.little")
+        self.assertEqual(gonio.geometry_name_full, "big.little")
         self.assertEqual(gonio.geometry_name, "big")
         self.assertEqual(gonio.variant, "little")
         self.assertIsNone(gonio.geometry)
