@@ -27,11 +27,23 @@ from spec2nexus import spec, diffractometers
 class Test(unittest.TestCase):
     
     def test_dictionary(self):
-        dgc = diffractometers.DiffractometerGeometryCatalog()
+        dgc = diffractometers.get_geometry_catalog()
         self.assertEqual(len(dgc.db), 20)
     
     def test_class_DiffractometerGeometryCatalog(self):
-        dgc = diffractometers.DiffractometerGeometryCatalog()
+        dgc1 = diffractometers.get_geometry_catalog()
+        self.assertEqual(dgc1, diffractometers._geometry_catalog)
+        dgc2 = diffractometers.get_geometry_catalog()
+        self.assertEqual(dgc1, dgc2)
+        diffractometers.reset_geometry_catalog()
+        self.assertNotEqual(dgc1, diffractometers._geometry_catalog)
+        self.assertEqual(dgc1, dgc2)
+        self.assertIsNone(diffractometers._geometry_catalog)
+        
+        dgc = diffractometers.get_geometry_catalog()
+        self.assertIsNotNone(dgc)
+        self.assertNotEqual(dgc, dgc1)
+        self.assertNotEqual(dgc, dgc2)
         
         expected = "DiffractometerGeometryCatalog(number=20)"
         self.assertEqual(str(dgc), expected)
@@ -92,7 +104,7 @@ class Test(unittest.TestCase):
         """
         identify geometries in tests.data files
         """
-        dgc = diffractometers.DiffractometerGeometryCatalog()
+        dgc = diffractometers.get_geometry_catalog()
         
         test_files = [
             ['issue109_data.txt', -1, 'fourc.standard'],         # 8-ID-I
@@ -113,13 +125,22 @@ class Test(unittest.TestCase):
             self.assertEqual(geom, geo_name, filename)
             
             gonio = diffractometers.Diffractometer(geom)
+            self.assertIsNone(gonio.geometry)
+            self.assertIsNone(gonio.orientation)
+            self.assertIsNone(gonio.ub_matrix)
+            self.assertIsNone(gonio.constraints)
+
+            geo_spec = dgc.get(geom)
             gonio.parse(scan)
+            self.assertIsNotNone(gonio.geometry)
+            self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
+            self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
             
     def test_src_spec2nexus_data(self):
         """
         identify geometries in src.spec2nexus.data files
         """
-        dgc = diffractometers.DiffractometerGeometryCatalog()
+        dgc = diffractometers.get_geometry_catalog()
         
         test_files = [
             ['02_03_setup.dat', -1, 'spec.standard'],
@@ -146,6 +167,18 @@ class Test(unittest.TestCase):
             geom = dgc.match(scan)
             self.assertIsNotNone(geom, file_name)
             self.assertEqual(geom, geo_name, file_name)
+            
+            gonio = diffractometers.Diffractometer(geom)
+            self.assertIsNone(gonio.geometry)
+            self.assertIsNone(gonio.orientation)
+            self.assertIsNone(gonio.ub_matrix)
+            self.assertIsNone(gonio.constraints)
+
+            geo_spec = dgc.get(geom)
+            gonio.parse(scan)
+            self.assertIsNotNone(gonio.geometry)
+            self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
+            self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
     
     def test_class_Diffractometer(self):
         gonio = diffractometers.Diffractometer("big.little")
