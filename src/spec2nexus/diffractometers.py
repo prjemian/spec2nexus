@@ -103,11 +103,12 @@ class Diffractometer:
         self.constraints = Q
 
 
-_geometry_catalog = None    # singleton
+_geometry_catalog = None    # singleton reference to DiffractometerGeometryCatalog
 
 def get_geometry_catalog():
     global _geometry_catalog
     if _geometry_catalog is None:
+        _geometry_catalog = 0
         _geometry_catalog = DiffractometerGeometryCatalog()
     return _geometry_catalog
 
@@ -133,6 +134,11 @@ class DiffractometerGeometryCatalog:
     db = {}
     
     def __init__(self):
+        if _geometry_catalog is None:
+            msg = "Do not create DiffractometerGeometryCatalog()."
+            msg += "  Instead, call: get_geometry_catalog()"
+            raise RuntimeError(msg)
+
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
         

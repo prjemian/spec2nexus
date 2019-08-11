@@ -27,6 +27,11 @@ from spec2nexus import spec, diffractometers
 class Test(unittest.TestCase):
     
     def test_dictionary(self):
+        diffractometers.reset_geometry_catalog()
+        self.assertIsNone(diffractometers._geometry_catalog)
+        with self.assertRaises(RuntimeError):
+            diffractometers.DiffractometerGeometryCatalog()
+        
         dgc = diffractometers.get_geometry_catalog()
         self.assertEqual(len(dgc.db), 20)
     
