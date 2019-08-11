@@ -28,9 +28,13 @@ API
     ~Diffractometer
     ~DiffractometerGeometryCatalog
     ~split_name_variation
+    ~get_geometry_catalog
+    ~reset_geometry_catalog
+
 
 """
 
+from collections import namedtuple
 import logging
 import os
 
@@ -38,6 +42,10 @@ import os
 logger = logging.getLogger(__name__)
 _path = os.path.dirname(__file__)
 DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
+
+
+KeyDescriptionValue = namedtuple(
+    'KeyDescriptionValue', "key description value")
 
 
 def split_name_variation(geo_name):
@@ -66,11 +74,44 @@ class Diffractometer:
         self.geometry_name, self.variant = split_name_variation(geo_name)
         self.geometry = None        # #G0 / G[]
         self.orientation = None     # #G1 / U[]
-        self.constraints = None     # #G3 / Q[]
-        self.ub_matrix = None       # #G4 / UB[] orientation matrix
+        self.ub_matrix = None       # #G3 / UB[] orientation matrix
+        self.constraints = None     # #G4 / Q[]
     
     def parse(self, scan):
-        pass
+        gonio = DiffractometerGeometryCatalog().get(
+            self.geometry_name_full)
+
+        G = []
+        if "G0" in scan.G:
+            g0 = list(map(float, scan.G["G0"].split()))
+            if len(g0) == len(gonio["G"]):
+                for i, v in enumerate(g0):
+                    key, description = gonio["G"][i]
+                    G.append(KeyDescriptionValue(key, description, v))
+        self.geometry = G
+
+        Q = []
+        if "G4" in scan.G:
+            g4 = list(map(float, scan.G["G4"].split()))
+            if len(g4) == len(gonio["Q"]):
+                for i, v in enumerate(g4):
+                    key, description = gonio["Q"][i]
+                    Q.append(KeyDescriptionValue(key, description, v))
+        self.constraints = Q
+
+
+_geometry_catalog = None    # singleton
+
+def get_geometry_catalog():
+    global _geometry_catalog
+    if _geometry_catalog is None:
+        _geometry_catalog = DiffractometerGeometryCatalog()
+    return _geometry_catalog
+
+
+def reset_geometry_catalog():
+    global _geometry_catalog
+    _geometry_catalog = None
 
 
 class DiffractometerGeometryCatalog:
