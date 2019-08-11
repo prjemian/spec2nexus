@@ -49,6 +49,7 @@ def suite(*args, **kw):
 
     test_list = [
         data_03_06_JanTest,
+        test_diffractometers,
         test_extractSpecScan,
         test_eznx,
         test_md_apstools_specwriter,
