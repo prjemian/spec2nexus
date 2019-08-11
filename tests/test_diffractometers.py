@@ -80,17 +80,28 @@ class Test(unittest.TestCase):
         self.assertEqual(geos, expected)
 
         geos = dgc.geometries(True)
-        expected = [
-            'fivec.kappa', 'fivec.standard', 'fourc.3axis', 'fourc.kappa', 
-            'fourc.omega', 'fourc.picker', 'fourc.standard', 'fourc.xtalogic', 
-            'oscam.standard', 'pi1go.standard', 'psic.kappa', 'psic.s2d2', 
-            'psic.s2d2+daz', 'psic.standard', 'psic.standard+daz', 
-            's1d2.standard', 's2d2.standard', 'sevc.standard', 
-            'sixc.standard', 'spec.standard', 'surf.standard', 'suv.standard', 
-            'trip.standard', 'twoc.standard', 'twoc_old.standard', 
-            'w21h.standard', 'w21v.d32', 'w21v.gmci', 'w21v.id10b', 
-            'w21v.standard', 'zaxis.standard', 'zaxis_old.beta', 
-            'zaxis_old.standard', 'zeta.standard']
+        expected = [        # sorted
+            'fivec.default', 'fivec.kappa', 
+            'fourc.3axis', 'fourc.default', 'fourc.kappa', 
+            'fourc.omega', 'fourc.picker', 'fourc.xtalogic', 
+            'oscam.default', 
+            'pi1go.default', 
+            'psic.+daz', 'psic.default', 'psic.kappa', 'psic.s2d2', 'psic.s2d2+daz', 
+            's1d2.default', 
+            's2d2.default', 
+            'sevc.default', 
+            'sixc.default', 
+            'spec.default', 
+            'surf.default', 
+            'suv.default', 
+            'trip.default', 
+            'twoc.default', 'twoc_old.default', 
+            'w21h.default', 
+            'w21v.d32', 'w21v.default', 'w21v.gmci', 'w21v.id10b', 
+            'zaxis.default', 
+            'zaxis_old.beta', 'zaxis_old.default', 
+            'zeta.default'
+        ]
         self.assertEqual(len(geos), 34)
         self.assertEqual(sorted(geos), expected)
         
@@ -107,10 +118,10 @@ class Test(unittest.TestCase):
         dgc = diffractometers.get_geometry_catalog()
         
         test_files = [
-            ['issue109_data.txt', -1, 'fourc.standard'],         # 8-ID-I
-            ['issue119_data.txt', -1, 'spec.standard'],          # USAXS
-            ['issue161_spock_spec_file', -1, 'spec.standard'],   # SPOCK
-            ['JL124_1.spc', -1, 'sixc.standard'],
+            ['issue109_data.txt', -1, 'fourc.default'],         # 8-ID-I
+            ['issue119_data.txt', -1, 'spec.default'],          # USAXS
+            ['issue161_spock_spec_file', -1, 'spec.default'],   # SPOCK
+            ['JL124_1.spc', -1, 'sixc.default'],
             #['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
             ['test_3.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
             ['test_4.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
@@ -145,21 +156,21 @@ class Test(unittest.TestCase):
         dgc = diffractometers.get_geometry_catalog()
         
         test_files = [
-            ['02_03_setup.dat', -1, 'spec.standard'],
-            ['03_06_JanTest.dat', -1, 'spec.standard'],
-            ['05_02_test.dat', -1, 'spec.standard'],
-            ['33bm_spec.dat', -1, 'fourc.standard'],
+            ['02_03_setup.dat', -1, 'spec.default'],
+            ['03_06_JanTest.dat', -1, 'spec.default'],
+            ['05_02_test.dat', -1, 'spec.default'],
+            ['33bm_spec.dat', -1, 'fourc.default'],
             ['33id_spec.dat', -1, 'spec'],  # psic but predates #o (mnemonics) lines
-            ['APS_spec_data.dat', -1, 'spec.standard'],
-            ['CdOsO', -1, 'fourc.standard'],
-            ['CdSe', -1, 'fourc.standard'],
+            ['APS_spec_data.dat', -1, 'spec.default'],
+            ['CdOsO', -1, 'fourc.default'],
+            ['CdSe', -1, 'fourc.default'],
             ['lmn40.spe', -1, 'spec'],
-            ['mca_spectra_example.dat', -1, 'spec.standard'],
-            ['spec_from_spock.spc', -1, 'spec.standard'],
+            ['mca_spectra_example.dat', -1, 'spec.default'],
+            ['spec_from_spock.spc', -1, 'spec.default'],
             ['startup_1.spec', 1, 'spec'],
-            ['usaxs-bluesky-specwritercallback.dat', -1, 'spec.standard'],
+            ['usaxs-bluesky-specwritercallback.dat', -1, 'spec.default'],
             ['user6idd.dat', -1, 'spec'],            # predates #o (mnemonics) lines
-            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', -1, 'fourc.standard'],
+            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', -1, 'fourc.default'],
         ]
         for triplet in test_files:
             file_name, scan_number, geo_name = triplet
