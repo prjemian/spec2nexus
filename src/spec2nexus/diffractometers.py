@@ -32,6 +32,31 @@ _path = os.path.dirname(__file__)
 DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 
 
+def split_name_variation(geo_name):
+    """
+    split geo_name into geometry name and variation
+    """
+    nm = geo_name
+    try:
+        nm, variant = geo_name.split(".")
+    except ValueError:
+        variant = None
+    return nm, variant
+
+
+class Diffractometer:
+    """
+    describe the diffractometer for the scan
+    """
+    
+    def __init__(self, geo_name):
+        self.geometry_name, self.variant = split_name_variation(geo_name)
+        self.geometry = None        # #G0 / G[]
+        self.orientation = None     # #G1 / U[]
+        self.constraints = None     # #G3 / Q[]
+        self.ub_matrix = None       # #G4 / UB[] orientation matrix
+
+
 class DiffractometerGeometryCatalog:
     """
     catalog of the diffractometer geometries known to SPEC
@@ -67,22 +92,11 @@ class DiffractometerGeometryCatalog:
                 result.append(nm)
         return result
     
-    def _split_name_variation_(self, geo_name):
-        """
-        split geo_name into geometry name and variation
-        """
-        nm = geo_name
-        try:
-            nm, variant = geo_name.split(".")
-        except ValueError:
-            variant = None
-        return nm, variant
-    
     def get(self, geo_name, default=None):
         """
         return dictionary for diffractometer geometry ``geo_name``
         """
-        nm = self._split_name_variation_(geo_name)[0]
+        nm = split_name_variation(geo_name)[0]
         return self.db.get(nm, default)
     
     def get_default_geometry(self):
@@ -93,7 +107,7 @@ class DiffractometerGeometryCatalog:
         """
         Is the ``geo_name`` geometry defined?  True or False
         """
-        nm, variant = self._split_name_variation_(geo_name)
+        nm, variant = split_name_variation(geo_name)
         if variant is None:
             return nm in self.db
         else:
@@ -135,12 +149,6 @@ class DiffractometerGeometryCatalog:
         
         scan_positioners = self._get_scan_positioners_(scan)
 
-        try:
-            scan_G0 = scan.G['G0'].split()
-            scan_G4 = scan.G['G4'].split()
-        except KeyError:
-            scan_G0, scan_G4 = [], []
-
         if hasattr(scan, "G"):
             scan_G0 = scan.G.get("G0", "0").split()
             if scan_G0 == ['0',]:
@@ -156,7 +164,6 @@ class DiffractometerGeometryCatalog:
         else:
             scan_G0, scan_G4 = None, None
 
-        debug = True
         for geo_name, geometry in self.db.items():
             if len(scan_G0) != len(geometry["G"]):
                 logger.debug("#G0 G[] did not match %s", geo_name)

@@ -40,14 +40,14 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(dgc._default_geometry)
         self.assertEqual(dgc.get_default_geometry()["name"], "spec")
         
-        nm, variant = dgc._split_name_variation_("only")
+        nm, variant = diffractometers.split_name_variation("only")
         self.assertEqual(nm, "only")
         self.assertIsNone(variant)
-        nm, variant = dgc._split_name_variation_("two.parts")
+        nm, variant = diffractometers.split_name_variation("two.parts")
         self.assertEqual(nm, "two")
         self.assertIsNotNone(variant)
         self.assertEqual(variant, "parts")
-        nm, variant = dgc._split_name_variation_("more.than.two.parts")
+        nm, variant = diffractometers.split_name_variation("more.than.two.parts")
         self.assertEqual(nm, "more.than.two.parts")
         self.assertIsNone(variant)
         
@@ -111,7 +111,10 @@ class Test(unittest.TestCase):
             geom = dgc.match(scan)
             self.assertIsNotNone(geom, filename)
             self.assertEqual(geom, geo_name, filename)
-        
+            
+#             gonio = diffractometers.Diffractometer(geom)
+#             gonio.parse(scan, geom)
+            
     def test_src_spec2nexus_data(self):
         """
         identify geometries in src.spec2nexus.data files
@@ -143,6 +146,15 @@ class Test(unittest.TestCase):
             geom = dgc.match(scan)
             self.assertIsNotNone(geom, file_name)
             self.assertEqual(geom, geo_name, file_name)
+    
+    def test_class_Diffractometer(self):
+        gonio = diffractometers.Diffractometer("big.little")
+        self.assertEqual(gonio.geometry_name, "big")
+        self.assertEqual(gonio.variant, "little")
+        self.assertIsNone(gonio.geometry)
+        self.assertIsNone(gonio.orientation)
+        self.assertIsNone(gonio.constraints)
+        self.assertIsNone(gonio.ub_matrix)
 
 
 def suite(*args, **kw):
