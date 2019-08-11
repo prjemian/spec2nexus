@@ -155,7 +155,7 @@ class DiffractometerGeometryCatalog:
         result = []
         for nm, geometry in self.db.items():
             if variations:
-                result += ["%s.%s" % (nm, s) for s in geometry["variations"].keys()]
+                result += ["%s.%s" % (nm, g["name"]) for g in geometry["variations"]]
             else:
                 result.append(nm)
         return result
@@ -179,7 +179,8 @@ class DiffractometerGeometryCatalog:
         if variant is None:
             return nm in self.db
         else:
-            return variant in self.db[nm]["variations"]
+            keys = [v["name"] for v in self.db[nm]["variations"]]
+            return variant in keys
     
     def _get_scan_positioners_(self, scan):
         scan_positioners = []
@@ -240,7 +241,8 @@ class DiffractometerGeometryCatalog:
                 logger.debug("#G4 Q[] did not match %s", geo_name)
                 continue
             
-            for var_name, variant in geometry["variations"].items():
+            for variant in geometry["variations"]:
+                var_name = variant["name"]
                 n_motors = len(variant["motors"])
                 if scan_positioners[:n_motors] != variant["motors"]:
                     logger.debug("motors did not match %s", geo_name)
