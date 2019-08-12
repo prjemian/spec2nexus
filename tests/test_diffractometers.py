@@ -59,6 +59,7 @@ class Test(unittest.TestCase):
         self.assertEqual(dgc1, dgc2)
         self.assertIsNone(diffractometers._geometry_catalog)
         
+        diffractometers.reset_geometry_catalog()
         dgc = diffractometers.get_geometry_catalog()
         self.assertIsNotNone(dgc)
         self.assertNotEqual(dgc, dgc1)
