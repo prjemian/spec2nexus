@@ -142,7 +142,9 @@ class DiffractometerGeometryCatalog:
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
         
-        self._default_geometry = list(self.db.values())[0]
+        self._default_geometry = self.db[0]
+        self._geometries_simple = None
+        self._geometries_full = None
     
     def __str__(self):
         v = "number=" + str(len(self.db))
@@ -158,20 +160,32 @@ class DiffractometerGeometryCatalog:
         variations : bool
             If True, also list known variations
         """
-        result = []
-        for nm, geometry in self.db.items():
-            if variations:
-                result += ["%s.%s" % (nm, g["name"]) for g in geometry["variations"]]
-            else:
-                result.append(nm)
-        return result
+        if self._geometries_simple is None and self._geometries_full is None:
+            # optimize with a cache, construct only once
+            self._geometries_simple, self._geometries_full = [], []
+            for geometry in self.db:
+                nm = geometry["name"]
+                self._geometries_full += [
+                    "%s.%s" % (nm, v["name"]) 
+                    for v in geometry["variations"]
+                    ]
+                self._geometries_simple.append(nm)
+
+        choices = {
+            True: self._geometries_full, 
+            False: self._geometries_simple
+            }
+        return choices[variations]
     
     def get(self, geo_name, default=None):
         """
         return dictionary for diffractometer geometry ``geo_name``
         """
         nm = split_name_variation(geo_name)[0]
-        return self.db.get(nm, default)
+        geometries = self.geometries()
+        if nm in geometries:
+            return self.db[geometries.index(nm)]
+        return default
     
     def get_default_geometry(self):
         " "
@@ -183,10 +197,9 @@ class DiffractometerGeometryCatalog:
         """
         nm, variant = split_name_variation(geo_name)
         if variant is None:
-            return nm in self.db
+            return nm in self.geometries()
         else:
-            keys = [v["name"] for v in self.db[nm]["variations"]]
-            return variant in keys
+            return geo_name in self.geometries(True)
     
     def _get_scan_positioners_(self, scan):
         scan_positioners = []
@@ -239,7 +252,8 @@ class DiffractometerGeometryCatalog:
         else:
             scan_G0, scan_G4 = None, None
 
-        for geo_name, geometry in self.db.items():
+        for geometry in self.db:
+            geo_name = geometry["name"]
             if len(scan_G0) != len(geometry["G"]):
                 logger.debug("#G0 G[] did not match %s", geo_name)
                 continue
