@@ -141,7 +141,14 @@ class Test(unittest.TestCase):
             self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
             self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
             # TODO: #G1 U[]
-            # TODO: #G3 UB[]
+            if (
+                hasattr(gonio, "ub_matrix") 
+                and 
+                gonio.ub_matrix is not None
+            ):
+                self.assertEqual(len(gonio.ub_matrix), 3)
+                for row in gonio.ub_matrix:
+                    self.assertEqual(len(row), 3)
 
     def test_tests_data(self):
         """
