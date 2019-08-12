@@ -594,6 +594,19 @@
 		'name': "twoc",
 		'G': [],
 		'Q': [('H', ''), ('K', ''), ('LAMBDA', '')],
+		'U': [
+			('g_aa', 'a lattice constant (real space)'),
+			('g_bb', 'b lattice constant (real space)'),
+			('g_ga', 'gamma lattice angle (real space)'),
+			('g_aa_s', 'a lattice constant (reciprocal space)'),
+			('g_bb_s', 'b lattice constant (reciprocal space)'),
+			('g_ga_s', 'gamma lattice angle (reciprocal space)'),
+			('g_h0', 'H of primary reflection'),
+			('g_k0', 'K of primary reflection'),
+			('g_u00', 'angles of primary reflection'),
+			('g_u01', ''),
+			('g_lambda', 'lambda when reflections were saved')
+		],
 		'modes': [],
 		'numgeo': 2,
 		'variations': [
