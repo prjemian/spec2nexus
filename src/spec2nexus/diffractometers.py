@@ -140,7 +140,7 @@ class Diffractometer:
 
         if "G1" in scan.G:
             g1 = list(map(float, scan.G["G1"].split()))
-            if len(g0) > 1:
+            if len(g1) > 1:
                 # at least one geometry overrides the default U[] terms
                 gonio_U = gonio.get("U", list(DEFAULT_U))
                 U = [
