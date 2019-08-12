@@ -120,26 +120,11 @@ class Test(unittest.TestCase):
             self.assertTrue("name" in geom, msg)
             self.assertEqual(geom["name"], geo_name, msg)
         
-    def test_tests_data(self):
-        """
-        identify geometries in tests.data files
-        """
-        dgc = diffractometers.get_geometry_catalog()
-        
-        test_files = [
-            ['issue109_data.txt', -1, 'fourc.default'],         # 8-ID-I
-            ['issue119_data.txt', -1, 'spec.default'],          # USAXS
-            ['issue161_spock_spec_file', -1, 'spec.default'],   # SPOCK
-            ['JL124_1.spc', -1, 'sixc.default'],
-            #['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
-            ['test_3.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
-            ['test_4.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
-        ]
+    def process_files(self, dgc, test_files, base_path):
         for triplet in test_files:
             filename, scan_number, geo_name = triplet
-            scan = spec.SpecDataFile(os.path.join(
-                _test_path, "tests", "data", filename)
-            ).getScan(scan_number)
+            fullname = os.path.join(base_path, filename)
+            scan = spec.SpecDataFile(fullname).getScan(scan_number)
             geom = dgc.match(scan)
             self.assertIsNotNone(geom, filename)
             self.assertEqual(geom, geo_name, filename)
@@ -157,6 +142,24 @@ class Test(unittest.TestCase):
             self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
             # TODO: #G1 U[]
             # TODO: #G3 UB[]
+
+    def test_tests_data(self):
+        """
+        identify geometries in tests.data files
+        """
+        dgc = diffractometers.get_geometry_catalog()
+        
+        test_files = [
+            ['issue109_data.txt', -1, 'fourc.default'],         # 8-ID-I
+            ['issue119_data.txt', -1, 'spec.default'],          # USAXS
+            ['issue161_spock_spec_file', -1, 'spec.default'],   # SPOCK
+            ['JL124_1.spc', -1, 'sixc.default'],
+            #['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
+            ['test_3.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
+            ['test_4.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
+        ]
+        base_path = os.path.join(_test_path, "tests", "data")
+        self.process_files(dgc, test_files, base_path)
             
     def test_src_spec2nexus_data(self):
         """
@@ -181,28 +184,8 @@ class Test(unittest.TestCase):
             ['user6idd.dat', -1, 'spec'],            # predates #o (mnemonics) lines
             ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', -1, 'fourc.default'],
         ]
-        for triplet in test_files:
-            file_name, scan_number, geo_name = triplet
-            scan = spec.SpecDataFile(os.path.join(
-                _path, "spec2nexus", "data", file_name)
-            ).getScan(scan_number)
-            geom = dgc.match(scan)
-            self.assertIsNotNone(geom, file_name)
-            self.assertEqual(geom, geo_name, file_name)
-            
-            gonio = diffractometers.Diffractometer(geom)
-            self.assertIsNone(gonio.geometry)
-            self.assertIsNone(gonio.orientation)
-            self.assertIsNone(gonio.ub_matrix)
-            self.assertIsNone(gonio.constraints)
-
-            geo_spec = dgc.get(geom)
-            gonio.parse(scan)
-            self.assertIsNotNone(gonio.geometry)
-            self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
-            self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
-            # TODO: #G1 U[]
-            # TODO: #G3 UB[]
+        base_path = os.path.join(_path, "spec2nexus", "data")
+        self.process_files(dgc, test_files, base_path)
     
     def test_class_Diffractometer(self):
         gonio = diffractometers.Diffractometer("big.little")
