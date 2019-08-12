@@ -91,8 +91,15 @@ class Diffractometer:
         self.geometry = G
         
         # TODO: #G1 U[]
-        # TODO: #G3 UB[]
 
+        if "G3" in scan.G:
+            g3 = list(map(float, scan.G["G3"].split()))
+            if len(g3) == 9:
+                UB = []
+                for p in range(9)[::3]:
+                    UB.append([g3[p], g3[p+1], g3[p+2]])
+                self.ub_matrix = UB
+        
         Q = []
         if "G4" in scan.G:
             g4 = list(map(float, scan.G["G4"].split()))
