@@ -295,6 +295,8 @@ class SPEC_Geometry(ControlLineHandler):
         geometry = dgc.match(scan)
         diffractometer = Diffractometer(geometry)
         diffractometer.parse(scan)
+        # TODO: diffractometer.G[]
+        # TODO: diffractometer.Q[]
         if (
             hasattr(diffractometer, "orientation")
             and
