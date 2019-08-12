@@ -24,6 +24,7 @@ import datetime
 import six
 import time
 
+from ..diffractometers import get_geometry_catalog, Diffractometer
 from ..eznx import write_dataset, makeGroup, openGroup
 from ..plugin import AutoRegister, ControlLineHandler
 from ..scanf import scanf
@@ -267,6 +268,7 @@ class SPEC_Geometry(ControlLineHandler):
         Meaning of contents for each index are defined by geometry-specific 
         SPEC diffractometer support.
 
+    * *NXsample* group for interpreted information
     """
 
     key = '#G\d+'
@@ -288,6 +290,23 @@ class SPEC_Geometry(ControlLineHandler):
         for item, value in scan.G.items():
             dd[item] = list(map(float, value.split()))
         writer.save_dict(group, dd)
+        
+        dgc = get_geometry_catalog()
+        geometry = dgc.match(scan)
+        diffractometer = Diffractometer(geometry)
+        diffractometer.parse(scan)
+        if (
+            hasattr(diffractometer, "orientation")
+            and
+            diffractometer.orientation is not None
+        ):
+            pass    # TODO: write this info
+        if (
+            hasattr(diffractometer, "ub_matrix")
+            and
+            diffractometer.ub_matrix is not None
+        ):
+            pass    # TODO: write this info
 
 
 @six.add_metaclass(AutoRegister)
