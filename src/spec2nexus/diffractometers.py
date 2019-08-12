@@ -47,6 +47,53 @@ DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 KeyDescriptionValue = namedtuple(
     'KeyDescriptionValue', "key description value")
 
+# lattice constants, orientation reflections
+# most geometries use this default schema
+# at least one geometry (twoc) has overrides
+DEFAULT_U = [
+    ('g_aa', 'a lattice constant (real space)'),
+    ('g_bb', 'b lattice constant (real space)'),
+    ('g_cc', 'c lattice constant (real space)'),
+    ('g_al', 'alpha lattice angle (real space)'),
+    ('g_be', 'beta  lattice angle (real space)'),
+    ('g_ga', 'gamma lattice angle (real space)'),
+
+    ('g_aa_s', 'a lattice constant (reciprocal space)'),
+    ('g_bb_s', 'b lattice constant (reciprocal space)'),
+    ('g_cc_s', 'c lattice constant (reciprocal space)'),
+    ('g_al_s', 'alpha lattice angle (reciprocal space)'),
+    ('g_be_s', 'beta  lattice angle (reciprocal space)'),
+    ('g_ga_s', 'gamma lattice angle (reciprocal space)'),
+
+    ('g_h0', 'H of primary reflection'),
+    ('g_k0', 'K of primary reflection'),
+    ('g_l0', 'L of primary reflection'),
+    ('g_h1', 'H of secondary reflection'),
+    ('g_k1', 'K of secondary reflection'),
+    ('g_l1', 'L of secondary reflection'),
+
+    ('g_u00', 'angle 0 of primary reflection'),
+    ('g_u01', 'angle 1 of primary reflection'),
+    ('g_u02', 'angle 2 of primary reflection'),
+    ('g_u03', 'angle 3 of primary reflection'),
+    ('g_u04', 'angle 4 of primary reflection'),
+    ('g_u05', 'angle 5 of primary reflection'),
+
+    ('g_u10', 'angle 0 of secondary reflection'),
+    ('g_u11', 'angle 1 of secondary reflection'),
+    ('g_u12', 'angle 2 of secondary reflection'),
+    ('g_u13', 'angle 3 of secondary reflection'),
+    ('g_u14', 'angle 4 of secondary reflection'),
+    ('g_u15', 'angle 5 of secondary reflection'),
+
+    ('g_lambda0', 'lambda when or0 was set'),
+    ('g_lambda1', 'lambda when or1 was set'),
+
+    # For backward compatibility, additional angles added at end of array
+    ('g_u06', 'optional, angle 6 of primary reflection'),
+    ('g_u16', 'optional, angle 6 of secondary reflection')
+]
+
 
 def split_name_variation(geo_name):
     """
@@ -78,38 +125,47 @@ class Diffractometer:
         self.constraints = None     # #G4 / Q[]
     
     def parse(self, scan):
-        gonio = DiffractometerGeometryCatalog().get(
-            self.geometry_name_full)
+        dgc = DiffractometerGeometryCatalog()
+        gonio = dgc.get(self.geometry_name_full)
 
         G = []
         if "G0" in scan.G:
             g0 = list(map(float, scan.G["G0"].split()))
             if len(g0) == len(gonio["G"]):
-                for i, v in enumerate(g0):
-                    key, description = gonio["G"][i]
-                    G.append(KeyDescriptionValue(key, description, v))
+                G = [
+                    KeyDescriptionValue(kd[0], kd[1], v)
+                    for v, kd in zip(g0, gonio["G"])
+                ]
         self.geometry = G
 
         if "G1" in scan.G:
             g1 = list(map(float, scan.G["G1"].split()))
             if len(g0) > 1:
-                U = []      # TODO: finish
+                # at least one geometry overrides the default U[] terms
+                gonio_U = gonio.get("U", list(DEFAULT_U))
+                U = [
+                    KeyDescriptionValue(kd[0], kd[1], v)
+                    for v, kd in zip(g1, gonio_U)
+                ]
+                self.orientation = U
 
         if "G3" in scan.G:
             g3 = list(map(float, scan.G["G3"].split()))
             if len(g3) == 9:
-                UB = []
-                for p in range(9)[::3]:
-                    UB.append([g3[p], g3[p+1], g3[p+2]])
+                UB = [
+                    [g3[p], g3[p+1], g3[p+2]]
+                    for p in range(9)[::3]
+                ]
                 self.ub_matrix = UB
         
         Q = []
         if "G4" in scan.G:
             g4 = list(map(float, scan.G["G4"].split()))
             if len(g4) == len(gonio["Q"]):
-                for i, v in enumerate(g4):
-                    key, description = gonio["Q"][i]
-                    Q.append(KeyDescriptionValue(key, description, v))
+                Q = [
+                    KeyDescriptionValue(kd[0], kd[1], v)
+                    for v, kd in zip(g4, gonio["Q"])
+                ]
         self.constraints = Q
 
 
