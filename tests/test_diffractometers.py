@@ -1,5 +1,5 @@
 '''
-unit tests for the spec module
+unit tests for the diffractometers module
 '''
 
 #-----------------------------------------------------------------------------
@@ -137,10 +137,17 @@ class Test(unittest.TestCase):
 
             geo_spec = dgc.get(geom)
             gonio.parse(scan)
-            self.assertIsNotNone(gonio.geometry)
+            self.assertIsNotNone(gonio.geometry, filename)
             self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
             self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
-            # TODO: #G1 U[]
+
+            if (
+                hasattr(gonio, "orientation")
+                and
+                gonio.orientation is not None
+            ):
+                self.assertGreater(len(gonio.orientation), 1)
+
             if (
                 hasattr(gonio, "ub_matrix") 
                 and 
