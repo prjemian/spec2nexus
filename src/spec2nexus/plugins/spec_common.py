@@ -272,13 +272,25 @@ class SPEC_Geometry(ControlLineHandler):
     """
 
     key = '#G\d+'
-    scan_attributes_defined = ['G']
+    scan_attributes_defined = ['G', 'geometry']
     
     def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
         scan.G[subkey] = strip_first_word(text)
+        scan.addPostProcessor('diffractometer geometry', self.postprocess)
+    
+    def postprocess(self, scan, *args, **kws):
         if len(scan.G) > 0:
-            scan.addH5writer(self.key, self.writer)
+            scan.addH5writer('diffractometer geometry', self.writer)
+
+        dgc = get_geometry_catalog()
+        geometry = dgc.match(scan)
+        diffractometer = Diffractometer(geometry)
+        if diffractometer is None:
+            scan.geometry = {}
+        else:
+            diffractometer.parse(scan)
+            scan.geometry = diffractometer.geometry_parameters
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -291,24 +303,21 @@ class SPEC_Geometry(ControlLineHandler):
             dd[item] = list(map(float, value.split()))
         writer.save_dict(group, dd)
         
-        dgc = get_geometry_catalog()
-        geometry = dgc.match(scan)
-        diffractometer = Diffractometer(geometry)
-        diffractometer.parse(scan)
-        # TODO: diffractometer.G[]
-        # TODO: diffractometer.Q[]
-        if (
-            hasattr(diffractometer, "orientation")
-            and
-            diffractometer.orientation is not None
-        ):
-            pass    # TODO: write this info
-        if (
-            hasattr(diffractometer, "ub_matrix")
-            and
-            diffractometer.ub_matrix is not None
-        ):
-            pass    # TODO: write this info
+        if len(scan.geometry) > 0:
+            # TODO: cherry pick items such ub_matrix and LAMBDA
+            group = makeGroup(
+                h5parent, 
+                'geometry_parameters', 
+                nxclass, 
+                description="SPEC geometry arrays, interpreted"
+                )
+            for kdv in scan.geometry.values():
+                write_dataset(
+                    group, 
+                    kdv.key, 
+                    kdv.value,
+                    description=kdv.description,
+                    )
 
 
 @six.add_metaclass(AutoRegister)
