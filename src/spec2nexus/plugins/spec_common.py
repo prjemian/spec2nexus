@@ -25,7 +25,7 @@ import six
 import time
 
 from ..diffractometers import get_geometry_catalog, Diffractometer
-from ..eznx import write_dataset, makeGroup, openGroup
+from ..eznx import write_dataset, makeGroup, openGroup, makeLink
 from ..plugin import AutoRegister, ControlLineHandler
 from ..scanf import scanf
 from ..spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
@@ -307,26 +307,78 @@ class SPEC_Geometry(ControlLineHandler):
         writer.save_dict(group, dd)
         
         if len(scan.geometry) > 0:
-            # TODO: cherry pick items such ub_matrix and LAMBDA
-            group = makeGroup(
-                h5parent, 
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if scan.lattice is not None:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                abc = [
+                    scan.lattice.a, 
+                    scan.lattice.b, 
+                    scan.lattice.c]
+                angles = [
+                    scan.lattice.alpha,
+                    scan.lattice.beta,
+                    scan.lattice.gamma]
+                write_dataset(
+                    nxsample, 
+                    "unit_cell_abc", 
+                    abc,
+                    units="angstrom",
+                    )
+                write_dataset(
+                    nxsample, 
+                    "unit_cell_alphabetagamma", 
+                    angles,
+                    units="degrees",
+                    )
+                write_dataset(      # ah, NeXus ... so many ways ...
+                    nxsample, 
+                    "unit_cell", 
+                    abc + angles,
+                    )
+            if "ub_matrix" in scan.geometry:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                ub = scan.geometry["ub_matrix"].value
+                write_dataset(nxsample, "ub_matrix", ub)
+            if len(scan.reflections) > 0:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                for i, ref in enumerate(scan.reflections):
+                    nm = "or%d" % i
+                    nxnote = openGroup(
+                        nxsample, nm, "NXnote",
+                        description = nm + ": orientation reflection")
+                    write_dataset(nxnote, "h", ref.h)
+                    write_dataset(nxnote, "k", ref.k)
+                    write_dataset(nxnote, "l", ref.l)
+                    write_dataset(nxnote, "wavelength", ref.wavelength, units="Angstrom")
+                    write_dataset(nxnote, "angles", ref.angles, units="degrees")
+            if scan.wavelength is not None:
+                # see: http://download.nexusformat.org/doc/html/strategies.html#strategies-wavelength
+                nxmono = openGroup(nxinstrument, 'monochromator', "NXmonochromator")
+                ds = write_dataset(
+                    nxmono, 
+                    "wavelength", 
+                    scan.wavelength,
+                    units="angstrom",
+                    )
+                # and: http://download.nexusformat.org/doc/html/classes/base_classes/NXbeam.html#nxbeam
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                nxbeam = openGroup(nxsample, 'beam', "NXbeam")
+                # link them
+                makeLink(nxsample, ds, nxbeam.name + "/incident_wavelength")
+
+            nxnote = openGroup(
+                nxinstrument, 
                 'geometry_parameters', 
                 nxclass, 
                 description="SPEC geometry arrays, interpreted"
                 )
             for kdv in scan.geometry.values():
                 write_dataset(
-                    group, 
+                    nxnote, 
                     kdv.key, 
                     kdv.value,
                     description=kdv.description,
                     )
-            if (
-                scan.lattice is not None
-                or len(scan.reflections) > 0
-                or scan.wavelength is not None
-                ):
-                pass        # TODO: write in correct NeXus place(s)
 
 
 @six.add_metaclass(AutoRegister)
