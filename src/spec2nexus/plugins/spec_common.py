@@ -392,12 +392,11 @@ class SPEC_Geometry(ControlLineHandler):
                 description="SPEC geometry arrays, interpreted"
                 )
             for kdv in gpar.values():
-                write_dataset(
-                    nxnote, 
-                    kdv.key, 
-                    kdv.value,
-                    description=kdv.description,
-                    )
+                d = kdv.description
+                if len(d) == 0:
+                    write_dataset(nxnote, kdv.key, kdv.value)
+                else:
+                    write_dataset(nxnote, kdv.key, kdv.value,description=d)
 
 
 @six.add_metaclass(AutoRegister)
