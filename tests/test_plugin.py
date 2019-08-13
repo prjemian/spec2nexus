@@ -140,23 +140,30 @@ class TestSpecificPlugins(unittest.TestCase):
         fname = os.path.join(_path, "spec2nexus", 'data', '33bm_spec.dat')
         scan_number = 17
         sdf = spec.SpecDataFile(fname)
+        scan = sdf.getScan(scan_number)
+        self.assertIsNotNone(scan.lattice)
+        self.assertEqual(len(scan.reflections), 2)
+
         out = writer.Writer(sdf)
         out.save(self.hname, [scan_number])
 
         with h5py.File(self.hname, "r") as hp:
             root = hp["/"]
             group = root["/S17/geometry_parameters"]
-            keys = list(sorted(group.keys()))
+
             self.assertTrue("diffractometer_simple" in group)
             self.assertEqual(group["diffractometer_simple"][0], b"fourc")
             self.assertTrue("diffractometer_full" in group)
             self.assertEqual(group["diffractometer_full"][0], b"fourc.default")
             self.assertTrue("diffractometer_variant" in group)
             self.assertEqual(group["diffractometer_variant"][0], b"default")
+
             for k in "g_aa g_bb g_cc g_al g_be g_ga LAMBDA".split():
                 self.assertTrue(k in group)
                 v = group[k][()][0]
                 self.assertGreater(v, 0)
+
+            # TODO: test for lattice, reflections, & wavelength
 
 
 def suite(*args, **kw):

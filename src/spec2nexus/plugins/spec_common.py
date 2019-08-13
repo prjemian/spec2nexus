@@ -272,7 +272,7 @@ class SPEC_Geometry(ControlLineHandler):
     """
 
     key = '#G\d+'
-    scan_attributes_defined = ['G', 'geometry']
+    scan_attributes_defined = ['G', 'geometry', 'lattice', 'reflections', 'wavelength']
     
     def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -291,6 +291,9 @@ class SPEC_Geometry(ControlLineHandler):
         else:
             diffractometer.parse(scan)
             scan.geometry = diffractometer.geometry_parameters
+            scan.lattice = diffractometer.lattice
+            scan.reflections = diffractometer.reflections
+            scan.wavelength = diffractometer.wavelength
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -318,6 +321,12 @@ class SPEC_Geometry(ControlLineHandler):
                     kdv.value,
                     description=kdv.description,
                     )
+            if (
+                scan.lattice is not None
+                or len(scan.reflections) > 0
+                or scan.wavelength is not None
+                ):
+                pass        # TODO: write in correct NeXus place(s)
 
 
 @six.add_metaclass(AutoRegister)
