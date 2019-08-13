@@ -268,7 +268,7 @@ class SPEC_Geometry(ControlLineHandler):
         Meaning of contents for each index are defined by geometry-specific 
         SPEC diffractometer support.
 
-    * *NXsample* group for interpreted information
+    * *NXinstrument* & *NXsample* groups for interpreted information
     """
 
     key = '#G\d+'
