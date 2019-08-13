@@ -305,8 +305,7 @@ class SPEC_Geometry(ControlLineHandler):
         
         gpar = scan.diffractometer.geometry_parameters
         if len(gpar) > 0:
-            nxinstrument = openGroup(
-                h5parent, 'instrument', "NXinstrument")
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
             write_dataset(
                     nxinstrument, 
                     "name", 
@@ -771,7 +770,8 @@ class SPEC_Positioners(ControlLineHandler):
         desc='SPEC positioners (#P & #O lines)'
         group = makeGroup(h5parent, 'positioners', nxclass, description=desc)
         writer.save_dict(group, scan.positioner)
-
+        nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+        makeLink(h5parent, group, nxinstrument.name + "/positioners")
 
 @six.add_metaclass(AutoRegister)
 class SPEC_HKL(ControlLineHandler):
