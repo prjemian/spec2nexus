@@ -48,6 +48,13 @@ DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
 KeyDescriptionValue = namedtuple(
     'KeyDescriptionValue', "key description value")
 
+LatticeParameters = namedtuple(
+    'LatticeParameters', "a b c alpha beta gamma")
+
+Reflections = namedtuple(
+    'Reflections', "h k l wavelength angles")
+
+
 # lattice constants, orientation reflections
 # most geometries use this default schema
 # at least one geometry (twoc) has overrides
@@ -163,6 +170,30 @@ class Diffractometer:
                         for v, kd in zip(g1, gonio_U)
                     }
                 )
+                # TODO: interpret, save outside of U
+                # lattice = LatticeParameters(
+                #     U["g_aa"].value, U["g_bb"].value, U["g_cc"].value,
+                #     U["g_al"].value, U["g_be"].value, U["g_ga"].value,
+                #     )
+                # U["lattice"] = KeyDescriptionValue("lattice", "lattice parameters", lattice)
+                # for ref_num in (0, 1):
+                #     template = "g_u%d%%d" % ref_num
+                #     angles = [U[template % i].value for i in range(6)]
+                #     if template+"6" in U:
+                #         angles.append(U[template+"6"].value)
+                #     ref = Reflections(
+                #         U["g_h%d" % ref_num].value, 
+                #         U["g_k%d" % ref_num].value, 
+                #         U["g_l%d" % ref_num].value,
+                #         U["g_lambda%d" % ref_num].value,
+                #         angles
+                #         )
+                #     k = "or%d" % ref_num
+                #     U[k] = KeyDescriptionValue(
+                #         k, 
+                #         "%s: orientation reflection %d" % (k, ref_num),
+                #         ref)
+
                 self.geometry_parameters.update(U)
 
         if "G3" in scan.G:
