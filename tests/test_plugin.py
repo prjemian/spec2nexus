@@ -12,8 +12,9 @@ unit tests for the plugin module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
-import unittest
+import h5py
 import os, sys
+import unittest
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 _path = os.path.abspath(os.path.join(_test_path, 'src'))
@@ -23,6 +24,7 @@ sys.path.insert(0, _test_path)
 
 from spec2nexus import spec
 from spec2nexus import plugin
+from spec2nexus import writer
 
 
 class TestPlugin(unittest.TestCase):
@@ -121,11 +123,48 @@ class TestCustomPlugin(unittest.TestCase):
         self.assertEqual(scan.MyTest[0], expected)
 
 
+class TestSpecificPlugins(unittest.TestCase):
+    """test a custom plugin"""
+    
+    def setUp(self):
+        self.hname = "test.h5"
+
+    def tearDown(self):
+        if os.path.exists(self.hname):
+            os.remove(self.hname)
+
+#     def testName(self):
+#         pass
+
+    def test_geometry_plugin(self):
+        fname = os.path.join(_path, "spec2nexus", 'data', '33bm_spec.dat')
+        scan_number = 17
+        sdf = spec.SpecDataFile(fname)
+        out = writer.Writer(sdf)
+        out.save(self.hname, [scan_number])
+
+        with h5py.File(self.hname, "r") as hp:
+            root = hp["/"]
+            group = root["/S17/geometry_parameters"]
+            keys = list(sorted(group.keys()))
+            self.assertTrue("diffractometer_simple" in group)
+            self.assertEqual(group["diffractometer_simple"][0], b"fourc")
+            self.assertTrue("diffractometer_full" in group)
+            self.assertEqual(group["diffractometer_full"][0], b"fourc.default")
+            self.assertTrue("diffractometer_variant" in group)
+            self.assertEqual(group["diffractometer_variant"][0], b"default")
+            for k in "g_aa g_bb g_cc g_al g_be g_ga LAMBDA".split():
+                self.assertTrue(k in group)
+                v = group[k][()][0]
+                self.assertGreater(v, 0)
+
+
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        TestPlugin,
-        TestCustomPlugin,
+        #TestPlugin,
+        #TestCustomPlugin,
+        TestSpecificPlugins,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
