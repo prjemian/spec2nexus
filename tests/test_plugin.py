@@ -148,8 +148,8 @@ class TestSpecificPlugins(unittest.TestCase):
         out.save(self.hname, [scan_number])
 
         with h5py.File(self.hname, "r") as hp:
-            root = hp["/"]
-            group = root["/S17/geometry_parameters"]
+            nxentry = hp["/S17"]
+            group = nxentry["instrument/geometry_parameters"]
 
             self.assertTrue("diffractometer_simple" in group)
             self.assertEqual(group["diffractometer_simple"][0], b"fourc")
@@ -163,14 +163,36 @@ class TestSpecificPlugins(unittest.TestCase):
                 v = group[k][()][0]
                 self.assertGreater(v, 0)
 
-            # TODO: test for lattice, reflections, & wavelength
+            self.assertTrue("sample/unit_cell_abc" in nxentry)
+            self.assertTrue("sample/unit_cell_alphabetagamma" in nxentry)
+            self.assertTrue("sample/unit_cell" in nxentry)
+
+            self.assertTrue("sample/ub_matrix" in nxentry)
+            ds = nxentry["sample/ub_matrix"]
+            self.assertTupleEqual(ds.shape, (3,3))
+
+            self.assertTrue("sample/or0" in nxentry)
+            self.assertTrue("sample/or0/h" in nxentry)
+            self.assertTrue("sample/or0/k" in nxentry)
+            self.assertTrue("sample/or0/l" in nxentry)
+            self.assertTrue("sample/or1" in nxentry)
+            self.assertTrue("sample/or1/h" in nxentry)
+            self.assertTrue("sample/or1/k" in nxentry)
+            self.assertTrue("sample/or1/l" in nxentry)
+
+            self.assertTrue("instrument/monochromator/wavelength" in nxentry)
+            self.assertTrue("sample/beam/incident_wavelength" in nxentry)
+            self.assertEqual(
+                nxentry["instrument/monochromator/wavelength"],
+                nxentry["sample/beam/incident_wavelength"],
+                )
 
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        #TestPlugin,
-        #TestCustomPlugin,
+        TestPlugin,
+        TestCustomPlugin,
         TestSpecificPlugins,
         ]
     for test_case in test_list:
