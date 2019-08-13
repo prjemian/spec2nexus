@@ -272,7 +272,7 @@ class SPEC_Geometry(ControlLineHandler):
     """
 
     key = '#G\d+'
-    scan_attributes_defined = ['G', 'geometry', 'lattice', 'reflections', 'wavelength']
+    scan_attributes_defined = ['G', 'diffractometer']
     
     def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
@@ -290,10 +290,7 @@ class SPEC_Geometry(ControlLineHandler):
             scan.geometry = {}
         else:
             diffractometer.parse(scan)
-            scan.geometry = diffractometer.geometry_parameters
-            scan.lattice = diffractometer.lattice
-            scan.reflections = diffractometer.reflections
-            scan.wavelength = diffractometer.wavelength
+            scan.diffractometer = diffractometer
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -306,18 +303,25 @@ class SPEC_Geometry(ControlLineHandler):
             dd[item] = list(map(float, value.split()))
         writer.save_dict(group, dd)
         
-        if len(scan.geometry) > 0:
-            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
-            if scan.lattice is not None:
+        gpar = scan.diffractometer.geometry_parameters
+        if len(gpar) > 0:
+            nxinstrument = openGroup(
+                h5parent, 'instrument', "NXinstrument")
+            write_dataset(
+                    nxinstrument, 
+                    "name", 
+                    scan.diffractometer.geometry_name_full
+                    )
+            if scan.diffractometer.lattice is not None:
                 nxsample = openGroup(h5parent, 'sample', "NXsample")
                 abc = [
-                    scan.lattice.a, 
-                    scan.lattice.b, 
-                    scan.lattice.c]
+                    scan.diffractometer.lattice.a, 
+                    scan.diffractometer.lattice.b, 
+                    scan.diffractometer.lattice.c]
                 angles = [
-                    scan.lattice.alpha,
-                    scan.lattice.beta,
-                    scan.lattice.gamma]
+                    scan.diffractometer.lattice.alpha,
+                    scan.diffractometer.lattice.beta,
+                    scan.diffractometer.lattice.gamma]
                 write_dataset(
                     nxsample, 
                     "unit_cell_abc", 
@@ -335,13 +339,25 @@ class SPEC_Geometry(ControlLineHandler):
                     "unit_cell", 
                     abc + angles,
                     )
-            if "ub_matrix" in scan.geometry:
+            if "ub_matrix" in gpar:
                 nxsample = openGroup(h5parent, 'sample', "NXsample")
-                ub = scan.geometry["ub_matrix"].value
+                ub = gpar["ub_matrix"].value
                 write_dataset(nxsample, "ub_matrix", ub)
-            if len(scan.reflections) > 0:
+            if scan.diffractometer.mode is not None:
                 nxsample = openGroup(h5parent, 'sample', "NXsample")
-                for i, ref in enumerate(scan.reflections):
+                write_dataset(
+                    nxsample, 
+                    "diffractometer_mode", 
+                    scan.diffractometer.mode)
+            if scan.diffractometer.sector is not None:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                write_dataset(
+                    nxsample, 
+                    "diffractometer_sector", 
+                    scan.diffractometer.sector)
+            if len(scan.diffractometer.reflections) > 0:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                for i, ref in enumerate(scan.diffractometer.reflections):
                     nm = "or%d" % i
                     nxnote = openGroup(
                         nxsample, nm, "NXnote",
@@ -350,14 +366,17 @@ class SPEC_Geometry(ControlLineHandler):
                     write_dataset(nxnote, "k", ref.k)
                     write_dataset(nxnote, "l", ref.l)
                     write_dataset(nxnote, "wavelength", ref.wavelength, units="Angstrom")
-                    write_dataset(nxnote, "angles", ref.angles, units="degrees")
-            if scan.wavelength is not None:
+                    for k, a in ref.angles.items():
+                        write_dataset(
+                            nxnote, k, a, units="degrees", 
+                            description="diffractometer angle")
+            if scan.diffractometer.wavelength is not None:
                 # see: http://download.nexusformat.org/doc/html/strategies.html#strategies-wavelength
                 nxmono = openGroup(nxinstrument, 'monochromator', "NXmonochromator")
                 ds = write_dataset(
                     nxmono, 
                     "wavelength", 
-                    scan.wavelength,
+                    scan.diffractometer.wavelength,
                     units="angstrom",
                     )
                 # and: http://download.nexusformat.org/doc/html/classes/base_classes/NXbeam.html#nxbeam
@@ -372,7 +391,7 @@ class SPEC_Geometry(ControlLineHandler):
                 nxclass, 
                 description="SPEC geometry arrays, interpreted"
                 )
-            for kdv in scan.geometry.values():
+            for kdv in gpar.values():
                 write_dataset(
                     nxnote, 
                     kdv.key, 
