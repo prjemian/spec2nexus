@@ -120,10 +120,6 @@ class Diffractometer:
     def __init__(self, geo_name):
         self.geometry_name_full = geo_name
         self.geometry_name, self.variant = split_name_variation(geo_name)
-        self.geometry = None        # #G0 / G[]
-        self.orientation = None     # #G1 / U[]
-        self.ub_matrix = None       # #G3 / UB[] orientation matrix
-        self.constraints = None     # #G4 / Q[]
         self.geometry_parameters = {}   # combined #G terms
     
     def parse(self, scan):
@@ -140,7 +136,6 @@ class Diffractometer:
                         for v, kd in zip(g0, gonio["G"])
                     }
                 )
-        self.geometry = G
         self.geometry_parameters.update(G)
 
         if "G1" in scan.G:
@@ -154,14 +149,12 @@ class Diffractometer:
                         for v, kd in zip(g1, gonio_U)
                     }
                 )
-                self.orientation = U
                 self.geometry_parameters.update(U)
 
         if "G3" in scan.G:
             g3 = list(map(float, scan.G["G3"].split()))
             if len(g3) == 9:
                 UB = numpy.array(g3).reshape((3, 3))
-                self.ub_matrix = UB
                 self.geometry_parameters["ub_matrix"] = KeyDescriptionValue(
                     "ub_matrix", "UB[] matrix", UB)
         
@@ -175,7 +168,6 @@ class Diffractometer:
                         for v, kd in zip(g4, gonio["Q"])
                     }
                 )
-        self.constraints = Q
         self.geometry_parameters.update(Q)
 
 

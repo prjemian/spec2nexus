@@ -132,16 +132,7 @@ class Test(unittest.TestCase):
             self.assertEqual(geom, geo_name, filename)
             
             gonio = diffractometers.Diffractometer(geom)
-            self.assertIsNone(gonio.geometry)
-            self.assertIsNone(gonio.orientation)
-            self.assertIsNone(gonio.ub_matrix)
-            self.assertIsNone(gonio.constraints)
-
-            geo_spec = dgc.get(geom)
             gonio.parse(scan)
-            self.assertIsNotNone(gonio.geometry, filename)
-            self.assertEqual(len(gonio.geometry), len(geo_spec["G"]))
-            self.assertEqual(len(gonio.constraints), len(geo_spec["Q"]))
 
             if len(gonio.geometry_parameters) > 0:
                 gpar = gonio.geometry_parameters
@@ -203,10 +194,7 @@ class Test(unittest.TestCase):
         self.assertEqual(gonio.geometry_name_full, "big.little")
         self.assertEqual(gonio.geometry_name, "big")
         self.assertEqual(gonio.variant, "little")
-        self.assertIsNone(gonio.geometry)
-        self.assertIsNone(gonio.orientation)
-        self.assertIsNone(gonio.constraints)
-        self.assertIsNone(gonio.ub_matrix)
+        self.assertIsNotNone(gonio.geometry_parameters)
 
 
 def suite(*args, **kw):
