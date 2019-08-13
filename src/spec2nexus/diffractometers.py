@@ -34,8 +34,9 @@ API
 
 """
 
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 import logging
+import numpy
 import os
 
 
@@ -123,50 +124,59 @@ class Diffractometer:
         self.orientation = None     # #G1 / U[]
         self.ub_matrix = None       # #G3 / UB[] orientation matrix
         self.constraints = None     # #G4 / Q[]
+        self.geometry_parameters = {}   # combined #G terms
     
     def parse(self, scan):
         dgc = DiffractometerGeometryCatalog()
         gonio = dgc.get(self.geometry_name_full)
 
-        G = []
+        G = OrderedDict()
         if "G0" in scan.G:
             g0 = list(map(float, scan.G["G0"].split()))
             if len(g0) == len(gonio["G"]):
-                G = [
-                    KeyDescriptionValue(kd[0], kd[1], v)
-                    for v, kd in zip(g0, gonio["G"])
-                ]
+                G = OrderedDict(
+                    {
+                        kd[0]: KeyDescriptionValue(kd[0], kd[1], v)
+                        for v, kd in zip(g0, gonio["G"])
+                    }
+                )
         self.geometry = G
+        self.geometry_parameters.update(G)
 
         if "G1" in scan.G:
             g1 = list(map(float, scan.G["G1"].split()))
             if len(g1) > 1:
                 # at least one geometry overrides the default U[] terms
                 gonio_U = gonio.get("U", list(DEFAULT_U))
-                U = [
-                    KeyDescriptionValue(kd[0], kd[1], v)
-                    for v, kd in zip(g1, gonio_U)
-                ]
+                U = OrderedDict(
+                    {
+                        kd[0]: KeyDescriptionValue(kd[0], kd[1], v)
+                        for v, kd in zip(g1, gonio_U)
+                    }
+                )
                 self.orientation = U
+                self.geometry_parameters.update(U)
 
         if "G3" in scan.G:
             g3 = list(map(float, scan.G["G3"].split()))
             if len(g3) == 9:
-                UB = [
-                    [g3[p], g3[p+1], g3[p+2]]
-                    for p in range(9)[::3]
-                ]
+                UB = numpy.array(g3).reshape((3, 3))
                 self.ub_matrix = UB
+                self.geometry_parameters["ub_matrix"] = KeyDescriptionValue(
+                    "ub_matrix", "UB[] matrix", UB)
         
-        Q = []
+        Q = OrderedDict()
         if "G4" in scan.G:
             g4 = list(map(float, scan.G["G4"].split()))
             if len(g4) == len(gonio["Q"]):
-                Q = [
-                    KeyDescriptionValue(kd[0], kd[1], v)
-                    for v, kd in zip(g4, gonio["Q"])
-                ]
+                Q = OrderedDict(
+                    {
+                        kd[0]: KeyDescriptionValue(kd[0], kd[1], v)
+                        for v, kd in zip(g4, gonio["Q"])
+                    }
+                )
         self.constraints = Q
+        self.geometry_parameters.update(Q)
 
 
 _geometry_catalog = None    # singleton reference to DiffractometerGeometryCatalog
