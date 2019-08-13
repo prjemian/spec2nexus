@@ -600,7 +600,12 @@
 	{ 
 		'name': "trip",
 		'G': [],
-		'Q': [('H', '1st Miller index'), ('K', '2nd Miller index'), ('L', '3rd Miller index'), ('LAMBDA', 'wavelength, Angstrom')],
+		'Q': [
+			('H', '1st Miller index'), 
+			('K', '2nd Miller index'), 
+			('L', '3rd Miller index'), 
+			('LAMBDA', 'wavelength, Angstrom')
+			],
 		'modes': [],
 		'numgeo': 4,
 		'variations': [
@@ -614,7 +619,12 @@
 	{ 
 		'name': "twoc",
 		'G': [],
-		'Q': [('H', '1st Miller index'), ('K', '2nd Miller index'), ('LAMBDA', 'wavelength, Angstrom')],
+		'Q': [
+			('H', '1st Miller index'), 
+			('K', '2nd Miller index'), 
+			('L', '3rd Miller index'), 
+			('LAMBDA', 'wavelength, Angstrom')
+			],
 		'U': [
 			('g_aa', 'a lattice constant (real space)'),
 			('g_bb', 'b lattice constant (real space)'),
@@ -815,7 +825,12 @@
 				('z_cc', 'c lattice constant'),
 				('z_l1', 'beta length')
 			],
-		'Q': [('H', '1st Miller index'), ('K', '2nd Miller index'), ('L', '3rd Miller index'), ('LAMBDA', 'wavelength, Angstrom')],
+		'Q': [
+			('H', '1st Miller index'), 
+			('K', '2nd Miller index'), 
+			('L', '3rd Miller index'), 
+			('LAMBDA', 'wavelength, Angstrom')
+			],
 		'modes': [],
 		'numgeo': 4,
 		'variations': [
