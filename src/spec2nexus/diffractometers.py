@@ -121,6 +121,20 @@ class Diffractometer:
         self.geometry_name_full = geo_name
         self.geometry_name, self.variant = split_name_variation(geo_name)
         self.geometry_parameters = {}   # combined #G terms
+
+        gpar = self.geometry_parameters
+        gpar["diffractometer_full"] = KeyDescriptionValue(
+            "diffractometer_full", 
+            "name of diffractometer (and variant), deduced from scan information", 
+            self.geometry_name_full)
+        gpar["diffractometer_simple"] = KeyDescriptionValue(
+            "diffractometer_full", 
+            "diffractometer (and variant)", 
+            self.geometry_name)
+        gpar["diffractometer_variant"] = KeyDescriptionValue(
+            "diffractometer_variant", 
+            "name of diffractometer variant", 
+            self.variant or "")
     
     def parse(self, scan):
         dgc = DiffractometerGeometryCatalog()
