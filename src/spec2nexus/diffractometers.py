@@ -128,12 +128,12 @@ class Diffractometer:
             "name of diffractometer (and variant), deduced from scan information", 
             self.geometry_name_full)
         gpar["diffractometer_simple"] = KeyDescriptionValue(
-            "diffractometer_full", 
-            "diffractometer (and variant)", 
+            "diffractometer_simple", 
+            "name of diffractometer, deduced from scan information", 
             self.geometry_name)
         gpar["diffractometer_variant"] = KeyDescriptionValue(
             "diffractometer_variant", 
-            "name of diffractometer variant", 
+            "name of diffractometer variant, deduced from scan information",
             self.variant or "")
     
     def parse(self, scan):
