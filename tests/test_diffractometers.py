@@ -12,8 +12,10 @@ unit tests for the diffractometers module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import numpy
+import os
+import sys
 import unittest
-import os, sys
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 _path = os.path.abspath(os.path.join(_test_path, 'src'))
@@ -143,38 +145,14 @@ class Test(unittest.TestCase):
 
             if len(gonio.geometry_parameters) > 0:
                 gpar = gonio.geometry_parameters
-                for k in "g_aa g_bb g_cc g_al g_be g_ga".split():
+                for k in "g_aa g_bb g_cc g_al g_be g_ga LAMBDA".split():
                     if k in gpar:
                         self.assertGreater(gpar[k].value, 0, filename)
                         
-                if (
-                    hasattr(gonio, "constraints")
-                    and
-                    gonio.constraints is not None
-                    and
-                    len(gonio.constraints) > 0
-                ):
-                    self.assertTrue("LAMBDA" in gonio.constraints, filename)
-                    self.assertGreater(gonio.constraints["LAMBDA"].value, 0, filename)
-
-                if (
-                    hasattr(gonio, "orientation")
-                    and
-                    gonio.orientation is not None
-                ):
-                    self.assertGreater(len(gonio.orientation), 1)
-                    self.assertTrue("g_aa" in gonio.orientation)
-                    self.assertTrue("g_bb" in gonio.orientation)
-                    self.assertTrue("g_ga" in gonio.orientation)
-    
-                if (
-                    hasattr(gonio, "ub_matrix") 
-                    and 
-                    gonio.ub_matrix is not None
-                ):
-                    self.assertEqual(len(gonio.ub_matrix), 3)
-                    for row in gonio.ub_matrix:
-                        self.assertEqual(len(row), 3)
+                if ("ub_matrix" in gpar):
+                    ub = gpar["ub_matrix"].value
+                    self.assertTrue(isinstance(ub, numpy.ndarray), filename)
+                    self.assertTupleEqual(ub.shape, (3, 3), filename)
 
     def test_tests_data(self):
         """
