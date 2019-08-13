@@ -132,8 +132,16 @@ class TestSpecificPlugins(unittest.TestCase):
         scan_number = 17
         sdf = spec.SpecDataFile(fname)
         scan = sdf.getScan(scan_number)
-        self.assertIsNotNone(scan.lattice)
-        self.assertEqual(len(scan.reflections), 2)
+
+        self.assertEqual(
+            scan.diffractometer.geometry_name_full, 
+            "fourc.default")
+        self.assertEqual(
+            scan.diffractometer.mode, 
+            "Omega equals zero")
+        self.assertEqual(scan.diffractometer.sector, 0)
+        self.assertIsNotNone(scan.diffractometer.lattice)
+        self.assertEqual(len(scan.diffractometer.reflections), 2)
 
         out = writer.Writer(sdf)
         out.save(self.hname, [scan_number])
@@ -142,6 +150,10 @@ class TestSpecificPlugins(unittest.TestCase):
             nxentry = hp["/S17"]
             group = nxentry["instrument/geometry_parameters"]
 
+            self.assertTrue("instrument/name" in nxentry)
+            self.assertEqual(
+                nxentry["instrument/name"][0], 
+                scan.diffractometer.geometry_name_full.encode())
             self.assertTrue("diffractometer_simple" in group)
             self.assertEqual(group["diffractometer_simple"][0], b"fourc")
             self.assertTrue("diffractometer_full" in group)
