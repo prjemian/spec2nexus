@@ -34,12 +34,6 @@ class TestPlugin(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.manager = plugin.get_plugin_manager()
-
-#     def tearDown(self):
-#         pass
-
-#     def testName(self):
-#         pass
     
     def test_handler_keys(self):
         manager = plugin.get_plugin_manager()
@@ -132,9 +126,6 @@ class TestSpecificPlugins(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.hname):
             os.remove(self.hname)
-
-#     def testName(self):
-#         pass
 
     def test_geometry_plugin(self):
         fname = os.path.join(_path, "spec2nexus", 'data', '33bm_spec.dat')
