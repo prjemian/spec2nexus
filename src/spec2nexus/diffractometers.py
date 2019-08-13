@@ -179,9 +179,11 @@ class Diffractometer:
                     )
                 for ref_num in (0, 1):
                     template = "g_u%d%%d" % ref_num
-                    angles = [U[template % i].value for i in range(6)]
-                    if template+"6" in U:
-                        angles.append(U[template+"6"].value)
+                    angles = []
+                    for i in range(7):
+                        k = template % i
+                        if k in U:
+                            angles.append(U[k].value)
                     ref = Reflections(
                         U["g_h%d" % ref_num].value, 
                         U["g_k%d" % ref_num].value, 
