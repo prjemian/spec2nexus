@@ -129,7 +129,9 @@ class Diffractometer:
         self.geometry_name, self.variant = split_name_variation(geo_name)
         self.geometry_parameters = {}   # combined #G terms
         self.lattice = None
+        self.mode = None
         self.reflections = []
+        self.sector = None
         self.wavelength = None
 
         gpar = self.geometry_parameters
@@ -160,6 +162,26 @@ class Diffractometer:
                         for v, kd in zip(g0, gonio["G"])
                     }
                 )
+                additions = []
+                for k, kdv in G.items():
+                    if k.startswith("g_sect"):
+                        self.sector = int(kdv.value)
+                        continue
+                    if not k.startswith("g_mode"):
+                        continue
+                    modes = gonio["modes"]
+                    if not (0 <= int(kdv.value) < len(modes)):
+                        continue
+                    entry = KeyDescriptionValue(
+                        k+"_name",
+                        "name of " + kdv.description,
+                        modes[int(kdv.value)])
+                    additions.append(entry)
+                # must update G{} in two steps
+                for entry in additions:
+                    G[entry.key] = entry
+                    if entry.key == "g_mode_name":
+                        self.mode = entry.value
         self.geometry_parameters.update(G)
 
         if "G1" in scan.G:
@@ -179,11 +201,12 @@ class Diffractometer:
                     )
                 for ref_num in (0, 1):
                     template = "g_u%d%%d" % ref_num
-                    angles = []
-                    for i in range(7):
+                    variant = dgc.get_variant(gonio, self.variant)
+                    angles = OrderedDict()
+                    for i, mne in enumerate(variant["motors"]):
                         k = template % i
                         if k in U:
-                            angles.append(U[k].value)
+                            angles[mne] = U[k].value
                     ref = Reflections(
                         U["g_h%d" % ref_num].value, 
                         U["g_k%d" % ref_num].value, 
@@ -304,6 +327,13 @@ class DiffractometerGeometryCatalog:
     def get_default_geometry(self):
         " "
         return self._default_geometry
+    
+    def get_variant(self, geometry, variant_name):
+        " "
+        for v in geometry["variations"]:
+            if v["name"] == variant_name:
+                return v
+        return geometry["variations"][0]
     
     def has_geometry(self, geo_name):
         """
