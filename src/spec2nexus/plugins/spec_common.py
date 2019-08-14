@@ -1182,6 +1182,11 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
                 if key in mca:
                     write_dataset(mca_group, key, mca[key])
 
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+
 
 @six.add_metaclass(AutoRegister)
 class SPEC_MCA_CountTime(ControlLineHandler):
@@ -1228,6 +1233,11 @@ class SPEC_MCA_CountTime(ControlLineHandler):
             for key in ('preset_time  elapsed_live_time  elapsed_real_time'.split()):
                 if key in mca:
                     write_dataset(mca_group, key, mca[key], units='s')
+
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
 
 
 @six.add_metaclass(AutoRegister)
@@ -1286,6 +1296,12 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
                     dataset = [roi['first_chan'], roi['last_chan']]
                     desc = 'first_chan, last_chan'
                     write_dataset(roi_group, key, dataset, description=desc, units='channel')
+
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
