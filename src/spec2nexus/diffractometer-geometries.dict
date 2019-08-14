@@ -1,4 +1,12 @@
 [
+	# file: diffractometer-geometries.dict
+	# used by diffractometers.py
+	
+	# describe the diffractometer geometries known to SPEC
+	# (not yet including all the different surf geometries)
+	
+	# when lists are used, the first item in the list will be the default
+
 	{
 		'name': "spec",
 		'G': [],
