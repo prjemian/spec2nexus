@@ -155,7 +155,7 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.column_last, 'I0')
         self.assertEqual(scan.positioner["DCM theta"], 12.747328)
         self.assertEqual(scan.positioner["ana.theta"], -0.53981253)
-        # TODO: test MCA data (#1 but MCA data is all zero, need better test file)
+        # TODO: test MCA data (#1 but MCA data is all zero, need better test file) - mca_spectra_example.dat
         # test mesh (#22), Escan (#105)
 
     def test_APS_spec_data(self):
