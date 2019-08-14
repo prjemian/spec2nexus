@@ -137,3 +137,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
             desc='SPEC metadata (UNICAT-style #H & #V lines)'
             group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)
             writer.save_dict(group, scan.metadata)
+
+            # link it to the NXinstrument group
+            nxinstrument = eznx.openGroup(h5parent, 'instrument', "NXinstrument")
+            eznx.makeLink(h5parent, group, nxinstrument.name + "/metadata")

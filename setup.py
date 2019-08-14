@@ -50,6 +50,7 @@ setup (
             'data/Cd*',
             'plugins/*.xsd',
             'LICENSE.txt',
+            'diffractometer-geometries.dict',
             ],
          },
     classifiers      = package.__classifiers__,

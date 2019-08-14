@@ -24,7 +24,8 @@ import datetime
 import six
 import time
 
-from ..eznx import write_dataset, makeGroup, openGroup
+from ..diffractometers import get_geometry_catalog, Diffractometer
+from ..eznx import write_dataset, makeGroup, openGroup, makeLink
 from ..plugin import AutoRegister, ControlLineHandler
 from ..scanf import scanf
 from ..spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
@@ -267,16 +268,29 @@ class SPEC_Geometry(ControlLineHandler):
         Meaning of contents for each index are defined by geometry-specific 
         SPEC diffractometer support.
 
+    * *NXinstrument* & *NXsample* groups for interpreted information
     """
 
     key = '#G\d+'
-    scan_attributes_defined = ['G']
+    scan_attributes_defined = ['G', 'diffractometer']
     
     def process(self, text, scan, *args, **kws):
         subkey = text.split()[0].lstrip('#')
         scan.G[subkey] = strip_first_word(text)
+        scan.addPostProcessor('diffractometer geometry', self.postprocess)
+    
+    def postprocess(self, scan, *args, **kws):
         if len(scan.G) > 0:
-            scan.addH5writer(self.key, self.writer)
+            scan.addH5writer('diffractometer geometry', self.writer)
+
+        dgc = get_geometry_catalog()
+        geometry = dgc.match(scan)
+        diffractometer = Diffractometer(geometry)
+        if diffractometer is None:
+            scan.geometry = {}
+        else:
+            diffractometer.parse(scan)
+            scan.diffractometer = diffractometer
     
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -288,6 +302,100 @@ class SPEC_Geometry(ControlLineHandler):
         for item, value in scan.G.items():
             dd[item] = list(map(float, value.split()))
         writer.save_dict(group, dd)
+        
+        gpar = scan.diffractometer.geometry_parameters
+        if len(gpar) > 0:
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            write_dataset(
+                    nxinstrument, 
+                    "name", 
+                    scan.diffractometer.geometry_name_full
+                    )
+            if scan.diffractometer.lattice is not None:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                abc = [
+                    scan.diffractometer.lattice.a, 
+                    scan.diffractometer.lattice.b, 
+                    scan.diffractometer.lattice.c]
+                angles = [
+                    scan.diffractometer.lattice.alpha,
+                    scan.diffractometer.lattice.beta,
+                    scan.diffractometer.lattice.gamma]
+                write_dataset(
+                    nxsample, 
+                    "unit_cell_abc", 
+                    abc,
+                    units="angstrom",
+                    )
+                write_dataset(
+                    nxsample, 
+                    "unit_cell_alphabetagamma", 
+                    angles,
+                    units="degrees",
+                    )
+                write_dataset(      # ah, NeXus ... so many ways ...
+                    nxsample, 
+                    "unit_cell", 
+                    abc + angles,
+                    )
+            if "ub_matrix" in gpar:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                ub = gpar["ub_matrix"].value
+                write_dataset(nxsample, "ub_matrix", ub)
+            if scan.diffractometer.mode is not None:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                write_dataset(
+                    nxsample, 
+                    "diffractometer_mode", 
+                    scan.diffractometer.mode)
+            if scan.diffractometer.sector is not None:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                write_dataset(
+                    nxsample, 
+                    "diffractometer_sector", 
+                    scan.diffractometer.sector)
+            if len(scan.diffractometer.reflections) > 0:
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                for i, ref in enumerate(scan.diffractometer.reflections):
+                    nm = "or%d" % i
+                    nxnote = openGroup(
+                        nxsample, nm, "NXnote",
+                        description = nm + ": orientation reflection")
+                    write_dataset(nxnote, "h", ref.h)
+                    write_dataset(nxnote, "k", ref.k)
+                    write_dataset(nxnote, "l", ref.l)
+                    write_dataset(nxnote, "wavelength", ref.wavelength, units="Angstrom")
+                    for k, a in ref.angles.items():
+                        write_dataset(
+                            nxnote, k, a, units="degrees", 
+                            description="diffractometer angle")
+            if scan.diffractometer.wavelength is not None:
+                # see: http://download.nexusformat.org/doc/html/strategies.html#strategies-wavelength
+                nxmono = openGroup(nxinstrument, 'monochromator', "NXmonochromator")
+                ds = write_dataset(
+                    nxmono, 
+                    "wavelength", 
+                    scan.diffractometer.wavelength,
+                    units="angstrom",
+                    )
+                # and: http://download.nexusformat.org/doc/html/classes/base_classes/NXbeam.html#nxbeam
+                nxsample = openGroup(h5parent, 'sample', "NXsample")
+                nxbeam = openGroup(nxsample, 'beam', "NXbeam")
+                # link them
+                makeLink(nxsample, ds, nxbeam.name + "/incident_wavelength")
+
+            nxnote = openGroup(
+                nxinstrument, 
+                'geometry_parameters', 
+                nxclass, 
+                description="SPEC geometry arrays, interpreted"
+                )
+            for kdv in gpar.values():
+                d = kdv.description
+                if len(d) == 0:
+                    write_dataset(nxnote, kdv.key, kdv.value)
+                else:
+                    write_dataset(nxnote, kdv.key, kdv.value,description=d)
 
 
 @six.add_metaclass(AutoRegister)
@@ -662,7 +770,8 @@ class SPEC_Positioners(ControlLineHandler):
         desc='SPEC positioners (#P & #O lines)'
         group = makeGroup(h5parent, 'positioners', nxclass, description=desc)
         writer.save_dict(group, scan.positioner)
-
+        nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+        makeLink(h5parent, group, nxinstrument.name + "/positioners")
 
 @six.add_metaclass(AutoRegister)
 class SPEC_HKL(ControlLineHandler):
@@ -1073,6 +1182,11 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler):
                 if key in mca:
                     write_dataset(mca_group, key, mca[key])
 
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+
 
 @six.add_metaclass(AutoRegister)
 class SPEC_MCA_CountTime(ControlLineHandler):
@@ -1119,6 +1233,11 @@ class SPEC_MCA_CountTime(ControlLineHandler):
             for key in ('preset_time  elapsed_live_time  elapsed_real_time'.split()):
                 if key in mca:
                     write_dataset(mca_group, key, mca[key], units='s')
+
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
 
 
 @six.add_metaclass(AutoRegister)
@@ -1177,6 +1296,12 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
                     dataset = [roi['first_chan'], roi['last_chan']]
                     desc = 'first_chan, last_chan'
                     write_dataset(roi_group, key, dataset, description=desc, units='channel')
+
+            # make link in NXinstrument group
+            nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
+            if "MCA" not in nxinstrument:
+                makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
