@@ -13,8 +13,10 @@ Change History
 Production
 **********
 
-:2021.1.2: expected *2019.08.16*, refactor
+:2021.1.2: released *2019.08.15*, plugin enhancements
 
+    * `#197 <https://github.com/prjemian/spec2nexus/issues/197>`_
+       plugins: handle empty empty #O0 or #P0 list
     * `#195 <https://github.com/prjemian/spec2nexus/issues/195>`_
        drop CII badge: not useful to spec2nexus
     * `#190 <https://github.com/prjemian/spec2nexus/issues/190>`_
@@ -22,12 +24,12 @@ Production
     * `#51 <https://github.com/prjemian/spec2nexus/issues/51>`_
        plugins: interpret #Gn control lines
 
-:2021.1.1: *2019.07.22*, refactor
+:2021.1.1: released *2019.07.22*, refactor
     
     * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
        plugins: revised technique to load control line handlers
 
-:2021.1.0: *2019.07.15*, new features
+:2021.1.0: released *2019.07.15*, new features
     
     **NEW**
     
@@ -44,7 +46,7 @@ Production
     * `#148 <https://github.com/prjemian/spec2nexus/issues/148>`_
        module: eznx - increase coverage of unit tests
 
-:2021.0.1: *2019.07.13*, plugin loading and documentation
+:2021.0.1: released *2019.07.13*, plugin loading and documentation
 
     * `#170 <https://github.com/prjemian/spec2nexus/issues/170>`_
        describe how to write & load Control Line Handler plugins
@@ -55,7 +57,7 @@ Production
     * `#149 <https://github.com/prjemian/spec2nexus/issues/149>`_
        unit tests: ``units`` module
 
-:2021.0.0: *2019.07.12*, API change affecting plugins
+:2021.0.0: released *2019.07.12*, API change affecting plugins
 
     **API change**:
     Changed how plugins are defined and registered.
@@ -67,7 +69,7 @@ Production
     * `#166 <https://github.com/prjemian/spec2nexus/issues/166>`_
        fix conda packaging
 
-:2020.0.2: *2019.07.09*, bug fixes and code review suggestions
+:2020.0.2: released *2019.07.09*, bug fixes and code review suggestions
 
     NOTE: conda package is broken (no plugins directory).  
     Only use ``pip install spec2nexus`` with this release.
@@ -81,7 +83,7 @@ Production
     * `#153 <https://github.com/prjemian/spec2nexus/issues/153>`_
        LGTM code review
 
-:2020.0.0: *2019.05.16*, major release
+:2020.0.0: released *2019.05.16*, major release
 
     * `#145 <https://github.com/prjemian/spec2nexus/issues/145>`_
        unit tests for header content
@@ -94,14 +96,14 @@ Production
     * `#70 <https://github.com/prjemian/spec2nexus/issues/70>`_
        remove h5toText, find this now in `punx` package
 
-:2019.0503.0: 2019.05.03, tag
+:2019.0503.0: released *2019.05.03*, tag
 
     * `#142 <https://github.com/prjemian/spec2nexus/issues/142>`_
        DuplicateSpecScanNumber with multiple #F sections
     * `#137 <https://github.com/prjemian/spec2nexus/issues/137>`_
        (again) bug in #U control line handling
 
-:2019.0501.0: 2019.05.01, tag
+:2019.0501.0: released *2019.05.01*, tag
 
     * `#137 <https://github.com/prjemian/spec2nexus/issues/137>`_
        bug in #U control line handling
