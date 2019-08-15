@@ -200,6 +200,7 @@ class TestSpecificPlugins(unittest.TestCase):
         self.assertEqual(len(scan.header.O[0]), 0)
         self.assertEqual(len(scan.header.o), 1)
         self.assertEqual(len(scan.header.o[0]), 0)
+
         self.assertGreater(scan.raw.find("\n#P0 \n"), 0)
         self.assertEqual(len(scan.P), 1)
         self.assertEqual(len(scan.P[0]), 0)

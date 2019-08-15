@@ -13,7 +13,7 @@ Change History
 Production
 **********
 
-:2021.1.2: expected *2019.09*, refactor
+:2021.1.2: expected *2019.08.16*, refactor
 
     * `#195 <https://github.com/prjemian/spec2nexus/issues/195>`_
        drop CII badge: not useful to spec2nexus
