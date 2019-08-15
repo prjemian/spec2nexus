@@ -206,6 +206,7 @@ class TestSpecificPlugins(unittest.TestCase):
         self.assertGreater(scan.raw.find("\n#P0 \n"), 0)
         self.assertEqual(len(scan.P), 1)
         self.assertEqual(len(scan.P[0]), 0)
+        self.assertEqual(len(scan.positioner), 0)
     
     def test_nonempty_positioner(self):
         "issue #196"
@@ -229,6 +230,9 @@ class TestSpecificPlugins(unittest.TestCase):
         self.assertEqual(len(scan.P), 1)
         self.assertEqual(len(scan.P[0]), 1)
         self.assertEqual(scan.P[0][0], "8.824977")
+        self.assertEqual(len(scan.positioner), 1)
+        self.assertTrue("m_stage_r" in scan.positioner)
+        self.assertEqual(scan.positioner["m_stage_r"], float("8.824977"))
 
 
 def suite(*args, **kw):
