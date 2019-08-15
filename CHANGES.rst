@@ -13,16 +13,19 @@ Change History
 Production
 **********
 
-:2021.1.1: *2019.07.22*, refactor
-    
+:2021.1.2: expected *2019.09*, refactor
+
     * `#195 <https://github.com/prjemian/spec2nexus/issues/195>`_
        drop CII badge: not useful to spec2nexus
     * `#190 <https://github.com/prjemian/spec2nexus/issues/190>`_
        writer: link content into NXinstrument group
-    * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
-       plugins: revised technique to load control line handlers
     * `#51 <https://github.com/prjemian/spec2nexus/issues/51>`_
        plugins: interpret #Gn control lines
+
+:2021.1.1: *2019.07.22*, refactor
+    
+    * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
+       plugins: revised technique to load control line handlers
 
 :2021.1.0: *2019.07.15*, new features
     
