@@ -86,11 +86,11 @@ class TestCustomPlugin(unittest.TestCase):
         custom_attribute = "MyTest"     # in python, scan.MyTest
         
         # first, test data with custom control line without plugin loaded
-        self.assertFalse("#TEST" in manager.registry)
-        self.assertFalse("MyTest" in manager.lazy_attributes)
+        self.assertNotIn("#TEST", manager.registry)
+        self.assertNotIn("MyTest", manager.lazy_attributes)
         sdf = spec.SpecDataFile(_filename)
         scan = sdf.getScan(50)
-        self.assertTrue("G0" in scan.G)
+        self.assertIn("G0", scan.G)
 
         self.assertFalse(hasattr(scan, "MyTest"))
         with self.assertRaises(AttributeError) as exc:
@@ -104,12 +104,12 @@ class TestCustomPlugin(unittest.TestCase):
         self.assertGreater(
             num_known_control_lines_after, 
             num_known_control_lines_before)
-        self.assertTrue("#TEST" in manager.registry)
-        self.assertTrue("MyTest" in manager.lazy_attributes)
+        self.assertIn("#TEST", manager.registry)
+        self.assertIn("MyTest", manager.lazy_attributes)
         
         sdf = spec.SpecDataFile(_filename)
         scan = sdf.getScan(50)
-        self.assertTrue("G0" in scan.G)
+        self.assertIn("G0", scan.G)
 
         self.assertTrue(hasattr(scan, "MyTest"))
         self.assertEqual(len(scan.MyTest), 1)
@@ -150,41 +150,41 @@ class TestSpecificPlugins(unittest.TestCase):
             nxentry = hp["/S17"]
             group = nxentry["instrument/geometry_parameters"]
 
-            self.assertTrue("instrument/name" in nxentry)
+            self.assertIn("instrument/name", nxentry)
             self.assertEqual(
                 nxentry["instrument/name"][0], 
                 scan.diffractometer.geometry_name_full.encode())
-            self.assertTrue("diffractometer_simple" in group)
+            self.assertIn("diffractometer_simple", group)
             self.assertEqual(group["diffractometer_simple"][0], b"fourc")
-            self.assertTrue("diffractometer_full" in group)
+            self.assertIn("diffractometer_full", group)
             self.assertEqual(group["diffractometer_full"][0], b"fourc.default")
-            self.assertTrue("diffractometer_variant" in group)
+            self.assertIn("diffractometer_variant", group)
             self.assertEqual(group["diffractometer_variant"][0], b"default")
 
             for k in "g_aa g_bb g_cc g_al g_be g_ga LAMBDA".split():
-                self.assertTrue(k in group)
+                self.assertIn(k, group)
                 v = group[k][()][0]
                 self.assertGreater(v, 0)
 
-            self.assertTrue("sample/unit_cell_abc" in nxentry)
-            self.assertTrue("sample/unit_cell_alphabetagamma" in nxentry)
-            self.assertTrue("sample/unit_cell" in nxentry)
+            self.assertIn("sample/unit_cell_abc", nxentry)
+            self.assertIn("sample/unit_cell_alphabetagamma", nxentry)
+            self.assertIn("sample/unit_cell", nxentry)
 
-            self.assertTrue("sample/ub_matrix" in nxentry)
+            self.assertIn("sample/ub_matrix", nxentry)
             ds = nxentry["sample/ub_matrix"]
             self.assertTupleEqual(ds.shape, (3,3))
 
-            self.assertTrue("sample/or0" in nxentry)
-            self.assertTrue("sample/or0/h" in nxentry)
-            self.assertTrue("sample/or0/k" in nxentry)
-            self.assertTrue("sample/or0/l" in nxentry)
-            self.assertTrue("sample/or1" in nxentry)
-            self.assertTrue("sample/or1/h" in nxentry)
-            self.assertTrue("sample/or1/k" in nxentry)
-            self.assertTrue("sample/or1/l" in nxentry)
+            self.assertIn("sample/or0", nxentry)
+            self.assertIn("sample/or0/h", nxentry)
+            self.assertIn("sample/or0/k", nxentry)
+            self.assertIn("sample/or0/l", nxentry)
+            self.assertIn("sample/or1", nxentry)
+            self.assertIn("sample/or1/h", nxentry)
+            self.assertIn("sample/or1/k", nxentry)
+            self.assertIn("sample/or1/l", nxentry)
 
-            self.assertTrue("instrument/monochromator/wavelength" in nxentry)
-            self.assertTrue("sample/beam/incident_wavelength" in nxentry)
+            self.assertIn("instrument/monochromator/wavelength", nxentry)
+            self.assertIn("sample/beam/incident_wavelength", nxentry)
             self.assertEqual(
                 nxentry["instrument/monochromator/wavelength"],
                 nxentry["sample/beam/incident_wavelength"],
@@ -231,7 +231,7 @@ class TestSpecificPlugins(unittest.TestCase):
         self.assertEqual(len(scan.P[0]), 1)
         self.assertEqual(scan.P[0][0], "8.824977")
         self.assertEqual(len(scan.positioner), 1)
-        self.assertTrue("m_stage_r" in scan.positioner)
+        self.assertIn("m_stage_r", scan.positioner)
         self.assertEqual(scan.positioner["m_stage_r"], float("8.824977"))
 
 
