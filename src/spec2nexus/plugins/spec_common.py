@@ -656,7 +656,12 @@ class SPEC_PositionerNames(ControlLineHandler):
         key = text.split()[0]
         if key == "#O0":
             sdf_object.O = []       # TODO: What if motor names are different?
-        sdf_object.O.append(split_column_labels(strip_first_word(text)))
+        content = strip_first_word(text).strip()
+        if content == '':
+            content = []
+        else:
+            content = split_column_labels(content)
+        sdf_object.O.append(content)
 
 
 @six.add_metaclass(AutoRegister)
@@ -683,7 +688,12 @@ class SPEC_PositionerMnemonics(ControlLineHandler):
     def process(self, text, header, *args, **kws):
         if not hasattr(header, 'o'):
             header.o = []
-        header.o.append( strip_first_word(text).split() )
+        content = strip_first_word(text).strip()
+        if content == '':
+            content = []
+        else:
+            content = content.split()
+        header.o.append(content)
         header.addPostProcessor('positioner cross-referencing', self.postprocess)
     
     def postprocess(self, header, *args, **kws):
@@ -740,7 +750,12 @@ class SPEC_Positioners(ControlLineHandler):
     def process(self, text, scan, *args, **kws):
         if isinstance(scan, SpecDataFileHeader):
             scan = scan.getLatestScan()
-        scan.P.append( strip_first_word(text) )
+        content = strip_first_word(text)
+        if content == '':
+            content = []
+        else:
+            content = content.split()
+        scan.P.append(content)
         scan.addPostProcessor('motor_positions', self.postprocess)
     
     def postprocess(self, scan, *args, **kws):
@@ -754,7 +769,7 @@ class SPEC_Positioners(ControlLineHandler):
             if row >= len(scan.header.O):
                 scan.add_interpreter_comment('#P%d found without #O%d' % (row, row))
                 continue
-            for col, val in enumerate(values.split()):
+            for col, val in enumerate(values):
                 if col >= len(scan.header.O[row]):
                     scan.add_interpreter_comment(
                         'extra value in #P%d position %d, no matching label in #O%d' % (row, col+1, row)
