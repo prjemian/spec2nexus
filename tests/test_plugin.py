@@ -59,13 +59,10 @@ class TestPlugin(unittest.TestCase):
             '#H\\d+'       : r'#H4 FB_o2_on FB_o2_r FB_o2_sp',
             None           : r'#Pete wrote this stuff',
             'scan_data'    : r'43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225',
-            '#@[cC][aA][lL][iI][bB]'  : r'#@CALIB 1 2 3',
+            #'#@[cC][aA][lL][iI][bB]'  : r'#@CALIB 1 2 3',
             '#@[cC][aA][lL][iI][bB]'  : r'#@Calib 0.0501959 0.0141105 0 mca1',
         }
         for k, v in spec_data.items():
-            if k == '#@CALIB':
-                pass
-            _k = self.manager.getKey(v)
             self.assertEqual(k, self.manager.getKey(v))
 
 
@@ -82,8 +79,8 @@ class TestCustomPlugin(unittest.TestCase):
         _p = os.path.dirname(__file__)
         _p = os.path.join(_p, "custom_plugins")
         _filename = os.path.join(_p, "specfile.txt")
-        custom_key = "#TEST"            # in SPEC data file
-        custom_attribute = "MyTest"     # in python, scan.MyTest
+        # custom_key = "#TEST"            # in SPEC data file
+        # custom_attribute = "MyTest"     # in python, scan.MyTest
         
         # first, test data with custom control line without plugin loaded
         self.assertNotIn("#TEST", manager.registry)
