@@ -189,6 +189,46 @@ class TestSpecificPlugins(unittest.TestCase):
                 nxentry["instrument/monochromator/wavelength"],
                 nxentry["sample/beam/incident_wavelength"],
                 )
+    
+    def test_empty_positioner(self):
+        "issue #196"
+        fname = os.path.join(_test_path, "tests", 'data', 'issue196_data.txt')
+        scan_number = 108
+        sdf = spec.SpecDataFile(fname)
+        scan = sdf.getScan(scan_number)
+
+        self.assertGreater(scan.header.raw.find("\n#O0 \n"), 0)
+        self.assertGreater(scan.header.raw.find("\n#o0 \n"), 0)
+        self.assertEqual(len(scan.header.O), 1)
+        self.assertEqual(len(scan.header.O[0]), 0)
+        self.assertEqual(len(scan.header.o), 1)
+        self.assertEqual(len(scan.header.o[0]), 0)
+        self.assertGreater(scan.raw.find("\n#P0 \n"), 0)
+        self.assertEqual(len(scan.P), 1)
+        self.assertEqual(len(scan.P[0]), 0)
+    
+    def test_nonempty_positioner(self):
+        "issue #196"
+        fname = os.path.join(_test_path, "tests", 'data', 'issue196_data2.txt')
+        scan_number = 108
+        sdf = spec.SpecDataFile(fname)
+        scan = sdf.getScan(scan_number)
+
+        self.assertEqual(scan.header.raw.find("\n#O0 \n"), -1)
+        self.assertEqual(scan.header.raw.find("\n#o0 \n"), -1)
+        self.assertGreater(scan.header.raw.find("\n#O0 m_stage_r\n"), 0)
+        self.assertGreater(scan.header.raw.find("\n#o0 mr\n"), 0)
+        self.assertEqual(len(scan.header.O), 1)
+        self.assertEqual(len(scan.header.O[0]), 1)
+        self.assertEqual(scan.header.O[0][0], "m_stage_r")
+        self.assertEqual(len(scan.header.o), 1)
+        self.assertEqual(len(scan.header.o[0]), 1)
+        self.assertEqual(scan.header.o[0][0], "mr")
+        self.assertEqual(scan.raw.find("\n#P0 \n"), -1)
+        self.assertGreater(scan.raw.find("\n#P0 8.824977\n"), 0)
+        self.assertEqual(len(scan.P), 1)
+        self.assertEqual(len(scan.P[0]), 1)
+        self.assertEqual(scan.P[0][0], "8.824977")
 
 
 def suite(*args, **kw):
