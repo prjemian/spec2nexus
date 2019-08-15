@@ -55,7 +55,7 @@ class TestPlugin(unittest.TestCase):
             #r'@A\d*'       : r'@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             r'@A\d*'       : r'@A1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             #r'@A\d*'       : r'@A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
-            'scan_data'    : r' 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'.lstrip(),
+            #'scan_data'    : r' 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'.lstrip(),
             '#H\\d+'       : r'#H4 FB_o2_on FB_o2_r FB_o2_sp',
             None           : r'#Pete wrote this stuff',
             'scan_data'    : r'43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225',
