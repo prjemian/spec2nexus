@@ -12,8 +12,11 @@ unit tests for the spec module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import os
+import shutil
+import sys
+import tempfile
 import unittest
-import os, sys
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 _path = os.path.abspath(os.path.join(_test_path, 'src'))
@@ -349,10 +352,42 @@ class Test(unittest.TestCase):
             "embedded comment not part of data")
 
 
+class TestFileUpdate(unittest.TestCase):
+
+    def setUp(self):
+        self.data_file = tempfile.NamedTemporaryFile(
+            suffix='.dat', delete=False)
+        self.data_file.close()
+
+    def tearDown(self):
+        os.remove(self.data_file.name)
+    
+    def test_1(self):
+        # test the mtime function first
+        # and setup the modifiable SPEC data file
+        self.assertTrue(os.path.exists(self.data_file.name))
+        mt0 = os.path.getmtime(self.data_file.name)
+        shutil.copy(
+            os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
+            self.data_file.name)
+        mt1 = os.path.getmtime(self.data_file.name)
+        self.assertGreater(mt1, mt0)
+        
+        # test the ``update_available`` property
+        sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertFalse(sdf.update_available)
+        with open(self.data_file.name, "a") as fp:
+            fp.write("\n#C comment\n")
+        mt2 = os.path.getmtime(self.data_file.name)
+        self.assertGreater(mt2, mt1)
+        self.assertTrue(sdf.update_available)
+
+
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        Test,
+        # Test,
+        TestFileUpdate,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
