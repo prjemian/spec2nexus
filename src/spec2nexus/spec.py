@@ -1,6 +1,5 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
-from sphinx.util.osutil import mtimes_of_files
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
