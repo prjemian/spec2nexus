@@ -89,6 +89,14 @@ class SPEC_Epoch(ControlLineHandler):
     # do NOT add E to scan_attributes_defined
     
     def process(self, buf, sdf_object, *args, **kws):
+        matches = [
+            h 
+            for h in sdf_object.headers
+            if h.raw.strip() == buf.strip()
+            ]
+        if len(matches) > 0:
+            # this header exists, nothing to do
+            return
         header = SpecDataFileHeader(buf, parent=sdf_object)
         line = buf.splitlines()[0].strip()
         if line.find(".") > -1:
@@ -224,14 +232,42 @@ class SPEC_Scan(ControlLineHandler):
         else:
             header = sdf.headers[-1]    # pick the most recent header
 
+        matches = [
+            (k, s) 
+            for k, s in sdf.scans.items()
+            if s.raw.strip() == part.strip()
+            ]
+
+        if len(matches) > 0 and sdf.last_scan is not None:
+            if sdf.getScan(sdf.last_scan).raw != part:
+                return
+
         scan = SpecDataFileScan(header, part, parent=sdf)
+        if sdf.last_scan is not None:
+            # We know that `part` does not match any existing scan.
+            # Do the first few lines match (#S and #D in particular)?
+            # If so, then that scan has been updated with more data.
+            def beginning(buf):
+                "return a string with first few lines of buf"
+                return "\n".join(
+                    [
+                        line
+                        for line in buf.strip().splitlines()[:5]
+                        if line.startswith("#")
+                    ]
+                )
+            if beginning(part) == beginning(sdf.getScan(sdf.last_scan).raw):
+                # remove the last scan
+                del sdf.scans[sdf.last_scan]
+                sdf.last_scan = None
+
         scan.S = strip_first_word(part.splitlines()[0].strip())
         scan.scanNum = scan.S.split()[0]
         scan.scanCmd = strip_first_word(scan.S)
         
         if scan.scanNum in sdf.scans:
             # Before raising an exception, 
-            #    Check for duplicate and create alternate name
+            #    Check for duplicate scan number and create alternate name
             #    write as "%d.%d" % (scan.scanNum, index+1) 
             #    where index is the lowest integer in 
             #    range(really big) that is not already in use.
