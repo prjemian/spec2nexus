@@ -357,6 +357,8 @@ class Test(unittest.TestCase):
             'issue109_data.txt')
         sdf = spec.SpecDataFile(specFile)
         self.assertEqual(str(sdf), sdf.fileName)
+        sdf = spec.SpecDataFile(None)
+        self.assertEqual(str(sdf), 'None')
 
 
 class TestFileUpdate(unittest.TestCase):
