@@ -67,26 +67,27 @@ class Test(unittest.TestCase):
         for item, expected in files.items():
             self.assertEqual(self.is_spec_file(item), expected, item)
     
-    def cannot_find_spec_data_file(self):
-        spec.SpecDataFile('cannot_find_this_file')
-    
-    def not_a_spec_data_file(self):
-        spec.SpecDataFile(__file__)
-    
     def test_custom_exceptions(self):
-        self.assertRaises(Exception, spec.SpecDataFileNotFound())
-        self.assertRaises(Exception, spec.SpecDataFileCouldNotOpen())
-        self.assertRaises(Exception, spec.DuplicateSpecScanNumber())
-        self.assertRaises(Exception, spec.NotASpecDataFile())
-        self.assertRaises(Exception, spec.UnknownSpecFilePart())
-
-    def spec_data_file(self):
-        spec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
+        with self.assertRaises(IOError):
+            raise spec.SpecDataFileNotFound()
+        with self.assertRaises(IOError):
+            raise spec.SpecDataFileCouldNotOpen()
+        with self.assertRaises(Exception):
+            raise spec.DuplicateSpecScanNumber()
+        with self.assertRaises(Exception):
+            raise spec.NotASpecDataFile()
+        with self.assertRaises(Exception):
+            raise spec.UnknownSpecFilePart()
 
     def test_file_initial_exceptions(self):
-        self.assertRaises(TypeError, spec.SpecDataFile)
-        self.assertRaises(spec.SpecDataFileNotFound, self.cannot_find_spec_data_file)
-        self.assertRaises(spec.NotASpecDataFile, self.not_a_spec_data_file)
+        with self.assertRaises(TypeError):
+            spec.SpecDataFile()
+        with self.assertRaises(spec.SpecDataFileNotFound):
+            spec.SpecDataFile('cannot_find_this_file')
+        with self.assertRaises(spec.SpecDataFileNotFound):
+            spec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
+        with self.assertRaises(spec.NotASpecDataFile):
+            spec.SpecDataFile(__file__)
 
     def test_33bm_spec(self):
         fname = self.abs_data_fname('33bm_spec.dat')
@@ -362,7 +363,7 @@ class TestFileUpdate(unittest.TestCase):
         # and setup the modifiable SPEC data file
         self.assertTrue(os.path.exists(self.data_file.name))
         mt0 = os.path.getmtime(self.data_file.name)
-        time.sleep(0.015)
+        time.sleep(0.02)        # at least a clock tick (1/60 s)
         shutil.copy(
             os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
             self.data_file.name)
@@ -379,6 +380,7 @@ class TestFileUpdate(unittest.TestCase):
         # update the file with a trivial edit
         with open(self.data_file.name, "a") as fp:
             fp.write("\n#C comment\n")
+        time.sleep(0.02)        # at least a clock tick (1/60 s)
 
         mt2 = os.path.getmtime(self.data_file.name)
         self.assertGreater(mt2, mt1)
