@@ -363,7 +363,7 @@ class TestFileUpdate(unittest.TestCase):
     def tearDown(self):
         os.remove(self.data_file.name)
     
-    def test_1(self):
+    def test_update_available(self):
         # test the mtime function first
         # and setup the modifiable SPEC data file
         self.assertTrue(os.path.exists(self.data_file.name))
