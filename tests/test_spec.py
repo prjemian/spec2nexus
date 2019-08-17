@@ -12,8 +12,12 @@ unit tests for the spec module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import os
+import shutil
+import sys
+import tempfile
+import time
 import unittest
-import os, sys
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 _path = os.path.abspath(os.path.join(_test_path, 'src'))
@@ -25,70 +29,68 @@ from spec2nexus import spec, utils
 
 
 class Test(unittest.TestCase):
-
-    def setUp(self):
-        self.basepath = os.path.join(_path, 'spec2nexus')
-        self.datapath = os.path.join(self.basepath, 'data')
-
-#     def tearDown(self):
-#         pass
-
-#     def testName(self):
-#         pass
     
     def abs_data_fname(self, fname):
-        return os.path.join(self.datapath, fname)
+        return os.path.join(_path, 'spec2nexus', 'data', fname)
     
     def test_strip_first_word(self):
         self.assertEqual(utils.strip_first_word('one two three'), 'two three')
         
     def test_isSpecFileThis(self):
         self.assertFalse(spec.is_spec_file('this_does_not_exist'))
-        self.assertFalse(spec.is_spec_file(self.basepath))
+        self.assertFalse(spec.is_spec_file(os.path.join(_path, 'spec2nexus')))
         self.assertFalse(spec.is_spec_file(__file__))
         self.assertTrue( spec.is_spec_file(self.abs_data_fname('APS_spec_data.dat')))
+        self.assertFalse(spec.is_spec_file_with_header('file does not exist'))
+        self.assertTrue( spec.is_spec_file_with_header(self.abs_data_fname('APS_spec_data.dat')))
+        self.assertFalse(spec.is_spec_file_with_header(self.abs_data_fname('spec_from_spock.spc')))
     
     def is_spec_file(self, fname):
         return spec.is_spec_file(self.abs_data_fname(fname))
         
     def test_isSpecFile(self):
         '''test all the known data files to see if they are SPEC'''
-        self.assertTrue( self.is_spec_file('33bm_spec.dat'))
-        self.assertTrue( self.is_spec_file('33id_spec.dat'))
-        self.assertTrue( self.is_spec_file('APS_spec_data.dat'))
-        self.assertTrue( self.is_spec_file('CdSe'))
-        self.assertTrue( self.is_spec_file('lmn40.spe'))
-        self.assertTrue( self.is_spec_file('YSZ011_ALDITO_Fe2O3_planar_fired_1.spc'))
-        self.assertFalse(self.is_spec_file('uxml'))             # directory
-        self.assertFalse(self.is_spec_file('README.txt'))       # text file
-        self.assertFalse(self.is_spec_file('33bm_spec.hdf5'))
-        self.assertFalse(self.is_spec_file('33id_spec.hdf5'))
-        self.assertFalse(self.is_spec_file('APS_spec_data.hdf5'))
-        self.assertFalse(self.is_spec_file('compression.h5'))
-        self.assertFalse(self.is_spec_file('Data_Q.h5'))
-        self.assertFalse(self.is_spec_file('lmn40.hdf5'))
-        self.assertFalse(self.is_spec_file('writer_1_3.h5'))
-    
-    def cannot_find_spec_data_file(self):
-        spec.SpecDataFile('cannot_find_this_file')
-    
-    def not_a_spec_data_file(self):
-        spec.SpecDataFile(__file__)
+        files = {
+            "33bm_spec.dat": True,
+            "33id_spec.dat": True,
+            "APS_spec_data.dat": True,
+            "CdSe": True,
+            "lmn40.spe": True,
+            "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc": True,
+            "uxml": False,             # directory
+            "README.txt": False,       # text file
+            "33bm_spec.hdf5": False,
+            "33id_spec.hdf5": False,
+            "APS_spec_data.hdf5": False,
+            "compression.h5": False,
+            "Data_Q.h5": False,
+            "lmn40.hdf5": False,
+            "writer_1_3.h5": False,
+        }
+        for item, expected in files.items():
+            self.assertEqual(self.is_spec_file(item), expected, item)
     
     def test_custom_exceptions(self):
-        self.assertRaises(Exception, spec.SpecDataFileNotFound())
-        self.assertRaises(Exception, spec.SpecDataFileCouldNotOpen())
-        self.assertRaises(Exception, spec.DuplicateSpecScanNumber())
-        self.assertRaises(Exception, spec.NotASpecDataFile())
-        self.assertRaises(Exception, spec.UnknownSpecFilePart())
-
-    def spec_data_file(self):
-        spec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
+        with self.assertRaises(IOError):
+            raise spec.SpecDataFileNotFound()
+        with self.assertRaises(IOError):
+            raise spec.SpecDataFileCouldNotOpen()
+        with self.assertRaises(Exception):
+            raise spec.DuplicateSpecScanNumber()
+        with self.assertRaises(Exception):
+            raise spec.NotASpecDataFile()
+        with self.assertRaises(Exception):
+            raise spec.UnknownSpecFilePart()
 
     def test_file_initial_exceptions(self):
-        self.assertRaises(TypeError, spec.SpecDataFile)
-        self.assertRaises(spec.SpecDataFileNotFound, self.cannot_find_spec_data_file)
-        self.assertRaises(spec.NotASpecDataFile, self.not_a_spec_data_file)
+        with self.assertRaises(TypeError):
+            spec.SpecDataFile()
+        with self.assertRaises(spec.SpecDataFileNotFound):
+            spec.SpecDataFile('cannot_find_this_file')
+        with self.assertRaises(spec.SpecDataFileNotFound):
+            spec.SpecDataFile(self.abs_data_fname('03_05_UImg.dat'))
+        with self.assertRaises(spec.NotASpecDataFile):
+            spec.SpecDataFile(__file__)
 
     def test_33bm_spec(self):
         fname = self.abs_data_fname('33bm_spec.dat')
@@ -315,7 +317,7 @@ class Test(unittest.TestCase):
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         self.assertEqual(scan.T, "0", "received expected count time")
-        self.assertTrue("Seco nds" in scan.data, "found counting base")
+        self.assertIn("Seco nds", scan.data, "found counting base")
         self.assertEqual(
             scan.data["Seco nds"][0], 
             1, 
@@ -334,25 +336,75 @@ class Test(unittest.TestCase):
             "400000", 
             "received expected monitor count")
         self.assertTrue(hasattr(scan, 'MCA'), "MCA found")
-        self.assertTrue("ROI" in scan.MCA, "MCA ROI found")
+        self.assertIn("ROI", scan.MCA, "MCA ROI found")
         roi_dict = scan.MCA["ROI"]
         key = "FeKa(mca1 R1)"
-        self.assertTrue(key in roi_dict, "MCA ROI config found")
+        self.assertIn(key, roi_dict, "MCA ROI config found")
         roi = roi_dict[key]
         self.assertEqual(roi["first_chan"], 377, "MCA ROI first channel")
         self.assertEqual(roi["last_chan"], 413, "MCA ROI last channel")
 
-        self.assertTrue(key in scan.data, "MCA ROI data found")
+        self.assertIn(key, scan.data, "MCA ROI data found")
         self.assertEqual(
             len(scan.data[key]), 
             61, 
             "embedded comment not part of data")
+
+    def test_str(self):
+        specFile = os.path.join(
+            os.path.dirname(__file__), 
+            'data', 
+            'issue109_data.txt')
+        sdf = spec.SpecDataFile(specFile)
+        self.assertEqual(str(sdf), sdf.fileName)
+        sdf = spec.SpecDataFile(None)
+        self.assertEqual(str(sdf), 'None')
+
+
+class TestFileUpdate(unittest.TestCase):
+
+    def setUp(self):
+        self.data_file = tempfile.NamedTemporaryFile(
+            suffix='.dat', delete=False)
+        self.data_file.close()
+
+    def tearDown(self):
+        os.remove(self.data_file.name)
+    
+    def test_update_available(self):
+        # test the mtime function first
+        # and setup the modifiable SPEC data file
+        self.assertTrue(os.path.exists(self.data_file.name))
+        mt0 = os.path.getmtime(self.data_file.name)
+        time.sleep(0.02)        # at least a clock tick (1/60 s)
+        shutil.copy(
+            os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
+            self.data_file.name)
+        mt1 = os.path.getmtime(self.data_file.name)
+        self.assertGreater(mt1, mt0)
+        
+        # test the ``update_available`` property
+        sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertFalse(sdf.update_available)
+        self.assertEqual(sdf.num_lines, 164)
+        self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
+        self.assertEqual(sdf.last_scan, '17')
+
+        # update the file with a trivial edit
+        with open(self.data_file.name, "a") as fp:
+            fp.write("\n#C comment\n")
+        time.sleep(0.02)        # at least a clock tick (1/60 s)
+
+        mt2 = os.path.getmtime(self.data_file.name)
+        self.assertGreater(mt2, mt1)
+        self.assertTrue(sdf.update_available)
 
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         Test,
+        TestFileUpdate,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))

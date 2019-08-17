@@ -27,6 +27,15 @@ specifying the file reference (by path reference as needed)
 and the internal routines will take care of all that is necessary
 to read and interpret the information.
 
+.. autosummary::
+   
+    ~is_spec_file
+    ~is_spec_file_with_header
+    ~SpecDataFile
+    ~SpecDataFileHeader
+    ~SpecDataFileScan
+
+
 ..  -----------------------------------------------------------------------------------------
     old documentation
     -----------------------------------------------------------------------------------------
@@ -203,7 +212,22 @@ def is_spec_file_with_header(filename):
 class SpecDataFile(object):
 
     """
-    contents of a spec data file
+    contents of a SPEC data file
+
+    .. autosummary::
+
+        ~update_available
+        ~dissect_file
+        ~read
+        ~getScan
+        ~getScanNumbers
+        ~getScanNumbersChronological
+        ~getMinScanNumber
+        ~getMaxScanNumber
+        ~getFirstScanNumber
+        ~getLastScanNumber
+        ~getScanCommands
+
     """
 
     fileName = ''
@@ -217,16 +241,33 @@ class SpecDataFile(object):
         self.headers = []
         self.scans = OrderedDict()
         self.readOK = -1
-        if not os.path.exists(filename):
-            raise SpecDataFileNotFound('file does not exist: ' + str(filename))
-        if not is_spec_file(filename):
-            raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
-        self.fileName = filename
+        self.last_scan = None
+        self.mtime = 0
+        self.num_lines = 0
 
-        self.read()
+        if filename is not None:
+            if not os.path.exists(filename):
+                raise SpecDataFileNotFound(
+                    'file does not exist: ' + str(filename))
+            if not is_spec_file(filename):
+                raise NotASpecDataFile(
+                    'not a SPEC data file: ' + str(filename))
+            self.fileName = filename
+
+            self.read()
     
     def __str__(self):
         return self.fileName or 'None'
+    
+    @property
+    def update_available(self):
+        """
+        Has the file been updated since the last time it was read?
+        
+        Reference file modification time is stored *after* 
+        file is read in :meth:`read()` method.
+        """
+        return self.mtime != os.path.getmtime(self.fileName)
 
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
@@ -260,11 +301,12 @@ class SpecDataFile(object):
             text with one of the above control lines at its start 
         
         """
-        buf = self._read_file_(self.fileName)
+        buf = self._read_file_(self.fileName).splitlines()
+        self.num_lines = len(buf)
         
         sections, block = [], []
         
-        for _line_num, text in enumerate(buf.splitlines()):
+        for _line_num, text in enumerate(buf):
             if len(text.strip()) > 0:
                 f = text.split()[0]
                 if len(f) == 2 and f in ("#E", "#F", "#S"):
@@ -299,6 +341,9 @@ class SpecDataFile(object):
         # fix any missing parts
         if not hasattr(self, "specFile"):
             self.specFile = self.fileName
+
+        self.last_scan = self.getLastScanNumber()
+        self.mtime = os.path.getmtime(self.fileName)
     
     def getScan(self, scan_number=0):
         """return the scan number indicated, None if not found"""
@@ -358,7 +403,18 @@ class SpecDataFile(object):
 
 
 class SpecDataFileHeader(object):
-    """contents of a spec data file header (#E) section"""
+    """
+    contents of a spec data file header (#E) section
+
+    .. autosummary::
+
+        ~get_macro_name
+        ~interpret
+        ~addPostProcessor
+        ~addH5writer
+        ~getLatestScan
+
+    """
 
     def __init__(self, buf, parent = None):
         #----------- initialize the instance variables
@@ -430,7 +486,19 @@ class SpecDataFileHeader(object):
 #-------------------------------------------------------------------------------------------
 
 class SpecDataFileScan(object):
-    """contents of a spec data file scan (#S) section"""
+    """
+    contents of a spec data file scan (#S) section
+
+    .. autosummary::
+
+        ~get_macro_name
+        ~interpret
+        ~add_interpreter_comment
+        ~get_interpreter_comments
+        ~addPostProcessor
+        ~addH5writer
+
+    """
 
     def __init__(self, header, buf, parent=None):
         self.parent = parent        # instance of SpecDataFile
