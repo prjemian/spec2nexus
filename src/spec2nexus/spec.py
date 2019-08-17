@@ -297,9 +297,24 @@ class SpecDataFile(object):
         update (refresh) the content if the file is updated
     
         returns previous last_scan or None if file not updated
+
+        .. caution:  scans and headers will be re-read
+        
+           After calling :metho:`refresh()`, 
+           all clients should get new objects 
+           for any scan or header.  
+           Scans will be interpreted again if content is referenced.
         """
         if self.update_available:
             previous_scan = self.last_scan
+            
+            # FIXME: replace this with more elegant technique
+            # TODO: remove last_scan
+            # TODO: skip past existing scans
+            self.headers = []
+            self.scans = OrderedDict()
+            self.readOK = -1
+            
             self.read()
             return previous_scan
         return None
