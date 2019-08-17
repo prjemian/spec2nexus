@@ -298,7 +298,7 @@ class SpecDataFile(object):
     
         returns previous last_scan or None if file not updated
 
-        .. caution:  scans and headers will be re-read
+        .. caution:  scans and headers must be re-read
         
            After calling :metho:`refresh()`, 
            all clients should get new objects 
