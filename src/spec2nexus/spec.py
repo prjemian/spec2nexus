@@ -241,17 +241,20 @@ class SpecDataFile(object):
         self.headers = []
         self.scans = OrderedDict()
         self.readOK = -1
-        if not os.path.exists(filename):
-            raise SpecDataFileNotFound('file does not exist: ' + str(filename))
-        if not is_spec_file(filename):
-            raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
-        self.fileName = filename
-
         self.last_scan = None
         self.mtime = 0
         self.num_lines = 0
 
-        self.read()
+        if filename is not None:
+            if not os.path.exists(filename):
+                raise SpecDataFileNotFound(
+                    'file does not exist: ' + str(filename))
+            if not is_spec_file(filename):
+                raise NotASpecDataFile(
+                    'not a SPEC data file: ' + str(filename))
+            self.fileName = filename
+
+            self.read()
     
     def __str__(self):
         return self.fileName or 'None'
