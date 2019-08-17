@@ -410,6 +410,7 @@ class TestFileUpdate(unittest.TestCase):
         shutil.copy(file1, self.data_file.name)
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)
+        self.assertEqual(len(sdf.getScanNumbers()), 1)
         
         # add a second scan
         file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
@@ -420,6 +421,7 @@ class TestFileUpdate(unittest.TestCase):
         time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
 
         scan_number = sdf.refresh()
+        self.assertEqual(len(sdf.getScanNumbers()), 2)
         self.assertNotEqual(scan_number, None)
         self.assertNotEqual(sdf.last_scan, None)
         self.assertNotEqual(scan_number, sdf.last_scan)
