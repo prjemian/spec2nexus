@@ -291,6 +291,18 @@ class SpecDataFile(object):
         identical = same_mtime and same_size
         return not identical
 
+    def refresh(self):
+        """
+        update (refresh) the content if the file is updated
+    
+        returns previous last_scan or None if file not updated
+        """
+        if self.update_available:
+            previous_scan = self.last_scan
+            self.read()
+            return previous_scan
+        return None
+
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
         if not os.path.exists(spec_file_name):
