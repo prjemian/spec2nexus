@@ -392,9 +392,9 @@ class TestFileUpdate(unittest.TestCase):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertGreater(sdf.mtime, 0)
         self.assertFalse(sdf.update_available)
-        self.assertEqual(sdf.filesize, 10112)       # OS dependent?
+        self.assertEqual(sdf.filesize, 1837)       # OS dependent?
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
-        self.assertEqual(sdf.last_scan, '17')
+        self.assertEqual(sdf.last_scan, '3')
 
         # update the file with a trivial edit
         with open(self.data_file.name, "a") as fp:
@@ -410,7 +410,7 @@ class TestFileUpdate(unittest.TestCase):
         shutil.copy(file1, self.data_file.name)
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)
-        self.assertEqual(len(sdf.getScanNumbers()), 1)
+        self.assertEqual(len(sdf.getScanNumbers()), 3)
         
         # add a second scan
         file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
@@ -421,7 +421,7 @@ class TestFileUpdate(unittest.TestCase):
         time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
 
         scan_number = sdf.refresh()
-        self.assertEqual(len(sdf.getScanNumbers()), 2)
+        self.assertEqual(len(sdf.getScanNumbers()), 5)
         self.assertNotEqual(scan_number, None)
         self.assertNotEqual(sdf.last_scan, None)
         self.assertNotEqual(scan_number, sdf.last_scan)
