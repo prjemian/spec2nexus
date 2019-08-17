@@ -350,6 +350,14 @@ class Test(unittest.TestCase):
             61, 
             "embedded comment not part of data")
 
+    def test_str(self):
+        specFile = os.path.join(
+            os.path.dirname(__file__), 
+            'data', 
+            'issue109_data.txt')
+        sdf = spec.SpecDataFile(specFile)
+        self.assertEqual(str(sdf), sdf.fileName)
+
 
 class TestFileUpdate(unittest.TestCase):
 
