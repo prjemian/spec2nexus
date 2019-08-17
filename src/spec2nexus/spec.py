@@ -216,17 +216,18 @@ class SpecDataFile(object):
 
     .. autosummary::
 
-        ~update_available
         ~dissect_file
-        ~read
-        ~getScan
-        ~getScanNumbers
-        ~getScanNumbersChronological
-        ~getMinScanNumber
-        ~getMaxScanNumber
         ~getFirstScanNumber
         ~getLastScanNumber
+        ~getMaxScanNumber
+        ~getMinScanNumber
+        ~getScan
         ~getScanCommands
+        ~getScanNumbers
+        ~getScanNumbersChronological
+        ~read
+        ~refresh
+        ~update_available
 
     """
 
