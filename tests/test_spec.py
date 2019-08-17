@@ -41,6 +41,9 @@ class Test(unittest.TestCase):
         self.assertFalse(spec.is_spec_file(os.path.join(_path, 'spec2nexus')))
         self.assertFalse(spec.is_spec_file(__file__))
         self.assertTrue( spec.is_spec_file(self.abs_data_fname('APS_spec_data.dat')))
+        self.assertFalse(spec.is_spec_file_with_header('file does not exist'))
+        self.assertTrue( spec.is_spec_file_with_header(self.abs_data_fname('APS_spec_data.dat')))
+        self.assertFalse(spec.is_spec_file_with_header(self.abs_data_fname('spec_from_spock.spc')))
     
     def is_spec_file(self, fname):
         return spec.is_spec_file(self.abs_data_fname(fname))
