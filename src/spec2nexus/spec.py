@@ -298,12 +298,18 @@ class SpecDataFile(object):
     
         returns previous last_scan or None if file not updated
 
-        .. caution:  scans and headers must be re-read
+        .. caution:  scans and headers must be re-created
         
-           After calling :metho:`refresh()`, 
-           all clients should get new objects 
-           for any scan or header.  
-           Scans will be interpreted again if content is referenced.
+           After calling :meth:`refresh()`, all clients should 
+           get new objects for any scan or header.  
+           
+           EXAMPLE::
+           
+               scan = sdf.getScan(42)
+               checkpoint = sdf.refresh()
+               if checkpoint is not None:
+                   scan = sdf.getScan(42)    # get that scan again
+
         """
         if self.update_available:
             previous_scan = self.last_scan
