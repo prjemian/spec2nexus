@@ -405,12 +405,14 @@ class TestFileUpdate(unittest.TestCase):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)
         self.assertEqual(len(sdf.getScanNumbers()), 3)
+        self.assertEqual(sdf.filesize, 1837)       # OS dependent?
 
         # update the file with more data
         self.addMoreScans()
         time.sleep(SHORT_WAIT)
 
         scan_number = sdf.refresh()
+        self.assertGreater(sdf.filesize, 1837)
         self.assertEqual(len(sdf.getScanNumbers()), 5)
         self.assertNotEqual(scan_number, None)
         self.assertNotEqual(sdf.last_scan, None)
@@ -418,6 +420,7 @@ class TestFileUpdate(unittest.TestCase):
         self.assertNotEqual(scan_number, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
 
+        time.sleep(SHORT_WAIT)
         scan_number = sdf.refresh()
         self.assertEqual(scan_number, None)
         self.assertEqual(len(sdf.getScanNumbers()), 5)
