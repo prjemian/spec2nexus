@@ -30,7 +30,7 @@ from spec2nexus import spec, utils
 
 # interval between file update and mtime reading
 # at least a clock tick (1/60 s)
-SHORT_WAIT = 0.25
+SHORT_WAIT = 0.5
 
 
 class Test(unittest.TestCase):
@@ -382,9 +382,9 @@ class TestFileUpdate(unittest.TestCase):
         self.assertTrue(os.path.exists(self.data_file.name))
         mt0 = os.path.getmtime(self.data_file.name)
         time.sleep(SHORT_WAIT)
-        shutil.copy(
-            os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
-            self.data_file.name)
+
+        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(file1, self.data_file.name)
         mt1 = os.path.getmtime(self.data_file.name)
         self.assertGreater(mt1, mt0)
         
@@ -392,7 +392,7 @@ class TestFileUpdate(unittest.TestCase):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertGreater(sdf.mtime, 0)
         self.assertFalse(sdf.update_available)
-        self.assertEqual(sdf.filesize, 13227)       # OS dependent?
+        self.assertEqual(sdf.filesize, 10112)       # OS dependent?
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, '17')
 
@@ -404,6 +404,27 @@ class TestFileUpdate(unittest.TestCase):
         mt2 = os.path.getmtime(self.data_file.name)
         self.assertGreater(mt2, mt1)
         self.assertTrue(sdf.update_available)
+    
+    def test_refresh(self):
+        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(file1, self.data_file.name)
+        sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertNotEqual(sdf.last_scan, None)
+        
+        # add a second scan
+        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file.name, "a") as fp:
+            fp.write("\n" + text)
+        time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
+
+        scan_number = sdf.refresh()
+        self.assertNotEqual(scan_number, None)
+        self.assertNotEqual(sdf.last_scan, None)
+        self.assertNotEqual(scan_number, sdf.last_scan)
+        self.assertNotEqual(scan_number, sdf.getLastScanNumber())
+        self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
 
 
 def suite(*args, **kw):
