@@ -57,6 +57,7 @@ To identify and stop all processes of this program::
 
 
 import datetime
+import json
 import logging
 import os
 import shutil
@@ -71,7 +72,7 @@ except NameError:
     FileNotFoundError = IOError     # py27 compatibility
 
 
-MTIME_CACHE_FILE = 'mtime_cache.txt'
+MTIME_CACHE_FILE = 'mtime_cache.json'
 HTML_INDEX_FILE = 'index.html'
 DOC_URL = 'http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html'
 
@@ -250,19 +251,14 @@ class Cache_File_Mtime(object):
         """read the cache from storage"""
         cache = {}
         if os.path.exists(self.cache_file):
-            for line in open(self.cache_file, 'r').readlines():
-                key = line.split('\t')[0]
-                val = float(line.strip().split('\t')[1])
-                cache[key] = val
+            with open(self.cache_file, 'r') as fp:
+                cache = json.load(fp)
         return cache
 
     def write(self):
         """write the cache to storage"""
-        f = open(self.cache_file, 'w')
-        for key, val in sorted(self.cache.items()):
-            t = str(key) + '\t' + str(val) + '\n'
-            f.write(t)
-        f.close()
+        with open(self.cache_file, 'w') as fp:
+            json.dump(self.cache, fp, indent=4)
     
     def get(self, fname):
         """
