@@ -246,7 +246,10 @@ class SpecDataFile(object):
         if not is_spec_file(filename):
             raise NotASpecDataFile('not a SPEC data file: ' + str(filename))
         self.fileName = filename
+
+        self.last_scan = None
         self.mtime = 0
+        self.num_lines = 0
 
         self.read()
     
@@ -295,11 +298,12 @@ class SpecDataFile(object):
             text with one of the above control lines at its start 
         
         """
-        buf = self._read_file_(self.fileName)
+        buf = self._read_file_(self.fileName).splitlines()
+        self.num_lines = len(buf)
         
         sections, block = [], []
         
-        for _line_num, text in enumerate(buf.splitlines()):
+        for _line_num, text in enumerate(buf):
             if len(text.strip()) > 0:
                 f = text.split()[0]
                 if len(f) == 2 and f in ("#E", "#F", "#S"):
@@ -335,6 +339,7 @@ class SpecDataFile(object):
         if not hasattr(self, "specFile"):
             self.specFile = self.fileName
 
+        self.last_scan = self.getLastScanNumber()
         self.mtime = os.path.getmtime(self.fileName)
     
     def getScan(self, scan_number=0):
