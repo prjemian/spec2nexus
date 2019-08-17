@@ -13,6 +13,11 @@ Change History
 Production
 **********
 
+:2021.1.3: expected *2019.09*
+
+    * `#126 <https://github.com/prjemian/spec2nexus/issues/126>`_
+       spec: new ``update_available`` property
+
 :2021.1.2: released *2019.08.15*, plugin enhancements
 
     * `#197 <https://github.com/prjemian/spec2nexus/issues/197>`_
