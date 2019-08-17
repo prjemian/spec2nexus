@@ -109,9 +109,9 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '03_06_JanTest.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001.png')))
+        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001.svg')))
         # TODO: #69: look for handling of scan 1
-        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1.png')))
+        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1.svg')))
         # TODO: look for that scan in index.html?
      
     def test_command_line_spec_data_file_02_03_setup(self):
@@ -242,8 +242,8 @@ class TestFileRefresh(unittest.TestCase):
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        #SpecPlotGallery,
-        TestFileRefresh
+        TestFileRefresh,
+        SpecPlotGallery,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))

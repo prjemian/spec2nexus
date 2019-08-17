@@ -30,7 +30,7 @@ read a list of SPEC data files (or directories) and plot images of all scans
 
 The images are stored in files within a directory structure
 that is organized chronologically,
-such as: ``yyyy/mm/spec_file/s1.png``.
+such as: ``yyyy/mm/spec_file/s1.svg``.
 The root of the directory is either specified by the 
 command line ``-d`` option or  defaults to the current 
 working directory.  The ``yyyy/mm`` (year and month) are 
@@ -115,18 +115,18 @@ class PlotSpecFileScans(object):
     
         # Don't replot if the plot newer than the data file modification time.
         mtime_specFile = mtime_cache.get(specFile)
-        png_directory = self.get_PngDir(specFile)
-        if os.path.exists(png_directory):
-            mtime_pngdir = get_file_mtime(png_directory)
+        plot_directory = self.get_PlotDir(specFile)
+        if os.path.exists(plot_directory):
+            mtime_plotdir = get_file_mtime(plot_directory)
         else:
-            mtime_pngdir = 0
+            mtime_plotdir = 0
     
-        # compare mtime of data file with mtime of PNG directory
-        if mtime_pngdir > mtime_specFile:
+        # compare mtime of data file with mtime of plot directory
+        if mtime_plotdir > mtime_specFile:
             # do nothing if plot directory was last updated _after_ the specFile
             return
         
-        return (mtime_specFile, mtime_pngdir, png_directory)
+        return (mtime_specFile, mtime_plotdir, plot_directory)
     
     def plot_all_scans(self, specFile):
         """
@@ -138,13 +138,13 @@ class PlotSpecFileScans(object):
         answer = self._mtime_checkup_(specFile)
         if answer is None:
             return
-        mtime_specFile, mtime_pngdir, png_directory = answer
+        mtime_specFile, mtime_plotdir, plot_directory = answer
 
         try:
             logger('SPEC data file: ' + specFile)
-            logger('  updating plots in directory: ' + png_directory)
+            logger('  updating plots in directory: ' + plot_directory)
             logger('    mtime_specFile: ' + str(mtime_specFile))
-            logger('    mtime_pngdir:   ' + str(mtime_pngdir))
+            logger('    mtime_plotdir:   ' + str(mtime_plotdir))
             sd = specplot.openSpecFile(specFile)
         except FileNotFoundError:
             return    # could not open file, be silent about it
@@ -155,11 +155,11 @@ class PlotSpecFileScans(object):
         problem_scans = []
         newFileList = [] # list of all new files created
     
-        if not os.path.exists(png_directory):
-            os.makedirs(png_directory)
-            logger('creating directory: ' + png_directory)
+        if not os.path.exists(plot_directory):
+            os.makedirs(plot_directory)
+            logger('creating directory: ' + plot_directory)
         
-        shutil.copy(specFile, png_directory)
+        shutil.copy(specFile, plot_directory)
         
         scan_list = sd.getScanNumbers()
         if self.reversed:
@@ -167,9 +167,9 @@ class PlotSpecFileScans(object):
 
         for scan_number in scan_list:
             scan = sd.getScan(scan_number)
-            # make certain that plot files will sort lexically:  S1 --> s00001.png
-            basePlotFile = ('s%05s.png' % str(scan.scanNum)).replace(' ', '0')
-            fullPlotFile = os.path.join(png_directory, basePlotFile)
+            # make certain that plot files will sort lexically:  S1 --> s00001.svg
+            basePlotFile = ('s%05s.svg' % str(scan.scanNum)).replace(' ', '0')
+            fullPlotFile = os.path.join(plot_directory, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
             
@@ -189,7 +189,7 @@ class PlotSpecFileScans(object):
                     #msg += " (%s)" % specFile
                     problem_scans.append(msg)
     
-        htmlFile = os.path.join(png_directory, HTML_INDEX_FILE)
+        htmlFile = os.path.join(plot_directory, HTML_INDEX_FILE)
         if len(newFileList) or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')
             html = build_index_html(specFile, plotted_scans, problem_scans)
@@ -198,12 +198,12 @@ class PlotSpecFileScans(object):
             f.close()
             newFileList.append(htmlFile)
             
-        # touch to update the mtime on the png_directory
-        os.utime(png_directory, None)
+        # touch to update the mtime on the plot_directory
+        os.utime(plot_directory, None)
     
-    def get_PngDir(self, specFile):
+    def get_PlotDir(self, specFile):
         """
-        return the PNG directory based on the specFile
+        return the plot directory based on the specFile
         
         :param str specFile: name of SPEC data file (relative or absolute)
         """
