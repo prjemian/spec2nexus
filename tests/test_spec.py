@@ -314,7 +314,7 @@ class Test(unittest.TestCase):
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         self.assertEqual(scan.T, "0", "received expected count time")
-        self.assertTrue("Seco nds" in scan.data, "found counting base")
+        self.assertIn("Seco nds", scan.data, "found counting base")
         self.assertEqual(
             scan.data["Seco nds"][0], 
             1, 
@@ -333,15 +333,15 @@ class Test(unittest.TestCase):
             "400000", 
             "received expected monitor count")
         self.assertTrue(hasattr(scan, 'MCA'), "MCA found")
-        self.assertTrue("ROI" in scan.MCA, "MCA ROI found")
+        self.assertIn("ROI", scan.MCA, "MCA ROI found")
         roi_dict = scan.MCA["ROI"]
         key = "FeKa(mca1 R1)"
-        self.assertTrue(key in roi_dict, "MCA ROI config found")
+        self.assertIn(key, roi_dict, "MCA ROI config found")
         roi = roi_dict[key]
         self.assertEqual(roi["first_chan"], 377, "MCA ROI first channel")
         self.assertEqual(roi["last_chan"], 413, "MCA ROI last channel")
 
-        self.assertTrue(key in scan.data, "MCA ROI data found")
+        self.assertIn(key, scan.data, "MCA ROI data found")
         self.assertEqual(
             len(scan.data[key]), 
             61, 
