@@ -16,6 +16,7 @@ import os
 import shutil
 import sys
 import tempfile
+import time
 import unittest
 
 _test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -367,6 +368,7 @@ class TestFileUpdate(unittest.TestCase):
         # and setup the modifiable SPEC data file
         self.assertTrue(os.path.exists(self.data_file.name))
         mt0 = os.path.getmtime(self.data_file.name)
+        time.sleep(0.015)
         shutil.copy(
             os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
             self.data_file.name)
@@ -376,8 +378,14 @@ class TestFileUpdate(unittest.TestCase):
         # test the ``update_available`` property
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertFalse(sdf.update_available)
+        self.assertEqual(sdf.num_lines, 164)
+        self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
+        self.assertEqual(sdf.last_scan, '17')
+
+        # update the file with a trivial edit
         with open(self.data_file.name, "a") as fp:
             fp.write("\n#C comment\n")
+
         mt2 = os.path.getmtime(self.data_file.name)
         self.assertGreater(mt2, mt1)
         self.assertTrue(sdf.update_available)
