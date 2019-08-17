@@ -1,5 +1,5 @@
 '''
-unit tests for the specplot module
+unit tests for the specplot_gallery module
 '''
 
 #-----------------------------------------------------------------------------
@@ -13,8 +13,9 @@ unit tests for the specplot module
 #-----------------------------------------------------------------------------
 
 import logging
-import os, sys
+import os
 import shutil
+import sys
 import tempfile
 import unittest
 
@@ -185,10 +186,64 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertRaises(specplot_gallery.PathIsNotDirectoryError, specplot_gallery.main)
 
 
+class TestFileRefresh(unittest.TestCase):
+
+    def setUp(self):
+        self.tempdir = tempfile.mkdtemp()
+        self.data_dir = os.path.join(self.tempdir, "data")
+        self.data_file = os.path.join(self.data_dir, "specdata.txt")
+        self.gallery = os.path.join(self.tempdir, "gallery")
+
+        os.mkdir(self.data_dir)
+        os.mkdir(self.gallery)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+        
+        logging.disable(logging.CRITICAL)
+
+    def addMoreScans(self):
+        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file, "a") as fp:
+            fp.write(text)
+
+    def tearDown(self):
+        shutil.rmtree(self.tempdir, ignore_errors=True)
+        logging.disable(logging.NOTSET)
+    
+    def test_refresh(self):
+#         sdf = specplot.openSpecFile(self.data_file.name)
+#         scan = sdf.getScan(3)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        self.assertTrue(
+            os.path.exists(
+                os.path.join(
+                    self.gallery, 
+                    specplot_gallery.MTIME_CACHE_FILE)))
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        
+        for iter in range(2):
+            scan_number = sdf.refresh()
+            if scan_number is None:
+                # update the file with more data
+                self.addMoreScans()
+                time.sleep(0.1)
+            else:
+                specplot_gallery.PlotSpecFileScans(
+                    [self.data_file], self.gallery)
+                self.assertTrue(True)
+
+
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
-        SpecPlotGallery,
+        #SpecPlotGallery,
+        TestFileRefresh
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
