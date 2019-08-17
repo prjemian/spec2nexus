@@ -28,6 +28,11 @@ sys.path.insert(0, _test_path)
 from spec2nexus import spec, utils
 
 
+# interval between file update and mtime reading
+# at least a clock tick (1/60 s)
+SHORT_WAIT = 0.25
+
+
 class Test(unittest.TestCase):
     
     def abs_data_fname(self, fname):
@@ -376,7 +381,7 @@ class TestFileUpdate(unittest.TestCase):
         # and setup the modifiable SPEC data file
         self.assertTrue(os.path.exists(self.data_file.name))
         mt0 = os.path.getmtime(self.data_file.name)
-        time.sleep(0.02)        # at least a clock tick (1/60 s)
+        time.sleep(SHORT_WAIT)
         shutil.copy(
             os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
             self.data_file.name)
@@ -385,15 +390,16 @@ class TestFileUpdate(unittest.TestCase):
         
         # test the ``update_available`` property
         sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertGreater(sdf.mtime, 0)
         self.assertFalse(sdf.update_available)
-        self.assertEqual(sdf.num_lines, 164)
+        self.assertEqual(sdf.filesize, 13227)       # OS dependent?
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, '17')
 
         # update the file with a trivial edit
         with open(self.data_file.name, "a") as fp:
             fp.write("\n#C comment\n")
-        time.sleep(0.02)        # at least a clock tick (1/60 s)
+        time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
 
         mt2 = os.path.getmtime(self.data_file.name)
         self.assertGreater(mt2, mt1)
