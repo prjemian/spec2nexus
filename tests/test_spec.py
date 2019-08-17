@@ -30,7 +30,8 @@ from spec2nexus import spec, utils
 
 # interval between file update and mtime reading
 # at least a clock tick (1/60 s)
-SHORT_WAIT = 0.5
+# or at least 1 second if not using float time for os.path.getmtime
+SHORT_WAIT = 0.1
 
 
 class Test(unittest.TestCase):
@@ -396,13 +397,14 @@ class TestFileUpdate(unittest.TestCase):
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, '3')
 
-        # update the file with a trivial edit
-        with open(self.data_file.name, "a") as fp:
-            fp.write("\n#C comment\n")
+        # update the file with more data
+        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file.name, "a+") as fp:
+            fp.write(text)
         time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
 
-        mt2 = os.path.getmtime(self.data_file.name)
-        self.assertGreater(mt2, mt1)
         self.assertTrue(sdf.update_available)
     
     def test_refresh(self):
@@ -417,7 +419,7 @@ class TestFileUpdate(unittest.TestCase):
         with open(file2, "r") as fp:
             text = fp.read()
         with open(self.data_file.name, "a") as fp:
-            fp.write("\n" + text)
+            fp.write(text)
         time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
 
         scan_number = sdf.refresh()
