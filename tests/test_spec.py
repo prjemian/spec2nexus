@@ -373,22 +373,20 @@ class TestFileUpdate(unittest.TestCase):
         self.data_file = tempfile.NamedTemporaryFile(
             suffix='.dat', delete=False)
         self.data_file.close()
+        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(file1, self.data_file.name)
+
+    def addMoreScans(self):
+        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file.name, "a") as fp:
+            fp.write(text)
 
     def tearDown(self):
         os.remove(self.data_file.name)
     
     def test_update_available(self):
-        # test the mtime function first
-        # and setup the modifiable SPEC data file
-        self.assertTrue(os.path.exists(self.data_file.name))
-        mt0 = os.path.getmtime(self.data_file.name)
-        time.sleep(SHORT_WAIT)
-
-        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
-        shutil.copy(file1, self.data_file.name)
-        mt1 = os.path.getmtime(self.data_file.name)
-        self.assertGreater(mt1, mt0)
-        
         # test the ``update_available`` property
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertGreater(sdf.mtime, 0)
@@ -398,29 +396,19 @@ class TestFileUpdate(unittest.TestCase):
         self.assertEqual(sdf.last_scan, '3')
 
         # update the file with more data
-        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
-        with open(file2, "r") as fp:
-            text = fp.read()
-        with open(self.data_file.name, "a+") as fp:
-            fp.write(text)
-        time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
+        self.addMoreScans()
+        time.sleep(SHORT_WAIT)
 
         self.assertTrue(sdf.update_available)
     
     def test_refresh(self):
-        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
-        shutil.copy(file1, self.data_file.name)
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)
         self.assertEqual(len(sdf.getScanNumbers()), 3)
-        
-        # add a second scan
-        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
-        with open(file2, "r") as fp:
-            text = fp.read()
-        with open(self.data_file.name, "a") as fp:
-            fp.write(text)
-        time.sleep(SHORT_WAIT)        # at least a clock tick (1/60 s)
+
+        # update the file with more data
+        self.addMoreScans()
+        time.sleep(SHORT_WAIT)
 
         scan_number = sdf.refresh()
         self.assertEqual(len(sdf.getScanNumbers()), 5)
