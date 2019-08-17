@@ -418,6 +418,10 @@ class TestFileUpdate(unittest.TestCase):
         self.assertNotEqual(scan_number, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
 
+        scan_number = sdf.refresh()
+        self.assertEqual(scan_number, None)
+        self.assertEqual(len(sdf.getScanNumbers()), 5)
+
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
