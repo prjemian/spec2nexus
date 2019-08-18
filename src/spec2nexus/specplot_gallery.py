@@ -73,6 +73,7 @@ except NameError:
 
 
 MTIME_CACHE_FILE = 'mtime_cache.json'
+PLOT_TYPE = ".svg"
 HTML_INDEX_FILE = 'index.html'
 DOC_URL = 'http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html'
 
@@ -167,8 +168,9 @@ class PlotSpecFileScans(object):
 
         for scan_number in scan_list:
             scan = sd.getScan(scan_number)
-            # make certain that plot files will sort lexically:  S1 --> s00001.svg
-            basePlotFile = ('s%05s.svg' % str(scan.scanNum)).replace(' ', '0')
+            # make certain that plot files will sort lexically:  S1 --> s00001
+            base = 's%05s' + PLOT_TYPE
+            basePlotFile = (base % str(scan.scanNum)).replace(' ', '0')
             fullPlotFile = os.path.join(plot_directory, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
