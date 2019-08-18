@@ -114,7 +114,7 @@ class PlotSpecFileScans(object):
             return
     
         # Don't replot if the plot newer than the data file modification time.
-        mtime_specFile = mtime_cache.get(specFile)
+        cache = mtime_cache.get(specFile)
         plot_directory = self.get_PlotDir(specFile)
         if os.path.exists(plot_directory):
             mtime_plotdir = get_file_mtime(plot_directory)
@@ -122,11 +122,11 @@ class PlotSpecFileScans(object):
             mtime_plotdir = 0
     
         # compare mtime of data file with mtime of plot directory
-        if mtime_plotdir > mtime_specFile:
+        if mtime_plotdir > cache["mtime"]:
             # do nothing if plot directory was last updated _after_ the specFile
             return
         
-        return (mtime_specFile, mtime_plotdir, plot_directory)
+        return (cache["mtime"], mtime_plotdir, plot_directory)
     
     def plot_all_scans(self, specFile):
         """
@@ -262,16 +262,14 @@ class Cache_File_Mtime(object):
     
     def get(self, fname):
         """
-        get the file modified time from the cache
-        
+        get the mtime cache entry for data file ``fname``
+         
         :param str fname: file name, already known to exist
         :return: time (float) cached value of when fname was 
             last modified or None if not known
         """
-        if fname in self.cache:
-            return self.cache[fname]
-        return None
-
+        return self.cache.get(fname)
+        
     def was_file_updated(self, fname):
         """
         compare the mtime between disk and cache
@@ -279,11 +277,12 @@ class Cache_File_Mtime(object):
         :param str fname: file name, already known to exist
         :return bool: True if file is newer than the cache (or new to the cache)
         """
+        cache = self.cache.get(fname, dict(mtime=None))
         mtime_file = get_file_mtime(fname)
-        mtime_cache = self.get(fname)
-        if mtime_cache is None or mtime_file > mtime_cache:
+
+        if cache["mtime"] is None or mtime_file > cache["mtime"]:
             logger('SPEC data file updated: ' + fname)
-            self.cache[fname] = mtime_file
+            self.cache[fname] = dict(mtime=mtime_file, size=os.path.getsize(fname))
             self.write()
             return True
         return False
