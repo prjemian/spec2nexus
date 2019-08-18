@@ -17,6 +17,7 @@ import os
 import shutil
 import sys
 import tempfile
+import time
 import unittest
 
 
@@ -61,8 +62,8 @@ class SpecPlotGallery(unittest.TestCase):
         specplot_gallery.main()
         # this is HDF5 file, not SPEC, so not much content
         children = os.listdir(self.tempdir)
-        self.assertEqual(len(children), 1)
-        self.assertEqual(children[0], 'specplot_files_processing.log')
+        self.assertEqual(len(children), 0)
+        # self.assertEqual(children[0], 'specplot_files_processing.log')
     
     def test_command_line_spec_data_file_33bm_spec(self):
         sys.argv.append('-d')
@@ -70,7 +71,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('33bm_spec.dat'))
         specplot_gallery.main()
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
         # TODO: test contents of mtime_cache.txt?
 
         plotDir = os.path.join(self.tempdir, '2010', '06', '33bm_spec')
@@ -86,7 +87,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('user6idd.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
@@ -102,7 +103,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('03_06_JanTest.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2014', '03', '03_06_JanTest')
@@ -121,7 +122,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('02_03_setup.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         plotDir = os.path.join(self.tempdir, '2016', '02', '02_03_setup')
         self.assertTrue(os.path.exists(plotDir))
@@ -137,7 +138,7 @@ class SpecPlotGallery(unittest.TestCase):
             sys.argv.append(self.abs_data_fname(item))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         plotDir = os.path.join(self.tempdir, '2010', '11', 'APS_spec_data')
         self.assertTrue(os.path.exists(plotDir))
@@ -226,17 +227,18 @@ class TestFileRefresh(unittest.TestCase):
 
         specplot_gallery.PlotSpecFileScans(
             [self.data_file], self.gallery)
+        plotdir = os.path.join(self.gallery, "2010", "11", "specdata")
+        children = os.listdir(plotdir)
+        self.assertEqual(len(children), 5)
         
-        for iter in range(2):
-            scan_number = sdf.refresh()
-            if scan_number is None:
-                # update the file with more data
-                self.addMoreScans()
-                time.sleep(0.1)
-            else:
-                specplot_gallery.PlotSpecFileScans(
-                    [self.data_file], self.gallery)
-                self.assertTrue(True)
+        # update the file with more data
+        self.addMoreScans()
+        time.sleep(0.1)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = os.listdir(plotdir)
+        self.assertEqual(len(children), 7)
 
 
 def suite(*args, **kw):
