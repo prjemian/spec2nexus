@@ -110,9 +110,9 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '03_06_JanTest.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001.svg')))
+        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001' + specplot_gallery.PLOT_TYPE)))
         # TODO: #69: look for handling of scan 1
-        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1.svg')))
+        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1' + specplot_gallery.PLOT_TYPE)))
         # TODO: look for that scan in index.html?
      
     def test_command_line_spec_data_file_02_03_setup(self):
@@ -214,9 +214,6 @@ class TestFileRefresh(unittest.TestCase):
         logging.disable(logging.NOTSET)
     
     def test_refresh(self):
-#         sdf = specplot.openSpecFile(self.data_file.name)
-#         scan = sdf.getScan(3)
-
         specplot_gallery.PlotSpecFileScans(
             [self.data_file], self.gallery)
         self.assertTrue(
@@ -228,8 +225,17 @@ class TestFileRefresh(unittest.TestCase):
         specplot_gallery.PlotSpecFileScans(
             [self.data_file], self.gallery)
         plotdir = os.path.join(self.gallery, "2010", "11", "specdata")
-        children = os.listdir(plotdir)
-        self.assertEqual(len(children), 5)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 3)
+        mtimes = {
+            k: os.path.getmtime(os.path.join(plotdir, k))
+            for k in children
+            }
+        self.assertEqual(len(mtimes), 3)
         
         # update the file with more data
         self.addMoreScans()
@@ -237,15 +243,30 @@ class TestFileRefresh(unittest.TestCase):
 
         specplot_gallery.PlotSpecFileScans(
             [self.data_file], self.gallery)
-        children = os.listdir(plotdir)
-        self.assertEqual(len(children), 7)
+        k = children[-1]
+        self.assertNotEqual(
+            os.path.getmtime(os.path.join(plotdir, k)), 
+            mtimes[k], 
+            k)
+        for k in children[:-1]:
+            # should pass all but the latest (#S 3)
+            self.assertEqual(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                mtimes[k], 
+                k)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 5)
 
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestFileRefresh,
-        SpecPlotGallery,
+        # SpecPlotGallery,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
