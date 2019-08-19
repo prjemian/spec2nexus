@@ -337,7 +337,7 @@ def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestFileRefresh,
-        # SpecPlotGallery,
+        SpecPlotGallery,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
