@@ -13,10 +13,18 @@ Change History
 Production
 **********
 
-:2021.1.3: expected *2019.09*
+:2021.1.4: expected *2019.09*
 
+:2021.1.3: released *2019.08.19* - only update plots with *new* content
+
+    * `#202 <https://github.com/prjemian/spec2nexus/issues/202>`_
+       specplot_gallery: switch to SVG (from PNG) for plots
+    * `#201 <https://github.com/prjemian/spec2nexus/issues/201>`_
+       spec: subsequent calls to read() duplicate scans -- FIXED
     * `#126 <https://github.com/prjemian/spec2nexus/issues/126>`_
        spec: new ``update_available`` property
+    * `#108 <https://github.com/prjemian/spec2nexus/issues/108>`_
+       specplot_gallery: only update plots with *new* content
 
 :2021.1.2: released *2019.08.15*, plugin enhancements
 
