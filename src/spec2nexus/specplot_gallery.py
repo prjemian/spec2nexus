@@ -19,10 +19,10 @@ read a list of SPEC data files (or directories) and plot images of all scans
     ~PlotSpecFileScans
     ~Cache_File_Mtime
     ~datePath
-    ~get_SpecFileDate
+    ~getSpecFileDate
     ~needToMakePlot
     ~timestamp
-    ~build_index_html
+    ~buildIndexHtml
     ~logger
 
 .. rubric:: RESULT
@@ -91,6 +91,15 @@ class PlotSpecFileScans(object):
     
     :param [str] filelist: list of SPEC data files to be checked
     :param str plotDir: name of base directory to store output image thumbnails
+
+    .. autosummary::
+    
+        ~specFileUpdated
+        ~plot_all_scans
+        ~getPlotDir
+        ~getBaseDir
+        ~href_format
+
     """
 
     def __init__(self, filelist, plotDir = None, reverse_chronological = False):
@@ -101,32 +110,18 @@ class PlotSpecFileScans(object):
         for specFile in filelist:
             self.plot_all_scans(specFile)
     
-    def _mtime_checkup_(self, specFile):
+    def specFileUpdated(self, specFile):
         """
-        check mtime and size of specFile to see if plots need to be made
-        """
-        if not os.path.exists(specFile):
-            return
-    
-        # decide here if SPEC file needs to be opened for possible replot of scan data
-        mtime_cache = Cache_File_Mtime(self.plotDir)
-        if not mtime_cache.was_file_updated(specFile):
-            return
-    
-        # Don't replot if the plot newer than the data file modification time.
-        cache = mtime_cache.get(specFile)
-        plot_directory = self.get_PlotDir(specFile)
-        if os.path.exists(plot_directory):
-            mtime_plotdir = os.path.getmtime(plot_directory)
-        else:
-            mtime_plotdir = 0
-    
-        # compare mtime of data file with mtime of plot directory
-        if mtime_plotdir > cache["mtime"]:
-            # do nothing if plot directory was last updated _after_ the specFile
-            return
+        report if specFile has been updated
         
-        return (cache["mtime"], mtime_plotdir, plot_directory)
+        Return mtime cache entry (or `None` if not updated)
+        """
+        result = None
+        if os.path.exists(specFile):
+            mtime_cache = Cache_File_Mtime(self.plotDir)
+            if mtime_cache.was_file_updated(specFile):
+                result = mtime_cache.get(specFile)
+        return result
     
     def plot_all_scans(self, specFile):
         """
@@ -135,36 +130,59 @@ class PlotSpecFileScans(object):
         if not spec.is_spec_file(specFile):
             raise spec.NotASpecDataFile(specFile)
 
-        # TODO: refactor code - make this code more clear
-        # Was file updated?  If not, then return (nothing to do)
-        # If updated, sas last scan updated?
-        #   last plot shows last plottable data
-        #   previous file size (in cache) points out what was already known
-        answer = self._mtime_checkup_(specFile)
-        if answer is None:
+        last_cache = Cache_File_Mtime(self.plotDir).get(specFile)
+        cache = self.specFileUpdated(specFile)
+        if cache is None:
             return
-        mtime_specFile, mtime_plotdir, plot_directory = answer
 
         try:
-            logger('SPEC data file: ' + specFile)
-            logger('  updating plots in directory: ' + plot_directory)
-            logger('    mtime_specFile: ' + str(mtime_specFile))
-            logger('    mtime_plotdir:   ' + str(mtime_plotdir))
+            logger("SPEC data file: %s" % specFile)
             sd = specplot.openSpecFile(specFile)
         except FileNotFoundError:
             return    # could not open file, be silent about it
         if len(sd.headers) == 0:    # no scan header found, again, silence
             return
+
+        plot_path = self.getPlotDir(specFile)
+        logger("  plot directory: %s" % plot_path)
+        if not os.path.exists(plot_path):
+            os.makedirs(plot_path)
+            logger('creating directory: ' + plot_path)
+        plot_list = [
+            k
+            for k in sorted(os.listdir(plot_path))
+            if k.endswith(PLOT_TYPE)
+            ]
+        
+        # check if any plots need to be removed (and remade)
+        if len(plot_list) > 0 and cache["size"] > 0 and cache["size"] != last_cache["size"]:
+            if cache["size"] > last_cache["size"]:
+                # Was last scan updated with more data?  Look at file.
+                with open(specFile, "r") as fp:
+                    # skip the part already considered
+                    buf = fp.read(last_cache["size"])
+                    # look at the addition
+                    buf = fp.read()
+
+                # only delete last plot if addition not start with #S
+                if not buf.lstrip().startswith("#S "):
+                    if self.reversed:
+                        # delete the first plot
+                        k = plot_list.pop(0)    # TODO: needs unit test
+                    else:
+                        # delete the last plot
+                        k = plot_list.pop()
+                    os.remove(os.path.join(plot_path, k))
+            else:
+                # remake all the plots
+                for k in plot_list:     # TODO: needs unit test
+                    os.remove(os.path.join(plot_path, k))
+                plot_list = []
     
-        plotted_scans = []
         problem_scans = []
         newFileList = [] # list of all new files created
-    
-        if not os.path.exists(plot_directory):
-            os.makedirs(plot_directory)
-            logger('creating directory: ' + plot_directory)
         
-        shutil.copy(specFile, plot_directory)
+        shutil.copy(specFile, plot_path)
         
         scan_list = sd.getScanNumbers()
         if self.reversed:
@@ -175,12 +193,16 @@ class PlotSpecFileScans(object):
             # make certain that plot files will sort lexically:  S1 --> s00001
             base = 's%05s' + PLOT_TYPE
             basePlotFile = (base % str(scan.scanNum)).replace(' ', '0')
-            fullPlotFile = os.path.join(plot_directory, basePlotFile)
+            fullPlotFile = os.path.join(plot_path, basePlotFile)
             altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
             href = self.href_format(basePlotFile, altText)
+
+            if basePlotFile in plot_list:
+                newFileList.append(fullPlotFile)
+                continue
             
             #print ("specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile))
-            if needToMakePlot(fullPlotFile, mtime_specFile):
+            if needToMakePlot(fullPlotFile, cache["mtime"]):
                 try:
                     logger('  creating SPEC data scan image: ' + basePlotFile)
                     selector = specplot.Selector()
@@ -188,33 +210,33 @@ class PlotSpecFileScans(object):
                     plotter = image_maker()
                     plotter.plot_scan(scan, fullPlotFile)
                     newFileList.append(fullPlotFile)
-                    plotted_scans.append(href)
+                    plot_list.append(href)
                 except Exception as _exc_obj:
                     msg = "<b>%s</b>" % type(_exc_obj).__name__
                     msg += ": <tt>#S %s</tt>" % str(scan)
                     #msg += " (%s)" % specFile
                     problem_scans.append(msg)
     
-        htmlFile = os.path.join(plot_directory, HTML_INDEX_FILE)
+        htmlFile = os.path.join(plot_path, HTML_INDEX_FILE)
         if len(newFileList) or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')
-            html = build_index_html(specFile, plotted_scans, problem_scans)
+            html = buildIndexHtml(specFile, plot_list, problem_scans)
             f = open(htmlFile, "w")
             f.write(html)
             f.close()
             newFileList.append(htmlFile)
             
-        # touch to update the mtime on the plot_directory
-        os.utime(plot_directory, None)
+        # touch to update the mtime on the plot_path
+        os.utime(plot_path, None)
     
-    def get_PlotDir(self, specFile):
+    def getPlotDir(self, specFile):
         """
         return the plot directory based on the specFile
         
         :param str specFile: name of SPEC data file (relative or absolute)
         """
         data_file_root_name = os.path.splitext(os.path.split(specFile)[1])[0]
-        date_str = get_SpecFileDate(specFile)
+        date_str = getSpecFileDate(specFile)
         if date_str is None:
             return
         return self.getBaseDir(data_file_root_name, date_str)
@@ -266,7 +288,7 @@ class Cache_File_Mtime(object):
         with open(self.cache_file, 'w') as fp:
             json.dump(self.cache, fp, indent=4)
     
-    def get(self, fname):
+    def get(self, fname, default=dict(mtime=0, size=0)):
         """
         get the mtime cache entry for data file ``fname``
          
@@ -274,7 +296,7 @@ class Cache_File_Mtime(object):
         :return: time (float) cached value of when fname was 
             last modified or None if not known
         """
-        return self.cache.get(fname)
+        return self.cache.get(fname, default)
         
     def was_file_updated(self, fname):
         """
@@ -283,15 +305,21 @@ class Cache_File_Mtime(object):
         :param str fname: file name, already known to exist
         :return bool: True if file is newer than the cache (or new to the cache)
         """
-        cache = self.cache.get(fname, dict(mtime=None))
-        mtime_file = os.path.getmtime(fname)
+        assert os.path.exists(fname)
+        updated = False
+        cache = self.get(fname)
+        
+        file_mtime = os.path.getmtime(fname)
+        file_size = os.path.getsize(fname)
 
-        if cache["mtime"] is None or mtime_file > cache["mtime"]:
+        if file_mtime != cache["mtime"] and file_size != cache["size"]:
+            updated = True
+
+        if updated:
             logger('SPEC data file updated: ' + fname)
-            self.cache[fname] = dict(mtime=mtime_file, size=os.path.getsize(fname))
+            self.cache[fname] = dict(mtime=file_mtime, size=os.path.getsize(fname))
             self.write()
-            return True
-        return False
+        return updated
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -309,7 +337,7 @@ def datePath(date):
     return os.path.join(yyyy, mm)
 
 
-def get_SpecFileDate(specFile):
+def getSpecFileDate(specFile):
     """
     return the #D date of the SPEC data file or None
     
@@ -362,7 +390,7 @@ def timestamp():
     return ts
 
 
-def build_index_html(specFile, plotted_scans, problem_scans):
+def buildIndexHtml(specFile, plotted_scans, problem_scans):
     """
     build index.html content
     
