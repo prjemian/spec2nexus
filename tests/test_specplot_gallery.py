@@ -202,8 +202,12 @@ class TestFileRefresh(unittest.TestCase):
         
         logging.disable(logging.CRITICAL)
 
-    def addMoreScans(self):
-        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+    def addMoreScans(self, append_scan=True):
+        path = os.path.join(_test_path, "tests", "data")
+        if append_scan:
+            file2 = os.path.join(path, "refresh2.txt")
+        else:
+            file2 = os.path.join(path, "refresh3.txt")
         with open(file2, "r") as fp:
             text = fp.read()
         with open(self.data_file, "a") as fp:
@@ -259,14 +263,58 @@ class TestFileRefresh(unittest.TestCase):
             for k in sorted(os.listdir(plotdir))
             if k.endswith(specplot_gallery.PLOT_TYPE)
             ]
+        mtimes = {
+            k: os.path.getmtime(os.path.join(plotdir, k))
+            for k in children
+            }
         self.assertEqual(len(children), 5)
+        
+        # update the file with another scan
+        self.addMoreScans(False)
+        time.sleep(0.1)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 6)
+        for k in children[:-1]:
+            # should pass all but newest scan
+            self.assertEqual(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                mtimes[k], 
+                k)
+
+        # restart file with first set of scans, should trigger replot all
+        t0 = time.time()
+        time.sleep(0.1)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 3)
+        for k in children:
+            # should pass all
+            self.assertGreater(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                t0, 
+                k)
 
 
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestFileRefresh,
-        SpecPlotGallery,
+        # SpecPlotGallery,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
