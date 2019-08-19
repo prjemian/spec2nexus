@@ -256,6 +256,10 @@ class SPEC_Scan(ControlLineHandler):
                         if line.startswith("#")
                     ]
                 )
+
+            # TODO: replace beginning() with new algorithm
+            # if new_scan.raw.startswith(last_scan.raw), that's it!
+
             if beginning(part) == beginning(sdf.getScan(sdf.last_scan).raw):
                 # remove the last scan
                 del sdf.scans[sdf.last_scan]
