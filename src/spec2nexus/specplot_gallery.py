@@ -217,6 +217,7 @@ class PlotSpecFileScans(object):
                     #msg += " (%s)" % specFile
                     problem_scans.append(msg)
     
+        # FIXME: What about self.reversed?
         htmlFile = os.path.join(plot_path, HTML_INDEX_FILE)
         if len(newFileList) or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')
