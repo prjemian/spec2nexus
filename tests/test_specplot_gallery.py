@@ -27,7 +27,7 @@ _path = os.path.abspath(os.path.join(_test_path, 'src'))
 sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
 
-from spec2nexus import specplot_gallery, spec
+from spec2nexus import specplot_gallery
 
 import tests.common
 
