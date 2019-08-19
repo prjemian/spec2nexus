@@ -216,17 +216,18 @@ class SpecDataFile(object):
 
     .. autosummary::
 
-        ~update_available
         ~dissect_file
-        ~read
-        ~getScan
-        ~getScanNumbers
-        ~getScanNumbersChronological
-        ~getMinScanNumber
-        ~getMaxScanNumber
         ~getFirstScanNumber
         ~getLastScanNumber
+        ~getMaxScanNumber
+        ~getMinScanNumber
+        ~getScan
         ~getScanCommands
+        ~getScanNumbers
+        ~getScanNumbersChronological
+        ~read
+        ~refresh
+        ~update_available
 
     """
 
@@ -243,7 +244,7 @@ class SpecDataFile(object):
         self.readOK = -1
         self.last_scan = None
         self.mtime = 0
-        self.num_lines = 0
+        self.filesize = 0
 
         if filename is not None:
             if not os.path.exists(filename):
@@ -266,8 +267,57 @@ class SpecDataFile(object):
         
         Reference file modification time is stored *after* 
         file is read in :meth:`read()` method.
+        
+        EXAMPLE USAGE
+
+        Open the SPEC data file (example):
+        
+            sdf = spec.SpecDataFile(filename)
+        
+        then, monitor (continuing example):
+        
+            if sdf.update_available:
+                myLastScan = sdf.last_scan
+                sdf.read()
+                plot_scan_and_newer(myLastScan)    # new method
+                myLastScan = sdf.last_scan
+        
+        .. note: The previous last_scan is reprocessed since 
+           that scan may not have been complete when the file 
+           was read() previously.
+
         """
-        return self.mtime != os.path.getmtime(self.fileName)
+        same_mtime = self.mtime == os.path.getmtime(self.fileName)
+        same_size = self.filesize == os.path.getsize(self.fileName)
+        identical = same_mtime and same_size
+        return not identical
+
+    def refresh(self):
+        """
+        update (refresh) the content if the file is updated
+    
+        returns previous last_scan or None if file not updated
+
+        .. caution:  previous last_scan must be re-created if updated
+        
+           After calling :meth:`refresh()`, any client
+           with an object of the previous last scan
+           should get a new object with the update data.  
+           
+           EXAMPLE::
+           
+               scan = sdf.getScan(42)
+               checkpoint = sdf.refresh()
+               if checkpoint is not None:
+                   scan = sdf.getScan(checkpoint)    # get updates
+
+        """
+        if self.update_available:
+            previous_scan = self.last_scan
+            
+            self.read()
+            return previous_scan
+        return None
 
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
@@ -302,7 +352,6 @@ class SpecDataFile(object):
         
         """
         buf = self._read_file_(self.fileName).splitlines()
-        self.num_lines = len(buf)
         
         sections, block = [], []
         
@@ -343,6 +392,7 @@ class SpecDataFile(object):
             self.specFile = self.fileName
 
         self.last_scan = self.getLastScanNumber()
+        self.filesize = os.path.getsize(self.fileName)
         self.mtime = os.path.getmtime(self.fileName)
     
     def getScan(self, scan_number=0):

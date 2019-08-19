@@ -1,5 +1,5 @@
 '''
-unit tests for the specplot module
+unit tests for the specplot_gallery module
 '''
 
 #-----------------------------------------------------------------------------
@@ -13,9 +13,11 @@ unit tests for the specplot module
 #-----------------------------------------------------------------------------
 
 import logging
-import os, sys
+import os
 import shutil
+import sys
 import tempfile
+import time
 import unittest
 
 
@@ -60,8 +62,8 @@ class SpecPlotGallery(unittest.TestCase):
         specplot_gallery.main()
         # this is HDF5 file, not SPEC, so not much content
         children = os.listdir(self.tempdir)
-        self.assertEqual(len(children), 1)
-        self.assertEqual(children[0], 'specplot_files_processing.log')
+        self.assertEqual(len(children), 0)
+        # self.assertEqual(children[0], 'specplot_files_processing.log')
     
     def test_command_line_spec_data_file_33bm_spec(self):
         sys.argv.append('-d')
@@ -69,7 +71,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.tempdir)
         sys.argv.append(self.abs_data_fname('33bm_spec.dat'))
         specplot_gallery.main()
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
         # TODO: test contents of mtime_cache.txt?
 
         plotDir = os.path.join(self.tempdir, '2010', '06', '33bm_spec')
@@ -85,7 +87,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('user6idd.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
@@ -101,16 +103,16 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('03_06_JanTest.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         # S1 aborted, S2 all X,Y are 0,0
         plotDir = os.path.join(self.tempdir, '2014', '03', '03_06_JanTest')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '03_06_JanTest.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001.png')))
+        self.assertTrue(os.path.exists(os.path.join(plotDir, 's00001' + specplot_gallery.PLOT_TYPE)))
         # TODO: #69: look for handling of scan 1
-        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1.png')))
+        self.assertFalse(os.path.exists(os.path.join(plotDir, 's1' + specplot_gallery.PLOT_TYPE)))
         # TODO: look for that scan in index.html?
      
     def test_command_line_spec_data_file_02_03_setup(self):
@@ -120,7 +122,7 @@ class SpecPlotGallery(unittest.TestCase):
         sys.argv.append(self.abs_data_fname('02_03_setup.dat'))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         plotDir = os.path.join(self.tempdir, '2016', '02', '02_03_setup')
         self.assertTrue(os.path.exists(plotDir))
@@ -136,13 +138,12 @@ class SpecPlotGallery(unittest.TestCase):
             sys.argv.append(self.abs_data_fname(item))
         specplot_gallery.main()
  
-        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'mtime_cache.txt')))
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, specplot_gallery.MTIME_CACHE_FILE)))
  
         plotDir = os.path.join(self.tempdir, '2010', '11', 'APS_spec_data')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        # TODO: test the order of plots in the index.html
  
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
         self.assertTrue(os.path.exists(plotDir))
@@ -166,7 +167,6 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        # TODO: test the order of plots in the index.html, reversed
 
     def test_command_line_specified_directory_not_found_issue_98(self):
         sys.argv.append('-d')
@@ -185,9 +185,158 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertRaises(specplot_gallery.PathIsNotDirectoryError, specplot_gallery.main)
 
 
+class TestFileRefresh(unittest.TestCase):
+
+    def setUp(self):
+        self.tempdir = tempfile.mkdtemp()
+        self.data_dir = os.path.join(self.tempdir, "data")
+        self.data_file = os.path.join(self.data_dir, "specdata.txt")
+        self.gallery = os.path.join(self.tempdir, "gallery")
+
+        os.mkdir(self.data_dir)
+        os.mkdir(self.gallery)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+        
+        logging.disable(logging.CRITICAL)
+
+    def addMoreScans(self, append_scan=True):
+        path = os.path.join(_test_path, "tests", "data")
+        if append_scan:
+            file2 = os.path.join(path, "refresh2.txt")
+        else:
+            file2 = os.path.join(path, "refresh3.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file, "a") as fp:
+            fp.write(text)
+
+    def tearDown(self):
+        shutil.rmtree(self.tempdir, ignore_errors=True)
+        logging.disable(logging.NOTSET)
+    
+    def test_refresh(self):
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        self.assertTrue(
+            os.path.exists(
+                os.path.join(
+                    self.gallery, 
+                    specplot_gallery.MTIME_CACHE_FILE)))
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        plotdir = os.path.join(self.gallery, "2010", "11", "specdata")
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 3)
+        mtimes = {
+            k: os.path.getmtime(os.path.join(plotdir, k))
+            for k in children
+            }
+        self.assertEqual(len(mtimes), 3)
+        
+        # update the file with more data
+        self.addMoreScans()
+        time.sleep(0.1)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        k = children[-1]
+        self.assertNotEqual(
+            os.path.getmtime(os.path.join(plotdir, k)), 
+            mtimes[k], 
+            k)
+        for k in children[:-1]:
+            # should pass all but the latest (#S 3)
+            self.assertEqual(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                mtimes[k], 
+                k)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        mtimes = {
+            k: os.path.getmtime(os.path.join(plotdir, k))
+            for k in children
+            }
+        self.assertEqual(len(children), 5)
+        
+        # update the file with another scan
+        self.addMoreScans(False)
+        time.sleep(0.1)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 6)
+        for k in children[:-1]:
+            # should pass all but newest scan
+            self.assertEqual(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                mtimes[k], 
+                k)
+
+        # restart file with first set of scans, should trigger replot all
+        t0 = time.time()
+        time.sleep(0.1)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+        self.assertEqual(len(children), 3)
+        for k in children:
+            # should pass all
+            self.assertGreater(
+                os.path.getmtime(os.path.join(plotdir, k)), 
+                t0, 
+                k)
+
+        self.addMoreScans()
+        time.sleep(0.1)
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+
+        # restart file again, use reversed chronological order
+        t0 = time.time()
+        time.sleep(0.1)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery,
+            reverse_chronological=True)
+        self.assertEqual(len(children), 3)
+        self.addMoreScans()
+        time.sleep(0.1)
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
+
+
 def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
+        TestFileRefresh,
         SpecPlotGallery,
         ]
     for test_case in test_list:

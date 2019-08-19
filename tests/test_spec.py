@@ -28,6 +28,12 @@ sys.path.insert(0, _test_path)
 from spec2nexus import spec, utils
 
 
+# interval between file update and mtime reading
+# at least a clock tick (1/60 s)
+# or at least 1 second if not using float time for os.path.getmtime
+SHORT_WAIT = 0.1
+
+
 class Test(unittest.TestCase):
     
     def abs_data_fname(self, fname):
@@ -367,37 +373,57 @@ class TestFileUpdate(unittest.TestCase):
         self.data_file = tempfile.NamedTemporaryFile(
             suffix='.dat', delete=False)
         self.data_file.close()
+        file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(file1, self.data_file.name)
+
+    def addMoreScans(self):
+        file2 = os.path.join(_test_path, "tests", "data", "refresh2.txt")
+        with open(file2, "r") as fp:
+            text = fp.read()
+        with open(self.data_file.name, "a") as fp:
+            fp.write(text)
 
     def tearDown(self):
         os.remove(self.data_file.name)
     
     def test_update_available(self):
-        # test the mtime function first
-        # and setup the modifiable SPEC data file
-        self.assertTrue(os.path.exists(self.data_file.name))
-        mt0 = os.path.getmtime(self.data_file.name)
-        time.sleep(0.02)        # at least a clock tick (1/60 s)
-        shutil.copy(
-            os.path.join(_test_path, "tests", "data", "issue82_data.txt"),
-            self.data_file.name)
-        mt1 = os.path.getmtime(self.data_file.name)
-        self.assertGreater(mt1, mt0)
-        
         # test the ``update_available`` property
         sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertGreater(sdf.mtime, 0)
         self.assertFalse(sdf.update_available)
-        self.assertEqual(sdf.num_lines, 164)
+        self.assertEqual(sdf.filesize, 1837)       # OS dependent?
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
-        self.assertEqual(sdf.last_scan, '17')
+        self.assertEqual(sdf.last_scan, '3')
 
-        # update the file with a trivial edit
-        with open(self.data_file.name, "a") as fp:
-            fp.write("\n#C comment\n")
-        time.sleep(0.02)        # at least a clock tick (1/60 s)
+        # update the file with more data
+        self.addMoreScans()
+        time.sleep(SHORT_WAIT)
 
-        mt2 = os.path.getmtime(self.data_file.name)
-        self.assertGreater(mt2, mt1)
         self.assertTrue(sdf.update_available)
+    
+    def test_refresh(self):
+        sdf = spec.SpecDataFile(self.data_file.name)
+        self.assertNotEqual(sdf.last_scan, None)
+        self.assertEqual(len(sdf.getScanNumbers()), 3)
+        self.assertEqual(sdf.filesize, 1837)       # OS dependent?
+
+        # update the file with more data
+        self.addMoreScans()
+        time.sleep(SHORT_WAIT)
+
+        scan_number = sdf.refresh()
+        self.assertGreater(sdf.filesize, 1837)
+        self.assertEqual(len(sdf.getScanNumbers()), 5)
+        self.assertNotEqual(scan_number, None)
+        self.assertNotEqual(sdf.last_scan, None)
+        self.assertNotEqual(scan_number, sdf.last_scan)
+        self.assertNotEqual(scan_number, sdf.getLastScanNumber())
+        self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
+
+        time.sleep(SHORT_WAIT)
+        scan_number = sdf.refresh()
+        self.assertEqual(scan_number, None)
+        self.assertEqual(len(sdf.getScanNumbers()), 5)
 
 
 def suite(*args, **kw):
