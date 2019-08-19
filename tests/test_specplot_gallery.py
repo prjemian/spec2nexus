@@ -168,7 +168,7 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        # TODO: test the order of plots in the index.html, reversed
+        # TODO: self.assertTrue(False, "test order of plots in index.html")
 
     def test_command_line_specified_directory_not_found_issue_98(self):
         sys.argv.append('-d')
@@ -266,7 +266,7 @@ def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestFileRefresh,
-        # SpecPlotGallery,
+        SpecPlotGallery,
         ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
