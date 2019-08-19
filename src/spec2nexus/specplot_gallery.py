@@ -136,6 +136,11 @@ class PlotSpecFileScans(object):
         if not spec.is_spec_file(specFile):
             raise spec.NotASpecDataFile(specFile)
 
+        # TODO: refactor code - make this code more clear
+        # Was file updated?  If not, then return (nothing to do)
+        # If updated, sas last scan updated?
+        #   last plot shows last plottable data
+        #   previous file size (in cache) points out what was already known
         answer = self._mtime_checkup_(specFile)
         if answer is None:
             return
