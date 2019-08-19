@@ -160,18 +160,13 @@ class PlotSpecFileScans(object):
                 # Was last scan updated with more data?  Look at file.
                 with open(specFile, "r") as fp:
                     # skip the part already considered
-                    buf = fp.read(last_cache["size"])
+                    fp.read(last_cache["size"])
                     # look at the addition
                     buf = fp.read()
 
                 # only delete last plot if addition not start with #S
                 if not buf.lstrip().startswith("#S "):
-                    if self.reversed:
-                        # delete the first plot
-                        k = plot_list.pop(0)    # TODO: needs unit test
-                    else:
-                        # delete the last plot
-                        k = plot_list.pop()
+                    k = plot_list.pop()
                     os.remove(os.path.join(plot_path, k))
             else:
                 # remake all the plots
@@ -217,7 +212,6 @@ class PlotSpecFileScans(object):
                     #msg += " (%s)" % specFile
                     problem_scans.append(msg)
     
-        # FIXME: What about self.reversed?
         htmlFile = os.path.join(plot_path, HTML_INDEX_FILE)
         if len(newFileList) or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')

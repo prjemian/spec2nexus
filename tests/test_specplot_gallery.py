@@ -144,7 +144,6 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        # TODO: test the order of plots in the index.html
  
         plotDir = os.path.join(self.tempdir, '2013', '10', 'user6idd')
         self.assertTrue(os.path.exists(plotDir))
@@ -168,7 +167,6 @@ class SpecPlotGallery(unittest.TestCase):
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'APS_spec_data.dat')))
         self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
-        # TODO: self.assertTrue(False, "test order of plots in index.html")
 
     def test_command_line_specified_directory_not_found_issue_98(self):
         sys.argv.append('-d')
@@ -308,6 +306,31 @@ class TestFileRefresh(unittest.TestCase):
                 os.path.getmtime(os.path.join(plotdir, k)), 
                 t0, 
                 k)
+
+        self.addMoreScans()
+        time.sleep(0.1)
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+
+        # restart file again, use reversed chronological order
+        t0 = time.time()
+        time.sleep(0.1)
+        src = os.path.join(_test_path, "tests", "data", "refresh1.txt")
+        shutil.copy(src, self.data_file)
+
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery,
+            reverse_chronological=True)
+        self.assertEqual(len(children), 3)
+        self.addMoreScans()
+        time.sleep(0.1)
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        children = [
+            k
+            for k in sorted(os.listdir(plotdir))
+            if k.endswith(specplot_gallery.PLOT_TYPE)
+            ]
 
 
 def suite(*args, **kw):
