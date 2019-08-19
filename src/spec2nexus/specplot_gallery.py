@@ -20,7 +20,6 @@ read a list of SPEC data files (or directories) and plot images of all scans
     ~Cache_File_Mtime
     ~datePath
     ~get_SpecFileDate
-    ~get_file_mtime
     ~needToMakePlot
     ~timestamp
     ~build_index_html
@@ -104,7 +103,7 @@ class PlotSpecFileScans(object):
     
     def _mtime_checkup_(self, specFile):
         """
-        check the mtime of various files to see if the plot needs to be made
+        check mtime and size of specFile to see if plots need to be made
         """
         if not os.path.exists(specFile):
             return
@@ -118,7 +117,7 @@ class PlotSpecFileScans(object):
         cache = mtime_cache.get(specFile)
         plot_directory = self.get_PlotDir(specFile)
         if os.path.exists(plot_directory):
-            mtime_plotdir = get_file_mtime(plot_directory)
+            mtime_plotdir = os.path.getmtime(plot_directory)
         else:
             mtime_plotdir = 0
     
@@ -285,7 +284,7 @@ class Cache_File_Mtime(object):
         :return bool: True if file is newer than the cache (or new to the cache)
         """
         cache = self.cache.get(fname, dict(mtime=None))
-        mtime_file = get_file_mtime(fname)
+        mtime_file = os.path.getmtime(fname)
 
         if cache["mtime"] is None or mtime_file > cache["mtime"]:
             logger('SPEC data file updated: ' + fname)
@@ -336,16 +335,6 @@ def get_SpecFileDate(specFile):
     return line[2:].strip()  # 'Thu Jun 19 12:21:55 2014'
 
 
-def get_file_mtime(filename):
-    """
-    get the file modified time from disk
-    
-    :param str fname: file name, already known to exist
-    :return: time (float) fname was last modified
-    """
-    return os.path.getmtime(filename)
-
-
 def needToMakePlot(fullPlotFile, mtime_specFile):
     """
     Determine if a plot needs to be (re)made.  Use mtime as the basis.
@@ -354,7 +343,7 @@ def needToMakePlot(fullPlotFile, mtime_specFile):
     """
     remake_plot = True
     if os.path.exists(fullPlotFile):
-        mtime_plotFile = get_file_mtime(fullPlotFile)
+        mtime_plotFile = os.path.getmtime(fullPlotFile)
         if mtime_plotFile > mtime_specFile:
             # plot was made after the data file was updated
             remake_plot = False     # don't remake the plot
