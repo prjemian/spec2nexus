@@ -130,11 +130,6 @@ class PlotSpecFileScans(object):
         if not spec.is_spec_file(specFile):
             raise spec.NotASpecDataFile(specFile)
 
-        last_cache = Cache_File_Mtime(self.plotDir).get(specFile)
-        cache = self.specFileUpdated(specFile)
-        if cache is None:
-            return
-
         try:
             logger("SPEC data file: %s" % specFile)
             sd = specplot.openSpecFile(specFile)
@@ -148,13 +143,36 @@ class PlotSpecFileScans(object):
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
             logger('creating directory: ' + plot_path)
+        
+        # list the plots we expect
+        scans = {}
+        for scan_n in sd.getScanNumbers():
+            spec_scan = sd.getScan(scan_n)
+            # make certain that plot files will sort lexically:  S1 --> s00001
+            base = 's%05s' + PLOT_TYPE
+            basePlotFile = (base % str(spec_scan.scanNum)).replace(' ', '0')
+            altText = '#' + str(spec_scan.scanNum) + ': ' + spec_scan.scanCmd
+            href = self.href_format(basePlotFile, altText)
+            full = os.path.join(plot_path, basePlotFile)
+            scans[scan_n] = dict(
+                make=True,
+                base=(base % str(spec_scan.scanNum)).replace(' ', '0'), 
+                full=full,
+                href=href,
+                exists=os.path.exists(full),
+                spec_scan=spec_scan,
+                )
+        
+        # delete any existing plots that must be remade
+        last_cache = Cache_File_Mtime(self.plotDir).get(specFile)
+        cache = self.specFileUpdated(specFile)
+        if cache is None:
+            return
         plot_list = [
             k
             for k in sorted(os.listdir(plot_path))
             if k.endswith(PLOT_TYPE)
             ]
-        
-        # check if any plots need to be removed (and remade)
         if len(plot_list) > 0 and cache["size"] > 0 and cache["size"] != last_cache["size"]:
             if cache["size"] > last_cache["size"]:
                 # Was last scan updated with more data?  Look at file.
@@ -163,7 +181,7 @@ class PlotSpecFileScans(object):
                     fp.read(last_cache["size"])
                     # look at the addition
                     buf = fp.read()
-
+ 
                 # only delete last plot if addition not start with #S
                 if not buf.lstrip().startswith("#S "):
                     k = plot_list.pop()
@@ -173,53 +191,48 @@ class PlotSpecFileScans(object):
                 for k in plot_list:     # TODO: needs unit test
                     os.remove(os.path.join(plot_path, k))
                 plot_list = []
-    
+
+        # make plots as needed
+        remake_index_file = False
         problem_scans = []
-        newFileList = [] # list of all new files created
-        
-        shutil.copy(specFile, plot_path)
-        
-        scan_list = sd.getScanNumbers()
-        if self.reversed:
-            scan_list = reversed(sd.getScanNumbersChronological())
-
-        for scan_number in scan_list:
-            scan = sd.getScan(scan_number)
-            # make certain that plot files will sort lexically:  S1 --> s00001
-            base = 's%05s' + PLOT_TYPE
-            basePlotFile = (base % str(scan.scanNum)).replace(' ', '0')
-            fullPlotFile = os.path.join(plot_path, basePlotFile)
-            altText = '#' + str(scan.scanNum) + ': ' + scan.scanCmd
-            href = self.href_format(basePlotFile, altText)
-
-            if basePlotFile in plot_list:
-                newFileList.append(fullPlotFile)
-                continue
-            
-            #print ("specplot.py %s %s %s" % (specFile, scan.scanNum, fullPlotFile))
-            if needToMakePlot(fullPlotFile, cache["mtime"]):
+        for scan in scans.values():
+            scan["make"] = scan["base"] not in plot_list
+            if scan["make"]:
                 try:
-                    logger('  creating SPEC data scan image: ' + basePlotFile)
+                    logger('  creating SPEC data scan image: ' + scan["base"])
                     selector = specplot.Selector()
-                    image_maker = selector.auto(scan)
+                    image_maker = selector.auto(scan["spec_scan"])
                     plotter = image_maker()
-                    plotter.plot_scan(scan, fullPlotFile)
-                    newFileList.append(fullPlotFile)
-                    plot_list.append(href)
+                    plotter.plot_scan(scan["spec_scan"], scan["full"])
+                    remake_index_file = True
                 except Exception as _exc_obj:
                     msg = "<b>%s</b>" % type(_exc_obj).__name__
-                    msg += ": <tt>#S %s</tt>" % str(scan)
+                    msg += ": <tt>#S %s</tt>" % str(scan["spec_scan"].scanNum)
                     #msg += " (%s)" % specFile
                     problem_scans.append(msg)
-    
+
+        # (re)make the index.html file as needed
         htmlFile = os.path.join(plot_path, HTML_INDEX_FILE)
-        if len(newFileList) or not os.path.exists(htmlFile):
+        if remake_index_file or not os.path.exists(htmlFile):
             logger('  creating/updating index.html file')
+
+            # list the plottable files
+            def sorter(d):
+                return d["spec_scan"].epoch
+    
+            plot_list = [
+                scan["href"]
+                for scan in sorted(
+                    scans.values(), 
+                    key=sorter, 
+                    reverse=self.reversed)
+                if os.path.exists(scan["full"])
+                ]
+
             html = buildIndexHtml(specFile, plot_list, problem_scans)
             f = open(htmlFile, "w")
             f.write(html)
             f.close()
-            newFileList.append(htmlFile)
             
         # touch to update the mtime on the plot_path
         os.utime(plot_path, None)

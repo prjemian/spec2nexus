@@ -44,7 +44,25 @@ nosetests.xml
 # Translations
 *.mo
 
-# Mr Developer
+# Mr Developer #
+################
 .mr.developer.cfg
+
+# eclipse #
+###########
+#.project
+#.pydevproject
+
+# sublime text editor #
+#######################
+*.sublime-project
+*.sublime-workspace
+
+# Microsoft VS Code #
+#####################
+.vscode/
+
+# local #
+#########
 /.settings
 /src/spec2nexus/__plots__

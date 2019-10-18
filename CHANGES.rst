@@ -13,7 +13,12 @@ Change History
 Production
 **********
 
-:2021.1.4: expected *2019.09*
+:2021.1.5: expected *2019.09*
+
+:2021.1.4: expected *2019.10-18*
+
+    * `#206 <https://github.com/prjemian/spec2nexus/issues/206>`_
+       specplot_gallery: replot shows all existing plots
 
 :2021.1.3: released *2019.08.19* - only update plots with *new* content
 

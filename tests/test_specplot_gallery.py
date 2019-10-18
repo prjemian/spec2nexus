@@ -12,6 +12,7 @@ unit tests for the specplot_gallery module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import json
 import logging
 import os
 import shutil
@@ -224,6 +225,12 @@ class TestFileRefresh(unittest.TestCase):
                     self.gallery, 
                     specplot_gallery.MTIME_CACHE_FILE)))
 
+        def children_mtimes(plotdir, children):
+            return {
+                k: os.path.getmtime(os.path.join(plotdir, k))
+                for k in children
+                }
+
         specplot_gallery.PlotSpecFileScans(
             [self.data_file], self.gallery)
         plotdir = os.path.join(self.gallery, "2010", "11", "specdata")
@@ -233,10 +240,7 @@ class TestFileRefresh(unittest.TestCase):
             if k.endswith(specplot_gallery.PLOT_TYPE)
             ]
         self.assertEqual(len(children), 3)
-        mtimes = {
-            k: os.path.getmtime(os.path.join(plotdir, k))
-            for k in children
-            }
+        mtimes = children_mtimes(plotdir, children)
         self.assertEqual(len(mtimes), 3)
         
         # update the file with more data
@@ -261,10 +265,7 @@ class TestFileRefresh(unittest.TestCase):
             for k in sorted(os.listdir(plotdir))
             if k.endswith(specplot_gallery.PLOT_TYPE)
             ]
-        mtimes = {
-            k: os.path.getmtime(os.path.join(plotdir, k))
-            for k in children
-            }
+        mtimes = children_mtimes(plotdir, children)
         self.assertEqual(len(children), 5)
         
         # update the file with another scan
@@ -331,6 +332,41 @@ class TestFileRefresh(unittest.TestCase):
             for k in sorted(os.listdir(plotdir))
             if k.endswith(specplot_gallery.PLOT_TYPE)
             ]
+        
+        # issue #206 here
+        # edit mtime_cache.json
+        mtime_file = os.path.join(self.gallery, specplot_gallery.MTIME_CACHE_FILE)
+        self.assertTrue(os.path.exists(mtime_file))
+        with open(mtime_file, "r") as fp:
+            mtimes = json.loads(fp.read())
+        # edit mtimes
+        mtimes[self.data_file]["mtime"] = 1
+        mtimes[self.data_file]["size"] = 1
+        with open(mtime_file, "w") as fp:
+            fp.write(json.dumps(mtimes, indent=4))
+        # reprocess
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        # list of all available plot images
+        plots = [f 
+                 for f in sorted(os.listdir(plotdir))
+                 if f.endswith(specplot_gallery.PLOT_TYPE)]
+        # look at the index.html file
+        index_file = os.path.join(plotdir, specplot_gallery.HTML_INDEX_FILE)
+        with open(index_file, "r") as fp:
+            html = fp.read()
+        for line in html.splitlines():
+            if line.endswith(" plotted scan(s)</h2>"):
+                n = int(line.strip()[4:].split()[0])
+                self.assertGreaterEqual(n, 0)
+                self.assertEqual(n, len(plots))
+            elif line.find(specplot_gallery.PLOT_TYPE) > 0:
+                for plot in plots:
+                    if line.find(plot) < 0:
+                        continue
+                    msg = "plot %s is not linked" % str(plot)
+                    msg += " in `%s`" % specplot_gallery.HTML_INDEX_FILE
+                    self.assertTrue(line.startswith("<a href="), msg)
 
 
 def suite(*args, **kw):
