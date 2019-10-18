@@ -364,12 +364,9 @@ class TestFileRefresh(unittest.TestCase):
                 for plot in plots:
                     if line.find(plot) < 0:
                         continue
-                    self.assertTrue(
-                        line.startswith("<a href="), 
-                        f"plot {plot} is not linked"
-                        f" in `{specplot_gallery.HTML_INDEX_FILE}`"
-                        )
-        
+                    msg = "plot %s is not linked" % str(plot)
+                    msg += " in `%s`" % specplot_gallery.HTML_INDEX_FILE
+                    self.assertTrue(line.startswith("<a href="), msg)
 
 
 def suite(*args, **kw):
