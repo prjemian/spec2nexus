@@ -12,6 +12,7 @@ unit tests for the specplot_gallery module
 # The full license is in the file LICENSE.txt, distributed with this software.
 #-----------------------------------------------------------------------------
 
+import json
 import logging
 import os
 import shutil
@@ -331,6 +332,39 @@ class TestFileRefresh(unittest.TestCase):
             for k in sorted(os.listdir(plotdir))
             if k.endswith(specplot_gallery.PLOT_TYPE)
             ]
+        
+        # issue #206 here
+        # edit mtime_cache.json
+        mtime_file = os.path.join(self.gallery, "mtime_cache.json")
+        self.assertTrue(os.path.exists(mtime_file))
+        with open(mtime_file, "r") as fp:
+            mtimes = json.loads(fp.read())
+        # edit mtimes
+        mtimes[self.data_file]["mtime"] = 1
+        mtimes[self.data_file]["size"] = 1
+        with open(mtime_file, "w") as fp:
+            fp.write(json.dumps(mtimes, indent=4))
+        # reprocess
+        specplot_gallery.PlotSpecFileScans(
+            [self.data_file], self.gallery)
+        # look at the index.html file
+        # TODO: learn YYY/mm/file subdir
+        plot_dir = os.path.join(self.gallery, "2010", "11", "specdata")
+        index_file = os.path.join(plot_dir, "index.html")
+        with open(index_file, "r") as fp:
+            html = fp.read()
+        for line in html.splitlines():
+            if (line.find(".svg") > 0 
+                and line.find("href=") < 0 
+                and line.startswith("s")
+                ):
+                self.assertFalse(
+                    os.path.exists(
+                        os.path.join(plot_dir, line)
+                        ),
+                    f"plot {line} is not linked in `index.html`"
+                    )
+        
 
 
 def suite(*args, **kw):
