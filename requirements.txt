@@ -4,4 +4,5 @@ h5py
 lxml
 matplotlib
 numpy
+pyRestTable
 six
