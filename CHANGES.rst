@@ -13,10 +13,12 @@ Change History
 Production
 **********
 
-:2021.1.5: expected *2019.09*
+:2021.1.5: expected *2019.12*
 
-:2021.1.4: expected *2019.10-18*
+:2021.1.4: released *2019.11.01*
 
+    * `#209 <https://github.com/prjemian/spec2nexus/issues/209>`_
+       *pyRestTable* added to installation requirements
     * `#206 <https://github.com/prjemian/spec2nexus/issues/206>`_
        specplot_gallery: replot shows all existing plots
 
