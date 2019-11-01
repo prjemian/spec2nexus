@@ -15,7 +15,7 @@ Production
 
 :2021.1.7: expected *2020.01*
 
-:2021.1.6: expected *2019.11.01*
+:2021.1.6: released *2019.11.01*
 
     * `#210 <https://github.com/prjemian/spec2nexus/issues/210>`_
        add `-c prjemian` conda channel
