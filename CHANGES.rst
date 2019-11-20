@@ -15,6 +15,12 @@ Production
 
 :2021.1.7: expected *2020.01*
 
+    * `#213 <https://github.com/prjemian/spec2nexus/issues/213>`_
+       copy data file to gallery
+
+    * `#188 <https://github.com/prjemian/spec2nexus/issues/188>`_
+       catenate continued lines before parsing data
+
 :2021.1.6: released *2019.11.01*
 
     * `#210 <https://github.com/prjemian/spec2nexus/issues/210>`_
