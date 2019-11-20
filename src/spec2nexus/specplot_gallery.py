@@ -230,10 +230,18 @@ class PlotSpecFileScans(object):
                 ]
 
             html = buildIndexHtml(specFile, plot_list, problem_scans)
-            f = open(htmlFile, "w")
-            f.write(html)
-            f.close()
+            with open(htmlFile, "w") as f:
+                f.write(html)
             
+        # copy specFile to the plot_path, if newer
+        target = os.path.join(plot_path, os.path.basename(specFile))
+        if (
+            not os.path.exists(target)
+            or
+            (os.path.getmtime(target) < os.path.getmtime(specFile))
+            ):
+            shutil.copyfile(specFile, target)
+
         # touch to update the mtime on the plot_path
         os.utime(plot_path, None)
     
