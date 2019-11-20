@@ -615,7 +615,7 @@ class SpecDataFileScan(object):
         if self.__interpreted__:    # do not do this twice
             return
         self.__lazy_interpret__ = False     # set now to avoid recursion
-        lines = self.raw.splitlines()
+        lines = self.raw.replace('\\\n', ' ').splitlines()
         for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue            # ignore blank lines
@@ -681,6 +681,10 @@ class SpecDataFileScan(object):
     def _interpret_data_row(self, row_text):
         buf = {}
         for col, val in enumerate(row_text.split()):
+            if col >= len(self.L):
+                stop = 1
+            if col < 0:
+                stop = 1
             label = self.L[col]
             buf[label] = float(val)
         return buf
