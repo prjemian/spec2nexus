@@ -40,6 +40,7 @@ def suite(*args, **kw):
     from tests import test_uxml
     from tests import test_writer
     from tests import test_XPCS
+    from tests import issue8
     from tests import issue64
     from tests import issue99_hklscan
     from tests import issue107
@@ -65,6 +66,7 @@ def suite(*args, **kw):
         test_uxml,
         test_writer,
         test_XPCS,
+        issue8,
         issue64,
         issue99_hklscan,
         issue107,
