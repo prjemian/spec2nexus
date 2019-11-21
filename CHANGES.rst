@@ -15,9 +15,6 @@ Production
 
 :2021.1.7: expected *2020.01*
 
-    * `#214 <https://github.com/prjemian/spec2nexus/issues/214>`_
-       continuous integration testing with py 3.8
-
     * `#213 <https://github.com/prjemian/spec2nexus/issues/213>`_
        copy data file to gallery
 
