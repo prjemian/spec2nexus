@@ -29,7 +29,7 @@ from ..eznx import write_dataset, makeGroup, openGroup, makeLink
 from ..plugin import AutoRegister, ControlLineHandler
 from ..scanf import scanf
 from ..spec import SpecDataFileHeader, SpecDataFileScan, DuplicateSpecScanNumber, MCA_DATA_KEY
-from ..utils import strip_first_word, iso8601, split_column_labels
+from ..utils import strip_first_word, iso8601, split_column_labels, clean_name
 from ..writer import CONTAINER_CLASS
 
 
@@ -824,7 +824,12 @@ class SPEC_Positioners(ControlLineHandler):
         """Describe how to store this data in an HDF5 NeXus file"""
         desc='SPEC positioners (#P & #O lines)'
         group = makeGroup(h5parent, 'positioners', nxclass, description=desc)
-        writer.save_dict(group, scan.positioner)
+        # writer.save_dict(group, scan.positioner)
+        for k, v in scan.positioner.items():
+            safe_name = clean_name(k)
+            pg = openGroup(group, safe_name, "NXpositioner")
+            write_dataset(pg, "name", safe_name, spec_name = k)
+            write_dataset(pg, "value", v, spec_name = k)
         nxinstrument = openGroup(h5parent, 'instrument', "NXinstrument")
         makeLink(h5parent, group, nxinstrument.name + "/positioners")
 
