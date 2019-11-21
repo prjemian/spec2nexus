@@ -56,12 +56,16 @@ To identify and stop all processes of this program::
 
 
 import datetime
+import getpass
 import json
 import logging
 import os
 import shutil
+import socket
 import sys
 
+
+from . import __version__
 from . import spec
 from . import specplot
 
@@ -415,9 +419,12 @@ def buildIndexHtml(specFile, plotted_scans, problem_scans):
     """
     baseSpecFile = os.path.basename(specFile)
     comment = "\n"
-    comment += "   written by: %s\n" % sys.argv[0]
-    comment += "   date: %s\n"       % timestamp()
-    comment += "\n"
+    comment += "   written by: %s\n"  % sys.argv[0]
+    comment += "   date: %s\n"        % timestamp()
+    comment += "   workstation: %s\n" % socket.gethostname()
+    comment += "   username: %s\n"    % getpass.getuser()
+    comment += "   version: %s\n"     % __version__
+    comment += "   pid: %d\n"         % os.getpid()
 
     href = "<a href='%s'>%s</a>" % (baseSpecFile, specFile)
     html  = "<html>\n"

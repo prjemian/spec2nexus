@@ -18,6 +18,12 @@ Production
     * `#213 <https://github.com/prjemian/spec2nexus/issues/213>`_
        copy data file to gallery
 
+    * `#208 <https://github.com/prjemian/spec2nexus/issues/208>`_
+       add more diagnostics to gallery web page comments
+
+    * `#191 <https://github.com/prjemian/spec2nexus/issues/191>`_
+       write each positioner to NXpositioner group
+
     * `#188 <https://github.com/prjemian/spec2nexus/issues/188>`_
        catenate continued lines before parsing data
 
