@@ -23,7 +23,7 @@ TESTFILE = os.path.join(_path, "data", "issue119_data.txt")
 
 
 def get_memory():
-    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.
 
 def task():
     gc.collect()
@@ -35,10 +35,17 @@ def task():
     gc.collect()
     final = get_memory()
 
-    print(f"{before}  {after}  {final}")
+    d = dict(
+        time=time.time(),
+        before=before,
+        after=after,
+        final=final,
+    )
+
+    print(f"{d}")
 
 
 if __name__ == "__main__":
-    for i in range(65):
+    for i in range(10):
         task()
         time.sleep(1.0)
