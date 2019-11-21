@@ -21,6 +21,9 @@ Production
     * `#188 <https://github.com/prjemian/spec2nexus/issues/188>`_
        catenate continued lines before parsing data
 
+    * `#186 <https://github.com/prjemian/spec2nexus/issues/186>`_
+       remove unused code
+
 :2021.1.6: released *2019.11.01*
 
     * `#210 <https://github.com/prjemian/spec2nexus/issues/210>`_

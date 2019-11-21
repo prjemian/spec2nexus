@@ -192,8 +192,6 @@ class PluginManager(object):
     
       ~get
       ~getKey
-      ~get_registry
-      ~get_registry_table
       ~load_plugins
       ~match_key
       ~process
@@ -216,9 +214,6 @@ class PluginManager(object):
         """
         from . import spec
         from . import plugins   # issue #166: plugins are loaded here, NOT any earlier!
-        
-        table = self.get_registry_table()
-        logger.debug(str(table))
     
         return self
     
@@ -278,22 +273,6 @@ class PluginManager(object):
         handler = self.get(key)
         if handler is not None:
             handler().process(*args, **kw)
-
-    def get_registry(self):
-        return self.registry
-
-    def get_registry_table(self, print_it=False):
-        """return a table of all the known plugins"""
-        import pyRestTable
-        tbl = pyRestTable.Table()
-        tbl.addLabel("control line")
-        tbl.addLabel("handler class")
-        for k, v in self.registry.items():
-            tbl.addRow((k, v))
-        if print_it:
-            print("Plugin registry")
-            print(tbl)
-        return tbl
 
     def register_control_line_handler(self, handler):
         """
