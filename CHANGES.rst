@@ -6,7 +6,7 @@ Change History
 
 .. note:: Python 2 end of support
 
-   spec2nexus will stop development for Python 2 by 2019-12-31.
+   spec2nexus will stop development for Python 2 after release *2021.1.7*, *2019-11-21*.
    For more information, visit https://python3statement.org/.
 
 
@@ -16,6 +16,8 @@ Production
 :2021.1.8: expected *2020.01*
 
 :2021.1.7: released *2019-11-21*
+
+    Note: Last version with support for Python 2
 
     * `#213 <https://github.com/prjemian/spec2nexus/issues/213>`_
        copy data file to gallery
