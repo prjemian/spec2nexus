@@ -46,6 +46,7 @@ def suite(*args, **kw):
     from tests import issue119
     from tests import issue123
     from tests import issue161
+    from tests import issue188
 
     test_list = [
         data_03_06_JanTest,
@@ -70,6 +71,7 @@ def suite(*args, **kw):
         issue119,
         issue123,
         issue161,
+        issue188,
         ]
 
     test_suite = unittest.TestSuite()

@@ -13,6 +13,7 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
+  # - "3.8"  #   ERROR: Failed building wheel for h5py
 
 before_script:
   - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
