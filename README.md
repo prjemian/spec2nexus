@@ -14,7 +14,7 @@ Writes `path/to/file/specfile.hdf5`
 
 **NOTE**
 
-spec2nexus will stop development for Python 2 by 2019-12-31. 
+spec2nexus ended development for Python 2 with release 2021.1.7, 2019-11-21. 
 For more information, visit https://python3statement.org/.
 
 Provides
