@@ -21,6 +21,8 @@ _path = os.path.dirname(__file__)
 # TESTFILE = "tests/data/issue119_data.txt"
 TESTFILE = os.path.join(_path, "data", "issue119_data.txt")
 
+t0 = time.time()
+
 
 def get_memory():
     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.
@@ -36,7 +38,7 @@ def task():
     final = get_memory()
 
     d = dict(
-        time=time.time(),
+        time=time.time() - t0,
         before=before,
         after=after,
         final=final,
@@ -46,6 +48,6 @@ def task():
 
 
 if __name__ == "__main__":
-    for i in range(10):
+    while True:
         task()
         time.sleep(1.0)
