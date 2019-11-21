@@ -1,6 +1,6 @@
 
 '''
-test punx tests/common module (supports unit testing)
+test spec2nexus code
 '''
 
 #-----------------------------------------------------------------------------
