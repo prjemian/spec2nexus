@@ -1360,6 +1360,39 @@ class SPEC_MCA_RegionOfInterest(ControlLineHandler):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def combine_split_NM_lines(nm, data_lines):
+    """
+    combine split lines of data
+
+        #N N [M]
+
+    Indicates there are N columns of data. 
+    If M is present, it indicates there 
+    are M sets of data columns on each line.
+    """
+    if len(nm) == 1:
+        # no split lines indicated
+        return data_lines
+    dl = []
+    N, M = nm
+    buf = ""
+    for line in data_lines:
+        if line.startswith("@A"):
+            if len(buf) > 0:
+                dl.append(buf)
+            buf = []
+            dl.append(line)
+        else:
+            if len(buf) > 0 and buf[-1] != " ":
+                buf += " "  # ensure whitespace delimiter
+            buf += line
+            if len(buf.split()) == N:   # assumption here!
+                dl.append(buf)
+                buf = ""
+
+    return dl
+
+
 def data_lines_postprocessing(scan):
     """
     interpret the data lines from the body of the scan
@@ -1377,15 +1410,17 @@ def data_lines_postprocessing(scan):
         scan.data[label] = []       # list for the column's data
     num_columns = len(scan.data)
     
-    # gather up any continuation lines
-    dl = '\n'.join(scan.data_lines).replace('\\\n', ' ')
-    if dl.find('@A') > -1:
+    # any MCA spectra?
+    data_lines = scan.data_lines
+    if "@A" in [line[:2] for line in data_lines if len(line) > 2]:
         # There can be more than 1 MCA spectrum specified
         # scan.data[MCA_DATA_KEY] = {}  keys: mca or mca1, mca2, ...
         scan.data[MCA_DATA_KEY] = {}
+    
+    data_lines = combine_split_NM_lines(scan.N, data_lines)
 
     # interpret the data lines from the body of the scan
-    for _, values in enumerate(dl.splitlines()):
+    for values in data_lines:
         if values.startswith('@A'):
             # which MCA spectrum is THIS one?
             parts = values.split()
