@@ -13,7 +13,9 @@ Change History
 Production
 **********
 
-:2021.1.7: expected *2020.01*
+:2021.1.8: expected *2020.01*
+
+:2021.1.7: released *2019-11-21*
 
     * `#213 <https://github.com/prjemian/spec2nexus/issues/213>`_
        copy data file to gallery
