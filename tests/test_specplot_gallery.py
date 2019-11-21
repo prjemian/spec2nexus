@@ -14,6 +14,7 @@ unit tests for the specplot_gallery module
 
 import json
 import logging
+from lxml import etree
 import os
 import shutil
 import sys
@@ -78,8 +79,10 @@ class SpecPlotGallery(unittest.TestCase):
         plotDir = os.path.join(self.tempdir, '2010', '06', '33bm_spec')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '33bm_spec.dat')))
-        self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
+        web_page = os.path.join(plotDir, 'index.html')
+        self.assertTrue(os.path.exists(web_page))
         # TODO: #69: look for handling of scan 15
+
     
     def test_command_line_spec_data_file_user6idd(self):
         sys.argv.append('-d')
@@ -128,8 +131,26 @@ class SpecPlotGallery(unittest.TestCase):
         plotDir = os.path.join(self.tempdir, '2016', '02', '02_03_setup')
         self.assertTrue(os.path.exists(plotDir))
         self.assertTrue(os.path.exists(os.path.join(plotDir, '02_03_setup.dat')))
-        self.assertTrue(os.path.exists(os.path.join(plotDir, 'index.html')))
+        web_page = os.path.join(plotDir, 'index.html')
+        self.assertTrue(os.path.exists(web_page))
         # TODO: #69: look for handling of scan 5
+
+        # look for diagnostics in first web page comment element
+        doc = etree.parse(web_page)
+        for element in doc.iter():
+            if element.__class__.__name__ == "_Comment":
+                comments = element.text.splitlines()
+                self.assertGreaterEqual(len(comments), 3)
+                catalog = {
+                    line.strip().split()[0].strip(":") : line.strip()
+                    for line in comments
+                    if len(line.strip()) > 0
+                }
+                expected = "written date workstation username version pid"
+                for k in expected.split():
+                    self.assertIn(k, catalog, k)
+
+                break
      
     def test_command_line_spec_data_file_list(self):
         sys.argv.append('-d')
