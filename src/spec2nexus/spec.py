@@ -681,12 +681,7 @@ class SpecDataFileScan(object):
     def _interpret_data_row(self, row_text):
         buf = {}
         for col, val in enumerate(row_text.split()):
-            if col >= len(self.L):
-                stop = 1
-            if col < 0:
-                stop = 1
-            label = self.L[col]
-            buf[label] = float(val)
+            buf[self.L[col]] = float(val)
         return buf
 
     def _unique_key(self, label, keylist):
