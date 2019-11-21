@@ -47,6 +47,7 @@ class Issue8(unittest.TestCase):
 
         scanNum = 6
         scan = specData.getScan(scanNum)
+        self.assertIsNotNone(scan)
         self.assertIsInstance(scan, spec2nexus.spec.SpecDataFileScan)
         self.assertTrue(hasattr(scan, "data"))
         self.assertIsInstance(scan.data, dict)
