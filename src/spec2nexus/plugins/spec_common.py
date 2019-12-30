@@ -1404,6 +1404,14 @@ def data_lines_postprocessing(scan):
     
     :param SpecDataFileScan scan: data from a single SPEC scan
     """
+    if len(scan.L) != scan.N[0]:
+        raise ValueError(
+            "# of given column labels in #L ({}) "
+            "does not match # specified in #N ({})".format(
+                len(scan.L), scan.N[0]
+                )
+            )
+
     # first, get the column labels, rename redundant labels to be unique
     # the unique labels will be the scan.data dictionary keys
     scan.data = {}
