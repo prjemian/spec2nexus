@@ -4,6 +4,18 @@ spec2nexus issue #216: Index error reading a single scan SPEC file
 
 The output file gets created but only contains /S1/definition, 
 running spec2nexus-2021.1.7.
+
+This data file has problems which were not identified clearly
+until this issue.  All problems are related to incorrect formatting  
+of the `#L` line.  The number of columns specified in #N matches 
+the number of values on each data line (7).
+
+1. The number of columns specified in #N does not match the number
+   of columns described in #L
+2. The labels given on #L are only delimited by single spaces.
+   This results in only one label defined.
+3. The number of separate labels given in #L (6) does not equal the
+   number of data columns.
 '''
 
 #-----------------------------------------------------------------------------
@@ -63,26 +75,8 @@ class Issue216(unittest.TestCase):
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
 
         # force plugins to process
-        scan.interpret()
-
-        self.assertTrue(os.path.exists(self.tempdir))
-        nexus_output_file_name = os.path.join(
-            self.tempdir, 
-            os.path.basename(os.path.splitext(self.testfile)[0])
-            ) + ".h5"
-        self.assertFalse(os.path.exists(nexus_output_file_name))
-
-        out = spec2nexus.writer.Writer(sdf)
-        out.save(nexus_output_file_name, [scanNum,])
-
-        self.assertTrue(os.path.exists(nexus_output_file_name))
-        with h5py.File(nexus_output_file_name) as h5:
-            # check the NXentry/positioners:NXnote group
-            self.assertIn("/S1/definition", h5)
-            # TODO: test for other content
-            # 7 data columns (#N 7) but (#L EPOCH Phi CESR IC1 IC2 DIODE)
-            # 9 data points
-            # TODO: should supply default labels when len(#L) < int(#N[0])
+        with self.assertRaises(ValueError):
+            scan.interpret()
 
 
 def suite(*args, **kw):
