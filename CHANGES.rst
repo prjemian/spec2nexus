@@ -15,6 +15,9 @@ Production
 
 :2021.1.8: expected *2020.01*
 
+    * `#216 <https://github.com/prjemian/spec2nexus/issues/216>`_
+       raise ValueError when #L and #N lines do not agree
+
 :2021.1.7: released *2019-11-21*
 
     Note: Last version with support for Python 2
