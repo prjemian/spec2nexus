@@ -1404,11 +1404,24 @@ def data_lines_postprocessing(scan):
     
     :param SpecDataFileScan scan: data from a single SPEC scan
     """
-    if len(scan.L) != scan.N[0]:
+    if len(scan.L) == 1 and scan.L[0].split(" ") == scan.N[0]:
+        # https://github.com/prjemian/spec2nexus/issues/216#issuecomment-569745297
         raise ValueError(
+            "file {}: "
+            "#S {}: "
+            "#L lines must use two (2) spaces between labels".format(
+                scan.specFile, scan.S
+                )
+            )
+
+    if len(scan.L) != scan.N[0]:
+        # https://github.com/prjemian/spec2nexus/issues/216
+        raise ValueError(
+            "file {}: "
+            "#S {}: "
             "# of given column labels in #L ({}) "
             "does not match # specified in #N ({})".format(
-                len(scan.L), scan.N[0]
+                scan.specFile, scan.S, len(scan.L), scan.N[0]
                 )
             )
 
