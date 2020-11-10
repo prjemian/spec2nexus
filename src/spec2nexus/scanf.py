@@ -35,18 +35,18 @@ DEBUG = False
 scanf_translate = [
     (re.compile(_token), _pattern, _cast) for _token, _pattern, _cast in [
     ("%c", "(.)", lambda x:x),
-    ("%(\d)c", "(.{%s})", lambda x:x),
-    ("%(\d)[di]", "([+-]?\d{%s})", int),
-    ("%[di]", "([+-]?\d+)", int),
-    ("%u", "(\d+)", int),
+    (r"%(\d)c", "(.{%s})", lambda x:x),
+    (r"%(\d)[di]", r"([+-]?\d{%s})", int),
+    ("%[di]", r"([+-]?\d+)", int),
+    ("%u", r"(\d+)", int),
     
     #("%[fgeE]", "(\d+\.\d+)", float),
     # re for float is much trickier!
-    ("%[f]", "([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
-    ("%[geE]", "([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)", float),
+    ("%[f]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
+    ("%[geE]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)", float),
 
-    ("%s", "(\S+)", lambda x:x),
-    ("%([xX])", "(0%s[\dA-Za-f]+)", lambda x:int(x, 16)),
+    ("%s", r"(\S+)", lambda x:x),
+    ("%([xX])", r"(0%s[\dA-Za-f]+)", lambda x:int(x, 16)),
     ("%o", "(0[0-7]*)", lambda x:int(x, 7)),
     ]]
 
@@ -64,7 +64,7 @@ def _scanf_compile(fmt):
     For example:
     >>> format_re, casts = _scanf_compile('%s - %d errors, %d warnings')
     >>> print format_re.pattern
-    (\S+) \- ([+-]?\d+) errors, ([+-]?\d+) warnings
+    (\\S+) \- ([+-]?\\d+) errors, ([+-]?\\d+) warnings
     
     Translated formats are cached for faster use
     """

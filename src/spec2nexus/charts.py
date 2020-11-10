@@ -117,7 +117,7 @@ def xy_plot(
         hsize=PLOT_H_INT,
         vsize=PLOT_V_INT,
         timestamp_str=None):
-    r"""
+    """
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
 
     :param [float] x: horizontal axis data

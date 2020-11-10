@@ -204,12 +204,12 @@ class Selector(singletons.Singleton):
 
 
 class ImageMaker(object):
-    r"""
+    """
     superclass to handle plotting of data from a SPEC scan
     
     .. rubric:: Internal data model
 
-    :signal: name of the 'signal' data (default data to be plotted)
+    :signal: name of the ``signal`` data (default data to be plotted)
     :data: values of various collected arrays {label: array}
     :axes: names of the axes of signal data
     
