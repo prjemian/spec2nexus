@@ -69,7 +69,7 @@ def make_png(
 
     fig = matplotlib.figure.Figure(figsize=(hsize, vsize))
     fig.clf()
-    ax = fig.add_subplot('111')
+    ax = fig.add_subplot(1, 1, 1)
     if isinstance(axes, list) and len(axes) == 2:
         def shift_to_pixel_boundaries(arr):
             np_arr = numpy.array(arr)
@@ -146,7 +146,7 @@ def xy_plot(
     fig = matplotlib.figure.Figure(figsize=(hsize, vsize))
     fig.clf()
 
-    ax = fig.add_subplot('111')
+    ax = fig.add_subplot(1, 1, 1)
     if xlog:
         ax.set_xscale('log')
         if max(x) <= 0:
