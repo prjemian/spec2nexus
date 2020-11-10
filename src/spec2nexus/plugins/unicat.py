@@ -71,7 +71,7 @@ class UNICAT_MetadataValues(ControlLineHandler):
     Individual metadata values are expected to be numbers but may
     be multi-word strings as long as the words in the string are
     separated by only one space.  The delimiter between metadata
-    values is two consecutive spaces.  A tab (``'\\t\``) character is
+    values is two consecutive spaces.  A tab (``'\\t'``) character is
     also acceptable but should be avoided.
 
     All numerical values will be converted into floating point
