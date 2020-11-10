@@ -112,7 +112,7 @@ class PlotSpecFileScans(object):
     def __init__(
         self, filelist, plotDir=None, reverse_chronological=False
     ):
-        """read SPEC files and plot all scans."""
+        """Read SPEC files and plot all scans."""
         self.filelist = filelist
         self.plotDir = plotDir or os.getcwd()
         self.reversed = reverse_chronological
@@ -122,7 +122,7 @@ class PlotSpecFileScans(object):
 
     def specFileUpdated(self, specFile):
         """
-        report if specFile has been updated
+        Report if specFile has been updated.
 
         Return mtime cache entry (or `None` if not updated)
         """
@@ -134,9 +134,7 @@ class PlotSpecFileScans(object):
         return result
 
     def plot_all_scans(self, specFile):
-        """
-        plot all the recognized scans from the file named ``specFile``
-        """
+        """Plot all the recognized scans from file ``specFile``."""
         if not spec.is_spec_file(specFile):
             raise spec.NotASpecDataFile(specFile)
 
@@ -266,7 +264,7 @@ class PlotSpecFileScans(object):
 
     def getPlotDir(self, specFile):
         """
-        return the plot directory based on the specFile
+        Return the plot directory based on the specFile.
 
         :param str specFile: name of SPEC data file (relative or absolute)
         """
@@ -280,7 +278,7 @@ class PlotSpecFileScans(object):
 
     def getBaseDir(self, basename, date):
         """
-        find the path based on the date in the spec file
+        Find the path based on the date in the spec file.
         """
         return os.path.join(self.plotDir, datePath(date), basename)
 
@@ -296,7 +294,7 @@ class PlotSpecFileScans(object):
 class Cache_File_Mtime(object):
 
     """
-    maintain a list of all known data file modification times
+    Maintain a list of all known data file modification times.
 
     :param str base_dir: name of base directory to store output image thumbnails
 
@@ -313,7 +311,7 @@ class Cache_File_Mtime(object):
         self.cache = self.read()
 
     def read(self):
-        """read the cache from storage"""
+        """Read the cache from storage."""
         cache = {}
         if os.path.exists(self.cache_file):
             with open(self.cache_file, "r") as fp:
@@ -321,13 +319,13 @@ class Cache_File_Mtime(object):
         return cache
 
     def write(self):
-        """write the cache to storage"""
+        """Write the cache to storage."""
         with open(self.cache_file, "w") as fp:
             json.dump(self.cache, fp, indent=4)
 
     def get(self, fname, default=dict(mtime=0, size=0)):
         """
-        get the mtime cache entry for data file ``fname``
+        Get the mtime cache entry for data file ``fname``.
 
         :param str fname: file name, already known to exist
         :return: time (float) cached value of when fname was
@@ -337,7 +335,7 @@ class Cache_File_Mtime(object):
 
     def was_file_updated(self, fname):
         """
-        compare the mtime between disk and cache
+        Compare the mtime between disk and cache.gy
 
         :param str fname: file name, already known to exist
         :return bool: True if file is newer than the cache (or new to the cache)
@@ -366,7 +364,7 @@ class Cache_File_Mtime(object):
 
 def datePath(date):
     """
-    convert the date into a path: yyyy/mm
+    Convert the date into a path: yyyy/mm.
 
     :param str date: text date from SPEC file #D line: 'Thu Jun 19 12:21:55 2014'
     """
@@ -380,7 +378,7 @@ def datePath(date):
 
 def getSpecFileDate(specFile):
     """
-    return the #D date of the SPEC data file or None
+    Return the #D date of the SPEC data file or None.
 
     :param str specFile: name of SPEC data file (relative or absolute)
     """
@@ -436,7 +434,7 @@ def timestamp():
 
 def buildIndexHtml(specFile, plotted_scans, problem_scans):
     """
-    build index.html content
+    Build index.html content.
 
     :param str specFile: name of SPEC data file (relative or absolute)
     :param [str] plotList: list of HTML `<a>` elements, one for each plot image
@@ -497,7 +495,7 @@ def buildIndexHtml(specFile, plotted_scans, problem_scans):
 
 def logger(message):
     """
-    log a message or report from this module
+    Log a message or report from this module.
 
     :param str message: text to be logged
     """
@@ -575,7 +573,7 @@ def main():
 
 def developer():
     """
-    supply a file and a directory as command-line arguments to "paths"
+    Supply a file and a directory as command-line arguments to "paths".
     """
     import tempfile
 

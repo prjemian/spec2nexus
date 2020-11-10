@@ -44,8 +44,6 @@ import spec2nexus.extractSpecScan
 import spec2nexus.spec
 import spec2nexus.writer
 
-import tests.common
-
 
 class Issue216(unittest.TestCase):
     def setUp(self):
