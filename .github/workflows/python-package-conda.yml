@@ -22,7 +22,7 @@ jobs:
         auto-update-conda: true
         channel-priority: true
         channels: defaults,conda-forge,prjemian
-        environment-file: environment.yml
+        # environment-file: environment.yml
         mamba-version: "*"
         python-version: ${{ matrix.python-version }}
         use-only-tar-bz2: true  # required for caching
@@ -38,8 +38,9 @@ jobs:
     # $CONDA is an environment variable pointing to the
     # root of the miniconda directory
 
-    - name: Install py.test
+    - name: Install dependencies
       run: |
+        $CONDA/bin/conda env update --file environment.yml --name $ENV_NAME
         $CONDA/bin/conda install pytest --name $ENV_NAME
         $CONDA/bin/conda list -r --name $ENV_NAME
       env:
