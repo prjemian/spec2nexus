@@ -190,7 +190,7 @@ class TestData_3(unittest.TestCase):
 		
 		# text that UXML group defined as expected
 		self.assertTrue(os.path.exists(self.hname))
-		with h5py.File(self.hname) as h5_file:
+		with h5py.File(self.hname, "r") as h5_file:
 			self.assertTrue("S1" in h5_file)
 			nxentry = h5_file["/S1"]
 			self.assertTrue("UXML" in nxentry)
@@ -261,7 +261,7 @@ class TestData_4(unittest.TestCase):
 		# the ONLY structural difference between test_3.spec 
 		# and test_4.spec is the presence of this hardlink
 		self.assertTrue(os.path.exists(self.hname))
-		with h5py.File(self.hname) as h5_file:
+		with h5py.File(self.hname, "r") as h5_file:
 			source = h5_file["/S1/UXML/ad_detector/beam_center_x"]
 			link = h5_file["/S1/UXML/beam_center_x"]
 			target = source.attrs.get("target")

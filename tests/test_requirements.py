@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
         reqs = _requirements.learn_requirements()
         self.assertTrue(isinstance(reqs, list))
         self.assertGreater(len(reqs), 0)
-        self.assertEqual(len(reqs), 5)
+        self.assertEqual(len(reqs), 7)
         self.assertTrue("h5py" in reqs)
         self.assertTrue("numpy" in reqs)
 

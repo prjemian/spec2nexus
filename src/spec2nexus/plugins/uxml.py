@@ -68,7 +68,7 @@ class UXML_metadata(ControlLineHandler):
 
     """
 
-    key = '#UXML'
+    key = r'#UXML'
     scan_attributes_defined = ['UXML', 'UXML_root']
     unique_id = {}
     target_id = {}
