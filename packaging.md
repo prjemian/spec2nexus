@@ -15,11 +15,13 @@ Preceed the wildcard with tag text (`spec2nexus-${RELEASE}*`)::
 
 ### alternate Conda channels
 
-* `prjemian` personal channel
-* `aps-anl-tag` production releases
-* `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
+*   `prjemian` personal channel
+*   `aps-anl-tag` production releases
+*   `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
 
-    CHANNEL=prjemian
+```
+CHANNEL=prjemian
+```
 
 ## Conda upload
 

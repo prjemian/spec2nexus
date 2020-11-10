@@ -7,12 +7,12 @@ Converts SPEC data files and scans into NeXus HDF5 files:
 
 Writes `path/to/file/specfile.hdf5`
 
-- Conda install:  `conda install -c prjemian spec2nexus` (alternate)
-- Conda install:  `conda install -c aps-anl-tag spec2nexus` (production)
+-   Conda install:  `conda install -c prjemian spec2nexus` (alternate)
+-   Conda install:  `conda install -c aps-anl-tag spec2nexus` (production)
 - Conda install:  `conda install -c aps-anl-dev spec2nexus` (development)
-- Pip install:  `pip install spec2nexus`
+-   Pip install:  `pip install spec2nexus`
 
-**NOTE**
+NOTE
 
 spec2nexus ended development for Python 2 with release 2021.1.7, 2019-11-21.
 For more information, visit https://python3statement.org/.
@@ -23,12 +23,17 @@ Provides
 -   **spec2nexus** : command-line tool: Convert
     [SPEC](http://certif.com) data files to
     [NeXus](http://nexusformat.org) [HDF5](http://hdfgroup.org)
+
 -   **extractSpecScan** : command-line tool: Save columns from SPEC data
     file scan(s) to TSV files
+
 -   **spec** : library: python binding to read SPEC data files
+
 -   **eznx** : library: (Easy NeXus) supports writing NeXus HDF5 files
     using h5py
+
 -   **specplot** : command-line tool: plot a SPEC scan to an image file
+
 -   **specplot\_gallery** : command-line tool: call **specplot** for all
     scans in a list of files, makes a web gallery
 
