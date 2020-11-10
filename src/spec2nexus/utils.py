@@ -59,7 +59,7 @@ def clean_name(key):
     the rule that valid NeXus group or field names cannot start with a digit.
     """
     replacement = '_'
-    noncompliance = '[^\w_]'
+    noncompliance = r'[^\w_]'
     txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
     if txt[0].isdigit():
         txt = replacement + txt # can't start with a digit

@@ -51,7 +51,7 @@ class TestPlugin(unittest.TestCase):
             '#L'           : r'#L eta H K L elastic Kalpha Epoch seconds signal I00 harmonic signal2 I0 I0',
             '#@MCA'        : r'#@MCA 16C',
             '#@CHANN'      : r'#@CHANN 1201 1110 1200 1',
-            '#o\d+'        : r'#o0 un0 mx my waxsx ax un5 az un7',
+            r'#o\d+'       : r'#o0 un0 mx my waxsx ax un5 az un7',
             #r'@A\d*'       : r'@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             r'@A\d*'       : r'@A1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
             #r'@A\d*'       : r'@A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\',
