@@ -81,7 +81,7 @@ def getRepositoryInfo():
                 return parse_git_url(url)
 
 def get_release_info(token, base_tag_name, head_branch_name, milestone_name):
-    """mine the Github API for information about this release"""
+    """Mine the Github API for information about this release."""
     organization_name, repository_name = getRepositoryInfo()
     gh = github.Github(token)   # GitHub Personal Access Token
 
@@ -145,7 +145,7 @@ def get_release_info(token, base_tag_name, head_branch_name, milestone_name):
 
 
 def parse_command_line():
-    """command line argument parser"""
+    """Command line argument parser."""
     doc = __doc__.strip()
     parser = argparse.ArgumentParser(description=doc)
 
@@ -176,7 +176,8 @@ def parse_command_line():
 
 
 def str2time(time_string):
-    """convert date/time string to datetime object
+    """
+    Convert date/time string to datetime object.
 
     input string example: ``Tue, 20 Dec 2016 17:35:40 GMT``
     """

@@ -19,9 +19,7 @@ Preceed the wildcard with tag text (`spec2nexus-${RELEASE}*`)::
 *   `aps-anl-tag` production releases
 *   `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
 
-```python
-CHANNEL=prjemian
-```
+	CHANNEL=prjemian
 
 ## Conda upload
 
