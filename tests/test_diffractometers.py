@@ -1,8 +1,8 @@
-'''
+"""
 unit tests for the diffractometers module
-'''
+"""
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -10,15 +10,15 @@ unit tests for the diffractometers module
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 import numpy
 import os
 import sys
 import unittest
 
-_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-_path = os.path.abspath(os.path.join(_test_path, 'src'))
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+_path = os.path.abspath(os.path.join(_test_path, "src"))
 
 sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
@@ -27,7 +27,6 @@ from spec2nexus import spec, diffractometers
 
 
 class Test(unittest.TestCase):
-
     def test_dictionary(self):
         diffractometers.reset_geometry_catalog()
         self.assertIsNone(diffractometers._geometry_catalog)
@@ -47,7 +46,9 @@ class Test(unittest.TestCase):
         self.assertEqual(nm, "two")
         self.assertIsNotNone(variant)
         self.assertEqual(variant, "parts")
-        nm, variant = diffractometers.split_name_variation("more.than.two.parts")
+        nm, variant = diffractometers.split_name_variation(
+            "more.than.two.parts"
+        )
         self.assertEqual(nm, "more.than.two.parts")
         self.assertIsNone(variant)
 
@@ -84,34 +85,66 @@ class Test(unittest.TestCase):
 
         geos = dgc.geometries()
         expected = [
-            'spec', 'fivec', 'fourc', 'oscam', 'pi1go', 'psic', 's1d2', 's2d2',
-            'sevc', 'sixc', 'surf', 'suv', 'trip', 'twoc',
-            'twoc_old', 'w21h', 'w21v', 'zaxis', 'zaxis_old', 'zeta']
+            "spec",
+            "fivec",
+            "fourc",
+            "oscam",
+            "pi1go",
+            "psic",
+            "s1d2",
+            "s2d2",
+            "sevc",
+            "sixc",
+            "surf",
+            "suv",
+            "trip",
+            "twoc",
+            "twoc_old",
+            "w21h",
+            "w21v",
+            "zaxis",
+            "zaxis_old",
+            "zeta",
+        ]
         self.assertEqual(len(geos), 20)
         self.assertEqual(geos, expected)
 
         geos = dgc.geometries(True)
-        expected = [        # sorted
-            'fivec.default', 'fivec.kappa',
-            'fourc.3axis', 'fourc.default', 'fourc.kappa',
-            'fourc.omega', 'fourc.picker', 'fourc.xtalogic',
-            'oscam.default',
-            'pi1go.default',
-            'psic.+daz', 'psic.default', 'psic.kappa', 'psic.s2d2', 'psic.s2d2+daz',
-            's1d2.default',
-            's2d2.default',
-            'sevc.default',
-            'sixc.default',
-            'spec.default',
-            'surf.default',
-            'suv.default',
-            'trip.default',
-            'twoc.default', 'twoc_old.default',
-            'w21h.default',
-            'w21v.d32', 'w21v.default', 'w21v.gmci', 'w21v.id10b',
-            'zaxis.default',
-            'zaxis_old.beta', 'zaxis_old.default',
-            'zeta.default'
+        expected = [  # sorted
+            "fivec.default",
+            "fivec.kappa",
+            "fourc.3axis",
+            "fourc.default",
+            "fourc.kappa",
+            "fourc.omega",
+            "fourc.picker",
+            "fourc.xtalogic",
+            "oscam.default",
+            "pi1go.default",
+            "psic.+daz",
+            "psic.default",
+            "psic.kappa",
+            "psic.s2d2",
+            "psic.s2d2+daz",
+            "s1d2.default",
+            "s2d2.default",
+            "sevc.default",
+            "sixc.default",
+            "spec.default",
+            "surf.default",
+            "suv.default",
+            "trip.default",
+            "twoc.default",
+            "twoc_old.default",
+            "w21h.default",
+            "w21v.d32",
+            "w21v.default",
+            "w21v.gmci",
+            "w21v.id10b",
+            "zaxis.default",
+            "zaxis_old.beta",
+            "zaxis_old.default",
+            "zeta.default",
         ]
         self.assertEqual(len(geos), 34)
         self.assertEqual(sorted(geos), expected)
@@ -140,9 +173,11 @@ class Test(unittest.TestCase):
                     if k in gpar:
                         self.assertGreater(gpar[k].value, 0, filename)
 
-                if ("ub_matrix" in gpar):
+                if "ub_matrix" in gpar:
                     ub = gpar["ub_matrix"].value
-                    self.assertTrue(isinstance(ub, numpy.ndarray), filename)
+                    self.assertTrue(
+                        isinstance(ub, numpy.ndarray), filename
+                    )
                     self.assertTupleEqual(ub.shape, (3, 3), filename)
 
     def test_tests_data(self):
@@ -152,13 +187,13 @@ class Test(unittest.TestCase):
         dgc = diffractometers.get_geometry_catalog()
 
         test_files = [
-            ['issue109_data.txt', -1, 'fourc.default'],         # 8-ID-I
-            ['issue119_data.txt', -1, 'spec.default'],          # USAXS
-            ['issue161_spock_spec_file', -1, 'spec.default'],   # SPOCK
-            ['JL124_1.spc', -1, 'sixc.default'],
-            #['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
-            ['test_3.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
-            ['test_4.spec', -1, 'spec'],                         # predates #o (mnemonics) lines
+            ["issue109_data.txt", -1, "fourc.default"],  # 8-ID-I
+            ["issue119_data.txt", -1, "spec.default"],  # USAXS
+            ["issue161_spock_spec_file", -1, "spec.default"],  # SPOCK
+            ["JL124_1.spc", -1, "sixc.default"],
+            # ['test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
+            ["test_3.spec", -1, "spec"],  # predates #o (mnemonics) lines
+            ["test_4.spec", -1, "spec"],  # predates #o (mnemonics) lines
         ]
         base_path = os.path.join(_test_path, "tests", "data")
         self.process_files(dgc, test_files, base_path)
@@ -170,21 +205,29 @@ class Test(unittest.TestCase):
         dgc = diffractometers.get_geometry_catalog()
 
         test_files = [
-            ['02_03_setup.dat', -1, 'spec.default'],
-            ['03_06_JanTest.dat', -1, 'spec.default'],
-            ['05_02_test.dat', -1, 'spec.default'],
-            ['33bm_spec.dat', -1, 'fourc.default'],
-            ['33id_spec.dat', -1, 'spec'],  # psic but predates #o (mnemonics) lines
-            ['APS_spec_data.dat', -1, 'spec.default'],
-            ['CdOsO', -1, 'fourc.default'],
-            ['CdSe', -1, 'fourc.default'],
-            ['lmn40.spe', -1, 'spec'],
-            ['mca_spectra_example.dat', -1, 'spec.default'],
-            ['spec_from_spock.spc', -1, 'spec.default'],
-            ['startup_1.spec', 1, 'spec'],
-            ['usaxs-bluesky-specwritercallback.dat', -1, 'spec.default'],
-            ['user6idd.dat', -1, 'spec'],            # predates #o (mnemonics) lines
-            ['YSZ011_ALDITO_Fe2O3_planar_fired_1.spc', -1, 'fourc.default'],
+            ["02_03_setup.dat", -1, "spec.default"],
+            ["03_06_JanTest.dat", -1, "spec.default"],
+            ["05_02_test.dat", -1, "spec.default"],
+            ["33bm_spec.dat", -1, "fourc.default"],
+            [
+                "33id_spec.dat",
+                -1,
+                "spec",
+            ],  # psic but predates #o (mnemonics) lines
+            ["APS_spec_data.dat", -1, "spec.default"],
+            ["CdOsO", -1, "fourc.default"],
+            ["CdSe", -1, "fourc.default"],
+            ["lmn40.spe", -1, "spec"],
+            ["mca_spectra_example.dat", -1, "spec.default"],
+            ["spec_from_spock.spc", -1, "spec.default"],
+            ["startup_1.spec", 1, "spec"],
+            ["usaxs-bluesky-specwritercallback.dat", -1, "spec.default"],
+            ["user6idd.dat", -1, "spec"],  # predates #o (mnemonics) lines
+            [
+                "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc",
+                -1,
+                "fourc.default",
+            ],
         ]
         base_path = os.path.join(_path, "spec2nexus", "data")
         self.process_files(dgc, test_files, base_path)
@@ -200,7 +243,7 @@ class Test(unittest.TestCase):
 def suite(*args, **kw):
     test_list = [
         Test,
-        ]
+    ]
     test_suite = unittest.TestSuite()
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
@@ -208,5 +251,5 @@ def suite(*args, **kw):
 
 
 if __name__ == "__main__":
-    runner=unittest.TextTestRunner()
+    runner = unittest.TextTestRunner()
     runner.run(suite())
