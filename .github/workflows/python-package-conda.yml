@@ -21,7 +21,7 @@ jobs:
             anaconda-client-env-py-${{ matrix.python-version }}
         auto-update-conda: true
         channel-priority: true
-        channels: defaults,conda-forge
+        channels: defaults,conda-forge,prjemian
         environment-file: environment.yml
         mamba-version: "*"
         python-version: ${{ matrix.python-version }}
