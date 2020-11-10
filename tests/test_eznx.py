@@ -46,7 +46,7 @@ class TestEznx(unittest.TestCase):
     def test_example(self):
         root = eznx.makeFile("test.h5", creator="eznx", default="entry")
         nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
-        ds = eznx.write_dataset(nxentry, "title", "simple test data")
+        eznx.write_dataset(nxentry, "title", "simple test data")
         nxdata = eznx.makeGroup(
             nxentry,
             "data",
@@ -55,10 +55,10 @@ class TestEznx(unittest.TestCase):
             axes="tth",
             tth_indices=0,
         )
-        ds = eznx.write_dataset(
+        eznx.write_dataset(
             nxdata, "tth", [10.0, 10.1, 10.2, 10.3], units="degrees"
         )
-        ds = eznx.write_dataset(
+        eznx.write_dataset(
             nxdata, "counts", [1, 50, 1000, 5], units="counts", axes="tth"
         )
         root.close()

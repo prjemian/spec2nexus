@@ -13,7 +13,6 @@ test spec2nexus code
 # -----------------------------------------------------------------------------
 
 import os
-import shutil
 import sys
 import unittest
 
@@ -25,8 +24,6 @@ sys.path.insert(0, _test_path)
 
 import spec2nexus.specplot
 import spec2nexus.spec
-
-import tests.common
 
 
 class Issue99(unittest.TestCase):
@@ -87,7 +84,7 @@ class Issue99(unittest.TestCase):
         )
 
     def test_specplot_lmn40_scan244(self):
-        "watch out for IndexError: list index out of range"
+        """watch out for IndexError: list index out of range"""
         scan_number = 244
         expected_x_title = "data point number (hkl all held constant)"
 

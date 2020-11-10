@@ -1,6 +1,4 @@
-"""
-test issue 128
-"""
+"""Test issue 128."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -24,8 +22,6 @@ sys.path.insert(0, _test_path)
 
 from spec2nexus import spec
 
-import tests.common
-
 
 class Issue128(unittest.TestCase):
     def setUp(self):
@@ -46,7 +42,7 @@ class Issue128(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             # #128 failed due to assumption of int keys
-            r = sorted(specData.scans.keys(), key=int)
+            sorted(specData.scans.keys(), key=int)
 
         # next line assumes #128 is fixed
         scans = specData.getScanNumbers()

@@ -1,6 +1,4 @@
-"""
-Unit test for XPCS plugins
-"""
+"""Unit test for XPCS plugins."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

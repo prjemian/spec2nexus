@@ -25,8 +25,6 @@ sys.path.insert(0, _test_path)
 import spec2nexus.extractSpecScan
 import spec2nexus.spec
 
-import tests.common
-
 
 class Issue8(unittest.TestCase):
     def setUp(self):

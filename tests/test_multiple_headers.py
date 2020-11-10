@@ -1,6 +1,4 @@
-"""
-test punx tests/common module (supports unit testing)
-"""
+"""Test common module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

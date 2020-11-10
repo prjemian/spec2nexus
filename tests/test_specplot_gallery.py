@@ -1,6 +1,4 @@
-"""
-unit tests for the specplot_gallery module
-"""
+"""Tests for the specplot_gallery module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

@@ -1,5 +1,4 @@
-"""
-spec2nexus issue #216: Index error reading a single scan SPEC file
+"""spec2nexus issue #216: Index error reading a single scan SPEC file
 
 The output file gets created but only contains /S1/definition,
 running spec2nexus-2021.1.7.
@@ -27,7 +26,6 @@ the number of values on each data line (7).
 # The full license is in the file LICENSE.txt, distributed with this software.
 # -----------------------------------------------------------------------------
 
-import h5py
 import os
 import shutil
 import sys

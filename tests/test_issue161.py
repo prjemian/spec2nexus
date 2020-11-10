@@ -1,6 +1,4 @@
-"""
-test data file with no #E control lines
-"""
+"""Test data file with no #E control lines."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -25,8 +23,6 @@ sys.path.insert(0, _test_path)
 
 import spec2nexus.extractSpecScan
 import spec2nexus.spec
-
-import tests.common
 
 
 class Issue161(unittest.TestCase):

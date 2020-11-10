@@ -1,6 +1,4 @@
-"""
-unit tests for the _requirements module
-"""
+"""Tests for the _requirements module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

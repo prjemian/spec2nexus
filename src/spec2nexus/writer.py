@@ -274,14 +274,14 @@ class Writer(object):
 
         (
             label1,
-            start1,
-            end1,
+            _start1,
+            _end1,
             intervals1,
             label2,
-            start2,
-            end2,
+            _start2,
+            _end2,
             intervals2,
-            time,
+            _time,
         ) = scan.scanCmd.split()[1:]
         if label1 not in scan.data:
             label1 = scan.L[0]  # mnemonic v. name

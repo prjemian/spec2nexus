@@ -1,6 +1,4 @@
-"""
-unit tests for the writer module
-"""
+"""Tests for the writer module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -46,7 +44,7 @@ class TestWriter(unittest.TestCase):
                 pass
 
     def testWriter(self):
-        """test the writer.Writer class"""
+        """Test the writer.Writer class."""
         spec_data = spec.SpecDataFile(self.fname)
         out = writer.Writer(spec_data)
         scan_list = [1, 5, 7]

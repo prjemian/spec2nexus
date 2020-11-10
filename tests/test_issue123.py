@@ -1,6 +1,4 @@
-"""
-test issue 123
-"""
+"""Test issue 123."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -23,8 +21,6 @@ sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
 
 from spec2nexus import spec
-
-import tests.common
 
 
 class Issue123(unittest.TestCase):

@@ -1,6 +1,4 @@
-"""
-unit tests for the spec module
-"""
+"""Tests for the spec module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -70,7 +68,7 @@ class Test(unittest.TestCase):
         return spec.is_spec_file(self.abs_data_fname(fname))
 
     def test_isSpecFile(self):
-        """test all the known data files to see if they are SPEC"""
+        """Test all the known data files to see if they are SPEC."""
         files = {
             "33bm_spec.dat": True,
             "33id_spec.dat": True,
@@ -182,7 +180,7 @@ class Test(unittest.TestCase):
         # test mesh (#22), Escan (#105)
 
     def test_APS_spec_data(self):
-        """UNICAT metadata"""
+        """UNICAT metadata."""
         fname = self.abs_data_fname("APS_spec_data.dat")
         sfile = spec.SpecDataFile(fname)
         self.assertEqual(sfile.fileName, fname)

@@ -1,6 +1,4 @@
-"""
-unittest: scanf module
-"""
+"""Tests for scanf module"""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

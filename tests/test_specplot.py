@@ -1,6 +1,4 @@
-"""
-unit tests for the specplot module
-"""
+"""Tests for the specplot module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

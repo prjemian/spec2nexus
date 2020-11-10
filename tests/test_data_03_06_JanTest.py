@@ -1,6 +1,4 @@
-"""
-unit tests for a specific data file
-"""
+"""Unit tests for a specific data file."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

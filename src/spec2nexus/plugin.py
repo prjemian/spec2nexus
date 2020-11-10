@@ -223,9 +223,9 @@ class PluginManager(object):
         called from :func:`spec2nexus.plugin.get_plugin_manager()`
         """
         from . import spec
-        from . import (
-            plugins,
-        )  # issue #166: plugins are loaded here, NOT any earlier!
+        # issue #166: plugins are loaded here, NOT any earlier!
+        # FIXME: find better way to load the plugins at the right time
+        from . import plugins  
 
         return self
 

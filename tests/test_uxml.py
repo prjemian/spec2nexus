@@ -1,6 +1,4 @@
-"""
-unit tests for the UXML control lines
-"""
+"""Tests for the UXML control lines."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

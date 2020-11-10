@@ -42,23 +42,19 @@ from . import utils
 
 
 class UnexpectedObjectTypeError(RuntimeError):
-    "Exception: incorrect Python object type: programmer error"
-    pass
+    """Incorrect Python object type: programmer error."""
 
 
 class ScanAborted(RuntimeWarning):
-    "Exception: Scan aborted before all points acquired"
-    pass
+    """Scan aborted before all points acquired."""
 
 
 class NotPlottable(ValueError):
-    "Exception: No plottable data for this scan"
-    pass
+    """No plottable data for this scan."""
 
 
 class NoDataToPlot(ValueError):
-    "Exception: scan aborted before any points gathered or data not present in SPEC file"
-    pass
+    """No data found."""
 
 
 ABORTED_ATTRIBUTE_TEXT = "_aborted_"
@@ -425,67 +421,67 @@ class ImageMaker(object):
         )
 
     def plot_title(self):
-        "return the plot title"
+        """return the plot title"""
         return self.settings["title"]
 
     def set_plot_title(self, text):
-        "set the plot title"
+        """set the plot title"""
         self.settings["title"] = text
 
     def plot_subtitle(self):
-        "return the plot_subtitle"
+        """return the plot_subtitle"""
         return self.settings["subtitle"]
 
     def set_plot_subtitle(self, text):
-        "set the plot_subtitle"
+        """set the plot_subtitle"""
         self.settings["subtitle"] = text
 
     def x_title(self):
-        "return the title for the X axis"
+        """return the title for the X axis"""
         return self.settings["x_title"]
 
     def set_x_title(self, text):
-        "set the x axis title"
+        """set the x axis title"""
         self.settings["x_title"] = text
 
     def y_title(self):
-        "return the title for the Y axis"
+        """return the title for the Y axis"""
         return self.settings["y_title"]
 
     def set_y_title(self, text):
-        "set the y axis title"
+        """set the y axis title"""
         self.settings["y_title"] = text
 
     def x_log(self):
-        "boolean: should the X axis be plotted on a log scale?"
+        """boolean: should the X axis be plotted on a log scale?"""
         return self.settings["x_log"]
 
     def set_x_log(self, choice):
-        "set the x axis logarithmic if True"
+        """set the x axis logarithmic if True"""
         self.settings["x_log"] = choice
 
     def y_log(self):
-        "boolean: should the Y axis be plotted on a log scale?"
+        """boolean: should the Y axis be plotted on a log scale?"""
         return self.settings["y_log"]
 
     def set_y_log(self, choice):
-        "set the y axis logarithmic if True"
+        """set the y axis logarithmic if True"""
         self.settings["y_log"] = choice
 
     def z_log(self):
-        "boolean: should the Z axis (image) be plotted on a log scale?"
+        """boolean: should the Z axis (image) be plotted on a log scale?"""
         return self.settings["z_log"]
 
     def set_z_log(self, choice):
-        "set the z axis (image) logarithmic if True"
+        """set the z axis (image) logarithmic if True"""
         self.settings["z_log"] = choice
 
     def timestamp(self):
-        "return the time of this scan as a string"
+        """return the time of this scan as a string"""
         return self.settings["timestamp"]
 
     def set_timestamp(self, text):
-        "set the plot time stamp"
+        """set the plot time stamp"""
         self.settings["timestamp"] = text
 
 
@@ -704,14 +700,14 @@ class MeshPlotter(ImageMaker):
         """
         (
             label1,
-            start1,
-            end1,
+            _start1,
+            _end1,
             intervals1,
             label2,
-            start2,
-            end2,
+            _start2,
+            _end2,
             intervals2,
-            time,
+            _time,
         ) = self.scan.scanCmd.split()[1:]
         if label1 not in self.scan.data:
             label1 = self.scan.L[0]  # mnemonic v. name

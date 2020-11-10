@@ -1,6 +1,4 @@
-"""
-unit tests for the plugin module
-"""
+"""Tests for the plugin module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
