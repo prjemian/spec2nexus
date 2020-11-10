@@ -23,7 +23,7 @@ if _path not in sys.path:
 
 
 def suite(*args, **kw):
-    from tests import data_03_06_JanTest
+    from tests import test_data_03_06_JanTest
     from tests import test_extractSpecScan
     from tests import test_diffractometers
     from tests import test_eznx
@@ -39,19 +39,19 @@ def suite(*args, **kw):
     from tests import test_uxml
     from tests import test_writer
     from tests import test_XPCS
-    from tests import issue8
-    from tests import issue64
-    from tests import issue99_hklscan
-    from tests import issue107
-    from tests import issue119
-    from tests import issue123
-    from tests import issue161
-    from tests import issue188
-    from tests import issue191
-    from tests import issue216
+    from tests import test_issue8
+    from tests import test_issue64
+    from tests import test_issue99_hklscan
+    from tests import test_issue107
+    from tests import test_issue119
+    from tests import test_issue123
+    from tests import test_issue161
+    from tests import test_issue188
+    from tests import test_issue191
+    from tests import test_issue216
 
     test_list = [
-        data_03_06_JanTest,
+        test_data_03_06_JanTest,
         test_diffractometers,
         test_extractSpecScan,
         test_eznx,
@@ -67,16 +67,16 @@ def suite(*args, **kw):
         test_uxml,
         test_writer,
         test_XPCS,
-        issue8,
-        issue64,
-        issue99_hklscan,
-        issue107,
-        issue119,
-        issue123,
-        issue161,
-        issue188,
-        issue191,
-        issue216,
+        test_issue8,
+        test_issue64,
+        test_issue99_hklscan,
+        test_issue107,
+        test_issue119,
+        test_issue123,
+        test_issue161,
+        test_issue188,
+        test_issue191,
+        test_issue216,
     ]
 
     test_suite = unittest.TestSuite()
