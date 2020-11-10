@@ -5,7 +5,7 @@
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -15,7 +15,7 @@
 
 __author__    = 'Pete R. Jemian'
 __email__     = 'prjemian@gmail.com'
-__copyright__ = '2014-2019, Pete R. Jemian'
+__copyright__ = '2014-2020, Pete R. Jemian'
 
 __package_name__ = 'spec2nexus'
 
@@ -42,6 +42,7 @@ __classifiers__ = [
      'Programming Language :: Python :: 3.5',
      'Programming Language :: Python :: 3.6',
      'Programming Language :: Python :: 3.7',
+     'Programming Language :: Python :: 3.8',
      'Topic :: Scientific/Engineering',
      'Topic :: Scientific/Engineering :: Astronomy',
      'Topic :: Scientific/Engineering :: Bio-Informatics',

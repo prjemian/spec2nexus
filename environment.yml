@@ -1,0 +1,12 @@
+name: pyRestTable
+channels:
+  - defaults
+  - conda-forge
+  - prjemian
+dependencies:
+  - h5py
+  - lxml
+  - matplotlib
+  - numpy
+  - pyRestTable
+  - six

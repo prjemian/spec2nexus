@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -204,12 +204,12 @@ class Selector(singletons.Singleton):
 
 
 class ImageMaker(object):
-    r"""
+    """
     superclass to handle plotting of data from a SPEC scan
     
     .. rubric:: Internal data model
 
-    :signal: name of the 'signal' data (default data to be plotted)
+    :signal: name of the ``signal`` data (default data to be plotted)
     :data: values of various collected arrays {label: array}
     :axes: names of the axes of signal data
     

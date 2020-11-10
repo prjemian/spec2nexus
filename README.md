@@ -14,7 +14,7 @@ Writes `path/to/file/specfile.hdf5`
 
 **NOTE**
 
-spec2nexus ended development for Python 2 with release 2021.1.7, 2019-11-21. 
+spec2nexus ended development for Python 2 with release 2021.1.7, 2019-11-21.
 For more information, visit https://python3statement.org/.
 
 Provides
@@ -35,34 +35,16 @@ Provides
 Package Information
 -------------------
 
--   **author**: Pete R. Jemian
--   **email**: <prjemian@gmail.com>
--   **copyright**: 2014-2019, Pete R. Jemian
--   **license**: Creative Commons Attribution 4.0 International Public
-    License (see
-    [LICENSE.txt](http://spec2nexus.readthedocs.io/en/latest/license.html)
-    file)
--   **URL**: documentation: <http://spec2nexus.readthedocs.io>
--   **git**: source: <https://github.com/prjemian/spec2nexus>
--   **PyPI**: Distribution: <https://pypi.python.org/pypi/spec2nexus/>
--   **OpenHub**: Compare open source software:
-    <https://www.openhub.net/p/spec2nexus>
--   **Release Notes**:
-    <https://github.com/prjemian/spec2nexus/wiki/Release-Notes>
-
-
--   **citation**:
-    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3246491.svg)](https://doi.org/10.5281/zenodo.3246491)
-    <!-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.595735.svg)](https://doi.org/10.5281/zenodo.595735) -->
-
--   **build badges**:
-    [![image](https://travis-ci.org/prjemian/spec2nexus.svg?branch=master)](https://travis-ci.org/prjemian/spec2nexus)
-    [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)
-    [![Total alerts](https://img.shields.io/lgtm/alerts/g/prjemian/spec2nexus.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prjemian/spec2nexus/alerts/)
-
--   **release badges**:
-    [![image](https://img.shields.io/pypi/pyversions/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus)
-    [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)
-    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
-    [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)
-    [![image](https://anaconda.org/prjemian/spec2nexus/badges/version.svg)](https://anaconda.org/prjemian/spec2nexus)
+term | description
+--- | ---
+**author** | Pete R. Jemian
+**email** | <prjemian@gmail.com>
+**copyright** | 2014-2020, Pete R. Jemian
+**license** | Creative Commons Attribution 4.0 International Public License (see [LICENSE.txt](http://spec2nexus.readthedocs.io/en/latest/license.html) file)
+**documentation** | <http://spec2nexus.readthedocs.io>
+**source** | <https://github.com/prjemian/spec2nexus>
+**PyPI** | <https://pypi.python.org/pypi/spec2nexus/>
+**Release Notes** | <https://github.com/prjemian/spec2nexus/wiki/Release-Notes>
+**citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3246491.svg)](https://doi.org/10.5281/zenodo.3246491)
+**build badges** | ![Python Package using Conda](https://github.com/prjemian/spec2nexus/workflows/Python%20Package%20using%20Conda/badge.svg) [![image](https://coveralls.io/repos/github/prjemian/spec2nexus/badge.svg?branch=master)](https://coveralls.io/github/prjemian/spec2nexus?branch=master)    [![Total alerts](https://img.shields.io/lgtm/alerts/g/prjemian/spec2nexus.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prjemian/spec2nexus/alerts/)
+**release badges** | [![image](https://img.shields.io/pypi/pyversions/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus)    [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)    [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)    [![image](https://anaconda.org/prjemian/spec2nexus/badges/version.svg)](https://anaconda.org/prjemian/spec2nexus)

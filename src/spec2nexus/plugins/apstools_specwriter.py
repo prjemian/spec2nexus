@@ -1,10 +1,10 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------
 
 """
-**#MD** : Bluesky metadata from apstools SpecWriterCallback
+**#MD** : Bluesky metadata from apstools SpecWriterCallback.
 """
 
 """
@@ -43,9 +43,9 @@ class MD_apstools(ControlLineHandler):
 
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 
-    key = '#MD\w*'
+    key = r'#MD\w*'
     scan_attributes_defined = ['MD']
-    
+
     def process(self, text, scan, *args, **kws):
         """read #MD lines from SPEC data file"""
         if not hasattr(scan, 'MD'):
@@ -62,7 +62,7 @@ class MD_apstools(ControlLineHandler):
             value = text.strip()
         scan.MD[key] = value
         scan.addH5writer(self.key, self.writer)
-    
+
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         nxclass = "NXcollection"

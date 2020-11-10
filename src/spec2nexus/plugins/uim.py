@@ -1,10 +1,10 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -51,9 +51,9 @@ class UIM_generic(ControlLineHandler):
 
     """**#UIM** -- various image header information"""
 
-    key = '#UIM\w*'
+    key = r'#UIM\w*'
     scan_attributes_defined = ['UIM']
-    
+
     def process(self, text, spec_obj, *args, **kws):
         if not hasattr(spec_obj, 'UIM'):
             spec_obj.UIM = []

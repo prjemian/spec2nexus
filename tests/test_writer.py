@@ -5,7 +5,7 @@ unit tests for the writer module
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -122,8 +122,9 @@ class TestMeshes(unittest.TestCase):
             nxdata = root["/S17/data"]
             signal = nxdata.attrs["signal"]
             axes = nxdata.attrs["axes"]
-            self.assertEqual(axes[0], b"H")
-            self.assertEqual(axes[1], b"K")
+            self.assertEqual(bytes(axes[0]), b"H")
+            self.assertEqual(bytes(axes[1]), b"K")
+            self.assertEqual(signal, "signal")
 
     def test_save_data_hscan(self):
         # hklscan moving H

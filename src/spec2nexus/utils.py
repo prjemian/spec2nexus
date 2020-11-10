@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2019, Pete R. Jemian
+# :copyright: (c) 2014-2020, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
@@ -59,7 +59,7 @@ def clean_name(key):
     the rule that valid NeXus group or field names cannot start with a digit.
     """
     replacement = '_'
-    noncompliance = '[^\w_]'
+    noncompliance = r'[^\w_]'
     txt = replacement.join(re.split(noncompliance, key)) # replace ALL non-compliances with '_'
     if txt[0].isdigit():
         txt = replacement + txt # can't start with a digit
