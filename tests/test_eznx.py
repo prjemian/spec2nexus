@@ -1,6 +1,4 @@
-"""
-unit tests for the writer module
-"""
+"""Tests for the writer module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

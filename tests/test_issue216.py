@@ -1,5 +1,6 @@
-"""
-Test issue #216: Index error reading a single scan SPEC file.
+"""Test issue #216.
+
+Index error reading a single scan SPEC file.
 
 The output file gets created but only contains /S1/definition,
 running spec2nexus-2021.1.7.

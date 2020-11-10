@@ -1,6 +1,4 @@
-"""
-unit tests for the extractSpecScan module
-"""
+"""Tests for the extractSpecScan module."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

@@ -1,3 +1,4 @@
+"""Tests for spec2nexus package."""
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

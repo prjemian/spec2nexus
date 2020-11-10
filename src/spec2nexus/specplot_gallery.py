@@ -112,6 +112,7 @@ class PlotSpecFileScans(object):
     def __init__(
         self, filelist, plotDir=None, reverse_chronological=False
     ):
+        """read SPEC files and plot all scans."""
         self.filelist = filelist
         self.plotDir = plotDir or os.getcwd()
         self.reversed = reverse_chronological
