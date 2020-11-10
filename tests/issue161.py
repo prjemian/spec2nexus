@@ -31,7 +31,7 @@ import tests.common
 
 
 class Issue161(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(path, 'data', 'issue161_spock_spec_file')
@@ -52,8 +52,8 @@ class Issue161(unittest.TestCase):
         self.assertTrue(hasattr(header, "date"))
         self.assertTrue(hasattr(header, "epoch"))
         self.assertEqual(
-            datetime.datetime.strptime(header.date, spec_fmt), 
-            datetime.datetime.fromtimestamp(header.epoch), 
+            datetime.datetime.strptime(header.date, spec_fmt),
+            datetime.datetime.fromtimestamp(header.epoch),
             "date and epoch are identical")
 
         scanNum = 1
@@ -61,8 +61,8 @@ class Issue161(unittest.TestCase):
         self.assertTrue(hasattr(scan, "date"))
         self.assertTrue(hasattr(scan, "epoch"))
         self.assertEqual(
-            datetime.datetime.strptime(scan.date, spec_fmt), 
-            datetime.datetime.fromtimestamp(scan.epoch), 
+            datetime.datetime.strptime(scan.date, spec_fmt),
+            datetime.datetime.fromtimestamp(scan.epoch),
             "date and epoch are identical")
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
 

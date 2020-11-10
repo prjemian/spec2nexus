@@ -30,7 +30,7 @@ import tests.common
 
 
 class Issue143(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(_path, 'spec2nexus', 'data', '05_02_test.dat')

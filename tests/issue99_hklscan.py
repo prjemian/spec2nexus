@@ -31,7 +31,7 @@ import tests.common
 
 
 class Issue99(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(spec2nexus.spec.__file__)
         self.testfile = os.path.join(path, 'data', 'lmn40.spe')
@@ -59,7 +59,7 @@ class Issue99(unittest.TestCase):
         plotter.scan = scan
         plotter.set_plot_title(plotter.plot_title() or plotter.data_file_name())
         plotter.set_plot_subtitle(
-            plotter.plot_subtitle() or 
+            plotter.plot_subtitle() or
             '#' + str(plotter.scan.scanNum) + ': ' + plotter.scan.scanCmd)
         plotter.set_timestamp(plotter.timestamp() or plotter.scan.date)
 
@@ -94,7 +94,7 @@ class Issue99(unittest.TestCase):
         plotter.scan = scan
         plotter.set_plot_title(plotter.plot_title() or plotter.data_file_name())
         plotter.set_plot_subtitle(
-            plotter.plot_subtitle() or 
+            plotter.plot_subtitle() or
             '#' + str(plotter.scan.scanNum) + ': ' + plotter.scan.scanCmd)
         plotter.set_timestamp(plotter.timestamp() or plotter.scan.date)
 

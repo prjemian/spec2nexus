@@ -35,7 +35,7 @@ class TestFunctions(unittest.TestCase):
     #     self.fname = os.path.join(self.datapath, '33id_spec.dat')
     #     basename = os.path.splitext(self.fname)[0]
     #     self.hname = tests.common.create_test_file()
-    # 
+    #
     # def tearDown(self):
     #     for tname in (self.hname,):
     #         if os.path.exists(tname):

@@ -40,38 +40,38 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
 
     def tearDown(self):
         pass
-    
+
     def test_the_data_file(self):
         '''
         look for the metadata
         '''
         prefix = os.path.abspath(os.path.join(
-            _path, 
-            'spec2nexus', 
-            'data', 
+            _path,
+            'spec2nexus',
+            'data',
             'usaxs-bluesky-specwritercallback'))
         file1 = prefix + '.dat'
         hfile = tests.common.create_test_file()
-    
+
         # writer interface has changed, must use new spec module to proceed
         specfile = spec.SpecDataFile(file1)
         self.assertTrue(isinstance(specfile, spec2nexus.spec.SpecDataFile), file1)
-        
+
         for scan_num, scan in specfile.scans.items():
             msg = "Scan %s MD test" % scan_num
             scan.interpret()    # force lazy-loader to parse this scan
             self.assertTrue(hasattr(scan, "MD"), msg)
             self.assertTrue(isinstance(scan.MD, OrderedDict), msg)
             self.assertGreater(len(scan.MD), 0, msg)
-        
+
         # test the metadata in a NeXus file
 
         specwriter = writer.Writer(specfile)
         self.assertTrue(isinstance(specwriter, spec2nexus.writer.Writer), file1)
-         
+
         specwriter.save(hfile, sorted(specfile.getScanNumbers()))
         self.assertTrue(os.path.exists(hfile))
-         
+
         def subgroup_list(parent, nxclass):
             children = []
             for item in sorted(parent):
@@ -80,7 +80,7 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
                     if obj.attrs.get('NX_class', '') == nxclass:
                         children.append(obj)
             return children
-         
+
         fp = h5py.File(hfile, 'r')
         for nxentry in subgroup_list(fp, 'NXentry'):
             # nxinstrument_groups = subgroup_list(nxentry, 'NXinstrument')
@@ -93,7 +93,7 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
             self.assertIsNotNone(md_group, "bluesky_metadata in NeXus file")
 
         fp.close()
- 
+
         os.remove(hfile)
         self.assertFalse(os.path.exists(hfile))
 

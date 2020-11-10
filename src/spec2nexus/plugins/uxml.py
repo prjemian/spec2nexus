@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -39,26 +39,26 @@ class UXML_metadata(ControlLineHandler):
 
     """
     **#UXML** -- XML metadata in scan header
-    
+
     IN-MEMORY REPRESENTATION
-    
+
     * (SpecDataFileScan): **UXML** : XML document root
-    
+
     HDF5/NeXus REPRESENTATION
-    
+
     * various items below the *NXentry* parent group,
       as indicated in the UXML
 
     .. rubric:: Public methods
 
     .. autosummary::
-    
+
           ~process
 
     .. rubric:: Internal methods
 
     .. autosummary::
-    
+
           ~walk_xml_tree
           ~make_NeXus_links
           ~prune_dict
@@ -83,11 +83,11 @@ class UXML_metadata(ControlLineHandler):
         line = strip_first_word(text)
         scan.UXML.append( line )
         scan.addPostProcessor('UXML_metadata', self.postprocess)
-    
+
     def postprocess(self, scan, *args, **kws):
         """
         convert the UXML text into an XML object (``scan.UXML_root``)
-        
+
         :param SpecDataFileScan scan: data from a single SPEC scan
         """
         xml_text = '\n'.join(scan.UXML)
@@ -98,7 +98,7 @@ class UXML_metadata(ControlLineHandler):
             # provide default root tag
             xml_text = '<%s>\n' % DEFAULT_XML_ROOT_TAG + xml_text + '\n</%s>' % DEFAULT_XML_ROOT_TAG
             root = etree.fromstring(xml_text)
-    
+
         scan.UXML_root = root
         # validate against the schema
         xml_schema_tree = etree.parse(XML_SCHEMA)
@@ -115,23 +115,23 @@ class UXML_metadata(ControlLineHandler):
                 raise UXML_Error(emsg)
 
         scan.addH5writer('UXML_metadata', self.writer)
-    
+
     def writer(self, nxentry, writer, scan, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         self.unique_id = {}
         self.target_id = {}
         self.selector = dict(
-            dataset=self.dataset, 
-            group=self.group, 
+            dataset=self.dataset,
+            group=self.group,
             hardlink=self.hardlink)
-        
+
         # parse the XML and store
         self.walk_xml_tree(
             eznx.makeGroup(
-                nxentry, 
-                "UXML", 
-                "NXnote", 
-                desc='UXML metadata'), 
+                nxentry,
+                "UXML",
+                "NXnote",
+                desc='UXML metadata'),
             scan.UXML_root)
         self.make_NeXus_links()
 
@@ -140,7 +140,7 @@ class UXML_metadata(ControlLineHandler):
         for item in xml_node:
             handler = self.selector[item.tag]
             handler(h5parent, item)
-    
+
     def make_NeXus_links(self):
         """create all the hardlinks as directed"""
         for target_id in self.target_id.keys():
@@ -148,11 +148,11 @@ class UXML_metadata(ControlLineHandler):
                 target_group, target_name = self.target_id[target_id]
                 source = self.unique_id[target_id]
                 eznx.makeLink(target_group, source, target_name)
-    
+
     def prune_dict(self, d, keys):
         """remove keys from dictionary d"""
         return {k: v for k, v in d.items() if k not in keys}
-    
+
     def dataset(self, h5parent, xml_node):
         """HDF5/NeXus dataset specification"""
         attrs = dict(xml_node.attrib)
@@ -172,9 +172,9 @@ class UXML_metadata(ControlLineHandler):
 
         if unique_id is not None:
             self.unique_id[unique_id] = ds
-        
+
         return ds
-    
+
     def group(self, h5parent, xml_node):
         """HDF5/NeXus group specification"""
         attrs = dict(xml_node.attrib)
@@ -187,11 +187,11 @@ class UXML_metadata(ControlLineHandler):
 
         if unique_id is not None:
             self.unique_id[unique_id] = group
-        
+
         self.walk_xml_tree(group, xml_node)
-        
+
         return group
-    
+
     def hardlink(self, h5parent, xml_node):
         """HDF5/NeXus hard link specification"""
         attrs = dict(xml_node.attrib)

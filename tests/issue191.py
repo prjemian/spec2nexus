@@ -34,7 +34,7 @@ import tests.common
 
 
 class Issue191(unittest.TestCase):
-   
+
     def setUp(self):
         _path = os.path.abspath(os.path.dirname(__file__))
         self.testfile = os.path.join(_path, 'data', 'JL124_1.spc')
@@ -64,7 +64,7 @@ class Issue191(unittest.TestCase):
 
         self.assertTrue(os.path.exists(self.tempdir))
         nexus_output_file_name = os.path.join(
-            self.tempdir, 
+            self.tempdir,
             os.path.basename(os.path.splitext(self.testfile)[0])
             ) + ".h5"
         self.assertFalse(os.path.exists(nexus_output_file_name))

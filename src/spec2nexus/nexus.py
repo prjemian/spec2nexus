@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
@@ -52,40 +52,40 @@ def get_user_parameters():
     doc += '\n  URL: ' + __url__
     doc += '\n  v' + version
     parser = argparse.ArgumentParser(prog='spec2nexus', description=doc)
-    parser.add_argument('infile', 
-                        action='store', 
-                        nargs='+', 
+    parser.add_argument('infile',
+                        action='store',
+                        nargs='+',
                         help="SPEC data file name(s)")
     msg =  "NeXus HDF5 output file extension"
     msg += ", default = %s" % hdf5_extension
-    parser.add_argument('-e', 
+    parser.add_argument('-e',
                         '--hdf5-extension',
-                        action='store', 
-                        dest='hdf5_extension', 
-                        help=msg, 
+                        action='store',
+                        dest='hdf5_extension',
+                        help=msg,
                         default=hdf5_extension)
-    parser.add_argument('-f', 
-                        '--force-overwrite', 
+    parser.add_argument('-f',
+                        '--force-overwrite',
                         action='store_true',
                         dest='force_write',
                         help='overwrite output file if it exists',
                         default=False)
-    parser.add_argument('-v', 
-                        '--version', 
-                        action='version', 
+    parser.add_argument('-v',
+                        '--version',
+                        action='version',
                         version=version)
     msg =  'specify which scans to save'
     msg += ', such as: -s all  or  -s 1  or  -s 1,2,3-5  (no spaces!)'
     msg += ', default = %s' % SCAN_LIST_ALL
-    parser.add_argument('-s', 
+    parser.add_argument('-s',
                         '--scan',
-                        nargs=1, 
+                        nargs=1,
                         #action='append',
                         dest='scan_list',
                         default=SCAN_LIST_ALL,
                         help=msg)
-#     parser.add_argument('-t', 
-#                         '--tree-only', 
+#     parser.add_argument('-t',
+#                         '--tree-only',
 #                         action='store_true',
 #                         dest='tree_only',
 #                         help='print NeXus/HDF5 node tree (does not save to a file)',
@@ -95,14 +95,14 @@ def get_user_parameters():
     group.set_defaults(reporting_level=REPORTING_STANDARD)
     msg =  'suppress all program output (except errors)'
     msg += ', do not use with --verbose option'
-    group.add_argument('--quiet', 
+    group.add_argument('--quiet',
                        dest='reporting_level',
                        action='store_const',
                        const=REPORTING_QUIET,
                        help=msg)
     msg =  'print more program output'
     msg += ', do not use with --quiet option'
-    group.add_argument('--verbose', 
+    group.add_argument('--verbose',
                        dest='reporting_level',
                        action='store_const',
                        const=REPORTING_VERBOSE,
@@ -137,7 +137,7 @@ def parse_scan_list_spec(scan_list_spec):
 def pick_scans(all_scans, opt_scan_list):
     """
     edit opt_scan_list for the scans to be converted
-    
+
     To be converted, a scan number must be first specified in opt_scan_list
     and then all_scans is checked to make sure that scan exists.
     The final list is returned.
@@ -162,7 +162,7 @@ def main():
 
     if user_parms.scan_list != SCAN_LIST_ALL:
         user_parms.scan_list = parse_scan_list_spec(user_parms.scan_list)
-    
+
     if not user_parms.hdf5_extension.startswith(os.extsep):
         user_parms.hdf5_extension = os.extsep + user_parms.hdf5_extension
 
@@ -175,7 +175,7 @@ def main():
         if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE):
             print ('reading SPEC data file: '+spec_data_file_name)
         spec_data = spec.SpecDataFile(spec_data_file_name)
-    
+
         all_scans = spec_data.getScanNumbers()
         scan_list = list(pick_scans(all_scans, user_parms.scan_list))
         if user_parms.reporting_level in (REPORTING_VERBOSE):

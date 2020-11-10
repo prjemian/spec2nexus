@@ -39,7 +39,7 @@ scanf_translate = [
     (r"%(\d)[di]", r"([+-]?\d{%s})", int),
     ("%[di]", r"([+-]?\d+)", int),
     ("%u", r"(\d+)", int),
-    
+
     #("%[fgeE]", "(\d+\.\d+)", float),
     # re for float is much trickier!
     ("%[f]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
@@ -60,12 +60,12 @@ scanf_cache = {}
 def _scanf_compile(fmt):
     """
     This is an internal function which translates the format into regular expressions
-    
+
     For example:
     >>> format_re, casts = _scanf_compile('%s - %d errors, %d warnings')
     >>> print format_re.pattern
     (\\S+) \- ([+-]?\\d+) errors, ([+-]?\\d+) warnings
-    
+
     Translated formats are cached for faster use
     """
     compiled = scanf_cache.get(fmt)
@@ -108,7 +108,7 @@ def _scanf_compile(fmt):
 def scanf(fmt, s=None):
     """
     scanf supports the following formats:
-    
+
     =========  ==================================
     format     description
     =========  ==================================
@@ -138,7 +138,7 @@ def scanf(fmt, s=None):
 
     if s is None:
         s = sys.stdin
-    if hasattr(s, "readline"): 
+    if hasattr(s, "readline"):
         s = s.readline()
 
     format_re, casts = _scanf_compile(fmt)

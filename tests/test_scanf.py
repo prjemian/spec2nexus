@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
 
     def testName(self):
         fmt = "#X %gKohm (%gC)"
-        
+
         degc_sp = 21.1
         t_sp = 273.15 + degc_sp
         cmd ="#X %gKohm (%gC)" % (degc_sp, t_sp)
@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
         a, b = result
         self.assertEqual(degc_sp, a)
         self.assertEqual(t_sp, b)
-        
+
         degc_sp = 20
         t_sp = 273.15 + degc_sp
         cmd ="#X %gKohm (%gC)" % (degc_sp, t_sp)
@@ -46,7 +46,7 @@ class Test(unittest.TestCase):
         a, b = scanf(fmt, cmd)
         self.assertEqual(degc_sp, a)
         self.assertEqual(t_sp, b)
-        
+
         self.assertEqual((123.456e-1,), scanf('%g', '123.456e-1'))
         self.assertEqual((123.456,), scanf('%f', '123.456e-1'))
         self.assertEqual((20,), scanf('%g', '20'))

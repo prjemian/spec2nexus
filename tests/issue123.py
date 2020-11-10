@@ -29,7 +29,7 @@ import tests.common
 
 
 class Issue123(unittest.TestCase):
-   
+
     def setUp(self):
         self.path = os.path.dirname(spec.__file__)
         self.sys_argv0 = sys.argv[0]
@@ -47,7 +47,7 @@ class Issue123(unittest.TestCase):
 
         specData = spec.SpecDataFile(testfile)
         self.assertTrue(isinstance(specData, spec.SpecDataFile))
-        
+
         self.assertEqual(len(specData.headers), 1, "expected number of headers")
         header = specData.headers[0]
         self.assertTrue(isinstance(header, spec.SpecDataFileHeader))
@@ -95,7 +95,7 @@ class Issue123(unittest.TestCase):
 
         scans = specData.getScanNumbers()
         self.assertEqual(len(scans), 106, "expected number of scans")
-        
+
         self.assertEqual(len(specData.headers), 1, "expected number of headers")
         header = specData.headers[0]
         self.assertTrue(isinstance(header, spec.SpecDataFileHeader))

@@ -58,14 +58,14 @@ class TestExampleData_to_Nexus(unittest.TestCase):
 
     def test_example_data(self):
         self.assertTrue(True, "trivial assertion - always True")
-        
+
         for fn, args in self.test_files.items():
             shutil.copy2(os.path.join(self.data_path, fn), self.tempdir)
             cmd = fn + "  " + args % self.noise
             _argv = sys.argv = [self.sys_argv0,] + [c for c in cmd.split()]
 
             nexus.main()
-            
+
             hn = os.path.splitext(fn)[0] + ".hdf5"
             self.assertTrue(os.path.exists(hn))
             with h5py.File(hn, "r") as nx:

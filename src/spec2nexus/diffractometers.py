@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Describe SPEC #G control lines
 API
 
 .. autosummary::
-   
+
     ~Diffractometer
     ~DiffractometerGeometryCatalog
     ~split_name_variation
@@ -120,10 +120,10 @@ class Diffractometer:
     describe the diffractometer for the scan
 
     .. autosummary::
-       
+
         ~parse
     """
-    
+
     def __init__(self, geo_name):
         self.geometry_name_full = geo_name
         self.geometry_name, self.variant = split_name_variation(geo_name)
@@ -136,18 +136,18 @@ class Diffractometer:
 
         gpar = self.geometry_parameters
         gpar["diffractometer_full"] = KeyDescriptionValue(
-            "diffractometer_full", 
-            "name of diffractometer (and variant), deduced from scan information", 
+            "diffractometer_full",
+            "name of diffractometer (and variant), deduced from scan information",
             self.geometry_name_full)
         gpar["diffractometer_simple"] = KeyDescriptionValue(
-            "diffractometer_simple", 
-            "name of diffractometer, deduced from scan information", 
+            "diffractometer_simple",
+            "name of diffractometer, deduced from scan information",
             self.geometry_name)
         gpar["diffractometer_variant"] = KeyDescriptionValue(
-            "diffractometer_variant", 
+            "diffractometer_variant",
             "name of diffractometer variant, deduced from scan information",
             self.variant or "")
-    
+
     def parse(self, scan):
         dgc = DiffractometerGeometryCatalog()
         gonio = dgc.get(self.geometry_name_full)
@@ -208,8 +208,8 @@ class Diffractometer:
                         if k in U:
                             angles[mne] = U[k].value
                     ref = Reflections(
-                        U["g_h%d" % ref_num].value, 
-                        U["g_k%d" % ref_num].value, 
+                        U["g_h%d" % ref_num].value,
+                        U["g_k%d" % ref_num].value,
                         U["g_l%d" % ref_num].value,
                         U["g_lambda%d" % ref_num].value,
                         angles
@@ -224,7 +224,7 @@ class Diffractometer:
                 UB = numpy.array(g3).reshape((3, 3))
                 self.geometry_parameters["ub_matrix"] = KeyDescriptionValue(
                     "ub_matrix", "UB[] matrix", UB)
-        
+
         Q = OrderedDict()
         if "G4" in scan.G:
             g4 = list(map(float, scan.G["G4"].split()))
@@ -260,16 +260,16 @@ class DiffractometerGeometryCatalog:
     catalog of the diffractometer geometries known to SPEC
 
     .. autosummary::
-       
+
         ~geometries
         ~get
         ~get_default_geometry
         ~has_geometry
         ~match
     """
-    
+
     db = {}
-    
+
     def __init__(self):
         if _geometry_catalog is None:
             msg = "Do not create DiffractometerGeometryCatalog()."
@@ -278,22 +278,22 @@ class DiffractometerGeometryCatalog:
 
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
-        
+
         self._default_geometry = self.db[0]
         self._geometries_simple = None
         self._geometries_full = None
-    
+
     def __str__(self):
         v = "number=" + str(len(self.db))
         s = "DiffractometerGeometryCatalog(%s)" % v
         return s
-    
+
     def geometries(self, variations=False):
         """
         list known geometries
-        
+
         PARAMETERS
-        
+
         variations : bool
             If True, also list known variations
         """
@@ -303,17 +303,17 @@ class DiffractometerGeometryCatalog:
             for geometry in self.db:
                 nm = geometry["name"]
                 self._geometries_full += [
-                    "%s.%s" % (nm, v["name"]) 
+                    "%s.%s" % (nm, v["name"])
                     for v in geometry["variations"]
                     ]
                 self._geometries_simple.append(nm)
 
         choices = {
-            True: self._geometries_full, 
+            True: self._geometries_full,
             False: self._geometries_simple
             }
         return choices[variations]
-    
+
     def get(self, geo_name, default=None):
         """
         return dictionary for diffractometer geometry ``geo_name``
@@ -323,18 +323,18 @@ class DiffractometerGeometryCatalog:
         if nm in geometries:
             return self.db[geometries.index(nm)]
         return default
-    
+
     def get_default_geometry(self):
         " "
         return self._default_geometry
-    
+
     def get_variant(self, geometry, variant_name):
         " "
         for v in geometry["variations"]:
             if v["name"] == variant_name:
                 return v
         return geometry["variations"][0]
-    
+
     def has_geometry(self, geo_name):
         """
         Is the ``geo_name`` geometry defined?  True or False
@@ -344,7 +344,7 @@ class DiffractometerGeometryCatalog:
             return nm in self.geometries()
         else:
             return geo_name in self.geometries(True)
-    
+
     def _get_scan_positioners_(self, scan):
         scan_positioners = []
         if hasattr(scan.header, 'o'):       # prefer mnemonics
@@ -368,17 +368,17 @@ class DiffractometerGeometryCatalog:
                     k = "gam"
                 scan_positioners_new.append(k)
             scan_positioners = scan_positioners_new
-            
+
         return scan_positioners
 
     def match(self, scan):
         """
         find the ``geo_name`` geometry that matches the ``scan``
-        
+
         If there is more than one matching geometry, pick the first one.
         """
         match = []
-        
+
         scan_positioners = self._get_scan_positioners_(scan)
 
         if hasattr(scan, "G"):
@@ -404,7 +404,7 @@ class DiffractometerGeometryCatalog:
             if scan_G4 is not None and len(scan_G4) != len(geometry["Q"]):
                 logger.debug("#G4 Q[] did not match %s", geo_name)
                 continue
-            
+
             for variant in geometry["variations"]:
                 var_name = variant["name"]
                 n_motors = len(variant["motors"])

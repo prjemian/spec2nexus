@@ -78,7 +78,7 @@ import six
 def makeFile(filename, **attr):
     """
     create and open an empty NeXus HDF5 file using h5py
-    
+
     Any named parameters in the call to this method will be saved as
     attributes of the root of the file.
     Note that ``**attr`` is a dictionary of named parameters.
@@ -95,11 +95,11 @@ def makeFile(filename, **attr):
 def makeGroup(parent, name, nxclass, **attr):
     """
     create a NeXus group
-    
-    Any named parameters in the call to this method 
+
+    Any named parameters in the call to this method
     will be saved as attributes of the group.
     Note that ``**attr`` is a dictionary of named parameters.
-    
+
     :param obj parent: parent group
     :param str name: valid NeXus group name
     :param str nxclass: valid NeXus class name
@@ -132,8 +132,8 @@ def openGroup(parent, name, nx_class, **attr):
 def makeDataset(parent, name, data = None, **attr):
     '''
     create and write data to a dataset in the HDF5 file hierarchy
-    
-    Any named parameters in the call to this method 
+
+    Any named parameters in the call to this method
     will be saved as attributes of the dataset.
 
     :param obj parent: parent group
@@ -182,7 +182,7 @@ def makeLink(parent, sourceObject, targetName):
 
     :param obj parent: parent group of source
     :param obj sourceObject: existing HDF5 object
-    :param str targetName: HDF5 node path to be created, 
+    :param str targetName: HDF5 node path to be created,
                             such as ``/entry/data/data``
     """
     if not 'target' in sourceObject.attrs:
@@ -200,16 +200,16 @@ def makeExternalLink(hdf5FileObject, sourceFile, sourcePath, targetPath):
     :param obj hdf5FileObject: open HDF5 file object
     :param str sourceFile: file containing existing HDF5 object at sourcePath
     :param str sourcePath: path to existing HDF5 object in sourceFile
-    :param str targetPath: full node path to be created in current open HDF5 file, 
+    :param str targetPath: full node path to be created in current open HDF5 file,
                             such as ``/entry/data/data``
-                            
+
     .. note::
-       Since the object retrieved is in a different file, 
-       its ".file" and ".parent" properties will refer to 
+       Since the object retrieved is in a different file,
+       its ".file" and ".parent" properties will refer to
        objects in that file, not the file in which the link resides.
 
     :see: http://www.h5py.org/docs-1.3/guide/group.html#external-links
-    
+
     This routine is provided as a reminder how to do this simple operation.
     """
     hdf5FileObject[targetPath] = h5py.ExternalLink(sourceFile, sourcePath)
@@ -231,7 +231,7 @@ def addAttributes(parent, **attr):
 def read_nexus_field(parent, dataset_name, astype=None):
     """
     get a dataset from the HDF5 parent group
-    
+
     :param obj parent: h5py parent object
     :param str dataset_name: name of the dataset (NeXus field) to be read
     :param obj astype: option to return as different data type
@@ -253,10 +253,10 @@ def read_nexus_field(parent, dataset_name, astype=None):
 def read_nexus_group_fields(parent, name, fields):
     """
     return the fields in the NeXus group as a dict(name=dataset)
-    
+
     This routine provides a mass way to read a directed list
     of datasets (NeXus fields) in an HDF5 group.
-    
+
     :param obj parent: h5py parent object
     :param str name: name of the group containing the fields
     :param [name] fields: list of field names to be read

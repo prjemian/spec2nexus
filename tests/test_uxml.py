@@ -65,12 +65,12 @@ class TestPlugin(unittest.TestCase):
 		# test create instance
 		uxml = spec2nexus.plugins.uxml.UXML_metadata()
 		self.assertTrue(isinstance(uxml, spec2nexus.plugins.uxml.UXML_metadata))
-		
+
 		# test that specific attributes not yet defined
 		txt = 'this is text'
 		self.assertFalse(hasattr(self.scan, 'UXML'))
 		self.assertFalse('UXML_metadata' in self.scan.postprocessors)
-		
+
 		# test that specific attributes now defined
 		uxml.process('#UXML ' + txt, self.scan)
 		self.assertTrue(hasattr(self.scan, 'UXML'))
@@ -78,7 +78,7 @@ class TestPlugin(unittest.TestCase):
 		self.assertEqual(self.scan.postprocessors['UXML_metadata'], uxml.postprocess)
 		self.assertTrue(isinstance(self.scan.UXML, list))
 		self.assertEqual(self.scan.UXML, [txt])
-		
+
 	def test_parse(self):
 		"""test that UXML lines are parsed"""
 
@@ -94,8 +94,8 @@ class TestPlugin(unittest.TestCase):
 		self.assertTrue(hasattr(self.scan, 'h5writers'))
 		self.assertFalse('UXML_metadata' in self.scan.h5writers)
 		self.assertFalse(hasattr(self.scan, 'UXML_root'))
-		
-	def test_postprocess(self):	
+
+	def test_postprocess(self):
 		"""test the :meth:`postprocess` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = spec2nexus.plugins.uxml.UXML_metadata()
@@ -103,7 +103,7 @@ class TestPlugin(unittest.TestCase):
 			txt = line.strip()
 			if len(txt) > 0:
 				uxml.process(txt, self.scan)
-	
+
 		uxml.postprocess(self.scan)
 		self.assertTrue('UXML_metadata' in self.scan.h5writers)
 		self.assertTrue(hasattr(self.scan, 'UXML_root'))
@@ -120,8 +120,8 @@ class TestPlugin(unittest.TestCase):
 		self.assertEqual('dataset', node.tag)
 		self.assertEqual('enable', node.get('name'))
 		self.assertEqual('find_me', node.get('unique_id'))
-	
-	def test_writer(self):	
+
+	def test_writer(self):
 		"""test the :meth:`writer` method"""
 		self.scan = SpecDataFileScan(None, '')
 		uxml = spec2nexus.plugins.uxml.UXML_metadata()
@@ -130,7 +130,7 @@ class TestPlugin(unittest.TestCase):
 			if len(txt) > 0:
 				uxml.process(txt, self.scan)
 		uxml.postprocess(self.scan)
-	
+
 		self.assertTrue(hasattr(self.scan, 'UXML_root'), 'need to test writer()')
 		root = self.scan.UXML_root
 		schema_file = os.path.join(self.uxml_path, 'uxml.xsd')
@@ -187,7 +187,7 @@ class TestData_3(unittest.TestCase):
 		out = writer.Writer(spec_data)
 		scan_list = [1, ]
 		out.save(self.hname, scan_list)
-		
+
 		# text that UXML group defined as expected
 		self.assertTrue(os.path.exists(self.hname))
 		with h5py.File(self.hname, "r") as h5_file:
@@ -197,7 +197,7 @@ class TestData_3(unittest.TestCase):
 			uxml = nxentry["UXML"]
 			self.assertTrue("NX_class" in uxml.attrs)
 			self.assertEqual(uxml.attrs["NX_class"], "NXnote")
-			
+
 			# spot-check a couple items
 			# group: attenuator_set
 			self.assertTrue("attenuator_set" in uxml)
@@ -208,14 +208,14 @@ class TestData_3(unittest.TestCase):
 			self.assertEqual(prefix, "33idd:filter:")
 			self.assertEqual(description, "33-ID-D Filters")
 			self.assertEqual(unique_id, None)
-			
+
 			# <dataset name="corrdet_counter">corrdet</dataset>
 			self.assertTrue("corrdet_counter" in group)
 			ds = group["corrdet_counter"]
 			# http://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
 			value = ds[()]		# ds.value deprecated in h5py
 			self.assertEqual(value, [b"corrdet"])
-			
+
 			# <dataset name="wait_time" type="float" units="s">0.500</dataset>
 			self.assertTrue("wait_time" in group)
 			ds = group["wait_time"]
@@ -223,14 +223,14 @@ class TestData_3(unittest.TestCase):
 			self.assertEqual(ds.attrs.get("units"), "s")
 			value = ds[()]		# ds.value deprecated in h5py
 			self.assertEqual(value, numpy.array([.5]))
-	
+
 			# <hardlink name="attenuator1" target_id="33idd:filter:Fi1:"/>
 			self.assertTrue("attenuator1" in group)
 			attenuator1 = group["attenuator1"]
 			target = attenuator1.attrs.get("target")
 			self.assertNotEqual(target, attenuator1.name)
 			self.assertEqual(target, uxml["attenuator1"].name)
-	
+
 			addr = "/S1/UXML/ad_file_info/file_format"
 			self.assertTrue(addr in h5_file)
 			ds = h5_file[addr]
@@ -257,15 +257,15 @@ class TestData_4(unittest.TestCase):
 		out = writer.Writer(spec_data)
 		scan_list = [1, ]
 		out.save(self.hname, scan_list)
-		
-		# the ONLY structural difference between test_3.spec 
+
+		# the ONLY structural difference between test_3.spec
 		# and test_4.spec is the presence of this hardlink
 		self.assertTrue(os.path.exists(self.hname))
 		with h5py.File(self.hname, "r") as h5_file:
 			source = h5_file["/S1/UXML/ad_detector/beam_center_x"]
 			link = h5_file["/S1/UXML/beam_center_x"]
 			target = source.attrs.get("target")
-	
+
 			self.assertNotEqual(source.name, link.name)
 			self.assertNotEqual(target, None)
 			self.assertEqual(target, source.name)

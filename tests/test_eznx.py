@@ -52,10 +52,10 @@ class TestEznx(unittest.TestCase):
         ds = eznx.write_dataset(nxdata, 'tth', [10.0, 10.1, 10.2, 10.3], units='degrees')
         ds = eznx.write_dataset(nxdata, 'counts', [1, 50, 1000, 5], units='counts', axes="tth")
         root.close()
-        
+
         """
         Test the data file for this structure::
-        
+
             test.h5:NeXus data file
               @creator = eznx
               @default = 'entry'
@@ -92,7 +92,7 @@ class TestEznx(unittest.TestCase):
             self.assertEqual(nxdata.attrs.get("signal"), "counts")
             self.assertEqual(nxdata.attrs.get("axes"), "tth")
             self.assertEqual(nxdata.attrs.get("tth_indices"), 0)
-            
+
             # test the HDF5 structure
             counts = nxdata["counts"]
             self.assertEqual(counts.attrs.get("units"), "counts")
@@ -177,22 +177,22 @@ class TestEznx(unittest.TestCase):
         with h5py.File("test.h5", "r") as hp:
             root = hp["/"]
             nxentry = root["entry"]
-            
+
             value = eznx.read_nexus_field(nxentry, "key_error")
             self.assertEqual(value, None)
-            
+
             value = eznx.read_nexus_field(nxentry, "text")
             self.assertEqual(value, b"some text")
             value = eznx.read_nexus_field(nxentry, "text", astype=str)
             self.assertEqual(value, "some text")
-            
+
             value = eznx.read_nexus_field(nxentry, "number")
             self.assertEqual(value, 42)
             value = eznx.read_nexus_field(nxentry, "number", astype=float)
             self.assertEqual(value, 42)
             value = eznx.read_nexus_field(nxentry, "number", astype=str)
             self.assertEqual(value, "42")
-            
+
             ds = nxentry["array"]
             value = ds[()]        # ds.value deprecated in h5py
             expected = numpy.array([[1,2,3], [4,5,6]])

@@ -44,64 +44,64 @@ class Issue_66_plotting_problems(unittest.TestCase):
 
 #     def testName(self):
 #         pass
-    
+
     def abs_data_fname(self, fname):
         return os.path.join(self.datapath, fname)
-         
+
     def test_scan_aborted_after_0_points(self):
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 15
-     
+
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
-     
+
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
-             
+
         self.assertRaises(
-            specplot.NoDataToPlot, 
-            plotter.plot_scan, 
-            scan, 
+            specplot.NoDataToPlot,
+            plotter.plot_scan,
+            scan,
             self.plotFile
             )
-             
+
         self.assertFalse(os.path.exists(self.plotFile))
-             
+
     def test_y_values_all_zero_lin_lin(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
-     
+
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
-     
+
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.plot_scan(scan, self.plotFile)
         self.assertTrue(os.path.exists(self.plotFile))
-             
+
     def test_y_values_all_zero_log_lin(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue64_data.txt')
         scan_number = 50
-     
+
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         plotter = specplot.LinePlotter()
-     
+
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.set_y_log(True)
         self.assertRaises(
-            ValueError, 
+            ValueError,
             plotter.plot_scan,
             scan,
             self.plotFile)
         self.assertFalse(os.path.exists(self.plotFile))
-         
+
     def test_command_line(self):
         tempdir = tempfile.mkdtemp()
         specFile = self.abs_data_fname('02_03_setup.dat')
@@ -111,95 +111,95 @@ class Issue_66_plotting_problems(unittest.TestCase):
         self.assertTrue(os.path.exists(plotFile))
         shutil.rmtree(tempdir, ignore_errors=True)
         self.assertFalse(os.path.exists(plotFile))
-         
+
     def test_command_line_33bm_spec_issue72_hklmesh_plot(self):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         tempdir = tempfile.mkdtemp()
-     
+
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 17        # hklmesh
-     
+
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
-     
+
         specplot.main()
-     
+
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-         
+
     def test_command_line_33id_spec_issue72_mesh_plot(self):
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
         tempdir = tempfile.mkdtemp()
-      
+
         specFile = self.abs_data_fname('33id_spec.dat')
         scan_number = 22        # mesh
-      
+
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
-      
+
         specplot.main()
-      
+
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-         
+
     def test_command_line_33bm_spec_issue80_hklscan_plot(self):
         # #80: hklscan, l was scanned, scans 14 & 16
         tempdir = tempfile.mkdtemp()
-     
+
         specFile = self.abs_data_fname('33bm_spec.dat')
         scan_number = 14        # hklmesh
-     
+
         plotFile = os.path.join(tempdir, 'image.png')
         sys.argv = [sys.argv[0], specFile, str(scan_number), plotFile]
-     
+
         specplot.main()
-     
+
         self.assertTrue(os.path.exists(self.plotFile))
         shutil.rmtree(tempdir)
         self.assertFalse(os.path.exists(plotFile))
-            
+
     def test_one_line_mesh_scan_as_1D_plot_issue82(self):
         specFile = os.path.join(os.path.dirname(__file__), 'data', 'issue82_data.txt')
         scan_number = 17
-    
+
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
-    
+
         image_maker = specplot.Selector().auto(scan)
         self.assertTrue(issubclass(image_maker, specplot.ImageMaker))
-    
+
         plotter = image_maker()
         self.assertTrue(isinstance(plotter, specplot.MeshPlotter))
-    
+
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.plot_scan(scan, self.plotFile)
         self.assertTrue(os.path.exists(self.plotFile))
-         
+
     def test_one_line_mesh_scan_type_error_33id_29(self):
         specFile = self.abs_data_fname('33id_spec.dat')
         scan_number = 29
- 
+
         sfile = specplot.openSpecFile(specFile)
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
- 
+
         image_maker = specplot.Selector().auto(scan)
         self.assertTrue(issubclass(image_maker, specplot.ImageMaker))
- 
+
         plotter = image_maker()
         self.assertTrue(isinstance(plotter, specplot.MeshPlotter))
- 
+
         if os.path.exists(self.plotFile):   # always re-create this plot for testing
             os.remove(self.plotFile)
         plotter.plot_scan(scan, self.plotFile)
         self.assertTrue(os.path.exists(self.plotFile))
-        
+
     def test_40x35_grid_shown_properly_lmn40_spe(self):
         specFile = self.abs_data_fname('lmn40.spe')
         scan_number = 14
@@ -228,7 +228,7 @@ class TestFileUpdate(unittest.TestCase):
         self.data_file.close()
         file1 = os.path.join(_test_path, "tests", "data", "refresh1.txt")
         shutil.copy(file1, self.data_file.name)
-        
+
         self.tempdir = tempfile.mkdtemp()
 
     def addMoreScans(self):
@@ -241,7 +241,7 @@ class TestFileUpdate(unittest.TestCase):
     def tearDown(self):
         os.remove(self.data_file.name)
         shutil.rmtree(self.tempdir, ignore_errors=True)
-    
+
     def test_refresh(self):
         plot = os.path.join(self.tempdir, 'plot.svg')
         plot2 = os.path.join(self.tempdir, 'plot2.svg')
@@ -257,7 +257,7 @@ class TestFileUpdate(unittest.TestCase):
         mtime = os.path.getmtime(plot)
         self.assertGreater(plotsize, 0)
         self.assertGreater(mtime, 0)
-        
+
         for iter in range(2):
             scan_number = sdf.refresh()
             if scan_number is None:

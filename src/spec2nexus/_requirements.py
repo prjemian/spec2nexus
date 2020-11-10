@@ -12,8 +12,8 @@ REQUIREMENTS = "requirements.txt"
 
 def learn_requirements():
     """
-    list all installation requirements 
-    
+    list all installation requirements
+
     ALL packages & version restrictions stated in requirements.txt
     """
     import os

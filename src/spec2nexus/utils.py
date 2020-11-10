@@ -46,15 +46,15 @@ logger = logging.getLogger(__name__)
 def clean_name(key):
     """
     create a name that is allowed by both HDF5 and NeXus rules
-    
+
     :param str key: identifying string from SPEC data file
-    
+
     :see: http://download.nexusformat.org/doc/html/datarules.html
-    
+
     The "sanitized" name fits this regexp::
-    
+
         [A-Za-z_][\w_]*
-    
+
     An easier expression might be:  ``[\w_]*`` but this will not pass
     the rule that valid NeXus group or field names cannot start with a digit.
     """
@@ -69,11 +69,11 @@ def clean_name(key):
 def iso8601(date):
     """
     convert SPEC time (example: Wed Nov 03 13:39:34 2010) into ISO8601 string
-    
+
     :param str date: time string from SPEC data file
-    
+
     **Example**
-    
+
     :SPEC:    Wed Nov 03 13:39:34 2010
     :ISO8601: 2010-11-03T13:39:34
     :SPOCK:   09/15/17 04:39:10
@@ -107,17 +107,17 @@ def split_column_labels(text):
 
 def sanitize_name(group, key):      # for legacy support only
     """make name that is allowed by HDF5 and NeXus rules
-    
+
     :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
     :param str group: unused
     :param str key: identifying string from SPEC data file
-    
+
     :see: http://download.nexusformat.org/doc/html/datarules.html
-    
+
     sanitized name fits this regexp::
-    
+
         [A-Za-z_][\w_]*
-    
+
     An easier expression might be:  ``[\w_]*`` but this will not pass
     the rule that valid names cannot start with a digit.
     """
@@ -127,8 +127,8 @@ def sanitize_name(group, key):      # for legacy support only
 def reshape_data(scan_data, scan_shape):
     """
     Shape scan data from raw to different dimensionality
-    
-    Some SPEC macros collect data in a mesh or grid yet 
+
+    Some SPEC macros collect data in a mesh or grid yet
     report the data as a 1-D sequence of observations.
     For further processing (such as plotting), the scan data
     needs to be reshaped according to its intended dimensionality.

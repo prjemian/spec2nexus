@@ -30,7 +30,7 @@ import tests.common
 
 
 class Issue188(unittest.TestCase):
-   
+
     def setUp(self):
         self.testfile = os.path.join(_path, 'spec2nexus', 'data', 'startup_1.spec')
         self.sys_argv0 = sys.argv[0]

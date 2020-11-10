@@ -29,7 +29,7 @@ import tests.common
 
 
 class Issue128(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(spec.__file__)
         self.testfile = os.path.join(path, 'data', 'CdOsO')

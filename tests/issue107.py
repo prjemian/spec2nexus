@@ -32,7 +32,7 @@ import tests.common
 
 
 class Issue107(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(path, 'data', 'JL124_1.spc')
@@ -59,7 +59,7 @@ class Issue107(unittest.TestCase):
 
 
 class Issue133(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(path, 'data', 'JL124_1.spc')
@@ -89,7 +89,7 @@ class Issue133(unittest.TestCase):
 
         self.assertTrue(hasattr(scan.header, "U"), "#U in scan header")
         self.assertEqual(len(scan.header.U), 1, "only one #U in header")
-        
+
         # test for UserReserved in a NeXus file
 
         specwriter = writer.Writer(specfile)

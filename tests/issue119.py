@@ -30,7 +30,7 @@ import tests.common
 
 
 class Issue119(unittest.TestCase):
-   
+
     def setUp(self):
         path = os.path.dirname(__file__)
         self.testfile = os.path.join(path, 'data', 'issue119_data.txt')

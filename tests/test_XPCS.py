@@ -30,7 +30,7 @@ class Test(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.xpcsPluginSample = os.path.join(
-            self.datapath, 
+            self.datapath,
             'xpcs_plugin_sample.spec')
 
     def tearDown(self):
@@ -95,10 +95,10 @@ class Test(unittest.TestCase):
         # print 'testXPCS'
         sd = spec2nexus.spec.SpecDataFile(self.xpcsPluginSample)
         self.assertTrue(isinstance(sd, spec2nexus.spec.SpecDataFile))
-        
+
         scan = sd.getScan(7)
         self.assertTrue(isinstance(scan, spec2nexus.spec.SpecDataFileScan))
-        
+
         # finally, start testing the XPCS plugin
         self.assertFalse('XPCS' in scan.__dict__)
         scan.interpret()       # force the plug-ins to be processed

@@ -37,7 +37,7 @@ class Test_03_06_JanTest_data_file(unittest.TestCase):
 
     def tearDown(self):
         pass
-    
+
     def test_the_data_file(self):
         '''
         write all as HDF5: 1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines
@@ -45,17 +45,17 @@ class Test_03_06_JanTest_data_file(unittest.TestCase):
         prefix = os.path.abspath(os.path.join(_path, 'spec2nexus', 'data', '03_06_JanTest'))
         file1 = prefix + '.dat'
         hfile = tests.common.create_test_file()
-    
+
         # writer interface has changed, must use new spec module to proceed
         specfile = spec.SpecDataFile(file1)
         self.assertTrue(isinstance(specfile, spec2nexus.spec.SpecDataFile), file1)
 
         specwriter = writer.Writer(specfile)
         self.assertTrue(isinstance(specwriter, spec2nexus.writer.Writer), file1)
-        
+
         specwriter.save(hfile, sorted(specfile.getScanNumbers()))
         self.assertTrue(os.path.exists(hfile))
-        
+
         def subgroup_list(parent, nxclass):
             children = []
             for item in sorted(parent):
@@ -64,7 +64,7 @@ class Test_03_06_JanTest_data_file(unittest.TestCase):
                     if obj.attrs.get('NX_class', '') == nxclass:
                         children.append(obj)
             return children
-        
+
         fp = h5py.File(hfile, 'r')
         self.assertTrue(isinstance(fp, h5py.File), hfile)
         nxentry_groups = subgroup_list(fp, 'NXentry')

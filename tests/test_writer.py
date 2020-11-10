@@ -55,7 +55,7 @@ class TestWriter(unittest.TestCase):
 
         dd = out.root_attributes()
         self.assertTrue(isinstance(dd, dict))
-        
+
         # TODO: test writer's various functions and methods
 
         # test file written by Writer
@@ -96,7 +96,7 @@ class TestMeshes(unittest.TestCase):
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
         out.save(hname, [22])
-  
+
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S22/data"]
@@ -116,7 +116,7 @@ class TestMeshes(unittest.TestCase):
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
         out.save(hname, [17])
-  
+
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S17/data"]
@@ -130,13 +130,13 @@ class TestMeshes(unittest.TestCase):
         # hklscan moving H
         test_file = 'lmn40.spe'
         scan_number = 74
-        
+
         fname = os.path.join(_path, "spec2nexus", 'data', test_file)
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
         out.save(hname, [scan_number])
-        
+
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S%d/data" % scan_number]
@@ -149,13 +149,13 @@ class TestMeshes(unittest.TestCase):
         # hklscan moving K
         test_file = '33id_spec.dat'
         scan_number = 104
-        
+
         fname = os.path.join(_path, "spec2nexus", 'data', test_file)
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
         out.save(hname, [scan_number])
-        
+
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S%d/data" % scan_number]
@@ -168,13 +168,13 @@ class TestMeshes(unittest.TestCase):
         # hklscan moving L
         test_file = '33bm_spec.dat'
         scan_number = 14
-        
+
         fname = os.path.join(_path, "spec2nexus", 'data', test_file)
         hname = "test.h5"
         spec_data = spec.SpecDataFile(fname)
         out = writer.Writer(spec_data)
         out.save(hname, [scan_number])
-        
+
         with h5py.File(hname, "r") as hp:
             root = hp["/"]
             nxdata = root["/S%d/data" % scan_number]

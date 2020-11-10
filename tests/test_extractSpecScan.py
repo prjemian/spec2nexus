@@ -61,7 +61,7 @@ class Test(unittest.TestCase):
         outfile = printed_lines[2][len('wrote: '):]
         self.assertTrue(os.path.exists(outfile))
         buf = open(outfile, 'r').readlines()
-        
+
         self.assertEqual(len(buf), 22, 'number of lines in data file')
         self.assertEqual('# file: '+fname, buf[0].strip(), 'original SPEC data file name in data file')
         self.assertEqual('# scan: 92', buf[1].strip(), 'scan number in data file')
@@ -75,7 +75,7 @@ class Test(unittest.TestCase):
         os.remove(outfile)
         self.assertFalse(os.path.exists(outfile))
         _breakpoint = True
-        
+
     def test_CdSe_scan_95(self):
         fname = os.path.join(self.datapath, 'CdSe')
         sys.argv = [sys.argv[0], fname, ]
@@ -93,7 +93,7 @@ class Test(unittest.TestCase):
         outfile = printed_lines[2][len('wrote: '):]
         self.assertTrue(os.path.exists(outfile))
         buf = open(outfile, 'r').readlines()
-        
+
         self.assertEqual(len(buf), 44, 'number of lines in data file')
         self.assertEqual('# file: '+fname, buf[0].strip(), 'original SPEC data file name in data file')
         self.assertEqual('# scan: 95', buf[1].strip(), 'scan number in data file')

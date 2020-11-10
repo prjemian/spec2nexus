@@ -34,12 +34,12 @@ class TestPlugin(unittest.TestCase):
         self.basepath = os.path.join(_path, 'spec2nexus')
         self.datapath = os.path.join(self.basepath, 'data')
         self.manager = plugin.get_plugin_manager()
-    
+
     def test_handler_keys(self):
         manager = plugin.get_plugin_manager()
         h = manager.registry["#F"]
         self.assertEqual(h.key, "#F")
-    
+
     def test_sample_control_line_keys(self):
         spec_data = {
             '#S'           : r'#S 1 ascan eta 43.6355 44.0355 40 1',
@@ -68,20 +68,20 @@ class TestPlugin(unittest.TestCase):
 
 class TestCustomPlugin(unittest.TestCase):
     """test a custom plugin"""
-    
+
     def test_custom_plugin(self):
         manager = plugin.get_plugin_manager()
         self.assertNotEqual(manager, None)
         self.assertTrue(isinstance(manager, plugin.PluginManager))
         num_known_control_lines_before = len(manager.lazy_attributes)
         self.assertNotEqual(num_known_control_lines_before, 0)
-        
+
         _p = os.path.dirname(__file__)
         _p = os.path.join(_p, "custom_plugins")
         _filename = os.path.join(_p, "specfile.txt")
         # custom_key = "#TEST"            # in SPEC data file
         # custom_attribute = "MyTest"     # in python, scan.MyTest
-        
+
         # first, test data with custom control line without plugin loaded
         self.assertNotIn("#TEST", manager.registry)
         self.assertNotIn("MyTest", manager.lazy_attributes)
@@ -94,16 +94,16 @@ class TestCustomPlugin(unittest.TestCase):
             self.assertEqual(len(scan.MyTest), 1)
         expected = "'SpecDataFileScan' object has no attribute 'MyTest'"
         self.assertEqual(exc.exception.args[0], expected)
-        
+
         # next, test again after loading plugin
         from tests.custom_plugins import process_only_plugin
         num_known_control_lines_after = len(manager.lazy_attributes)
         self.assertGreater(
-            num_known_control_lines_after, 
+            num_known_control_lines_after,
             num_known_control_lines_before)
         self.assertIn("#TEST", manager.registry)
         self.assertIn("MyTest", manager.lazy_attributes)
-        
+
         sdf = spec.SpecDataFile(_filename)
         scan = sdf.getScan(50)
         self.assertIn("G0", scan.G)
@@ -116,7 +116,7 @@ class TestCustomPlugin(unittest.TestCase):
 
 class TestSpecificPlugins(unittest.TestCase):
     """test a custom plugin"""
-    
+
     def setUp(self):
         self.hname = "test.h5"
 
@@ -131,10 +131,10 @@ class TestSpecificPlugins(unittest.TestCase):
         scan = sdf.getScan(scan_number)
 
         self.assertEqual(
-            scan.diffractometer.geometry_name_full, 
+            scan.diffractometer.geometry_name_full,
             "fourc.default")
         self.assertEqual(
-            scan.diffractometer.mode, 
+            scan.diffractometer.mode,
             "Omega equals zero")
         self.assertEqual(scan.diffractometer.sector, 0)
         self.assertIsNotNone(scan.diffractometer.lattice)
@@ -149,7 +149,7 @@ class TestSpecificPlugins(unittest.TestCase):
 
             self.assertIn("instrument/name", nxentry)
             self.assertEqual(
-                nxentry["instrument/name"][0], 
+                nxentry["instrument/name"][0],
                 scan.diffractometer.geometry_name_full.encode())
             self.assertIn("diffractometer_simple", group)
             self.assertEqual(group["diffractometer_simple"][0], b"fourc")
@@ -186,7 +186,7 @@ class TestSpecificPlugins(unittest.TestCase):
                 nxentry["instrument/monochromator/wavelength"],
                 nxentry["sample/beam/incident_wavelength"],
                 )
-    
+
     def test_empty_positioner(self):
         "issue #196"
         fname = os.path.join(_test_path, "tests", 'data', 'issue196_data.txt')
@@ -205,7 +205,7 @@ class TestSpecificPlugins(unittest.TestCase):
         self.assertEqual(len(scan.P), 1)
         self.assertEqual(len(scan.P[0]), 0)
         self.assertEqual(len(scan.positioner), 0)
-    
+
     def test_nonempty_positioner(self):
         "issue #196"
         fname = os.path.join(_test_path, "tests", 'data', 'issue196_data2.txt')

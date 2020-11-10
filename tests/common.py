@@ -22,7 +22,7 @@ import tempfile
 def create_test_file(content_function=None, suffix='.hdf5'):
     """
     create a new (HDF5) test file
-    
+
     :param obj content_function: method to add content(s) to hdf5root
     """
     hfile = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
@@ -38,13 +38,13 @@ def create_test_file(content_function=None, suffix='.hdf5'):
 class Capture_stdout(list):
     '''
     capture all printed output (to stdout) into list
-    
+
     example::
-    
+
         with tests.common.Capture_stdout() as printed_lines:
             do_something_that_prints_to_stdout()
         do_somthing_with_output(printed_lines)
-        
+
     # http://stackoverflow.com/questions/16571150/how-to-capture-stdout-output-from-a-python-function-call
     '''
     def __enter__(self):

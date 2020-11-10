@@ -40,7 +40,7 @@ nxdetector = eznx.makeGroup(nxinstrument, 'detector', 'NXdetector')
 tth = eznx.makeDataset(nxdetector, "two_theta", tthData, units='degrees')
 counts = eznx.makeDataset(nxdetector, "counts", countsData, units='counts')
 
-nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', 
+nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata',
                         signal=1, axes='two_theta', two_theta_indices=0)
 eznx.makeLink(nxdetector, tth, nxdata.name+'/two_theta')
 eznx.makeLink(nxdetector, counts, nxdata.name+'/counts')

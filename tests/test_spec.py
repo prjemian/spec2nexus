@@ -35,13 +35,13 @@ SHORT_WAIT = 0.1
 
 
 class Test(unittest.TestCase):
-    
+
     def abs_data_fname(self, fname):
         return os.path.join(_path, 'spec2nexus', 'data', fname)
-    
+
     def test_strip_first_word(self):
         self.assertEqual(utils.strip_first_word('one two three'), 'two three')
-        
+
     def test_isSpecFileThis(self):
         self.assertFalse(spec.is_spec_file('this_does_not_exist'))
         self.assertFalse(spec.is_spec_file(os.path.join(_path, 'spec2nexus')))
@@ -50,10 +50,10 @@ class Test(unittest.TestCase):
         self.assertFalse(spec.is_spec_file_with_header('file does not exist'))
         self.assertTrue( spec.is_spec_file_with_header(self.abs_data_fname('APS_spec_data.dat')))
         self.assertFalse(spec.is_spec_file_with_header(self.abs_data_fname('spec_from_spock.spc')))
-    
+
     def is_spec_file(self, fname):
         return spec.is_spec_file(self.abs_data_fname(fname))
-        
+
     def test_isSpecFile(self):
         '''test all the known data files to see if they are SPEC'''
         files = {
@@ -75,7 +75,7 @@ class Test(unittest.TestCase):
         }
         for item, expected in files.items():
             self.assertEqual(self.is_spec_file(item), expected, item)
-    
+
     def test_custom_exceptions(self):
         with self.assertRaises(IOError):
             raise spec.SpecDataFileNotFound()
@@ -305,17 +305,17 @@ class Test(unittest.TestCase):
 
     def test_extra_control_line_content__issue109(self):
         specFile = os.path.join(
-            os.path.dirname(__file__), 
-            'data', 
+            os.path.dirname(__file__),
+            'data',
             'issue109_data.txt')
         sfile = spec.SpecDataFile(specFile)
-    
+
         scan_number = 1
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         self.assertEqual(
-            scan.T, 
-            "0.5", 
+            scan.T,
+            "0.5",
             "received expected count time")
 
         # check scan 25, #T line said 0 seconds, but data for Seconds says 1
@@ -325,12 +325,12 @@ class Test(unittest.TestCase):
         self.assertEqual(scan.T, "0", "received expected count time")
         self.assertIn("Seco nds", scan.data, "found counting base")
         self.assertEqual(
-            scan.data["Seco nds"][0], 
-            1, 
+            scan.data["Seco nds"][0],
+            1,
             "received expected count time")
         self.assertNotEqual(
-            scan.T, 
-            str(scan.data["Seco nds"][0]), 
+            scan.T,
+            str(scan.data["Seco nds"][0]),
             "did not report what they were about to do")
 
         # check scan 11, #M line said 400000 counts
@@ -338,8 +338,8 @@ class Test(unittest.TestCase):
         scan = sfile.getScan(scan_number)
         self.assertTrue(scan is not None)
         self.assertEqual(
-            scan.M, 
-            "400000", 
+            scan.M,
+            "400000",
             "received expected monitor count")
         self.assertTrue(hasattr(scan, 'MCA'), "MCA found")
         self.assertIn("ROI", scan.MCA, "MCA ROI found")
@@ -352,14 +352,14 @@ class Test(unittest.TestCase):
 
         self.assertIn(key, scan.data, "MCA ROI data found")
         self.assertEqual(
-            len(scan.data[key]), 
-            61, 
+            len(scan.data[key]),
+            61,
             "embedded comment not part of data")
 
     def test_str(self):
         specFile = os.path.join(
-            os.path.dirname(__file__), 
-            'data', 
+            os.path.dirname(__file__),
+            'data',
             'issue109_data.txt')
         sdf = spec.SpecDataFile(specFile)
         self.assertEqual(str(sdf), sdf.fileName)
@@ -385,7 +385,7 @@ class TestFileUpdate(unittest.TestCase):
 
     def tearDown(self):
         os.remove(self.data_file.name)
-    
+
     def test_update_available(self):
         # test the ``update_available`` property
         sdf = spec.SpecDataFile(self.data_file.name)
@@ -400,7 +400,7 @@ class TestFileUpdate(unittest.TestCase):
         time.sleep(SHORT_WAIT)
 
         self.assertTrue(sdf.update_available)
-    
+
     def test_refresh(self):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)

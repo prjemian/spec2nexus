@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ from ..spec import UNRECOGNIZED_KEY, SpecDataFileHeader, SpecDataFileScan
 
 @six.add_metaclass(AutoRegister)
 class UnrecognizedControlLine(ControlLineHandler):
-    
+
     """unrecognized control line"""
 
     key = UNRECOGNIZED_KEY
@@ -38,7 +38,7 @@ class UnrecognizedControlLine(ControlLineHandler):
         spec_obj._unrecognized.append(text)
         if isinstance(spec_obj, SpecDataFileHeader) or isinstance(spec_obj, SpecDataFileScan):
             spec_obj.addH5writer(self.key, self.writer)
-    
+
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """write the data in a NeXus group named ``unrecognized``"""
         desc = "SPEC data file control lines not otherwise recognized"
