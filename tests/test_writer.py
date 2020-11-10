@@ -122,8 +122,9 @@ class TestMeshes(unittest.TestCase):
             nxdata = root["/S17/data"]
             signal = nxdata.attrs["signal"]
             axes = nxdata.attrs["axes"]
-            self.assertEqual(axes[0], b"H")
-            self.assertEqual(axes[1], b"K")
+            self.assertEqual(bytes(axes[0]), b"H")
+            self.assertEqual(bytes(axes[1]), b"K")
+            self.assertEqual(signal, "signal")
 
     def test_save_data_hscan(self):
         # hklscan moving H
