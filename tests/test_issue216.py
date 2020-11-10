@@ -1,4 +1,5 @@
-"""Test issue #216.
+"""
+Test issue #216.
 
 Index error reading a single scan SPEC file.
 
