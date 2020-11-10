@@ -42,18 +42,22 @@ from . import utils
 
 
 class UnexpectedObjectTypeError(RuntimeError):
+
     """Incorrect Python object type: programmer error."""
 
 
 class ScanAborted(RuntimeWarning):
+
     """Scan aborted before all points acquired."""
 
 
 class NotPlottable(ValueError):
+
     """No plottable data for this scan."""
 
 
 class NoDataToPlot(ValueError):
+
     """No data found."""
 
 
