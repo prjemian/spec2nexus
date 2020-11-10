@@ -13,9 +13,11 @@ Change History
 Production
 **********
 
-:2021.1.8: expected *2020.01*
+:2021.1.8: expected *2020.11.10*
 
-    * `#216 <https://github.com/prjemian/spec2nexus/issues/216>`_
+    * `#221 <https://github.com/prjemian/spec2nexus/issues/221>`_
+       move CI from travis-ci to Github Actions, test with python 3.8
+    * `#217 <https://github.com/prjemian/spec2nexus/issues/217>`_
        raise ValueError when #L and #N lines do not agree
 
 :2021.1.7: released *2019-11-21*
