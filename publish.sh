@@ -63,7 +63,7 @@ echo "# ($(date)) uploading to anaconda"
 echo "# ($(date)) CHANNEL: ${CHANNEL}"
 find "${BUILD_DIR}" -name "${BUNDLE}*.tar.bz2" | while read file
 do
-    echo "# ($(date)) upload: ${file}"
+    echo "# ($(date)) upload: ${BUILD_DIR}/${file}"
     # to public channel
     anaconda upload -u "${CHANNEL}" "${file}"
     # to personal channel
