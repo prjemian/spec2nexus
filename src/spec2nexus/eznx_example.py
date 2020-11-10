@@ -11,7 +11,7 @@ http://download.nexusformat.org/doc/html/examples/h5py/index.html
 from spec2nexus import eznx
 
 
-HDF5_FILE = 'eznx_example.hdf5'
+HDF5_FILE = "eznx_example.hdf5"
 
 I_v_TTH_DATA = """
 17.92608    1037
@@ -26,23 +26,31 @@ I_v_TTH_DATA = """
 17.92158    6622
 17.92108    1321
 """
-#---------------------------
+# ---------------------------
 
-tthData, countsData = zip(*[map(float,_.split()) for _ in I_v_TTH_DATA.strip().splitlines()])
+tthData, countsData = zip(
+    *[map(float, _.split()) for _ in I_v_TTH_DATA.strip().splitlines()]
+)
 
 f = eznx.makeFile(HDF5_FILE)  # create the HDF5 NeXus file
-f.attrs['default'] = 'entry'
+f.attrs["default"] = "entry"
 
-nxentry = eznx.makeGroup(f, 'entry', 'NXentry', default='data')
-nxinstrument = eznx.makeGroup(nxentry, 'instrument', 'NXinstrument')
-nxdetector = eznx.makeGroup(nxinstrument, 'detector', 'NXdetector')
+nxentry = eznx.makeGroup(f, "entry", "NXentry", default="data")
+nxinstrument = eznx.makeGroup(nxentry, "instrument", "NXinstrument")
+nxdetector = eznx.makeGroup(nxinstrument, "detector", "NXdetector")
 
-tth = eznx.makeDataset(nxdetector, "two_theta", tthData, units='degrees')
-counts = eznx.makeDataset(nxdetector, "counts", countsData, units='counts')
+tth = eznx.makeDataset(nxdetector, "two_theta", tthData, units="degrees")
+counts = eznx.makeDataset(nxdetector, "counts", countsData, units="counts")
 
-nxdata = eznx.makeGroup(nxentry, 'data', 'NXdata', 
-                        signal=1, axes='two_theta', two_theta_indices=0)
-eznx.makeLink(nxdetector, tth, nxdata.name+'/two_theta')
-eznx.makeLink(nxdetector, counts, nxdata.name+'/counts')
+nxdata = eznx.makeGroup(
+    nxentry,
+    "data",
+    "NXdata",
+    signal=1,
+    axes="two_theta",
+    two_theta_indices=0,
+)
+eznx.makeLink(nxdetector, tth, nxdata.name + "/two_theta")
+eznx.makeLink(nxdetector, counts, nxdata.name + "/counts")
 
-f.close()    # be CERTAIN to close the file
+f.close()  # be CERTAIN to close the file

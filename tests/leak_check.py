@@ -25,7 +25,8 @@ t0 = time.time()
 
 
 def get_memory():
-    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+
 
 def task():
     gc.collect()

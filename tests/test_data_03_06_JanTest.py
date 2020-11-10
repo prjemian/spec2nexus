@@ -1,6 +1,4 @@
-"""
-unit tests for a specific data file
-"""
+"""Unit tests for a specific data file."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -12,7 +10,6 @@ unit tests for a specific data file
 # The full license is in the file LICENSE.txt, distributed with this software.
 # -----------------------------------------------------------------------------
 
-from collections import OrderedDict
 import h5py
 import os
 import sys
@@ -30,11 +27,7 @@ from spec2nexus import spec, writer
 import tests.common
 
 
-class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
-    """
-    look for the metadata
-    """
-
+class Test_03_06_JanTest_data_file(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -43,14 +36,19 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
 
     def test_the_data_file(self):
         """
-        look for the metadata
+        Write all as HDF5.
+
+        * 1-D scans
+        * USAXS scans
+        * Fly scans
+        * #O+#o and #J+#j control lines
         """
         prefix = os.path.abspath(
             os.path.join(
                 _path,
                 "spec2nexus",
                 "data",
-                "usaxs-bluesky-specwritercallback",
+                "03_06_JanTest",
             )
         )
         file1 = prefix + ".dat"
@@ -61,15 +59,6 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
         self.assertTrue(
             isinstance(specfile, spec2nexus.spec.SpecDataFile), file1
         )
-
-        for scan_num, scan in specfile.scans.items():
-            msg = "Scan %s MD test" % scan_num
-            scan.interpret()  # force lazy-loader to parse this scan
-            self.assertTrue(hasattr(scan, "MD"), msg)
-            self.assertTrue(isinstance(scan.MD, OrderedDict), msg)
-            self.assertGreater(len(scan.MD), 0, msg)
-
-        # test the metadata in a NeXus file
 
         specwriter = writer.Writer(specfile)
         self.assertTrue(
@@ -88,30 +77,37 @@ class Test_USAXS_Bluesky_SpecWriterCallback(unittest.TestCase):
                         children.append(obj)
             return children
 
-        fp = h5py.File(hfile, "r")
-        for nxentry in subgroup_list(fp, "NXentry"):
-            # nxinstrument_groups = subgroup_list(nxentry, 'NXinstrument')
-            # self.assertEqual(len(nxinstrument_groups), 1)
-            # nxinstrument = nxinstrument_groups[0]
+        with h5py.File(hfile, "r") as fp:
+            self.assertTrue(isinstance(fp, h5py.File), hfile)
+            nxentry_groups = subgroup_list(fp, "NXentry")
+            self.assertGreater(len(nxentry_groups), 0)
+            for nxentry in nxentry_groups:
+                nxdata_groups = subgroup_list(nxentry, "NXdata")
+                self.assertGreater(len(nxdata_groups), 0)
+                for nxdata in nxdata_groups:
+                    signal = nxdata.attrs.get("signal")
+                    self.assertTrue(signal in nxdata)
 
-            nxcollection_groups = subgroup_list(nxentry, "NXcollection")
-            self.assertGreater(len(nxcollection_groups), 0)
-            md_group = nxentry.get("bluesky_metadata")
-            self.assertIsNotNone(
-                md_group, "bluesky_metadata in NeXus file"
-            )
+            default = fp.attrs.get("default")
+            self.assertTrue(default in fp)
+            nxentry = fp[default]
 
-        fp.close()
+            default = nxentry.attrs.get("default")
+            self.assertTrue(default in nxentry)
+            nxdata = nxentry[default]
+
+            signal = nxdata.attrs.get("signal")
+            self.assertTrue(signal in nxdata)
 
         os.remove(hfile)
         self.assertFalse(os.path.exists(hfile))
 
 
 def suite(*args, **kw):
-    test_list = [
-        Test_USAXS_Bluesky_SpecWriterCallback,
-    ]
     test_suite = unittest.TestSuite()
+    test_list = [
+        Test_03_06_JanTest_data_file,
+    ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
     return test_suite

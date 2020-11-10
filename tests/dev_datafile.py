@@ -8,22 +8,23 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath("../src"))
 from spec2nexus import writer
 from spec2nexus import spec
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pwd = os.path.abspath(os.path.join("..", "src", "spec2nexus"))
-    prefix = os.path.abspath(os.path.join(pwd, 'data', 'APS_spec_data'))
+    prefix = os.path.abspath(os.path.join(pwd, "data", "APS_spec_data"))
     # file1 = prefix + '.dat'
-    hfile = prefix + '.hdf5'
+    hfile = prefix + ".hdf5"
     # # lmn40.spe has two header sections, 2nd is just before "#S 8"
     # prefix = os.path.abspath(os.path.join(pwd, 'data', 'lmn40'))
     # file1 = prefix + '.spe'
 
     # CdOsO has four header sections and two #S 1 scans
-    prefix = os.path.abspath(os.path.join(pwd, 'data', 'CdOsO'))
+    prefix = os.path.abspath(os.path.join(pwd, "data", "CdOsO"))
     file1 = prefix
 
     # writer interface has changed, must use new spec module to proceed

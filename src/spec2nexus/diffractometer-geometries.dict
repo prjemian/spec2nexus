@@ -1,10 +1,10 @@
 [
 	# file: diffractometer-geometries.dict
 	# used by diffractometers.py
-	
+
 	# describe the diffractometer geometries known to SPEC
 	# (not yet including all the different surf geometries)
-	
+
 	# when lists are used, the first item in the list will be the default
 
 	{
@@ -35,7 +35,7 @@
 			('g_kappa', 'kappa tilt angle'),
 			('g_config', '0 for default configuration, 1 for the other')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -63,7 +63,7 @@
 			('CUT_KAP', ''),
 			('CUT_KPHI', '')
 		],
-		'modes': [ 
+		'modes': [
 			'Omega fixed (four circle, Mu = 0)',
 			'Phi fixed (four circle, Mu = 0)',
 			'Zone (four circle, Mu = 0)',
@@ -78,20 +78,20 @@
 		'numgeo': 5,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'th', 'chi', 'phi', 'mu'], 
+				'name': 'default',
+				'motors': ['del', 'th', 'chi', 'phi', 'mu'],
 				'other-motors': []
 			},
 			{
-				'name': 'kappa', 
-				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'], 
+				'name': 'kappa',
+				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'kth', 'kap', 'kphi'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "fourc",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -120,7 +120,7 @@
 			('g_xtalogic_d1', ''),
 			('g_xtalogic_d2', '')
 			],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -148,7 +148,7 @@
 			('CUT_PHIR', 'phiR cut point'),
 			('F_THETA', '')
 			],
-		'modes': [ 
+		'modes': [
 			'Omega equals zero',
 			'Omega fixed',
 			'Zone (Chi and Phi fixed)',
@@ -161,33 +161,33 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['tth', 'th', 'chi', 'phi'], 
+				'name': 'default',
+				'motors': ['tth', 'th', 'chi', 'phi'],
 				'other-motors': []
 			},
 			{
-				'name': 'kappa', 
-				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'], 
+				'name': 'kappa',
+				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
 				'other-motors': []
 			},
 			{
-				'name': 'omega', 
-				'motors': ['tth', 'om', 'chi', 'phi'], 
+				'name': 'omega',
+				'motors': ['tth', 'om', 'chi', 'phi'],
 				'other-motors': []
 			},
 			{
-				'name': 'picker', 
-				'motors': ['tth', 'th', 'chi', 'phi'], 
+				'name': 'picker',
+				'motors': ['tth', 'th', 'chi', 'phi'],
 				'other-motors': ['chiR', 'phiR']
 			},
 			{
-				'name': '3axis', 
-				'motors': ['tth', 'th', 'chi', 'phi'], 
+				'name': '3axis',
+				'motors': ['tth', 'th', 'chi', 'phi'],
 				'other-motors': ['thR', 'tthR', 'sy', 'ay', 'dy', 'mth', 'ath']
 			},
 			{
-				'name': 'xtalogic', 
-				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'], 
+				'name': 'xtalogic',
+				'motors': ['tth', 'om', 'chi', 'phi', 'kth', 'kap', 'kphi'],
 				'other-motors': ['xlhgt']
 			}
 		]
@@ -212,7 +212,7 @@
 			{'name': 'default', 'motors': [], 'other-motors': []}
 		]
 	},
-	{ 
+	{
 		'name': "pi1go",
 		'G': [('g_mode', 'spectrometer mode')],
 		'Q': [
@@ -230,8 +230,8 @@
 		'numgeo': 3,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['ome', 'alf', 'gam'], 
+				'name': 'default',
+				'motors': ['ome', 'alf', 'gam'],
 				'other-motors': []
 			}
 		]
@@ -303,35 +303,35 @@
 		'numgeo': 6,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu'], 
+				'name': 'default',
+				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu'],
 				'other-motors': []
 			},
 			{
-				'name': 'kappa', 
-				'motors': ['del', 'eta', 'kap', 'keta', 'kphi'], 
+				'name': 'kappa',
+				'motors': ['del', 'eta', 'kap', 'keta', 'kphi'],
 				'other-motors': []
 			},
 			{
-				'name': '+daz', 
-				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu', 'daz'], 
+				'name': '+daz',
+				'motors': ['del', 'eta', 'chi', 'phi', 'nu', 'mu', 'daz'],
 				'other-motors': []
 			},
 			{
-				'name': 's2d2', 
-				'motors': ['del', 'eta', 'nu', 'mu'], 
+				'name': 's2d2',
+				'motors': ['del', 'eta', 'nu', 'mu'],
 				'other-motors': []
 			},
 			{
-				'name': 's2d2+daz', 
-				'motors': ['del', 'eta', 'nu', 'mu', 'daz'], 
+				'name': 's2d2+daz',
+				'motors': ['del', 'eta', 'nu', 'mu', 'daz'],
 				'other-motors': []
 			}
 		]
 	},
 	{
 		'name': "s1d2",
-		'G': [ 
+		'G': [
 			('g_len', 'distance from sample to tau when tau = 0'),
 			('g_track', 'set if tracking tauR and tauT with tau')
 		],
@@ -349,15 +349,15 @@
 		'numgeo': 3,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['ome', 'sig', 'tau'], 
+				'name': 'default',
+				'motors': ['ome', 'sig', 'tau'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "s2d2",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -365,7 +365,7 @@
 			('g_kaz', ''),
 			('g_laz', '')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -388,15 +388,15 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['gam', 'del', 'chi', 'phi'], 
+				'name': 'default',
+				'motors': ['gam', 'del', 'chi', 'phi'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "sevc",
-		'G': [ 
+		'G': [
 			('g_mode', 'sector preference scheme'),
 			('g_sect', ''),
 			('g_frz', 'freeze'),
@@ -409,7 +409,7 @@
 			('g_track', 'g_track true when delR, delT tracked with del'),
 			('g_sigtau', 'set if sigtau set before azref')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -434,7 +434,7 @@
 			('CUT_CHI', ''),
 			('CUT_PHI', '')
 		],
-		'modes': [ 
+		'modes': [
 			'Alpha fixed, surface normal in vertical plane',
 			'Beta fixed, surface normal in vertical plane',
 			'Alpha = Beta, surface normal in vertical plane',
@@ -447,15 +447,15 @@
 		'numgeo': 7,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['rho', 'nu', 'del', 'mu', 'eta', 'chi', 'phi'], 
+				'name': 'default',
+				'motors': ['rho', 'nu', 'del', 'mu', 'eta', 'chi', 'phi'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "sixc",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -474,7 +474,7 @@
 			('g_sigtau', 'set if sig-tau take precdence over azi HKL'),
 			('g_len2', '')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -504,7 +504,7 @@
 			('CUT_GAM', ''),
 			('F_CHI', '')
 		],
-		'modes': [ 
+		'modes': [
 			'Omega fixed (four circle, Mu = Gamma = 0)',
 			'Phi fixed (four circle, Mu = Gamma = 0)',
 			'Zone (four circle, Mu = Gamma = 0)',
@@ -526,13 +526,13 @@
 		'numgeo': 6,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'gam'], 
+				'name': 'default',
+				'motors': ['del', 'th', 'chi', 'phi', 'mu', 'gam'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "surf",
 		'G': [
 			('g_mode', 'sign of phi rotation if allowed'),
@@ -541,7 +541,7 @@
 			('g_l0', 'l units'),
 			('g_psi', 'angle between h0 and k0')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -555,7 +555,7 @@
 			{'name': 'default', 'motors': [], 'other-motors': []}
 		]
 	},
-	{ 
+	{
 		'name': "suv",
 		'G': [
 			('g_mode', 'spectrometer mode'),
@@ -563,7 +563,7 @@
 			('g_frz', 'freeze'),
 			('g_khi', 'flag for calculations without khi1 and khi2 during alignment')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -588,7 +588,7 @@
 			('ALPHA_R', ''),
 			('BETA_R', '')
 		],
-		'modes': [ 
+		'modes': [
 			'Alpha_S fixed',
 			'Beta_S fixed',
 			'Alpha_S equals Beta_S',
@@ -599,38 +599,38 @@
 		'numgeo': 6,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'ome', 'alf', 'bet', 'khi1', 'khi2'], 
+				'name': 'default',
+				'motors': ['del', 'ome', 'alf', 'bet', 'khi1', 'khi2'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "trip",
 		'G': [],
 		'Q': [
-			('H', '1st Miller index'), 
-			('K', '2nd Miller index'), 
-			('L', '3rd Miller index'), 
+			('H', '1st Miller index'),
+			('K', '2nd Miller index'),
+			('L', '3rd Miller index'),
 			('LAMBDA', 'wavelength, Angstrom')
 			],
 		'modes': [],
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['tth', 'th', 'chi', 'phi'], 
+				'name': 'default',
+				'motors': ['tth', 'th', 'chi', 'phi'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "twoc",
 		'G': [],
 		'Q': [
-			('H', '1st Miller index'), 
-			('K', '2nd Miller index'), 
-			('L', '3rd Miller index'), 
+			('H', '1st Miller index'),
+			('K', '2nd Miller index'),
+			('L', '3rd Miller index'),
 			('LAMBDA', 'wavelength, Angstrom')
 			],
 		'U': [
@@ -650,15 +650,15 @@
 		'numgeo': 2,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['tth', 'th'], 
+				'name': 'default',
+				'motors': ['tth', 'th'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "twoc_old",
-		'G': [ 
+		'G': [
 			('g_h0', 'H units'),
 			('g_k0', 'K units'),
 			('g_psi', 'Angle between H0 and K0')
@@ -674,15 +674,15 @@
 		'numgeo': 2,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['tth', 'th'], 
+				'name': 'default',
+				'motors': ['tth', 'th'],
 				'other-motors': []
 			}
 		]
 	},
 	{
 		'name': "w21h",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -693,7 +693,7 @@
 			('g_legB', 'length from front leg to center axis'),
 			('g_track', 'set if tracking legs')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -713,15 +713,15 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'], 
+				'name': 'default',
+				'motors': ['del', 'ome', 'alf', 'bet', 'legf', 'legb1', 'legb2'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "w21v",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -735,7 +735,7 @@
 			('g_xgonioc', 'length from Slit1 to gonio center'),
 			('g_liq', 'set if using alf to set incidence on a liq surface')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -750,30 +750,30 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['gam', 'mu', 'ome', 'alf'], 
+				'name': 'default',
+				'motors': ['gam', 'mu', 'ome', 'alf'],
 				'other-motors': []
 			},
 			{
-				'name': 'id10b', 
-				'motors': ['del', 'gam', 'om', 'th'], 
+				'name': 'id10b',
+				'motors': ['del', 'gam', 'om', 'th'],
 				'other-motors': []
 			},
 			{
-				'name': 'd32', 
-				'motors': ['phi', 'psi', 'ome', 'the', 'hgl', 'dht'], 
+				'name': 'd32',
+				'motors': ['phi', 'psi', 'ome', 'the', 'hgl', 'dht'],
 				'other-motors': []
 			},
 			{
-				'name': 'gmci', 
-				'motors': ['phi', 'psi', 'ome', 'the'], 
+				'name': 'gmci',
+				'motors': ['phi', 'psi', 'ome', 'the'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "zaxis",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze'),
@@ -785,7 +785,7 @@
 			('g_track', 'set if tracking gamR and gamT with gam'),
 			('g_sigtau', 'set if sig-tau take precdence over azi HKL')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -809,7 +809,7 @@
 			('CUT_GAM', ''),
 			('ALPHA_C', 'alpha critical (for Munich configuration)')
 		],
-		'modes': [ 
+		'modes': [
 			'Alpha fixed',
 			'Beta fixed',
 			'Alpha=Beta',
@@ -818,8 +818,8 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['del', 'th', 'mu', 'gam'], 
+				'name': 'default',
+				'motors': ['del', 'th', 'mu', 'gam'],
 				'other-motors': []
 			}
 		]
@@ -834,34 +834,34 @@
 				('z_l1', 'beta length')
 			],
 		'Q': [
-			('H', '1st Miller index'), 
-			('K', '2nd Miller index'), 
-			('L', '3rd Miller index'), 
+			('H', '1st Miller index'),
+			('K', '2nd Miller index'),
+			('L', '3rd Miller index'),
 			('LAMBDA', 'wavelength, Angstrom')
 			],
 		'modes': [],
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['tth', 'th', 'alf', 'gam'], 
+				'name': 'default',
+				'motors': ['tth', 'th', 'alf', 'gam'],
 				'other-motors': []
 			},
 			{
-				'name': 'beta', 
-				'motors': ['tth', 'th', 'alf', 'gam', 'beta'], 
+				'name': 'beta',
+				'motors': ['tth', 'th', 'alf', 'gam', 'beta'],
 				'other-motors': []
 			}
 		]
 	},
-	{ 
+	{
 		'name': "zeta",
-		'G': [ 
+		'G': [
 			('g_mode', 'spectrometer mode'),
 			('g_sect', 'sector'),
 			('g_frz', 'freeze')
 		],
-		'Q': [ 
+		'Q': [
 			('H', '1st Miller index'),
 			('K', '2nd Miller index'),
 			('L', '3rd Miller index'),
@@ -880,8 +880,8 @@
 		'numgeo': 4,
 		'variations': [
 			{
-				'name': 'default', 
-				'motors': ['nu', 'zeta', 'del', 'th'], 
+				'name': 'default',
+				'motors': ['nu', 'zeta', 'del', 'th'],
 				'other-motors': []
 			}
 		]

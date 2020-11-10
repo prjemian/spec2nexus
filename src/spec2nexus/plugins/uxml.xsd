@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-  <!-- 
+  <!--
   #UXML: XML Schema for UXML structured metadata
 
 ##############################################################################
@@ -54,10 +54,10 @@
       <xs:attribute name="name" use="required" type="xs:NCName"/>
       <xs:attribute name="_exists_" type="xs:boolean" default="false" use="optional"/>
       <xs:attribute name="NX_class" use="required" type="xs:NCName"/>
-      <!-- 
+      <!--
       seems as if any names should be acceptable
-      
-      certain names are expected but others are user's choice 
+
+      certain names are expected but others are user's choice
       -->
       <xs:attribute name="array_port" type="xs:NCName"/>
       <xs:attribute name="description"/>

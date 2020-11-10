@@ -1,8 +1,6 @@
-'''
-unit tests for the writer module
-'''
+"""Tests for the writer module."""
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -10,14 +8,14 @@ unit tests for the writer module
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 import os, sys
 import numpy
 import unittest
 
-_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-_path = os.path.abspath(os.path.join(_test_path, 'src'))
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+_path = os.path.abspath(os.path.join(_test_path, "src"))
 
 sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
@@ -35,7 +33,7 @@ class TestFunctions(unittest.TestCase):
     #     self.fname = os.path.join(self.datapath, '33id_spec.dat')
     #     basename = os.path.splitext(self.fname)[0]
     #     self.hname = tests.common.create_test_file()
-    # 
+    #
     # def tearDown(self):
     #     for tname in (self.hname,):
     #         if os.path.exists(tname):
@@ -65,7 +63,9 @@ class TestFunctions(unittest.TestCase):
 
     def test_split_columns(self):
         expected = ["two theta", "motor x", "scint counter"]
-        spec = utils.split_column_labels("two theta  motor x  scint counter")
+        spec = utils.split_column_labels(
+            "two theta  motor x  scint counter"
+        )
         self.assertEqual(spec, expected)
 
     def test_sanitize_name(self):
@@ -89,12 +89,12 @@ def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         TestFunctions,
-        ]
+    ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
     return test_suite
 
 
 if __name__ == "__main__":
-    runner=unittest.TextTestRunner()
+    runner = unittest.TextTestRunner()
     runner.run(suite())
