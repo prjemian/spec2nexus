@@ -28,24 +28,24 @@ WATERMARK_TEXT = '%s, (C) %s' % (spec2nexus.__package_name__, spec2nexus.__copyr
 
 
 def make_png(
-        image, 
-        image_file, 
+        image,
+        image_file,
         axes = None,
         title = '2-D data',
         subtitle = '',
-        log_image=False, 
-        hsize=PLOT_H_INT, 
-        vsize=PLOT_V_INT, 
+        log_image=False,
+        hsize=PLOT_H_INT,
+        vsize=PLOT_V_INT,
         cmap=COLORMAP,
-        xtitle=None, ytitle=None, 
+        xtitle=None, ytitle=None,
         timestamp_str=None):
     """
     read the image from the named HDF5 file and make a PNG file
-    
+
     Test that the HDF5 file exists and that the path to the data exists in that file.
-    Read the data from the named dataset, mask off some bad values, 
+    Read the data from the named dataset, mask off some bad values,
     convert to log(image) and use Matplotlib to make the PNG file.
-    
+
     :param obj image: array of data to be rendered
     :param str image_file: name of image file to be written (path is optional)
     :param bool log_image: plot log(image)
@@ -53,7 +53,7 @@ def make_png(
     :param int hsize: vertical size of the PNG image (default: 3)
     :param str cmap: colormap for the image (default: 'cubehelix'), 'jet' is another good one
     :return str: *image_file*
-    
+
     The HDF5 file could be a NeXus file, or some other layout.
     """
 
@@ -75,7 +75,7 @@ def make_png(
             np_arr = numpy.array(arr)
             step = np_arr[1] - np_arr[0]
             return numpy.append(np_arr, np_arr[-1] + step) - step/2
-        
+
         x = shift_to_pixel_boundaries(axes[0])
         y = shift_to_pixel_boundaries(axes[1])
 
@@ -90,7 +90,7 @@ def make_png(
         ax.set_ylabel(ytitle)
 
     timestamp_str = timestamp_str or str(datetime.datetime.now())
-    
+
     if subtitle is not None:
         ax.set_title(subtitle, fontsize=10)
     fig.suptitle(title, fontsize=8)
@@ -109,17 +109,17 @@ def make_png(
 
 
 def xy_plot(
-        x, y, 
-        plot_file, 
-        title=None, subtitle=None, 
-        xtitle=None, ytitle=None, 
+        x, y,
+        plot_file,
+        title=None, subtitle=None,
+        xtitle=None, ytitle=None,
         xlog=False, ylog=False,
-        hsize=PLOT_H_INT, 
-        vsize=PLOT_V_INT, 
+        hsize=PLOT_H_INT,
+        vsize=PLOT_V_INT,
         timestamp_str=None):
     r"""
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
-    
+
     :param [float] x: horizontal axis data
     :param [float] y: vertical axis data
     :param str plot_file: file name to write plot image
@@ -132,13 +132,13 @@ def xy_plot(
     :param str timestamp_str: date to use on plot (default: now)
 
     .. tip:: when using this module as a background task ...
-    
-        MatPlotLib has several interfaces for plotting. 
-        Since this module runs as part of a background job 
-        generating lots of plots, MatPlotLib's standard ``plt`` code is 
-        not the right model.  It warns after 20 plots and 
-        will eventually run out of memory.  
-        
+
+        MatPlotLib has several interfaces for plotting.
+        Since this module runs as part of a background job
+        generating lots of plots, MatPlotLib's standard ``plt`` code is
+        not the right model.  It warns after 20 plots and
+        will eventually run out of memory.
+
         Here's the fix used in this module:
         http://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
 
