@@ -10,28 +10,28 @@ Library of classes to read the contents of a SPEC data file.
 How to use :mod:`spec2nexus.spec`
 *********************************
 
-:mod:`spec2nexus.spec` provides Python support to read 
+:mod:`spec2nexus.spec` provides Python support to read
 the scans in a SPEC data file.  (It does not provide a command-line interface.)
 Here is a quick example how to use :mod:`~spec2nexus.spec`:
 
 .. code-block:: guess
    :linenos:
-   
+
    from spec2nexus.spec import SpecDataFile
-   
+
    specfile = SpecDataFile('data/33id_spec.dat')
    print 'SPEC file name:', specfile.specFile
    print 'SPEC file time:', specfile.headers[0].date
    print 'number of scans:', len(specfile.scans)
-   
+
    for scanNum, scan in specfile.scans.items():
        print scanNum, scan.scanCmd
 
 For one example data file provided with :mod:`spec2nexus.spec`, the output starts with:
 
-.. code-block:: guess
+.. code-block::
    :linenos:
-   
+
    SPEC file name: samplecheck_7_17_03
    SPEC file time: Thu Jul 17 02:37:32 2003
    number of scans: 106
@@ -49,9 +49,9 @@ Here is an example how to read one scan:
 
 .. code-block:: guess
    :linenos:
-   
+
    from spec2nexus.spec import SpecDataFile
-   
+
    specfile = SpecDataFile('data/33id_spec.dat')
    specscan = specfile.getScan(5)
    print specscan.scanNum
@@ -67,9 +67,9 @@ the dictionary is ``specscan.data`` where the keys are the column labels (from t
 #L line) and the values are from each row.  It is possible to make a default
 plot of the last column vs. the first column.  Here's how to find that data:
 
-.. code-block:: guess
+.. code-block:: python
    :linenos:
-   
+
    x_label = specscan.L[0]          # first column from #L line
    y_label = specscan.L[-1]         # last column from #L line
    x_data = specscan.data[x_label]  # data for first column
@@ -102,78 +102,78 @@ Data files with deviations from this standard are produced at some facilities.
 
 ..
    :see: http://www.certif.com/cplot_manual/ch0c_C_11_3.html
-   
-   The scan files contain control lines, data lines and blank lines. 
-   
-   * *Control lines* contain a # character in the first column followed by a command word. 
-   * *Data lines* generally contain a row of numbers. 
+
+   The scan files contain control lines, data lines and blank lines.
+
+   * *Control lines* contain a # character in the first column followed by a command word.
+   * *Data lines* generally contain a row of numbers.
    * *Special data lines* containing MCA data begin with an @ character followed by a row of numbers.
 
    The control conventions used by scans.4 are as follows:
-   
+
    #S N
-       starts a new scan. Here, N is the user's numbering scheme and is the number 
-       used when retrieving by scan number (+S). Most often the scan number is the 
+       starts a new scan. Here, N is the user's numbering scheme and is the number
+       used when retrieving by scan number (+S). Most often the scan number is the
        position of the scan in the file.
-   
+
    #M N
        indicates data was taken counting to N monitor counts.
-   
+
    #T N
        indicates data was taken counting for N seconds.
-   
+
    #N N [M]
-       indicates there are N columns of data. If M is present, it indicates there 
-       are M sets of data columns on each line. When collecting data from a 
-       multi-channel analyzer, for example, the data might be arranged with 
-       16 points per line in the file to make the file easier to scan by eye. 
+       indicates there are N columns of data. If M is present, it indicates there
+       are M sets of data columns on each line. When collecting data from a
+       multi-channel analyzer, for example, the data might be arranged with
+       16 points per line in the file to make the file easier to scan by eye.
        In such a case, the control line would be #N 1 16.
-   
+
    #I N
        is for an optional multiplicative intensity-normalization factor.
-   
+
    #@MCA
-       indicates the scan contains MCA data. If the +M option is selected, 
-       x (2D or 3D) or y (3D only) values will be calculated automatically. 
+       indicates the scan contains MCA data. If the +M option is selected,
+       x (2D or 3D) or y (3D only) values will be calculated automatically.
        In three-column mode, whether it is x or y depends on whether the x=M or
-       y=M command line option is selected or on which interactive response was 
-       given. Data in the lines starting with @A will be stuffed into the 
+       y=M command line option is selected or on which interactive response was
+       given. Data in the lines starting with @A will be stuffed into the
        y (2D) or z (3D) data array.
-   
+
    #@CALIB a b c
-       gives calibration factors for MCA data. The x (2D or 3D) or y (3D only) 
+       gives calibration factors for MCA data. The x (2D or 3D) or y (3D only)
        values will be calculated using the formula::
-   
+
          xi = a + b*i + c*i*i
-   
-       where i is the point number, starting from zero. Calibration factors can 
+
+       where i is the point number, starting from zero. Calibration factors can
        be changed within the data portion of a scan for subsequent MCA data by the line
-   
+
          @CALIB a b c
-   
-       Before each scan is read by scans.4, the calibration parameters are 
+
+       Before each scan is read by scans.4, the calibration parameters are
        initialized to zero.
-   
-    The following control lines are not commands but are printed out as 
+
+    The following control lines are not commands but are printed out as
     they are encountered while reading a scan:
-   
+
    #C
        is a comment line.
-   
+
    #D
        is followed by the date and time the scan was taken.
-   
+
    #L label1 label2 ...
        is the data-column labels, with each label separated from the next by two spaces.
-   
+
        For example, a very simple file might have::
-   
+
           #S 1
           #N 3
           #L Temperature  Voltage  Counts
           23.4 1.01 30456
           23.6 1.015 24000
-      
+
           #S 2 etc.
 
 
@@ -191,8 +191,8 @@ Assumptions about data file structure
 These assumptions are used to parse SPEC data files:
 
 #. SPEC data files are text files organized by lines.
-   The lines can be categorized as: **control lines**, **data lines**, and blank lines. 
-   
+   The lines can be categorized as: **control lines**, **data lines**, and blank lines.
+
    ==============   =========================================================================
    line type        description
    ==============   =========================================================================
@@ -201,15 +201,15 @@ These assumptions are used to parse SPEC data files:
    *special data*   containing MCA data [#]_
    ==============   =========================================================================
 
-#. Lines in a SPEC data file start with a file name control line, 
-   then series of blocks.  Each block may be either a file header block 
+#. Lines in a SPEC data file start with a file name control line,
+   then series of blocks.  Each block may be either a file header block
    or a scan block.  (Most SPEC files have only one header block.  A new header
    block is created if the list of positioners is changed in SPEC
    without creating a new file.  SPEC users are encouraged to *always* start a new
    data file after changing the list of positioners.)
    A block consists of a series of control, data, and blank lines.
-   
-   SPEC data files are composed of a sequence of a single file header block 
+
+   SPEC data files are composed of a sequence of a single file header block
    and zero or more scan blocks. [#]_
 
 #. A SPEC data file always begins with this control lines: #F, such as::
@@ -226,7 +226,7 @@ These assumptions are used to parse SPEC data files:
 
     #S 78  ascan  del 84.6484 84.8484  20 1
     #D Thu Jul 17 08:03:54 2003
-   
+
 ..	[#] See :ref:`control_line_examples`
 
 .. [#] See :ref:`mca_data_example`
@@ -283,26 +283,26 @@ command word     description
 Example of Control Lines
 ++++++++++++++++++++++++
 
-The command word of a control line may have a number at the end, 
-indicating it is part of a sequence, such as these control lines 
+The command word of a control line may have a number at the end,
+indicating it is part of a sequence, such as these control lines
 (see :ref:`plugin_list` for how to interpret):
 
-.. code-block:: guess
+.. code-block::
    :linenos:
-   
+
    #D Wed Nov 03 13:42:03 2010
    #T 0.3  (seconds)
    #G0 0
    #G1 0
    #G3 0
    #G4 0
-   #Q 
+   #Q
    #P0 -0.5396381 -0.5675 0.395862 0.7425 40.489861 0 5.894899e-07 11
    #P1 24 0 -1.19 9.0028278 25.000378 -22.29064 1.5 5
    #P2 -43 -0.01 98 11.8 0 -6.3275 111.52875 -8.67896
    #P3 -0.11352 1e-05 0.199978 0.4001875 1.2998435 15.6077 0 0
    #P4 3.03 0 3.21 6.805 2.835 2.4475 0.9355 -0.072
-   #P5 1.31 0.0875 2442.673 -0.391 12 -14.4125 15.498553 
+   #P5 1.31 0.0875 2442.673 -0.391 12 -14.4125 15.498553
 
 .. index:: examples; SPEC MCA data
 
@@ -312,22 +312,22 @@ Example of MCA data lines
 +++++++++++++++++++++++++
 
 Lines with MCA array data begin with the **@A** command word.
-(If such a data line ends with a continuation character ``\``, 
+(If such a data line ends with a continuation character ``\``,
 the next line is read as part of this line.)
 
 This is an example of a 91-channel MCA data array with trivial (zero) values:
 
 .. code-block:: text
    :linenos:
-   
+
    @A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\
-    0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0
 
-Several MCA spectra may be written to a scan.  In this case, a number 
+Several MCA spectra may be written to a scan.  In this case, a number
 follows **@A** indicating which spectrum, such as in this example with
 four spectra:
 
@@ -388,7 +388,7 @@ dependencies
 
 .. autosummary::
    :nosignatures:
-   
+
    os
    re
    sys
@@ -417,7 +417,7 @@ This method is called automatically when trying to read any of the following sca
 
 :comments:     *[str]* - list of all comments reported in this scan
 :data:         *{label,[number]}* - written by :meth:`spec2nexus.plugins.spec_common_spec2nexus.data_lines_postprocessing`
-:data_lines:   *[str]* - raw data (and possibly MCA) lines with comment lines removed 
+:data_lines:   *[str]* - raw data (and possibly MCA) lines with comment lines removed
 :date:    	   *str* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Date`
 :G:            *{key,[number]}* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_Geometry`
 :I:    	      *float* - written by :class:`spec2nexus.plugins.spec_common_spec2nexus.SPEC_NormalizingFactor`
@@ -437,7 +437,7 @@ This method is called automatically when trying to read any of the following sca
 internal use only - do not modify
 +++++++++++++++++++++++++++++++++
 
-These scan attributes are for internal use only and are not part of the public interface.  
+These scan attributes are for internal use only and are not part of the public interface.
 Do not modify them or write code that depends on them.
 
 :postprocessors:     *{key,obj}* - dictionary of postprocessing methods
@@ -450,5 +450,5 @@ source code documentation
 =========================
 
 .. automodule:: spec2nexus.spec
-    :members: 
+    :members:
     :synopsis: Classes to read the contents of a SPEC data file.

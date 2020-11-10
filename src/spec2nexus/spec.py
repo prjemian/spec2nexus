@@ -458,7 +458,6 @@ class SpecDataFileHeader(object):
 
     .. autosummary::
 
-        ~get_macro_name
         ~interpret
         ~addPostProcessor
         ~addH5writer
