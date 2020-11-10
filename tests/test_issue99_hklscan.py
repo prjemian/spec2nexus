@@ -1,6 +1,4 @@
-"""
-test spec2nexus code
-"""
+"""Test issue 99."""
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -84,7 +82,7 @@ class Issue99(unittest.TestCase):
         )
 
     def test_specplot_lmn40_scan244(self):
-        """watch out for IndexError: list index out of range"""
+        """Watch out for IndexError: list index out of range."""
         scan_number = 244
         expected_x_title = "data point number (hkl all held constant)"
 

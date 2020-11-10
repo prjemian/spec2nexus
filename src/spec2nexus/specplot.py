@@ -420,68 +420,70 @@ class ImageMaker(object):
             timestamp=None,
         )
 
+    # TODO: apply property and setter decorations
+
     def plot_title(self):
-        """return the plot title"""
+        """Return the plot title."""
         return self.settings["title"]
 
     def set_plot_title(self, text):
-        """set the plot title"""
+        """Set the plot title."""
         self.settings["title"] = text
 
     def plot_subtitle(self):
-        """return the plot_subtitle"""
+        """Return the plot_subtitle."""
         return self.settings["subtitle"]
 
     def set_plot_subtitle(self, text):
-        """set the plot_subtitle"""
+        """Set the plot_subtitle."""
         self.settings["subtitle"] = text
 
     def x_title(self):
-        """return the title for the X axis"""
+        """Return the title for the X axis."""
         return self.settings["x_title"]
 
     def set_x_title(self, text):
-        """set the x axis title"""
+        """Set the x axis title."""
         self.settings["x_title"] = text
 
     def y_title(self):
-        """return the title for the Y axis"""
+        """Return the title for the Y axis."""
         return self.settings["y_title"]
 
     def set_y_title(self, text):
-        """set the y axis title"""
+        """Set the y axis title."""
         self.settings["y_title"] = text
 
     def x_log(self):
-        """boolean: should the X axis be plotted on a log scale?"""
+        """Boolean: should the X axis be plotted on a log scale?"""
         return self.settings["x_log"]
 
     def set_x_log(self, choice):
-        """set the x axis logarithmic if True"""
+        """Set the x axis logarithmic if True."""
         self.settings["x_log"] = choice
 
     def y_log(self):
-        """boolean: should the Y axis be plotted on a log scale?"""
+        """Boolean: should the Y axis be plotted on a log scale?"""
         return self.settings["y_log"]
 
     def set_y_log(self, choice):
-        """set the y axis logarithmic if True"""
+        """Set the y axis logarithmic if True."""
         self.settings["y_log"] = choice
 
     def z_log(self):
-        """boolean: should the Z axis (image) be plotted on a log scale?"""
+        """Boolean: should the Z axis (image) be plotted on a log scale?"""
         return self.settings["z_log"]
 
     def set_z_log(self, choice):
-        """set the z axis (image) logarithmic if True"""
+        """Set the z axis (image) logarithmic if True."""
         self.settings["z_log"] = choice
 
     def timestamp(self):
-        """return the time of this scan as a string"""
+        """Return the time of this scan as a string."""
         return self.settings["timestamp"]
 
     def set_timestamp(self, text):
-        """set the plot time stamp"""
+        """Set the plot time stamp."""
         self.settings["timestamp"] = text
 
 

@@ -36,10 +36,20 @@ class Test_03_06_JanTest_data_file(unittest.TestCase):
 
     def test_the_data_file(self):
         """
-        write all as HDF5: 1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines
+        Write all as HDF5.
+
+        * 1-D scans
+        * USAXS scans
+        * Fly scans
+        * #O+#o and #J+#j control lines
         """
         prefix = os.path.abspath(
-            os.path.join(_path, "spec2nexus", "data", "03_06_JanTest")
+            os.path.join(
+                _path,
+                "spec2nexus",
+                "data",
+                "03_06_JanTest",
+            )
         )
         file1 = prefix + ".dat"
         hfile = tests.common.create_test_file()
