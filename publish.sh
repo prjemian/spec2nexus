@@ -57,13 +57,18 @@ echo "# ($(date)) - - - - - - - - - - - - - - - - - - - - - - upload conda"
 
 BUILD_DIR=${CONDA_BLD_PATH}/noarch
 _package_=$(echo "${PACKAGE}" | tr '[:upper:]' '[:lower:]')
-BUNDLE=$(ls "${BUILD_DIR}/${_package_}-${RELEASE}-*_0.tar.bz2")
+BUNDLE="${_package_}-${RELEASE}"
+
 echo "# ($(date)) uploading to anaconda"
 echo "# ($(date)) CHANNEL: ${CHANNEL}"
-anaconda upload -u "${CHANNEL}" "${BUNDLE}"
-
-# also post to my personal channel
-anaconda upload "${BUNDLE}"
+find "${BUILD_DIR}" -name "${BUNDLE}*.tar.bz2" | while read file
+do
+    echo "# ($(date)) upload: ${file}"
+    # to public channel
+    anaconda upload -u "${CHANNEL}" "${file}"
+    # to personal channel
+    anaconda upload "${file}"
+done
 echo "# ($(date)) Uploaded to anaconda"
 
 echo "# (${STARTED}) started publishing script"
