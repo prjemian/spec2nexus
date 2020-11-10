@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -9,7 +9,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 """
 define the plug-in architecture
@@ -60,23 +60,30 @@ logger = logging.getLogger(__name__)
 class PluginException(Exception):
     """parent exception for this module"""
 
+
 class DuplicateControlLinePlugin(PluginException):
     """This control line handler has been used more than once."""
+
 
 class DuplicateControlLineKey(PluginException):
     """This control line key regular expression has been used more than once."""
 
+
 class DuplicatePlugin(PluginException):
     """This plugin file name has been used more than once."""
+
 
 class PluginKeyNotDefined(PluginException):
     """Must define 'key' in class declaration."""
 
+
 class PluginProcessMethodNotDefined(PluginException):
     """Must define 'process()' method in class declaration."""
 
+
 class PluginDuplicateKeyError(PluginException):
     """This plugin key has been used before."""
+
 
 class PluginBadKeyError(PluginException):
     """The plugin 'key' value is not acceptable."""
@@ -116,7 +123,7 @@ class AutoRegister(type):
 
     key = None
 
-    def __init__(cls, *args):       # args: name, bases, dict
+    def __init__(cls, *args):  # args: name, bases, dict
         # logger.debug(" "*4 + "."*10)
         # logger.debug(f"__init__: cls={cls}")
         # logger.debug(f"__init__: name={name}")
@@ -165,6 +172,7 @@ class ControlLineHandler(object):
             except ValueError:
                 return False
     """
+
     key = None
     scan_attributes_defined = []
 
@@ -203,7 +211,9 @@ class PluginManager(object):
         global plugin_manager
         if plugin_manager is None:
             plugin_manager = self
-        self.registry = OrderedDict() # dictionary of known ControlLineHandler subclasses
+        self.registry = (
+            OrderedDict()
+        )  # dictionary of known ControlLineHandler subclasses
         self.lazy_attributes = []
 
     def load_plugins(self):
@@ -213,7 +223,9 @@ class PluginManager(object):
         called from :func:`spec2nexus.plugin.get_plugin_manager()`
         """
         from . import spec
-        from . import plugins   # issue #166: plugins are loaded here, NOT any earlier!
+        from . import (
+            plugins,
+        )  # issue #166: plugins are loaded here, NOT any earlier!
 
         return self
 
@@ -223,7 +235,7 @@ class PluginManager(object):
 
         :param str spec_data_file_line: one line from a SPEC data file
         """
-        pos = spec_data_file_line.find(' ')
+        pos = spec_data_file_line.find(" ")
         if pos < 0:
             return None
         text = spec_data_file_line[:pos]
@@ -246,13 +258,14 @@ class PluginManager(object):
         Applies a regular expression match using each handler's
         ``key`` as the regular expression to match with ``text``.
         """
+
         def _match_(text, handler):
             try:
                 if handler().match_key(text):
                     return handler.key
             except AttributeError:
                 # ensure that #X and #XPCS do not both match #X
-                full_pattern = '^' + handler.key + '$'
+                full_pattern = "^" + handler.key + "$"
                 t = re.match(full_pattern, text)
                 # test regexp match to avoid false positives
                 # ensures that beginning and end are different positions
@@ -298,8 +311,10 @@ class PluginManager(object):
             emsg = "badly-formed 'key': received '%d'" % key
             raise PluginBadKeyError(emsg)
 
-        if not hasattr(obj, "process") :
-            emsg = "'process()' method not defined:" + obj.__class__.__name__
+        if not hasattr(obj, "process"):
+            emsg = (
+                "'process()' method not defined:" + obj.__class__.__name__
+            )
             raise PluginProcessMethodNotDefined(emsg)
 
         for att in obj.scan_attributes_defined:

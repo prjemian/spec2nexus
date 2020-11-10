@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -9,7 +9,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 """
 **#UIM** : Image header information from EPICS areaDetector
@@ -51,11 +51,11 @@ class UIM_generic(ControlLineHandler):
 
     """**#UIM** -- various image header information"""
 
-    key = r'#UIM\w*'
-    scan_attributes_defined = ['UIM']
+    key = r"#UIM\w*"
+    scan_attributes_defined = ["UIM"]
 
     def process(self, text, spec_obj, *args, **kws):
-        if not hasattr(spec_obj, 'UIM'):
+        if not hasattr(spec_obj, "UIM"):
             spec_obj.UIM = []
 
         spec_obj.UIM.append(text)

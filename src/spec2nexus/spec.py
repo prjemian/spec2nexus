@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -9,7 +9,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 """
@@ -128,21 +128,25 @@ import time
 from . import plugin
 
 
-UNRECOGNIZED_KEY = 'unrecognized_control_line'
-MCA_DATA_KEY = '_mca_'
+UNRECOGNIZED_KEY = "unrecognized_control_line"
+MCA_DATA_KEY = "_mca_"
 
 
 class SpecDataFileNotFound(IOError):
     """data file was not found"""
 
+
 class SpecDataFileCouldNotOpen(IOError):
     """data file could not be opened"""
+
 
 class NotASpecDataFile(Exception):
     """content of file is not SPEC data (first line must start with ``#F``)"""
 
+
 class DuplicateSpecScanNumber(Exception):
     """multiple use of scan number in a single SPEC data file"""
+
 
 class UnknownSpecFilePart(Exception):
     """unknown part in a single SPEC data file"""
@@ -193,9 +197,9 @@ def is_spec_file_with_header(filename):
     """
     if not os.path.exists(filename) or not os.path.isfile(filename):
         return False
-    expected_controls = ('#F ', '#E ', '#D ', '#C ')
+    expected_controls = ("#F ", "#E ", "#D ", "#C ")
     try:
-        lines = open(filename).readlines()[:len(expected_controls)]
+        lines = open(filename).readlines()[: len(expected_controls)]
     except UnicodeDecodeError:
         return False
     if len(lines) != len(expected_controls):
@@ -206,7 +210,7 @@ def is_spec_file_with_header(filename):
     return True
 
 
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 
 
 class SpecDataFile(object):
@@ -231,8 +235,8 @@ class SpecDataFile(object):
 
     """
 
-    fileName = ''
-    parts = ''
+    fileName = ""
+    parts = ""
     headers = []
     scans = {}
     readOK = -1
@@ -249,16 +253,18 @@ class SpecDataFile(object):
         if filename is not None:
             if not os.path.exists(filename):
                 raise SpecDataFileNotFound(
-                    'file does not exist: ' + str(filename))
+                    "file does not exist: " + str(filename)
+                )
             if not is_spec_file(filename):
                 raise NotASpecDataFile(
-                    'not a SPEC data file: ' + str(filename))
+                    "not a SPEC data file: " + str(filename)
+                )
             self.fileName = filename
 
             self.read()
 
     def __str__(self):
-        return self.fileName or 'None'
+        return self.fileName or "None"
 
     @property
     def update_available(self):
@@ -322,21 +328,23 @@ class SpecDataFile(object):
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
         if not os.path.exists(spec_file_name):
-            raise SpecDataFileNotFound('file does not exist: ' + str(spec_file_name))
+            raise SpecDataFileNotFound(
+                "file does not exist: " + str(spec_file_name)
+            )
         try:
-            with open(spec_file_name, 'r') as fp:
+            with open(spec_file_name, "r") as fp:
                 buf = fp.read()
         except IOError:
-            msg = 'Could not open spec file: ' + str(spec_file_name)
+            msg = "Could not open spec file: " + str(spec_file_name)
             raise SpecDataFileCouldNotOpen(msg)
         if not is_spec_file(spec_file_name):
-            msg = 'Not a spec data file: ' + str(spec_file_name)
+            msg = "Not a spec data file: " + str(spec_file_name)
             raise NotASpecDataFile(msg)
 
         # caution: some files may have EOL = \r\n
         # convert all '\r\n' to '\n', then all '\r' to '\n'
 
-        return buf.replace('\r\n', '\n').replace('\r', '\n')
+        return buf.replace("\r\n", "\n").replace("\r", "\n")
 
     def dissect_file(self):
         """
@@ -417,8 +425,10 @@ class SpecDataFile(object):
 
     def getScanNumbersChronological(self):
         """return a list of all scan numbers sorted by date"""
+
         def byDate_key(scan):
             return time.strptime(scan.date)
+
         scans = sorted(self.scans.values(), key=byDate_key)
         return [_.scanNum for _ in scans]
 
@@ -445,11 +455,11 @@ class SpecDataFile(object):
         for key in scan_list:
             scan = self.getScan(key)
             if isinstance(scan, SpecDataFileScan):
-                commands.append('#S ' + str(key) + ' ' + scan.scanCmd)
+                commands.append("#S " + str(key) + " " + scan.scanCmd)
         return commands
 
 
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 
 
 class SpecDataFileHeader(object):
@@ -465,11 +475,11 @@ class SpecDataFileHeader(object):
 
     """
 
-    def __init__(self, buf, parent = None):
-        #----------- initialize the instance variables
-        self.parent = parent        # instance of SpecDataFile
+    def __init__(self, buf, parent=None):
+        # ----------- initialize the instance variables
+        self.parent = parent  # instance of SpecDataFile
         self.comments = []
-        self.date = ''
+        self.date = ""
         self.epoch = 0
         if parent is None:
             self.file = None
@@ -486,7 +496,7 @@ class SpecDataFileHeader(object):
         manager = plugin.get_plugin_manager()
         for _i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
-                continue            # ignore blank lines
+                continue  # ignore blank lines
             key = manager.getKey(line)
             if key is None:
                 # log message instead of raise exception
@@ -494,8 +504,8 @@ class SpecDataFileHeader(object):
                 # raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))
                 key = UNRECOGNIZED_KEY
                 manager.process(key, line, self)
-            elif key == '#E':
-                pass    # avoid recursion
+            elif key == "#E":
+                pass  # avoid recursion
             else:
                 # most of the work is done here
                 manager.process(key, line, self)
@@ -532,7 +542,8 @@ class SpecDataFileHeader(object):
         return list(self.parent.scans.values())[-1]
 
 
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
+
 
 class SpecDataFileScan(object):
     """
@@ -550,23 +561,23 @@ class SpecDataFileScan(object):
     """
 
     def __init__(self, header, buf, parent=None):
-        self.parent = parent        # instance of SpecDataFile
+        self.parent = parent  # instance of SpecDataFile
         self.comments = []
         self.data = {}
         self.data_lines = []
-        self.date = ''
+        self.date = ""
         self.G = {}
-        self.header = header        # index number of relevant #F section previously interpreted
+        self.header = header  # index number of relevant #F section previously interpreted
         self.L = []
-        self.M = ''
+        self.M = ""
         self.positioner = {}
         self.N = -1
         self.P = []
-        self.Q = ''
+        self.Q = ""
         self.raw = buf
-        self.S = ''
+        self.S = ""
         self.scanNum = -1
-        self.scanCmd = ''
+        self.scanCmd = ""
         self._interpreter_comments_ = []
         if parent is not None:
             # avoid changing the interface for clients
@@ -579,10 +590,10 @@ class SpecDataFileScan(object):
                 self.specFile = self.header.parent.fileName
         else:
             self.specFile = None
-        self.T = ''
+        self.T = ""
         self.V = []
-        self.column_first = ''
-        self.column_last = ''
+        self.column_first = ""
+        self.column_last = ""
         self.postprocessors = {}
         self.h5writers = {}
 
@@ -611,23 +622,23 @@ class SpecDataFileScan(object):
     def interpret(self):
         """interpret the supplied buffer with the spec scan data"""
         manager = plugin.get_plugin_manager()
-        if self.__interpreted__:    # do not do this twice
+        if self.__interpreted__:  # do not do this twice
             return
-        self.__lazy_interpret__ = False     # set now to avoid recursion
-        lines = self.raw.replace('\\\n', ' ').splitlines()
+        self.__lazy_interpret__ = False  # set now to avoid recursion
+        lines = self.raw.replace("\\\n", " ").splitlines()
         for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
-                continue            # ignore blank lines
+                continue  # ignore blank lines
             key = manager.getKey(line.lstrip())
             if key is None:
                 # __s__ = '<' + line + '>'
                 # _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)
-                #raise UnknownSpecFilePart(_msg)
+                # raise UnknownSpecFilePart(_msg)
                 # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
                 key = UNRECOGNIZED_KEY
                 manager.process(key, line, self)
-            elif key != '#S':        # avoid recursion
+            elif key != "#S":  # avoid recursion
                 # most of the work is done here
                 manager.process(key, line, self)
 
@@ -689,7 +700,9 @@ class SpecDataFileScan(object):
         key = label
         while key in keylist:
             i += 1
-            key = label + '_' + str(i)
+            key = label + "_" + str(i)
             if i == 1000:
-                raise RuntimeError("cannot make unique key for duplicated column label!")
+                raise RuntimeError(
+                    "cannot make unique key for duplicated column label!"
+                )
         return key

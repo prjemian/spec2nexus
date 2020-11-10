@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -9,7 +9,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 """
@@ -70,7 +70,7 @@ The resulting (binary) data file has this structure::
 """
 
 
-import h5py    # HDF5 support
+import h5py  # HDF5 support
 import numpy
 import six
 
@@ -129,8 +129,8 @@ def openGroup(parent, name, nx_class, **attr):
     return group
 
 
-def makeDataset(parent, name, data = None, **attr):
-    '''
+def makeDataset(parent, name, data=None, **attr):
+    """
     create and write data to a dataset in the HDF5 file hierarchy
 
     Any named parameters in the call to this method
@@ -141,7 +141,7 @@ def makeDataset(parent, name, data = None, **attr):
     :param obj data: the information to be written
     :param dict attr: optional dictionary of attributes
     :return: h5py dataset object
-    '''
+    """
     if data is None:
         obj = parent.create_dataset(name, data="")
         attr["NOTE"] = "no data supplied, value set to empty string"
@@ -155,10 +155,13 @@ def makeDataset(parent, name, data = None, **attr):
             return value
 
         if not isinstance(data, (tuple, list, numpy.ndarray)):
-            data = [data, ]
+            data = [
+                data,
+            ]
         obj = parent.create_dataset(name, data=list(map(encoder, data)))
     addAttributes(obj, **attr)
     return obj
+
 
 def write_dataset(parent, name, data, **attr):
     """write to the NeXus/HDF5 dataset, create it if necessary, return the object
@@ -185,7 +188,7 @@ def makeLink(parent, sourceObject, targetName):
     :param str targetName: HDF5 node path to be created,
                             such as ``/entry/data/data``
     """
-    if not 'target' in sourceObject.attrs:
+    if not "target" in sourceObject.attrs:
         # NeXus link, NOT an HDF5 link!
         sourceObject.attrs["target"] = str(sourceObject.name)
     str_source = sourceObject.name.encode("ascii", "ignore")
@@ -243,11 +246,11 @@ def read_nexus_field(parent, dataset_name, astype=None):
     if astype is not None:
         dtype = astype
     if len(dataset.shape) > 1:
-        raise RuntimeError( "unexpected %d-D data" % len(dataset.shape))
+        raise RuntimeError("unexpected %d-D data" % len(dataset.shape))
     if dataset.size > 1:
-        return dataset[...].astype(dtype)   # as array
+        return dataset[...].astype(dtype)  # as array
     else:
-        return dataset[0].astype(dtype)     # as scalar
+        return dataset[0].astype(dtype)  # as scalar
 
 
 def read_nexus_group_fields(parent, name, fields):

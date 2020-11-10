@@ -14,31 +14,37 @@ import datetime
 import numpy
 import matplotlib
 import matplotlib.figure
-matplotlib.use('Agg')
+
+matplotlib.use("Agg")
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 import spec2nexus
 
 
-SCALING_FACTOR = 1        #  2**24
-PLOT_H_INT = 9          # 7
-PLOT_V_INT = 5          # 3
-COLORMAP = 'cubehelix'        # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
-WATERMARK_TEXT = '%s, (C) %s' % (spec2nexus.__package_name__, spec2nexus.__copyright__.split(',')[0])
+SCALING_FACTOR = 1  #  2**24
+PLOT_H_INT = 9  # 7
+PLOT_V_INT = 5  # 3
+COLORMAP = "cubehelix"  # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
+WATERMARK_TEXT = "%s, (C) %s" % (
+    spec2nexus.__package_name__,
+    spec2nexus.__copyright__.split(",")[0],
+)
 
 
 def make_png(
-        image,
-        image_file,
-        axes = None,
-        title = '2-D data',
-        subtitle = '',
-        log_image=False,
-        hsize=PLOT_H_INT,
-        vsize=PLOT_V_INT,
-        cmap=COLORMAP,
-        xtitle=None, ytitle=None,
-        timestamp_str=None):
+    image,
+    image_file,
+    axes=None,
+    title="2-D data",
+    subtitle="",
+    log_image=False,
+    hsize=PLOT_H_INT,
+    vsize=PLOT_V_INT,
+    cmap=COLORMAP,
+    xtitle=None,
+    ytitle=None,
+    timestamp_str=None,
+):
     """
     read the image from the named HDF5 file and make a PNG file
 
@@ -60,9 +66,11 @@ def make_png(
     # replace masked data with min good value
     image_data = numpy.ma.masked_less_equal(image, 0)
     image_data = image_data.filled(image_data.min())
-    image_data = numpy.ma.masked_invalid(image_data)    # mask out any NaN values
+    image_data = numpy.ma.masked_invalid(
+        image_data
+    )  # mask out any NaN values
 
-    if log_image and image_data.max() != 0:     # apply log scaling
+    if log_image and image_data.max() != 0:  # apply log scaling
         image_data = numpy.log(image_data)
         image_data -= image_data.min()
         image_data *= SCALING_FACTOR / image_data.max()
@@ -71,10 +79,11 @@ def make_png(
     fig.clf()
     ax = fig.add_subplot(1, 1, 1)
     if isinstance(axes, list) and len(axes) == 2:
+
         def shift_to_pixel_boundaries(arr):
             np_arr = numpy.array(arr)
             step = np_arr[1] - np_arr[0]
-            return numpy.append(np_arr, np_arr[-1] + step) - step/2
+            return numpy.append(np_arr, np_arr[-1] + step) - step / 2
 
         x = shift_to_pixel_boundaries(axes[0])
         y = shift_to_pixel_boundaries(axes[1])
@@ -82,7 +91,7 @@ def make_png(
         ax.pcolor(x, y, image_data, cmap=cmap)
         ax.axis([x.min(), x.max(), y.min(), y.max()])
     else:
-        ax.imshow(image_data, interpolation='nearest', cmap=cmap)
+        ax.imshow(image_data, interpolation="nearest", cmap=cmap)
 
     if xtitle is not None:
         ax.set_xlabel(xtitle)
@@ -94,29 +103,48 @@ def make_png(
     if subtitle is not None:
         ax.set_title(subtitle, fontsize=10)
     fig.suptitle(title, fontsize=8)
-    fig.text(0.02, 0., timestamp_str,
-        fontsize=8, color='gray',
-        ha='left', va='bottom', alpha=0.5)
-    fig.text(0.98, 0., WATERMARK_TEXT,
-        fontsize=8, color='gray',
-        ha='right', va='bottom', alpha=0.5)
+    fig.text(
+        0.02,
+        0.0,
+        timestamp_str,
+        fontsize=8,
+        color="gray",
+        ha="left",
+        va="bottom",
+        alpha=0.5,
+    )
+    fig.text(
+        0.98,
+        0.0,
+        WATERMARK_TEXT,
+        fontsize=8,
+        color="gray",
+        ha="right",
+        va="bottom",
+        alpha=0.5,
+    )
 
-    ax.ticklabel_format(useOffset=False, style='plain')
+    ax.ticklabel_format(useOffset=False, style="plain")
 
-    FigureCanvas(fig).print_figure(image_file, bbox_inches='tight')
+    FigureCanvas(fig).print_figure(image_file, bbox_inches="tight")
 
     return image_file
 
 
 def xy_plot(
-        x, y,
-        plot_file,
-        title=None, subtitle=None,
-        xtitle=None, ytitle=None,
-        xlog=False, ylog=False,
-        hsize=PLOT_H_INT,
-        vsize=PLOT_V_INT,
-        timestamp_str=None):
+    x,
+    y,
+    plot_file,
+    title=None,
+    subtitle=None,
+    xtitle=None,
+    ytitle=None,
+    xlog=False,
+    ylog=False,
+    hsize=PLOT_H_INT,
+    vsize=PLOT_V_INT,
+    timestamp_str=None,
+):
     """
     with MatPlotLib, generate a plot of a scan (as if data from a scan in a SPEC file)
 
@@ -148,16 +176,16 @@ def xy_plot(
 
     ax = fig.add_subplot(1, 1, 1)
     if xlog:
-        ax.set_xscale('log')
+        ax.set_xscale("log")
         if max(x) <= 0:
-            msg = 'X data has no positive values,'
-            msg += ' and therefore can not be log-scaled.'
+            msg = "X data has no positive values,"
+            msg += " and therefore can not be log-scaled."
             raise ValueError(msg)
     if ylog:
-        ax.set_yscale('log')
+        ax.set_yscale("log")
         if max(y) <= 0:
-            msg = 'Y data has no positive values,'
-            msg += ' and therefore can not be log-scaled.'
+            msg = "Y data has no positive values,"
+            msg += " and therefore can not be log-scaled."
             raise ValueError(msg)
     if not xlog and not ylog:
         ax.ticklabel_format(useOffset=False)
@@ -169,15 +197,29 @@ def xy_plot(
     if subtitle is not None:
         ax.set_title(subtitle, fontsize=10)
     fig.suptitle(title, fontsize=8)
-    fig.text(0.02, 0., timestamp_str,
-        fontsize=8, color='gray',
-        ha='left', va='bottom', alpha=0.5)
-    fig.text(0.98, 0., WATERMARK_TEXT,
-        fontsize=8, color='gray',
-        ha='right', va='bottom', alpha=0.5)
+    fig.text(
+        0.02,
+        0.0,
+        timestamp_str,
+        fontsize=8,
+        color="gray",
+        ha="left",
+        va="bottom",
+        alpha=0.5,
+    )
+    fig.text(
+        0.98,
+        0.0,
+        WATERMARK_TEXT,
+        fontsize=8,
+        color="gray",
+        ha="right",
+        va="bottom",
+        alpha=0.5,
+    )
 
     if not xlog and not ylog:
-        ax.ticklabel_format(useOffset=False, style='plain')
-    ax.plot(x, y, 'o-')
+        ax.ticklabel_format(useOffset=False, style="plain")
+    ax.plot(x, y, "o-")
 
-    FigureCanvas(fig).print_figure(plot_file, bbox_inches='tight')
+    FigureCanvas(fig).print_figure(plot_file, bbox_inches="tight")

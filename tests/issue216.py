@@ -1,5 +1,4 @@
-
-'''
+"""
 spec2nexus issue #216: Index error reading a single scan SPEC file
 
 The output file gets created but only contains /S1/definition,
@@ -16,9 +15,9 @@ the number of values on each data line (7).
    This results in only one label defined.
 3. The number of separate labels given in #L (6) does not equal the
    number of data columns.
-'''
+"""
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -26,7 +25,7 @@ the number of values on each data line (7).
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 import h5py
 import os
@@ -35,8 +34,8 @@ import sys
 import tempfile
 import unittest
 
-_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-_path = os.path.abspath(os.path.join(_test_path, 'src'))
+_test_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+_path = os.path.abspath(os.path.join(_test_path, "src"))
 
 sys.path.insert(0, _path)
 sys.path.insert(0, _test_path)
@@ -49,10 +48,9 @@ import tests.common
 
 
 class Issue216(unittest.TestCase):
-
     def setUp(self):
         _path = os.path.abspath(os.path.dirname(__file__))
-        self.testfile = os.path.join(_path, 'data', 'issue216_scan1.spec')
+        self.testfile = os.path.join(_path, "data", "issue216_scan1.spec")
 
         self._owd = os.getcwd()
         self.tempdir = tempfile.mkdtemp()
@@ -83,12 +81,12 @@ def suite(*args, **kw):
     test_suite = unittest.TestSuite()
     test_list = [
         Issue216,
-        ]
+    ]
     for test_case in test_list:
         test_suite.addTest(unittest.makeSuite(test_case))
     return test_suite
 
 
-if __name__ == '__main__':
-    runner=unittest.TextTestRunner()
+if __name__ == "__main__":
+    runner = unittest.TextTestRunner()
     runner.run(suite())

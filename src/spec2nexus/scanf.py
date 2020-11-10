@@ -33,23 +33,26 @@ DEBUG = False
 
 # As you can probably see it is relatively easy to add more format types
 scanf_translate = [
-    (re.compile(_token), _pattern, _cast) for _token, _pattern, _cast in [
-    ("%c", "(.)", lambda x:x),
-    (r"%(\d)c", "(.{%s})", lambda x:x),
-    (r"%(\d)[di]", r"([+-]?\d{%s})", int),
-    ("%[di]", r"([+-]?\d+)", int),
-    ("%u", r"(\d+)", int),
-
-    #("%[fgeE]", "(\d+\.\d+)", float),
-    # re for float is much trickier!
-    ("%[f]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
-    ("%[geE]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)", float),
-
-    ("%s", r"(\S+)", lambda x:x),
-    ("%([xX])", r"(0%s[\dA-Za-f]+)", lambda x:int(x, 16)),
-    ("%o", "(0[0-7]*)", lambda x:int(x, 7)),
-    ]]
-
+    (re.compile(_token), _pattern, _cast)
+    for _token, _pattern, _cast in [
+        ("%c", "(.)", lambda x: x),
+        (r"%(\d)c", "(.{%s})", lambda x: x),
+        (r"%(\d)[di]", r"([+-]?\d{%s})", int),
+        ("%[di]", r"([+-]?\d+)", int),
+        ("%u", r"(\d+)", int),
+        # ("%[fgeE]", "(\d+\.\d+)", float),
+        # re for float is much trickier!
+        ("%[f]", r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))", float),
+        (
+            "%[geE]",
+            r"([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)",
+            float,
+        ),
+        ("%s", r"(\S+)", lambda x: x),
+        ("%([xX])", r"(0%s[\dA-Za-f]+)", lambda x: int(x, 16)),
+        ("%o", "(0[0-7]*)", lambda x: int(x, 7)),
+    ]
+]
 
 
 # Cache formats
@@ -96,13 +99,12 @@ def _scanf_compile(fmt):
             format_pat += char
             i += 1
     if DEBUG:
-        print ("DEBUG: %r -> %s" % (fmt, format_pat))
+        print("DEBUG: %r -> %s" % (fmt, format_pat))
     format_re = re.compile(format_pat)
     if len(scanf_cache) > SCANF_CACHE_SIZE:
         scanf_cache.clear()
     scanf_cache[fmt] = (format_re, cast_list)
     return format_re, cast_list
-
 
 
 def scanf(fmt, s=None):
@@ -148,7 +150,7 @@ def scanf(fmt, s=None):
         return tuple([casts[i](groups[i]) for i in range(len(groups))])
 
 
-
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(verbose=True, report=True)

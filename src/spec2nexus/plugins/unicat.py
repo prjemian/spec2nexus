@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -9,7 +9,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 """
 **#H** & **#V** - Metadata in SPEC data files as defined by APS UNICAT
@@ -53,8 +53,8 @@ class UNICAT_MetadataMnemonics(ControlLineHandler):
 
     """
 
-    key = r'#H\d+'
-    scan_attributes_defined = ['H']
+    key = r"#H\d+"
+    scan_attributes_defined = ["H"]
 
     def process(self, text, spec_obj, *args, **kws):
         row_text = strip_first_word(text)
@@ -92,19 +92,19 @@ class UNICAT_MetadataValues(ControlLineHandler):
 
     """
 
-    key = r'#V\d+'
-    scan_attributes_defined = ['V', 'metadata']
+    key = r"#V\d+"
+    scan_attributes_defined = ["V", "metadata"]
 
     def process(self, text, scan, *args, **kws):
         index = len(scan.V)
-        row_text =  strip_first_word(text)
-        for delimiter in (r" "*2, r" "):
+        row_text = strip_first_word(text)
+        for delimiter in (r" " * 2, r" "):
             values = re.split(delimiter, row_text)
             if len(scan.header.H[index]) == len(values):
-                    break
+                break
 
         scan.V.append(values)
-        scan.addPostProcessor('unicat_metadata', self.postprocess)
+        scan.addPostProcessor("unicat_metadata", self.postprocess)
 
     def postprocess(self, scan, *args, **kws):
         """
@@ -117,12 +117,19 @@ class UNICAT_MetadataValues(ControlLineHandler):
             msg = "No matching #H line(s) for scan %d" % scan.scanNum
             raise KeyError(msg)
         for row, values in enumerate(scan.V):
-            if (row+1) > len(scan.header.H):
-                msg = "No matching #H%d line for #V%d in scan %d" % (row, row, scan.scanNum)
+            if (row + 1) > len(scan.header.H):
+                msg = "No matching #H%d line for #V%d in scan %d" % (
+                    row,
+                    row,
+                    scan.scanNum,
+                )
                 raise KeyError(msg)
             for col, val in enumerate(values):
-                if (col+1) > len(scan.header.H[row]):
-                    msg = "No matching label in #H%d line for #V%d, column %d in scan %d" % (row, row, col, scan.scanNum)
+                if (col + 1) > len(scan.header.H[row]):
+                    msg = (
+                        "No matching label in #H%d line for #V%d, column %d in scan %d"
+                        % (row, row, col, scan.scanNum)
+                    )
                     raise KeyError(msg)
                 label = scan.header.H[row][col]
                 try:
@@ -133,11 +140,15 @@ class UNICAT_MetadataValues(ControlLineHandler):
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
-        if hasattr(scan, 'metadata') and len(scan.metadata) > 0:
-            desc='SPEC metadata (UNICAT-style #H & #V lines)'
-            group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)
+        if hasattr(scan, "metadata") and len(scan.metadata) > 0:
+            desc = "SPEC metadata (UNICAT-style #H & #V lines)"
+            group = eznx.makeGroup(
+                h5parent, "metadata", nxclass, description=desc
+            )
             writer.save_dict(group, scan.metadata)
 
             # link it to the NXinstrument group
-            nxinstrument = eznx.openGroup(h5parent, 'instrument', "NXinstrument")
+            nxinstrument = eznx.openGroup(
+                h5parent, "instrument", "NXinstrument"
+            )
             eznx.makeLink(h5parent, group, nxinstrument.name + "/metadata")

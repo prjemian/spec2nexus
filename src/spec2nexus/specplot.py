@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2020, Pete R. Jemian
@@ -8,7 +8,7 @@
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
 # The full license is in the file LICENSE.txt, distributed with this software.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 """
 Plot the data from scan N in a SPEC data file
@@ -36,28 +36,32 @@ import os
 import numpy
 
 from . import charts
-from . import spec             # read SPEC data files
+from . import spec  # read SPEC data files
 from . import singletons
 from . import utils
 
 
 class UnexpectedObjectTypeError(RuntimeError):
-    'Exception: incorrect Python object type: programmer error'
+    "Exception: incorrect Python object type: programmer error"
     pass
+
 
 class ScanAborted(RuntimeWarning):
-    'Exception: Scan aborted before all points acquired'
+    "Exception: Scan aborted before all points acquired"
     pass
+
 
 class NotPlottable(ValueError):
-    'Exception: No plottable data for this scan'
+    "Exception: No plottable data for this scan"
     pass
+
 
 class NoDataToPlot(ValueError):
-    'Exception: scan aborted before any points gathered or data not present in SPEC file'
+    "Exception: scan aborted before any points gathered or data not present in SPEC file"
     pass
 
-ABORTED_ATTRIBUTE_TEXT = '_aborted_'
+
+ABORTED_ATTRIBUTE_TEXT = "_aborted_"
 
 
 class Selector(singletons.Singleton):
@@ -102,7 +106,8 @@ class Selector(singletons.Singleton):
         ~default
 
     """
-    default_key = '__default__'
+
+    default_key = "__default__"
 
     def __init__(self):
         self.db = {}
@@ -118,8 +123,8 @@ class Selector(singletons.Singleton):
         * macro ends with "mesh": use :class:`MeshPlotter`
         * default: use default image maker (initially :class:`LinePlotter`)
         """
-        if not isinstance(scan, (spec.SpecDataFileScan, )):
-            msg = 'expected a SPEC scan object, received: '
+        if not isinstance(scan, (spec.SpecDataFileScan,)):
+            msg = "expected a SPEC scan object, received: "
             msg += str(scan)
             raise UnexpectedObjectTypeError(msg)
 
@@ -129,11 +134,11 @@ class Selector(singletons.Singleton):
 
         # adapt for different scan macros
         image_maker = self.default()
-        if macro == 'hklscan':
+        if macro == "hklscan":
             image_maker = HKLScanPlotter
-        elif macro.lower().endswith('scan'):
+        elif macro.lower().endswith("scan"):
             image_maker = LinePlotter
-        elif macro.lower().endswith('mesh'):
+        elif macro.lower().endswith("mesh"):
             image_maker = MeshPlotter
 
         # register this macro name
@@ -149,9 +154,9 @@ class Selector(singletons.Singleton):
         :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
         """
         if self.exists(key):
-            raise KeyError('key exists: ' + key)
+            raise KeyError("key exists: " + key)
         if not issubclass(value, ImageMaker):
-            msg = 'expected subclass of ImageMaker, received type: '
+            msg = "expected subclass of ImageMaker, received type: "
             msg += type(value).__name__
             raise UnexpectedObjectTypeError(msg)
 
@@ -170,9 +175,9 @@ class Selector(singletons.Singleton):
         :raises UnexpectedObjectTypeError: if value is not subclass of :class:`ImageMaker`
         """
         if not self.exists(key):
-            raise KeyError('key does not exist: ' + key)
+            raise KeyError("key does not exist: " + key)
         if not issubclass(value, ImageMaker):
-            msg = 'expected subclass of ImageMaker, received type: '
+            msg = "expected subclass of ImageMaker, received type: "
             msg += type(value).__name__
             raise UnexpectedObjectTypeError(msg)
 
@@ -293,13 +298,15 @@ class ImageMaker(object):
 
         :param str plotFile: name of image file to write
         """
-        raise NotImplementedError('must implement make_image() in each subclass')
+        raise NotImplementedError(
+            "must implement make_image() in each subclass"
+        )
 
     def plottable(self):
         """
         can this data be plotted as expected?
         """
-        return False    # override in subclass with specific tests
+        return False  # override in subclass with specific tests
 
     def plot_options(self):
         """
@@ -340,7 +347,9 @@ class ImageMaker(object):
             ~ScanAborted
 
         """
-        raise NotImplementedError('must implement retrieve_plot_data() in each subclass')
+        raise NotImplementedError(
+            "must implement retrieve_plot_data() in each subclass"
+        )
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # support methods that will not need to be defined in a subclass
@@ -362,10 +371,12 @@ class ImageMaker(object):
         :param obj scan: instance of :class:`~spec2nexus.spec.SpecDataFileScan`
         :param str plotFile: file name for plot output
         """
-        if not isinstance(scan, (spec.SpecDataFileScan, )):
-            raise UnexpectedObjectTypeError('scan object not a SpecDataFileScan')
+        if not isinstance(scan, (spec.SpecDataFileScan,)):
+            raise UnexpectedObjectTypeError(
+                "scan object not a SpecDataFileScan"
+            )
         if hasattr(scan, ABORTED_ATTRIBUTE_TEXT):
-            match_text = 'Scan aborted after 0 points.'
+            match_text = "Scan aborted after 0 points."
             if scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT) == match_text:
                 raise ScanAborted(match_text)
 
@@ -373,15 +384,18 @@ class ImageMaker(object):
 
         self.set_plot_title(self.plot_title() or self.data_file_name())
         self.set_plot_subtitle(
-            self.plot_subtitle() or
-            '#' + str(self.scan.scanNum) + ': ' + self.scan.scanCmd)
+            self.plot_subtitle()
+            or "#" + str(self.scan.scanNum) + ": " + self.scan.scanCmd
+        )
         self.set_timestamp(self.timestamp() or self.scan.date)
 
         try:
             self.retrieve_plot_data()
         except KeyError as _exc:
             if hasattr(self.scan, ABORTED_ATTRIBUTE_TEXT):
-                raise ScanAborted(self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT))
+                raise ScanAborted(
+                    self.scan.__getattribute__(ABORTED_ATTRIBUTE_TEXT)
+                )
             raise _exc
 
         self.plot_options()
@@ -400,79 +414,79 @@ class ImageMaker(object):
         unless explicitly replacing any customizations by the user
         """
         return dict(
-            title = None,
-            subtitle = None,
-            x_title = None,
-            y_title = None,
-            x_log = None,
-            y_log = None,
-            z_log = None,
-            timestamp = None,
+            title=None,
+            subtitle=None,
+            x_title=None,
+            y_title=None,
+            x_log=None,
+            y_log=None,
+            z_log=None,
+            timestamp=None,
         )
 
     def plot_title(self):
-        'return the plot title'
-        return self.settings['title']
+        "return the plot title"
+        return self.settings["title"]
 
     def set_plot_title(self, text):
-        'set the plot title'
-        self.settings['title'] = text
+        "set the plot title"
+        self.settings["title"] = text
 
     def plot_subtitle(self):
-        'return the plot_subtitle'
-        return self.settings['subtitle']
+        "return the plot_subtitle"
+        return self.settings["subtitle"]
 
     def set_plot_subtitle(self, text):
-        'set the plot_subtitle'
-        self.settings['subtitle'] = text
+        "set the plot_subtitle"
+        self.settings["subtitle"] = text
 
     def x_title(self):
-        'return the title for the X axis'
-        return self.settings['x_title']
+        "return the title for the X axis"
+        return self.settings["x_title"]
 
     def set_x_title(self, text):
-        'set the x axis title'
-        self.settings['x_title'] = text
+        "set the x axis title"
+        self.settings["x_title"] = text
 
     def y_title(self):
-        'return the title for the Y axis'
-        return self.settings['y_title']
+        "return the title for the Y axis"
+        return self.settings["y_title"]
 
     def set_y_title(self, text):
-        'set the y axis title'
-        self.settings['y_title'] = text
+        "set the y axis title"
+        self.settings["y_title"] = text
 
     def x_log(self):
-        'boolean: should the X axis be plotted on a log scale?'
-        return self.settings['x_log']
+        "boolean: should the X axis be plotted on a log scale?"
+        return self.settings["x_log"]
 
     def set_x_log(self, choice):
-        'set the x axis logarithmic if True'
-        self.settings['x_log'] = choice
+        "set the x axis logarithmic if True"
+        self.settings["x_log"] = choice
 
     def y_log(self):
-        'boolean: should the Y axis be plotted on a log scale?'
-        return self.settings['y_log']
+        "boolean: should the Y axis be plotted on a log scale?"
+        return self.settings["y_log"]
 
     def set_y_log(self, choice):
-        'set the y axis logarithmic if True'
-        self.settings['y_log'] = choice
+        "set the y axis logarithmic if True"
+        self.settings["y_log"] = choice
 
     def z_log(self):
-        'boolean: should the Z axis (image) be plotted on a log scale?'
-        return self.settings['z_log']
+        "boolean: should the Z axis (image) be plotted on a log scale?"
+        return self.settings["z_log"]
 
     def set_z_log(self, choice):
-        'set the z axis (image) logarithmic if True'
-        self.settings['z_log'] = choice
+        "set the z axis (image) logarithmic if True"
+        self.settings["z_log"] = choice
 
     def timestamp(self):
-        'return the time of this scan as a string'
-        return self.settings['timestamp']
+        "return the time of this scan as a string"
+        return self.settings["timestamp"]
 
     def set_timestamp(self, text):
-        'set the plot time stamp'
-        self.settings['timestamp'] = text
+        "set the plot time stamp"
+        self.settings["timestamp"] = text
 
 
 class LinePlotter(ImageMaker):
@@ -486,9 +500,9 @@ class LinePlotter(ImageMaker):
 
         :param str plotFile: name of image file to write
         """
-        assert(self.signal in self.data)
-        assert(len(self.axes) == 1)
-        assert(self.axes[0] in self.data)
+        assert self.signal in self.data
+        assert len(self.axes) == 1
+        assert self.axes[0] in self.data
 
         y = self.data[self.signal]
         x = self.data[self.axes[0]]
@@ -498,13 +512,14 @@ class LinePlotter(ImageMaker):
             x,
             y,
             plotFile,
-            title = self.plot_title(),
-            subtitle = self.plot_subtitle(),
-            xtitle = self.x_title(),
-            ytitle = self.y_title(),
-            xlog = self.x_log(),
-            ylog = self.y_log(),
-            timestamp_str = ts)
+            title=self.plot_title(),
+            subtitle=self.plot_subtitle(),
+            xtitle=self.x_title(),
+            ytitle=self.y_title(),
+            xlog=self.x_log(),
+            ylog=self.y_log(),
+            timestamp_str=ts,
+        )
 
     def plottable(self):
         """
@@ -512,7 +527,11 @@ class LinePlotter(ImageMaker):
         """
         if self.signal in self.data:
             signal = self.data[self.signal]
-            if signal is not None and len(signal) > 0 and len(self.axes) == 1:
+            if (
+                signal is not None
+                and len(signal) > 0
+                and len(self.axes) == 1
+            ):
                 if len(signal) == len(self.data[self.axes[0]]):
                     return True
         return False
@@ -530,12 +549,18 @@ class LinePlotter(ImageMaker):
     def retrieve_plot_data(self):
         """retrieve default data from spec data file"""
         # plot last column v. first column
-        assert(isinstance(self.scan, spec.SpecDataFileScan))
+        assert isinstance(self.scan, spec.SpecDataFileScan)
         self.signal = self.scan.column_last
         if self.signal not in self.scan.data:
             raise NoDataToPlot(str(self.scan))
-        self.axes = [self.scan.column_first,]
-        self.data = {label: self.scan.data.get(label) for label in self.scan.L if label in self.scan.data}
+        self.axes = [
+            self.scan.column_first,
+        ]
+        self.data = {
+            label: self.scan.data.get(label)
+            for label in self.scan.L
+            if label in self.scan.data
+        }
 
 
 class HKLScanPlotter(LinePlotter):
@@ -547,27 +572,31 @@ class HKLScanPlotter(LinePlotter):
         """retrieve default data from spec data file"""
         # standard hklscan macro handling
         # find the real scan axis, the one that changes
-        for axis in 'H K L'.split():
+        for axis in "H K L".split():
             data = self.scan.data.get(axis)
             if data is None:
                 continue
             # could compare start & end from scanCmd, this looks simpler
             if min(data) != max(data):
                 # tell it to use this axis instead
-                self.axes = [axis,]
+                self.axes = [
+                    axis,
+                ]
                 break
 
         # if not found, default changes nothing
         if data is None:
-            raise NotPlottable('no data in scan: ' + str(self.scan))
+            raise NotPlottable("no data in scan: " + str(self.scan))
 
         if len(self.axes) == 0:
             # issue #99:  file: lmn40.spe, scan 244, hkl all fixed
-            axis = 'data point number'
-            data = range(1, 1+len(self.scan.data['H']))
+            axis = "data point number"
+            data = range(1, 1 + len(self.scan.data["H"]))
             self.scan.data[axis] = data
-            self.set_x_title(axis + ' (hkl all held constant)')
-            self.axes = [axis,]
+            self.set_x_title(axis + " (hkl all held constant)")
+            self.axes = [
+                axis,
+            ]
 
         self.scan.column_first = axis
         self.data[axis] = data
@@ -594,6 +623,7 @@ class MeshPlotter(ImageMaker):
             hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time
 
     """
+
     # see code in: writer.Writer.mesh()        self._mesh_(scan)
 
     def make_image(self, plotFile):
@@ -605,9 +635,8 @@ class MeshPlotter(ImageMaker):
         if len(self.axes) == 2:
             image = self.data[self.signal]
             self.set_plot_subtitle(
-                '%s,  %s' % (self.signal,
-                             self.scan.raw.splitlines()[0])
-                )
+                "%s,  %s" % (self.signal, self.scan.raw.splitlines()[0])
+            )
             self.set_x_title(self.axes[0])
             self.set_y_title(self.axes[1])
 
@@ -615,13 +644,13 @@ class MeshPlotter(ImageMaker):
                 image,
                 plotFile,
                 [self.data[axis] for axis in self.axes],
-                title = self.plot_title(),
-                subtitle = self.plot_subtitle(),
-                timestamp_str = self.timestamp(),
-                xtitle = self.x_title(),
-                ytitle = self.y_title(),
-                log_image = self.z_log(),
-                )
+                title=self.plot_title(),
+                subtitle=self.plot_subtitle(),
+                timestamp_str=self.timestamp(),
+                xtitle=self.x_title(),
+                ytitle=self.y_title(),
+                log_image=self.z_log(),
+            )
         elif len(self.axes) == 1:
             # fallback to 1-D plot
             y = self.data[self.signal]
@@ -630,25 +659,26 @@ class MeshPlotter(ImageMaker):
                 x,
                 y,
                 plotFile,
-                title = self.plot_title(),
-                subtitle = self.plot_subtitle(),
-                xtitle = self.x_title(),
-                ytitle = self.y_title(),
-                xlog = self.x_log(),
-                ylog = self.y_log(),
-                timestamp_str = self.timestamp())
+                title=self.plot_title(),
+                subtitle=self.plot_subtitle(),
+                xtitle=self.x_title(),
+                ytitle=self.y_title(),
+                xlog=self.x_log(),
+                ylog=self.y_log(),
+                timestamp_str=self.timestamp(),
+            )
 
     def plottable(self):
         """
         can this data be plotted as expected?
         """
         try:
-            assert(self.signal in self.data)
+            assert self.signal in self.data
             signal = numpy.array(self.data[self.signal])
-            assert(len(self.axes) in (0,len(signal.shape)))
+            assert len(self.axes) in (0, len(signal.shape))
             for order, axis in enumerate(reversed(self.axes)):
-                assert(axis in self.data)
-                assert(signal.shape[order] == len(self.data[axis]))
+                assert axis in self.data
+                assert signal.shape[order] == len(self.data[axis])
         except Exception:
             return False
         return True
@@ -672,11 +702,21 @@ class MeshPlotter(ImageMaker):
 
         data parser for 2-D mesh and hklmesh
         """
-        label1, start1, end1, intervals1, label2, start2, end2, intervals2, time = self.scan.scanCmd.split()[1:]
+        (
+            label1,
+            start1,
+            end1,
+            intervals1,
+            label2,
+            start2,
+            end2,
+            intervals2,
+            time,
+        ) = self.scan.scanCmd.split()[1:]
         if label1 not in self.scan.data:
-            label1 = self.scan.L[0]      # mnemonic v. name
+            label1 = self.scan.L[0]  # mnemonic v. name
         if label2 not in self.scan.data:
-            label2 = self.scan.L[1]      # mnemonic v. name
+            label2 = self.scan.L[1]  # mnemonic v. name
         axis1 = self.scan.data.get(label1)
         axis2 = self.scan.data.get(label2)
         intervals1, intervals2 = map(int, (intervals1, intervals2))
@@ -684,31 +724,39 @@ class MeshPlotter(ImageMaker):
 
         if len(axis1) < intervals1 and min(axis2) == max(axis2):
             # stopped scan before second row started, 1-D plot is better (issue #82)
-            self.axes = [label1,]
+            self.axes = [
+                label1,
+            ]
             self.signal = self.scan.column_last
             self.data[label1] = self.scan.data[label1]
             self.data[self.signal] = self.scan.data[self.signal]
             return
 
-        axis1 = axis1[0:intervals1+1]
-        self.data[label1] = axis1    # 1-D array
+        axis1 = axis1[0 : intervals1 + 1]
+        self.data[label1] = axis1  # 1-D array
 
-        axis2 = [axis2[row] for row in range(len(axis2)) if row % (intervals1+1) == 0]
-        self.data[label2] = axis2    # 1-D array
+        axis2 = [
+            axis2[row]
+            for row in range(len(axis2))
+            if row % (intervals1 + 1) == 0
+        ]
+        self.data[label2] = axis2  # 1-D array
 
         column_labels = self.scan.L
-        column_labels.remove(label1)    # special handling
-        column_labels.remove(label2)    # special handling
-        if self.scan.scanCmd.startswith('hkl'):
+        column_labels.remove(label1)  # special handling
+        column_labels.remove(label2)  # special handling
+        if self.scan.scanCmd.startswith("hkl"):
             # find the reciprocal space axis held constant
-            label3 = [key for key in ('H', 'K', 'L') if key in column_labels][0]
-            self.data[label3] = self.scan.data.get(label3)[0]    # constant
+            label3 = [
+                key for key in ("H", "K", "L") if key in column_labels
+            ][0]
+            self.data[label3] = self.scan.data.get(label3)[0]  # constant
 
         # build 2-D data objects (do not build label1, label2, [or label3] as 2-D objects)
         data_shape = [len(axis2), len(axis1)]
         for label in column_labels:
             if label not in self.data:
-                axis = numpy.array( self.scan.data.get(label) )
+                axis = numpy.array(self.scan.data.get(label))
                 self.data[label] = utils.reshape_data(axis, data_shape)
             else:
                 pass
@@ -716,17 +764,19 @@ class MeshPlotter(ImageMaker):
         self.signal = utils.clean_name(self.scan.column_last)
         self.axes = [label1, label2]
 
-        if spec.MCA_DATA_KEY in self.scan.data:    # 3-D array(s)
+        if spec.MCA_DATA_KEY in self.scan.data:  # 3-D array(s)
             # save each spectrum
-            for key, spectrum in sorted(self.scan.data[spec.MCA_DATA_KEY].items()):
+            for key, spectrum in sorted(
+                self.scan.data[spec.MCA_DATA_KEY].items()
+            ):
                 num_channels = len(spectrum[0])
                 data_shape.append(num_channels)
                 mca = numpy.array(spectrum)
                 data = utils.reshape_data(mca, data_shape)
-                channels = range(1, num_channels+1)
-                ds_name = '_' + key + '_'
+                channels = range(1, num_channels + 1)
+                ds_name = "_" + key + "_"
                 self.data[ds_name] = data
-                self.data[ds_name+'channel_'] = channels
+                self.data[ds_name + "channel_"] = channels
 
 
 # class NeXusPlotter(ImageMaker):    # TODO: issue #92
@@ -757,11 +807,14 @@ def openSpecFile(specFile):
 
 def main():
     import argparse
+
     doc = __doc__.strip().splitlines()[0]
     p = argparse.ArgumentParser(description=doc)
-    p.add_argument('specFile',    help="SPEC data file name")
-    p.add_argument('scan_number', help="scan number in SPEC file", type=str)
-    p.add_argument('plotFile',    help="output plot file name")
+    p.add_argument("specFile", help="SPEC data file name")
+    p.add_argument(
+        "scan_number", help="scan number in SPEC file", type=str
+    )
+    p.add_argument("plotFile", help="output plot file name")
     args = p.parse_args()
 
     sfile = openSpecFile(args.specFile)
@@ -771,5 +824,5 @@ def main():
     plotter.plot_scan(scan, args.plotFile)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
