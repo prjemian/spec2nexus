@@ -11,6 +11,7 @@
 # -----------------------------------------------------------------------------
 
 import os
+import platform
 import shutil
 import sys
 import tempfile
@@ -399,7 +400,11 @@ class TestFileUpdate(unittest.TestCase):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertGreater(sdf.mtime, 0)
         self.assertFalse(sdf.update_available)
-        self.assertEqual(sdf.filesize, 1837)  # OS dependent?
+        if platform.system() == "Windows":
+            expected = 1877  # 2-byte EOL
+        else:
+            expected = 1837  # 1-byte EOL
+        self.assertEqual(sdf.filesize, expected)
         self.assertEqual(sdf.last_scan, sdf.getLastScanNumber())
         self.assertEqual(sdf.last_scan, "3")
 
@@ -413,14 +418,22 @@ class TestFileUpdate(unittest.TestCase):
         sdf = spec.SpecDataFile(self.data_file.name)
         self.assertNotEqual(sdf.last_scan, None)
         self.assertEqual(len(sdf.getScanNumbers()), 3)
-        self.assertEqual(sdf.filesize, 1837)  # OS dependent?
+        if platform.system() == "Windows":
+            expected = 1877  # 2-byte EOL
+        else:
+            expected = 1837  # 1-byte EOL
+        self.assertEqual(sdf.filesize, expected)
 
         # update the file with more data
         self.addMoreScans()
         time.sleep(SHORT_WAIT)
 
         scan_number = sdf.refresh()
-        self.assertGreater(sdf.filesize, 1837)
+        if platform.system() == "Windows":
+            expected = 4085  # 2-byte EOL
+        else:
+            expected = 1837  # 1-byte EOL  # FIXME: linux
+        self.assertEqual(sdf.filesize, expected)
         self.assertEqual(len(sdf.getScanNumbers()), 5)
         self.assertNotEqual(scan_number, None)
         self.assertNotEqual(sdf.last_scan, None)
