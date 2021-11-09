@@ -370,8 +370,8 @@ class TestFileRefresh(unittest.TestCase):
             if k.endswith(specplot_gallery.PLOT_TYPE)
         ]
         self.assertEqual(len(children), 6)
-        for k in children[:-1]:
-            # should pass all but newest scan
+        for k in children[:-2]:
+            # should pass all but last 2 scans (refresh last existing plus one new)
             self.assertEqual(
                 os.path.getmtime(os.path.join(plotdir, k)), mtimes[k], k
             )
