@@ -92,7 +92,7 @@ class TestEznx(unittest.TestCase):
             self.assertEqual(nxentry.attrs.get("NX_class"), "NXentry")
             self.assertEqual(nxentry.attrs.get("default"), "data")
             self.assertEqual(
-                eznx.read_nexus_field(nxentry, "title").decode("utf8"),
+                eznx.read_nexus_field(nxentry, "title"),
                 "simple test data",
             )
 
@@ -133,7 +133,7 @@ class TestEznx(unittest.TestCase):
             ds = nxentry["data_is_None"]
             value = ds[()]  # ds.value deprecated in h5py
             self.assertEqual(len(value), 0)
-            self.assertEqual(value, "")
+            self.assertTrue(isinstance(value, (bytes, str)))
             self.assertTrue("NOTE" in ds.attrs)
             note = "no data supplied, value set to empty string"
             self.assertEqual(ds.attrs["NOTE"], note)
@@ -177,7 +177,7 @@ class TestEznx(unittest.TestCase):
             nxentry = root["entry"]
             self.assertTrue("external_text" in nxentry)
             value = eznx.read_nexus_field(nxentry, "external_text")
-            self.assertEqual(value, b"some text")
+            self.assertEqual(value, "some text")
             value = eznx.read_nexus_field(
                 nxentry, "external_text", astype=str
             )
@@ -199,7 +199,7 @@ class TestEznx(unittest.TestCase):
             self.assertEqual(value, None)
 
             value = eznx.read_nexus_field(nxentry, "text")
-            self.assertEqual(value, b"some text")
+            self.assertEqual(value, "some text")
             value = eznx.read_nexus_field(nxentry, "text", astype=str)
             self.assertEqual(value, "some text")
 
