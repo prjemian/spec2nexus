@@ -432,7 +432,7 @@ class TestFileUpdate(unittest.TestCase):
         if platform.system() == "Windows":
             expected = 4085  # 2-byte EOL
         else:
-            expected = 1837  # 1-byte EOL  # FIXME: linux
+            expected = 4013  # 1-byte EOL
         self.assertEqual(sdf.filesize, expected)
         self.assertEqual(len(sdf.getScanNumbers()), 5)
         self.assertNotEqual(scan_number, None)
