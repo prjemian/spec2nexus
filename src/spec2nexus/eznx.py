@@ -242,15 +242,26 @@ def read_nexus_field(parent, dataset_name, astype=None):
     if dataset_name not in parent:
         return None
     dataset = parent[dataset_name]
-    dtype = dataset.dtype
-    if astype is not None:
-        dtype = astype
     if len(dataset.shape) > 1:
         raise RuntimeError("unexpected %d-D data" % len(dataset.shape))
-    if dataset.size > 1:
-        return dataset[...].astype(dtype)  # as array
-    else:
-        return dataset[0].astype(dtype)  # as scalar
+
+    if dataset.size > 1:  # as array
+        if astype is not None:
+            return dataset[...].astype(astype)
+        arr = dataset[...]
+        if dataset.dtype.char == "O":
+            arr = [v.decode() for v in arr]
+        return arr
+
+    else:  # as scalar
+        v = dataset[()]
+        if isinstance(v, numpy.ndarray):
+            v = v[0]
+        if isinstance(v, bytes):
+            v = v.decode()
+        if astype is not None:
+            v = astype(v)
+        return v
 
 
 def read_nexus_group_fields(parent, name, fields):
