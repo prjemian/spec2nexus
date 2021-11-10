@@ -5,9 +5,10 @@ import tempfile
 
 
 _ppath = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+_here = os.path.dirname(__file__)
 EXAMPLES_DIR = os.path.join(_ppath, "data")
 PLUGINS_DIR = os.path.join(_ppath, "plugins")
-TEST_DATA_DIR = os.path.abspath(os.path.join(_ppath, "..", "..", "tests", "data"))
+TEST_DATA_DIR = os.path.abspath(os.path.join(_here, "data"))
 
 
 @pytest.fixture
