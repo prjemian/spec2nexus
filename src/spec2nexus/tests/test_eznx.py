@@ -205,7 +205,7 @@ def test_read_nexus_field_alternatives(testdir):
         assert value == "some text"
 
         value = eznx.read_nexus_field(nxentry, "number")
-        assert isinstance(value, numpy.int32)
+        assert isinstance(value, numpy.dtype(int))
         assert value == 42
         value = eznx.read_nexus_field(nxentry, "number", astype=float)
         assert isinstance(value, float)
