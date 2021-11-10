@@ -13,10 +13,10 @@
 import os
 import sys
 
-from . import _core
+from ._core import file_from_tests
 from .. import spec
 
-TEST_SPEC_FILE = os.path.join(_core.TEST_DATA_DIR, "issue119_data.txt")
+TEST_SPEC_FILE = file_from_tests("issue119_data.txt")
 ARGV0 = sys.argv[0]
 
 

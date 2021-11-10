@@ -18,7 +18,7 @@ import sys
 import tempfile
 
 from . import _core
-from ._core import testdir
+from ._core import testpath
 from .. import nexus
 
 
@@ -40,12 +40,12 @@ ARGV0 = sys.argv[0]
         ["xpcs_plugin_sample.spec", "-f --%s   -s 1", "quiet"],
     ]
 )
-def test_example(filename, opts, noise, testdir):
-    specfile = os.path.join(_core.EXAMPLES_DIR, filename)
+def test_example(filename, opts, noise, testpath):
+    specfile = os.path.join(_core.EXAMPLES_PATH, filename)
     assert os.path.exists(specfile)
-    assert os.path.exists(testdir)
+    assert os.path.exists(testpath)
 
-    shutil.copy2(specfile, testdir)
+    shutil.copy2(specfile, testpath)
     # cmd = filename + "  " + opts
     sys.argv = [ARGV0, filename] + (opts % noise).split()
 

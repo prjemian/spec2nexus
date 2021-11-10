@@ -14,17 +14,15 @@ import h5py
 import numpy
 import pytest
 import os
-import shutil
-import tempfile
 
-from ._core import testdir
+from ._core import testpath
 from .. import eznx
 
 
-def test_example(testdir):
+def test_example(testpath):
     hfile = "hfile.h5"
-    assert os.path.exists(testdir)
-    os.chdir(testdir)
+    assert os.path.exists(testpath)
+    os.chdir(testpath)
 
     root = eznx.makeFile(hfile, creator="eznx", default="entry")
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
@@ -102,10 +100,10 @@ def test_example(testdir):
         assert tth[2] == [10.0, 10.1, 10.2, 10.3][2]
 
 
-def test_create_dataset_None(testdir):
+def test_create_dataset_None(testpath):
     hfile = "hfile.h5"
-    assert os.path.exists(testdir)
-    os.chdir(testdir)
+    assert os.path.exists(testpath)
+    os.chdir(testpath)
 
     root = eznx.makeFile(hfile, creator="eznx", default="entry")
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
@@ -125,10 +123,10 @@ def test_create_dataset_None(testdir):
         assert ds.attrs["NOTE"] == note
 
 
-def test_write_dataset_existing(testdir):
+def test_write_dataset_existing(testpath):
     hfile = "hfile.h5"
-    assert os.path.exists(testdir)
-    os.chdir(testdir)
+    assert os.path.exists(testpath)
+    os.chdir(testpath)
 
     root = eznx.makeFile(hfile, creator="eznx", default="entry")
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
@@ -143,10 +141,10 @@ def test_write_dataset_existing(testdir):
         assert value == "replacement text"
 
 
-def test_makeExternalLink(testdir):
+def test_makeExternalLink(testpath):
     hfile = "hfile.h5"
-    assert os.path.exists(testdir)
-    os.chdir(testdir)
+    assert os.path.exists(testpath)
+    os.chdir(testpath)
 
     external = eznx.makeFile(
         "external.h5", creator="eznx", default="entry"
@@ -180,10 +178,10 @@ def test_makeExternalLink(testdir):
         assert value == "some text"
 
 
-def test_read_nexus_field_alternatives(testdir):
+def test_read_nexus_field_alternatives(testpath):
     hfile = "hfile.h5"
-    assert os.path.exists(testdir)
-    os.chdir(testdir)
+    assert os.path.exists(testpath)
+    os.chdir(testpath)
 
     root = eznx.makeFile(hfile, creator="eznx", default="entry")
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")

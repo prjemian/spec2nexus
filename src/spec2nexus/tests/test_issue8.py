@@ -12,11 +12,11 @@
 
 import os
 
-from ._core import TEST_DATA_DIR
+from ._core import file_from_tests
 from .. import spec
 
 
-TEST_FILE = os.path.join(TEST_DATA_DIR, "n_m.txt")
+TEST_FILE = file_from_tests("n_m.txt")
 
 
 def test_data_file():

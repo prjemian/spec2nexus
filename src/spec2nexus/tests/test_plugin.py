@@ -17,6 +17,8 @@ import sys
 
 from . import _core
 from ._core import hfile
+from ._core import file_from_tests
+from ._core import TEST_DATA_PATH
 from .. import plugin
 from .. import spec
 from .. import writer
@@ -74,7 +76,7 @@ def test_custom_plugin():
     assert num_known_control_lines_before != 0
 
     _filename = os.path.join(
-        _core.TEST_DATA_DIR, "..", "custom_plugins", "specfile.txt"
+        _core.TEST_DATA_PATH, "..", "custom_plugins", "specfile.txt"
     )
     # custom_key = "#TEST"            # in SPEC data file
     # custom_attribute = "MyTest"     # in python, scan.MyTest
@@ -93,7 +95,7 @@ def test_custom_plugin():
     assert exc.value.args[0] == expected
 
     # next, test again after loading plugin
-    sys.path.append(os.path.join(_core.TEST_DATA_DIR, ".."))
+    sys.path.append(file_from_tests(".."))
     from custom_plugins import process_only_plugin
 
     num_known_control_lines_after = len(manager.lazy_attributes)
@@ -112,7 +114,7 @@ def test_custom_plugin():
 
 
 def test_geometry_plugin(hfile):
-    fname = os.path.join(_core.EXAMPLES_DIR, "33bm_spec.dat")
+    fname = os.path.join(_core.EXAMPLES_PATH, "33bm_spec.dat")
     scan_number = 17
     sdf = spec.SpecDataFile(fname)
     scan = sdf.getScan(scan_number)
@@ -170,7 +172,7 @@ def test_geometry_plugin(hfile):
 
 def test_empty_positioner():
     "issue #196"
-    fname = os.path.join(_core.TEST_DATA_DIR, "issue196_data.txt")
+    fname = file_from_tests("issue196_data.txt")
     assert os.path.exists(fname)
     scan_number = 108
     sdf = spec.SpecDataFile(fname)
@@ -191,7 +193,7 @@ def test_empty_positioner():
 
 def test_nonempty_positioner():
     "issue #196"
-    fname = os.path.join(_core.TEST_DATA_DIR, "issue196_data2.txt")
+    fname = file_from_tests("issue196_data2.txt")
     scan_number = 108
     sdf = spec.SpecDataFile(fname)
     scan = sdf.getScan(scan_number)

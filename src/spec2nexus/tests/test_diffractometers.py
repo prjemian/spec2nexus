@@ -16,8 +16,8 @@ import numpy
 import os
 import pytest
 
-from ._core import EXAMPLES_DIR
-from ._core import TEST_DATA_DIR
+from ._core import EXAMPLES_PATH
+from ._core import TEST_DATA_PATH
 from .. import spec
 from .. import diffractometers
 
@@ -156,29 +156,29 @@ def test_class_DiffractometerGeometryCatalog():
 @pytest.mark.parametrize(
     "base_path, filename, scan_number, geo_name",
     [
-        [TEST_DATA_DIR, "issue109_data.txt", -1, "fourc.default"],  # 8-ID-I
-        [TEST_DATA_DIR, "issue119_data.txt", -1, "spec.default"],  # USAXS
-        [TEST_DATA_DIR, "issue161_spock_spec_file", -1, "spec.default"],  # SPOCK
-        [TEST_DATA_DIR, "JL124_1.spc", -1, "sixc.default"],
+        [TEST_DATA_PATH, "issue109_data.txt", -1, "fourc.default"],  # 8-ID-I
+        [TEST_DATA_PATH, "issue119_data.txt", -1, "spec.default"],  # USAXS
+        [TEST_DATA_PATH, "issue161_spock_spec_file", -1, "spec.default"],  # SPOCK
+        [TEST_DATA_PATH, "JL124_1.spc", -1, "sixc.default"],
         # [TEST_DATA_DIR, 'test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
-        [TEST_DATA_DIR, "test_3.spec", -1, "spec"],  # predates #o (mnemonics) lines
-        [TEST_DATA_DIR, "test_4.spec", -1, "spec"],  # predates #o (mnemonics) lines
+        [TEST_DATA_PATH, "test_3.spec", -1, "spec"],  # predates #o (mnemonics) lines
+        [TEST_DATA_PATH, "test_4.spec", -1, "spec"],  # predates #o (mnemonics) lines
 
-        [EXAMPLES_DIR, "02_03_setup.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "03_06_JanTest.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "05_02_test.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "33bm_spec.dat", -1, "fourc.default"],
-        [EXAMPLES_DIR, "33id_spec.dat", -1, "spec"],  # psic but predates #o (mnemonics) lines
-        [EXAMPLES_DIR, "APS_spec_data.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "CdOsO", -1, "fourc.default"],
-        [EXAMPLES_DIR, "CdSe", -1, "fourc.default"],
-        [EXAMPLES_DIR, "lmn40.spe", -1, "spec"],
-        [EXAMPLES_DIR, "mca_spectra_example.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "spec_from_spock.spc", -1, "spec.default"],
-        [EXAMPLES_DIR, "startup_1.spec", 1, "spec"],
-        [EXAMPLES_DIR, "usaxs-bluesky-specwritercallback.dat", -1, "spec.default"],
-        [EXAMPLES_DIR, "user6idd.dat", -1, "spec"],  # predates #o (mnemonics) lines
-        [EXAMPLES_DIR, "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc", -1, "fourc.default"],
+        [EXAMPLES_PATH, "02_03_setup.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "03_06_JanTest.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "05_02_test.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "33bm_spec.dat", -1, "fourc.default"],
+        [EXAMPLES_PATH, "33id_spec.dat", -1, "spec"],  # psic but predates #o (mnemonics) lines
+        [EXAMPLES_PATH, "APS_spec_data.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "CdOsO", -1, "fourc.default"],
+        [EXAMPLES_PATH, "CdSe", -1, "fourc.default"],
+        [EXAMPLES_PATH, "lmn40.spe", -1, "spec"],
+        [EXAMPLES_PATH, "mca_spectra_example.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "spec_from_spock.spc", -1, "spec.default"],
+        [EXAMPLES_PATH, "startup_1.spec", 1, "spec"],
+        [EXAMPLES_PATH, "usaxs-bluesky-specwritercallback.dat", -1, "spec.default"],
+        [EXAMPLES_PATH, "user6idd.dat", -1, "spec"],  # predates #o (mnemonics) lines
+        [EXAMPLES_PATH, "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc", -1, "fourc.default"],
     ]
 )
 def test_file_processing(base_path, filename, scan_number, geo_name):

@@ -14,7 +14,7 @@ import os
 import pytest
 import sys
 
-from ._core import EXAMPLES_DIR
+from ._core import EXAMPLES_PATH
 from .. import extractSpecScan
 
 
@@ -22,7 +22,7 @@ from .. import extractSpecScan
 
 
 def test_CdSe_scan_92(capsys):
-    fname = os.path.join(EXAMPLES_DIR, "CdSe")
+    fname = os.path.join(EXAMPLES_PATH, "CdSe")
     sys.argv = [sys.argv[0], fname]
     sys.argv.append("-s")
     sys.argv.append("92")
@@ -64,7 +64,7 @@ def test_CdSe_scan_92(capsys):
 
 
 def test_CdSe_scan_95(capsys):
-    fname = os.path.join(EXAMPLES_DIR, "CdSe")
+    fname = os.path.join(EXAMPLES_PATH, "CdSe")
     sys.argv = [sys.argv[0], fname]
     sys.argv.append("-s")
     sys.argv.append("95")

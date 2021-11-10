@@ -13,7 +13,7 @@
 import h5py
 import os
 
-from ._core import EXAMPLES_DIR
+from ._core import EXAMPLES_PATH
 from ._core import hfile
 from .. import spec
 from .. import writer
@@ -28,7 +28,7 @@ def test_the_data_file(hfile):
     * Fly scans
     * #O+#o and #J+#j control lines
     """
-    file1 = os.path.join(EXAMPLES_DIR, "03_06_JanTest.dat")
+    file1 = os.path.join(EXAMPLES_PATH, "03_06_JanTest.dat")
 
     specfile = spec.SpecDataFile(file1)
     assert isinstance(specfile, spec.SpecDataFile), file1

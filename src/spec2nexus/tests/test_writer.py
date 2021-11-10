@@ -22,7 +22,7 @@ from .. import writer
 
 def testWriter(hfile):
     """Test the writer.Writer class."""
-    spec_file = os.path.join(_core.EXAMPLES_DIR, "33id_spec.dat")
+    spec_file = os.path.join(_core.EXAMPLES_PATH, "33id_spec.dat")
     assert os.path.exists(spec_file)
 
     spec_data = spec.SpecDataFile(spec_file)
@@ -55,7 +55,7 @@ def testWriter(hfile):
 
 def test_save_data_mesh(hfile):
     # S 22  mesh  eta 57 57.1 10  chi 90.9 91 10  1
-    spec_file = os.path.join(_core.EXAMPLES_DIR, "33id_spec.dat")
+    spec_file = os.path.join(_core.EXAMPLES_PATH, "33id_spec.dat")
     assert os.path.exists(spec_file)
 
     spec_data = spec.SpecDataFile(spec_file)
@@ -77,7 +77,7 @@ def test_save_data_mesh(hfile):
 
 def test_save_data_hklmesh(hfile):
     # S 17  hklmesh  H 1.9 2.1 100  K 1.9 2.1 100  -800000
-    spec_file = os.path.join(_core.EXAMPLES_DIR, "33bm_spec.dat")
+    spec_file = os.path.join(_core.EXAMPLES_PATH, "33bm_spec.dat")
     assert os.path.exists(spec_file)
 
     spec_data = spec.SpecDataFile(spec_file)
@@ -103,7 +103,7 @@ def test_save_data_hklmesh(hfile):
     ]
 )
 def test_hkl_scans(filename, scan_number, signal, axes, hfile):
-    spec_file = os.path.join(_core.EXAMPLES_DIR, filename)
+    spec_file = os.path.join(_core.EXAMPLES_PATH, filename)
     assert os.path.exists(spec_file)
 
     spec_data = spec.SpecDataFile(spec_file)

@@ -17,7 +17,7 @@ from . import _core
 from .. import spec
 
 
-TEST_SPEC_FILE = os.path.join(_core.EXAMPLES_DIR, "CdOsO")
+TEST_SPEC_FILE = os.path.join(_core.EXAMPLES_PATH, "CdOsO")
 
 
 def test_data_file():

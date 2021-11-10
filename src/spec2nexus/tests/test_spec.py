@@ -13,12 +13,12 @@
 import os
 import platform
 import pytest
-import shutil
-import tempfile
 import time
 
 from . import _core
-from ._core import tempdir
+from ._core import file_from_examples
+from ._core import file_from_tests
+from ._core import testpath
 from .. import spec
 from .. import utils
 
@@ -29,12 +29,8 @@ from .. import utils
 SHORT_WAIT = 0.1
 
 
-def abs_data_fname(fname):
-    return os.path.join(_core.EXAMPLES_DIR, fname)
-
-
 def is_spec_file(fname):
-    return spec.is_spec_file(abs_data_fname(fname))
+    return spec.is_spec_file(file_from_examples(fname))
 
 
 def test_strip_first_word():
@@ -45,11 +41,11 @@ def test_isSpecFileThis():
     assert not spec.is_spec_file("this_does_not_exist")
     assert not spec.is_spec_file(os.path.join(_core._ppath, "..", "spec2nexus"))
     assert not spec.is_spec_file(__file__)
-    assert spec.is_spec_file(abs_data_fname("APS_spec_data.dat"))
+    assert spec.is_spec_file(file_from_examples("APS_spec_data.dat"))
     assert not spec.is_spec_file_with_header("file does not exist")
-    assert spec.is_spec_file_with_header(abs_data_fname("APS_spec_data.dat"))
+    assert spec.is_spec_file_with_header(file_from_examples("APS_spec_data.dat"))
     assert not spec.is_spec_file_with_header(
-        abs_data_fname("spec_from_spock.spc")
+        file_from_examples("spec_from_spock.spc")
     )
 
 
@@ -99,13 +95,13 @@ def test_file_initial_exceptions():
     with pytest.raises(spec.SpecDataFileNotFound):
         spec.SpecDataFile("cannot_find_this_file")
     with pytest.raises(spec.SpecDataFileNotFound):
-        spec.SpecDataFile(abs_data_fname("03_05_UImg.dat"))
+        spec.SpecDataFile(file_from_examples("03_05_UImg.dat"))
     with pytest.raises(spec.NotASpecDataFile):
         spec.SpecDataFile(__file__)
 
 
 def test_33bm_spec():
-    fname = abs_data_fname("33bm_spec.dat")
+    fname = file_from_examples("33bm_spec.dat")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 1
@@ -143,7 +139,7 @@ def test_33bm_spec():
 
 
 def test_33id_spec():
-    fname = abs_data_fname("33id_spec.dat")
+    fname = file_from_examples("33id_spec.dat")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 1
@@ -178,7 +174,7 @@ def test_33id_spec():
 
 def test_APS_spec_data():
     """UNICAT metadata."""
-    fname = abs_data_fname("APS_spec_data.dat")
+    fname = file_from_examples("APS_spec_data.dat")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 1
@@ -212,7 +208,7 @@ def test_APS_spec_data():
 
 
 def test_CdSe():
-    fname = abs_data_fname("CdSe")
+    fname = file_from_examples("CdSe")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 1
@@ -246,7 +242,7 @@ def test_CdSe():
 
 
 def test_lmn40():
-    fname = abs_data_fname("lmn40.spe")
+    fname = file_from_examples("lmn40.spe")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 2  # TODO: test more here!
@@ -281,7 +277,7 @@ def test_lmn40():
 
 
 def test_YSZ011_ALDITO_Fe2O3_planar_fired_1():
-    fname = abs_data_fname("YSZ011_ALDITO_Fe2O3_planar_fired_1.spc")
+    fname = file_from_examples("YSZ011_ALDITO_Fe2O3_planar_fired_1.spc")
     sfile = spec.SpecDataFile(fname)
     assert sfile.fileName == fname
     assert len(sfile.headers) == 1
@@ -318,7 +314,7 @@ def test_YSZ011_ALDITO_Fe2O3_planar_fired_1():
 
 
 def test_extra_control_line_content__issue109():
-    specFile = os.path.join(_core.TEST_DATA_DIR, "issue109_data.txt")
+    specFile = file_from_tests("issue109_data.txt")
     assert os.path.exists(specFile)
     sfile = spec.SpecDataFile(specFile)
 
@@ -361,7 +357,7 @@ def test_str_parm(filename):
     if filename is None:
         specFile = None
     else:
-        specFile = os.path.join(_core.TEST_DATA_DIR, filename)
+        specFile = file_from_tests(filename)
         assert os.path.exists(specFile)
     sdf = spec.SpecDataFile(specFile)
     assert os.path.basename(str(sdf)) == str(filename)
@@ -369,9 +365,9 @@ def test_str_parm(filename):
         assert str(sdf) == sdf.fileName
 
 
-def test_specfile_update_available(tempdir):
+def test_specfile_update_available(testpath):
     """test the ``update_available`` property"""
-    spec_file = _core.getActiveSpecDataFile(tempdir)
+    spec_file = _core.getActiveSpecDataFile(testpath)
 
     sdf = spec.SpecDataFile(spec_file)
     assert sdf.mtime> 0
@@ -391,8 +387,8 @@ def test_specfile_update_available(tempdir):
     assert sdf.update_available
 
 
-def test_specfile_refresh(tempdir):
-    spec_file = _core.getActiveSpecDataFile(tempdir)
+def test_specfile_refresh(testpath):
+    spec_file = _core.getActiveSpecDataFile(testpath)
     sdf = spec.SpecDataFile(spec_file)
     assert sdf.last_scan != None
     assert len(sdf.getScanNumbers()) == 3

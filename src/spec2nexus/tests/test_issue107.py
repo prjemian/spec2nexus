@@ -13,13 +13,13 @@
 import h5py
 import os
 
-from . import _core
 from ._core import hfile
+from ._core import file_from_tests
 from .. import spec
 from .. import writer
 
 
-TEST_SPEC_FILE = os.path.join(_core.TEST_DATA_DIR, "JL124_1.spc")
+TEST_SPEC_FILE = file_from_tests("JL124_1.spc")
 
 
 def test_issue107_data_file():

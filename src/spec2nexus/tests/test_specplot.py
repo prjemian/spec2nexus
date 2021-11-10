@@ -17,15 +17,13 @@ import sys
 import time
 
 from . import _core
-from ._core import tempdir
+from ._core import file_from_examples
+from ._core import file_from_tests
+from ._core import testpath
 from .. import specplot
 
 
 ARGV0 = sys.argv[0]
-
-
-def abs_data_fname(fname):
-    return os.path.join(_core.EXAMPLES_DIR, fname)
 
 
 # class Issue_66_plotting_problems():
@@ -45,8 +43,8 @@ def abs_data_fname(fname):
 #     #         pass
 
 
-def test_scan_aborted_after_0_points(tempdir):
-    spec_file = abs_data_fname("33bm_spec.dat")
+def test_scan_aborted_after_0_points(testpath):
+    spec_file = file_from_examples("33bm_spec.dat")
     scan_number = 15
 
     sdf = specplot.openSpecFile(spec_file)
@@ -54,7 +52,7 @@ def test_scan_aborted_after_0_points(tempdir):
     assert scan is not None
     plotter = specplot.LinePlotter()
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -64,8 +62,8 @@ def test_scan_aborted_after_0_points(tempdir):
     assert not os.path.exists(plot_file)
 
 
-def test_y_values_all_zero_lin_lin(tempdir):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "issue64_data.txt")
+def test_y_values_all_zero_lin_lin(testpath):
+    spec_file = file_from_tests("issue64_data.txt")
     scan_number = 50
     assert os.path.exists(spec_file)
 
@@ -74,7 +72,7 @@ def test_y_values_all_zero_lin_lin(tempdir):
     assert scan is not None
     plotter = specplot.LinePlotter()
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -82,8 +80,8 @@ def test_y_values_all_zero_lin_lin(tempdir):
     assert os.path.exists(plot_file)
 
 
-def test_y_values_all_zero_log_lin(tempdir):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "issue64_data.txt")
+def test_y_values_all_zero_log_lin(testpath):
+    spec_file = file_from_tests("issue64_data.txt")
     scan_number = 50
 
     sfile = specplot.openSpecFile(spec_file)
@@ -91,7 +89,7 @@ def test_y_values_all_zero_log_lin(tempdir):
     assert scan is not None
     plotter = specplot.LinePlotter()
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -101,15 +99,15 @@ def test_y_values_all_zero_log_lin(tempdir):
     assert not os.path.exists(plot_file)
 
 
-def test_command_line(tempdir):
-    spec_file = abs_data_fname("02_03_setup.dat")
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+def test_command_line(testpath):
+    spec_file = file_from_examples("02_03_setup.dat")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     sys.argv = [ARGV0, spec_file, "1", plot_file]
 
     specplot.main()
     assert os.path.exists(plot_file)
 
-    shutil.rmtree(tempdir, ignore_errors=True)
+    shutil.rmtree(testpath, ignore_errors=True)
     assert not os.path.exists(plot_file)
 
 
@@ -121,18 +119,18 @@ def test_command_line(tempdir):
         ["33bm_spec.dat", 14],  # issue 80 -- hklscan, l
     ]
 )
-def test_command_line_plot(filename, scan_number, tempdir):
-    specFile = abs_data_fname(filename)
+def test_command_line_plot(filename, scan_number, testpath):
+    specFile = file_from_examples(filename)
 
-    plot_file = os.path.join(tempdir, "image.png")
+    plot_file = os.path.join(testpath, "image.png")
     sys.argv = [ARGV0, specFile, str(scan_number), plot_file]
 
     specplot.main()
     assert os.path.exists(plot_file)
 
 
-def test_one_line_mesh_scan_as_1D_plot_issue82(tempdir):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "issue82_data.txt")
+def test_one_line_mesh_scan_as_1D_plot_issue82(testpath):
+    spec_file = file_from_tests("issue82_data.txt")
     scan_number = 17
 
     sdf = specplot.openSpecFile(spec_file)
@@ -145,7 +143,7 @@ def test_one_line_mesh_scan_as_1D_plot_issue82(tempdir):
     plotter = image_maker()
     assert isinstance(plotter, specplot.MeshPlotter)
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -153,8 +151,8 @@ def test_one_line_mesh_scan_as_1D_plot_issue82(tempdir):
     assert os.path.exists(plot_file)
 
 
-def test_one_line_mesh_scan_type_error_33id_29(tempdir):
-    spec_file = abs_data_fname("33id_spec.dat")
+def test_one_line_mesh_scan_type_error_33id_29(testpath):
+    spec_file = file_from_examples("33id_spec.dat")
     scan_number = 29
 
     sdf = specplot.openSpecFile(spec_file)
@@ -167,7 +165,7 @@ def test_one_line_mesh_scan_type_error_33id_29(tempdir):
     plotter = image_maker()
     assert isinstance(plotter, specplot.MeshPlotter)
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -175,8 +173,8 @@ def test_one_line_mesh_scan_type_error_33id_29(tempdir):
     assert os.path.exists(plot_file)
 
 
-def test_40x35_grid_shown_properly_lmn40_spe(tempdir):
-    spec_file = abs_data_fname("lmn40.spe")
+def test_40x35_grid_shown_properly_lmn40_spe(testpath):
+    spec_file = file_from_examples("lmn40.spe")
     scan_number = 14
 
     sdf = specplot.openSpecFile(spec_file)
@@ -189,7 +187,7 @@ def test_40x35_grid_shown_properly_lmn40_spe(tempdir):
     plotter = image_maker()
     assert isinstance(plotter, specplot.MeshPlotter)
 
-    plot_file = os.path.join(tempdir, "spec_plot.png")
+    plot_file = os.path.join(testpath, "spec_plot.png")
     if os.path.exists(plot_file):  # always re-create this plot for testing
         os.remove(plot_file)
 
@@ -197,11 +195,11 @@ def test_40x35_grid_shown_properly_lmn40_spe(tempdir):
     assert os.path.exists(plot_file)
 
 
-def test_refresh(tempdir):
-    plot = os.path.join(tempdir, "plot.svg")
-    plot2 = os.path.join(tempdir, "plot2.svg")
+def test_refresh(testpath):
+    plot = os.path.join(testpath, "plot.svg")
+    plot2 = os.path.join(testpath, "plot2.svg")
 
-    spec_file = _core.getActiveSpecDataFile(tempdir)
+    spec_file = _core.getActiveSpecDataFile(testpath)
 
     sdf = specplot.openSpecFile(spec_file)
     scan = sdf.getScan(3)

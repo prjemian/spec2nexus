@@ -17,7 +17,7 @@ import sys
 from .. import spec
 from . import _core
 
-TESTFILE = os.path.join(_core.EXAMPLES_DIR, "05_02_test.dat")
+TESTFILE = os.path.join(_core.EXAMPLES_PATH, "05_02_test.dat")
 ARGV0 = sys.argv[0]
 
 

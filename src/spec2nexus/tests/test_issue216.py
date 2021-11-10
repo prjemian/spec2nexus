@@ -32,11 +32,11 @@ the number of values on each data line (7).
 import os
 import pytest
 
-from . import _core
+from ._core import file_from_tests
 from .. import spec
 
 
-TEST_SPEC_FILE = os.path.join(_core.TEST_DATA_DIR, "issue216_scan1.spec")
+TEST_SPEC_FILE = file_from_tests("issue216_scan1.spec")
 
 
 def test_nexus_file():

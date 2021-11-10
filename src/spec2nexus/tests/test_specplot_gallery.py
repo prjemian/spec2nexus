@@ -19,39 +19,41 @@ import sys
 import time
 
 from . import _core
-from ._core import tempdir
+from ._core import file_from_examples
+from ._core import file_from_tests
+from ._core import testpath
 from .. import specplot_gallery
 
 
 ARGV0 = sys.argv[0]
-SHORT_DELAY = 0.1  # allo time for OS to update mtime
+
+# interval between file update and mtime reading
+# at least a clock tick (1/60 s)
+# or at least 1 second if not using float time for os.path.getmtime
+SHORT_WAIT = 0.1
 
 
-def abs_data_fname(fname):
-    return os.path.join(_core.EXAMPLES_DIR, fname)
-
-
-def test_command_line_NeXus_writer_1_3(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir, abs_data_fname("writer_1_3.h5")]
+def test_command_line_NeXus_writer_1_3(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath, file_from_examples("writer_1_3.h5")]
 
     specplot_gallery.main()
 
     # this is HDF5 file, not SPEC, so no content
-    children = os.listdir(tempdir)
+    children = os.listdir(testpath)
     assert len(children) == 0
 
 
-def test_command_line_spec_data_file_33bm_spec(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir, abs_data_fname("33bm_spec.dat")]
+def test_command_line_spec_data_file_33bm_spec(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath, file_from_examples("33bm_spec.dat")]
 
     specplot_gallery.main()
 
-    assert os.path.exists(os.path.join(tempdir, specplot_gallery.MTIME_CACHE_FILE))
+    assert os.path.exists(os.path.join(testpath, specplot_gallery.MTIME_CACHE_FILE))
     # TODO: test contents of mtime_cache.txt?
 
-    plot_path = os.path.join(tempdir, "2010", "06", "33bm_spec")
+    plot_path = os.path.join(testpath, "2010", "06", "33bm_spec")
     assert os.path.exists(plot_path)
     assert os.path.exists(os.path.join(plot_path, "33bm_spec.dat"))
 
@@ -60,32 +62,32 @@ def test_command_line_spec_data_file_33bm_spec(tempdir):
     # TODO: #69: look for handling of scan 15
 
 
-def test_command_line_spec_data_file_user6idd(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir, abs_data_fname("user6idd.dat")]
+def test_command_line_spec_data_file_user6idd(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath, file_from_examples("user6idd.dat")]
 
     specplot_gallery.main()
 
-    assert os.path.exists(os.path.join(tempdir, specplot_gallery.MTIME_CACHE_FILE))
+    assert os.path.exists(os.path.join(testpath, specplot_gallery.MTIME_CACHE_FILE))
 
     # S1 aborted, S2 all X,Y are 0,0
-    plot_path = os.path.join(tempdir, "2013", "10", "user6idd")
+    plot_path = os.path.join(testpath, "2013", "10", "user6idd")
     assert os.path.exists(plot_path)
     assert os.path.exists(os.path.join(plot_path, "user6idd.dat"))
     assert os.path.exists(os.path.join(plot_path, "index.html"))
     # TODO: #69: look for handling of scan 1
 
 
-def test_command_line_spec_data_file_03_06_JanTest(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir, abs_data_fname("03_06_JanTest.dat")]
+def test_command_line_spec_data_file_03_06_JanTest(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath, file_from_examples("03_06_JanTest.dat")]
 
     specplot_gallery.main()
 
-    assert os.path.exists(os.path.join(tempdir, specplot_gallery.MTIME_CACHE_FILE))
+    assert os.path.exists(os.path.join(testpath, specplot_gallery.MTIME_CACHE_FILE))
 
     # S1 aborted, S2 all X,Y are 0,0
-    plot_path = os.path.join(tempdir, "2014", "03", "03_06_JanTest")
+    plot_path = os.path.join(testpath, "2014", "03", "03_06_JanTest")
     assert os.path.exists(plot_path)
     assert os.path.exists(os.path.join(plot_path, "03_06_JanTest.dat"))
     assert os.path.exists(os.path.join(plot_path, "index.html"))
@@ -95,15 +97,15 @@ def test_command_line_spec_data_file_03_06_JanTest(tempdir):
     # TODO: look for that scan in index.html?
 
 
-def test_command_line_spec_data_file_02_03_setup(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir, abs_data_fname("02_03_setup.dat")]
+def test_command_line_spec_data_file_02_03_setup(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath, file_from_examples("02_03_setup.dat")]
 
     specplot_gallery.main()
 
-    assert os.path.exists(os.path.join(tempdir, specplot_gallery.MTIME_CACHE_FILE))
+    assert os.path.exists(os.path.join(testpath, specplot_gallery.MTIME_CACHE_FILE))
 
-    plot_path = os.path.join(tempdir, "2016", "02", "02_03_setup")
+    plot_path = os.path.join(testpath, "2016", "02", "02_03_setup")
     assert os.path.exists(plot_path)
     assert os.path.exists(os.path.join(plot_path, "02_03_setup.dat"))
     web_page = os.path.join(plot_path, "index.html")
@@ -128,68 +130,68 @@ def test_command_line_spec_data_file_02_03_setup(tempdir):
             break
 
 
-def test_command_line_spec_data_file_list(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-d", tempdir]
+def test_command_line_spec_data_file_list(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-d", testpath]
 
     for item in "user6idd.dat APS_spec_data.dat 02_03_setup.dat".split():
-        sys.argv.append(abs_data_fname(item))
+        sys.argv.append(file_from_examples(item))
 
     specplot_gallery.main()
 
-    assert os.path.exists(os.path.join(tempdir, specplot_gallery.MTIME_CACHE_FILE))
+    assert os.path.exists(os.path.join(testpath, specplot_gallery.MTIME_CACHE_FILE))
 
-    plot_path = os.path.join(tempdir, "2010", "11", "APS_spec_data")
+    plot_path = os.path.join(testpath, "2010", "11", "APS_spec_data")
     assert os.path.exists(plot_path)
     for item in "APS_spec_data.dat   index.html".split():
         assert os.path.exists(os.path.join(plot_path, item))
 
-    plot_path = os.path.join(tempdir, "2013", "10", "user6idd")
+    plot_path = os.path.join(testpath, "2013", "10", "user6idd")
     assert os.path.exists(plot_path)
     for item in "user6idd.dat   index.html".split():
         assert os.path.exists(os.path.join(plot_path, item))
 
-    plot_path = os.path.join(tempdir, "2016", "02", "02_03_setup")
+    plot_path = os.path.join(testpath, "2016", "02", "02_03_setup")
     assert os.path.exists(plot_path)
     for item in "02_03_setup.dat   index.html".split():
         assert os.path.exists(os.path.join(plot_path, item))
 
 
-def test_command_line_spec_data_file_list_reversed_chronological_issue_79(tempdir):
-    assert os.path.exists(tempdir)
-    sys.argv = [ARGV0, "-r", "-d", tempdir, abs_data_fname("APS_spec_data.dat")]
+def test_command_line_spec_data_file_list_reversed_chronological_issue_79(testpath):
+    assert os.path.exists(testpath)
+    sys.argv = [ARGV0, "-r", "-d", testpath, file_from_examples("APS_spec_data.dat")]
 
     specplot_gallery.main()
 
-    plot_path = os.path.join(tempdir, "2010", "11", "APS_spec_data")
+    plot_path = os.path.join(testpath, "2010", "11", "APS_spec_data")
     assert os.path.exists(plot_path)
     for item in "APS_spec_data.dat   index.html".split():
         assert os.path.exists(os.path.join(plot_path, item))
 
 
 def test_command_line_specified_directory_not_found_issue_98():
-    sys.argv = [ARGV0, "-d", "Goofball-directory_does_not_exist", abs_data_fname("APS_spec_data.dat")]
+    sys.argv = [ARGV0, "-d", "Goofball-directory_does_not_exist", file_from_examples("APS_spec_data.dat")]
 
     with pytest.raises(specplot_gallery.DirectoryNotFoundError):
         specplot_gallery.main()
 
 
-def test_command_line_specified_directory_fails_isdir_issue_98(tempdir):
-    text_file_name = os.path.join(tempdir, "goofball.txt")
+def test_command_line_specified_directory_fails_isdir_issue_98(testpath):
+    text_file_name = os.path.join(testpath, "goofball.txt")
     with open(text_file_name, "w") as outp:
         outp.write("goofball text is not a directory")
 
-    sys.argv = [ARGV0, "-d", text_file_name, abs_data_fname("APS_spec_data.dat")]
+    sys.argv = [ARGV0, "-d", text_file_name, file_from_examples("APS_spec_data.dat")]
 
     with pytest.raises(specplot_gallery.PathIsNotDirectoryError):
         specplot_gallery.main()
 
 
-def test_refresh(tempdir):
-    spec_file = _core.getActiveSpecDataFile(tempdir)
+def test_refresh(testpath):
+    spec_file = _core.getActiveSpecDataFile(testpath)
     assert os.path.exists(spec_file)
 
-    gallery = os.path.join(tempdir, "gallery")
+    gallery = os.path.join(testpath, "gallery")
     assert not os.path.exists(gallery)
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
@@ -223,7 +225,7 @@ def test_refresh(tempdir):
 
     # update the file with more data
     _core.addMoreScans(spec_file)
-    time.sleep(SHORT_DELAY)
+    time.sleep(SHORT_WAIT)
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     k = children[-1]
@@ -241,7 +243,7 @@ def test_refresh(tempdir):
 
     # update the file with another scan
     _core.addMoreScans(spec_file, "refresh3.txt")
-    time.sleep(SHORT_DELAY)
+    time.sleep(SHORT_WAIT)
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     children = [
@@ -256,8 +258,8 @@ def test_refresh(tempdir):
 
     # restart file with first set of scans, should trigger replot all
     t0 = time.time()
-    time.sleep(SHORT_DELAY)
-    src = os.path.join(_core.TEST_DATA_DIR, "refresh1.txt")
+    time.sleep(SHORT_WAIT)
+    src = file_from_tests("refresh1.txt")
     shutil.copy(src, spec_file)
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
@@ -272,13 +274,13 @@ def test_refresh(tempdir):
         assert os.path.getmtime(os.path.join(plotdir, k)) > t0, k
 
     _core.addMoreScans(spec_file)
-    time.sleep(SHORT_DELAY)
+    time.sleep(SHORT_WAIT)
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
 
     # restart file again, use reversed chronological order
     t0 = time.time()
-    time.sleep(SHORT_DELAY)
-    src = os.path.join(_core.TEST_DATA_DIR, "refresh1.txt")
+    time.sleep(SHORT_WAIT)
+    src = file_from_tests("refresh1.txt")
     shutil.copy(src, spec_file)
 
     specplot_gallery.PlotSpecFileScans(
@@ -286,7 +288,7 @@ def test_refresh(tempdir):
     )
     assert len(children) == 3
     _core.addMoreScans(spec_file)
-    time.sleep(SHORT_DELAY)
+    time.sleep(SHORT_WAIT)
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     children = [
         k

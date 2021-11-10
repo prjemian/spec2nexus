@@ -17,7 +17,7 @@ from . import _core
 from .. import spec
 
 
-TEST_SPEC_FILE = os.path.join(_core.EXAMPLES_DIR, "startup_1.spec")
+TEST_SPEC_FILE = os.path.join(_core.EXAMPLES_PATH, "startup_1.spec")
 
 # class Issue188(unittest.TestCase):
 #     def setUp(self):

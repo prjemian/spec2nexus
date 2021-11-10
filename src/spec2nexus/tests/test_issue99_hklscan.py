@@ -15,9 +15,9 @@ import os
 from .. import specplot
 from .. import spec
 
-from ._core import EXAMPLES_DIR
+from ._core import EXAMPLES_PATH
 
-TESTFILE = os.path.join(EXAMPLES_DIR, "lmn40.spe")
+TESTFILE = os.path.join(EXAMPLES_PATH, "lmn40.spe")
 
 
 def test_specplot_lmn40_scan64():

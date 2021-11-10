@@ -21,7 +21,7 @@ ARGV0 = sys.argv[0]
 
 
 def test_spock_file():
-    spec_file = os.path.join(_core.EXAMPLES_DIR, "spec_from_spock.spc")
+    spec_file = os.path.join(_core.EXAMPLES_PATH, "spec_from_spock.spc")
     assert os.path.exists(spec_file)
     assert not spec.is_spec_file_with_header(spec_file)
     assert spec.is_spec_file(spec_file)
@@ -68,7 +68,7 @@ def test_spock_file():
 
 
 def test_33id_file():
-    spec_file = os.path.join(_core.EXAMPLES_DIR, "33id_spec.dat")
+    spec_file = os.path.join(_core.EXAMPLES_PATH, "33id_spec.dat")
     assert os.path.exists(spec_file)
     assert spec.is_spec_file_with_header(spec_file)
     assert spec.is_spec_file(spec_file)

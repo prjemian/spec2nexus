@@ -19,10 +19,10 @@ import os
 from .. import spec
 from .. import writer
 
-from ._core import EXAMPLES_DIR
+from ._core import EXAMPLES_PATH
 from ._core import hfile
 
-TESTFILE = os.path.join(EXAMPLES_DIR, "usaxs-bluesky-specwritercallback.dat")
+TESTFILE = os.path.join(EXAMPLES_PATH, "usaxs-bluesky-specwritercallback.dat")
 
 
 def test_the_data_file(hfile):

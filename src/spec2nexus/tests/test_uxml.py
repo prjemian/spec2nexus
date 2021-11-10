@@ -19,6 +19,7 @@ import pytest
 
 from . import _core
 from ._core import hfile
+from ._core import file_from_tests
 from .. import plugins
 from .. import writer
 from ..spec import SpecDataFile, SpecDataFileScan
@@ -116,7 +117,7 @@ def test_writer():
 
     assert hasattr(scan, "UXML_root"), "need to test writer()"
     root = scan.UXML_root
-    schema_file = os.path.join(_core.PLUGINS_DIR, "uxml.xsd")
+    schema_file = os.path.join(_core.PLUGINS_PATH, "uxml.xsd")
     assert os.path.exists(schema_file)
     schema_doc = etree.parse(schema_file)
     schema = etree.XMLSchema(schema_doc)
@@ -125,7 +126,7 @@ def test_writer():
 
 
 def test_UXML_Error(hfile):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "test_3_error.spec")
+    spec_file = file_from_tests("test_3_error.spec")
     assert os.path.exists(spec_file)
 
     spec_data = SpecDataFile(spec_file)
@@ -145,7 +146,7 @@ def test_UXML_Error(hfile):
 
 
 def test_file_3(hfile):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "test_3.spec")
+    spec_file = file_from_tests("test_3.spec")
     assert os.path.exists(spec_file)
 
     spec_data = SpecDataFile(spec_file)
@@ -204,7 +205,7 @@ def test_file_3(hfile):
 
 
 def test_file_4(hfile):
-    spec_file = os.path.join(_core.TEST_DATA_DIR, "test_4.spec")
+    spec_file = file_from_tests("test_4.spec")
     assert os.path.exists(spec_file)
 
     spec_data = SpecDataFile(spec_file)

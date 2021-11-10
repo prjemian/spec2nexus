@@ -17,7 +17,7 @@ from . import _core
 from .. import spec
 
 
-TEST_DATA_FILE = os.path.join(_core.EXAMPLES_DIR, "xpcs_plugin_sample.spec")
+TEST_DATA_FILE = os.path.join(_core.EXAMPLES_PATH, "xpcs_plugin_sample.spec")
 
 
 @pytest.mark.parametrize(

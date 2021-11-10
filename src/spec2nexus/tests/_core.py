@@ -4,15 +4,18 @@ import shutil
 import tempfile
 
 
+# parent (package source code) directory
 _ppath = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-_here = os.path.dirname(__file__)
-EXAMPLES_DIR = os.path.join(_ppath, "data")
-PLUGINS_DIR = os.path.join(_ppath, "plugins")
-TEST_DATA_DIR = os.path.abspath(os.path.join(_here, "data"))
+
+# tests directory
+_tpath = os.path.dirname(__file__)
+EXAMPLES_PATH = os.path.join(_ppath, "data")
+PLUGINS_PATH = os.path.join(_ppath, "plugins")
+TEST_DATA_PATH = os.path.abspath(os.path.join(_tpath, "data"))
 
 
 @pytest.fixture
-def testdir():
+def testpath():
     # setUp
     owd = os.getcwd()
     tempdir = tempfile.mkdtemp()
@@ -37,13 +40,12 @@ def hfile():
         os.remove(hfile)
 
 
-@pytest.fixture(scope="function")
-def tempdir():
-    path = tempfile.mkdtemp()
-    yield path
+def file_from_examples(fname):  # rename to file_from_examples
+    return os.path.join(EXAMPLES_PATH, fname)
 
-    if os.path.exists(path):
-        shutil.rmtree(path, ignore_errors=True)
+
+def file_from_tests(fname):
+    return os.path.join(TEST_DATA_PATH, fname)
 
 
 def getActiveSpecDataFile(path):
@@ -52,7 +54,7 @@ def getActiveSpecDataFile(path):
     spec_data_file = os.path.join(path, "specdata.txt")
     assert not os.path.exists(spec_data_file)
 
-    starting_file = os.path.join(TEST_DATA_DIR, "refresh1.txt")
+    starting_file = os.path.join(TEST_DATA_PATH, "refresh1.txt")
     assert os.path.exists(starting_file)
     shutil.copy(starting_file, spec_data_file)
     return spec_data_file
@@ -60,7 +62,7 @@ def getActiveSpecDataFile(path):
 
 def addMoreScans(spec_data_file, more_file="refresh2.txt"):
     """Simulate addition of scans to active SPEC data file."""
-    more_content_file = os.path.join(TEST_DATA_DIR, more_file)
+    more_content_file = os.path.join(TEST_DATA_PATH, more_file)
     with open(more_content_file, "r") as fp:
         more_scans = fp.read()
     with open(spec_data_file, "a") as fp:

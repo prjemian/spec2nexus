@@ -13,15 +13,15 @@
 import h5py
 import os
 
-from . import _core
-from ._core import tempdir
+from ._core import file_from_tests
+from ._core import testpath
 from .. import spec
 from .. import writer
 
-TEST_SPEC_FILE = os.path.join(_core.TEST_DATA_DIR, "JL124_1.spc")
+TEST_SPEC_FILE = file_from_tests("JL124_1.spc")
 
 
-def test_nexus_file(tempdir):
+def test_nexus_file(testpath):
     assert os.path.exists(TEST_SPEC_FILE)
 
     sdf = spec.SpecDataFile(TEST_SPEC_FILE)
@@ -34,10 +34,10 @@ def test_nexus_file(tempdir):
     # force plugins to process
     scan.interpret()
 
-    assert os.path.exists(tempdir)
+    assert os.path.exists(testpath)
     nexus_output_file_name = (
         os.path.join(
-            tempdir,
+            testpath,
             os.path.basename(os.path.splitext(TEST_SPEC_FILE)[0]),
         )
         + ".h5"

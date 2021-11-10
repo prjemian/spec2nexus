@@ -16,7 +16,7 @@ import shutil
 import sys
 
 from . import _core
-from ._core import tempdir
+from ._core import testpath
 from .. import extractSpecScan
 ARGV0 = sys.argv[0]
 
@@ -40,15 +40,14 @@ args = "../src/spec2nexus/data/xpcs_plugin_sample.spec  -s 7   -c img_n  Epoch  
         ["xpcs_plugin_sample.spec", "-s 7   -c img_n  Epoch  ccdc"],
     ]
 )
-def test_developer_testing(filename, options, tempdir):
-    assert os.path.exists(tempdir)
-    os.chdir(tempdir)
-    assert os.getcwd() == tempdir
+def test_developer_testing(filename, options, testpath):
+    assert os.path.exists(testpath)
+    assert os.getcwd() == testpath
 
-    starting_file = os.path.join(_core.EXAMPLES_DIR, filename)
+    starting_file = os.path.join(_core.EXAMPLES_PATH, filename)
     assert os.path.exists(starting_file)
 
-    spec_file = os.path.join(tempdir, "specdata.dat")
+    spec_file = os.path.join(testpath, "specdata.dat")
     shutil.copy(starting_file, spec_file)
     assert os.path.exists(spec_file)
 
@@ -56,4 +55,4 @@ def test_developer_testing(filename, options, tempdir):
     sys.argv += options.split()
     sys.argv += "-G -V -Q -P".split()
     extractSpecScan.main()
-    assert len(os.listdir(tempdir)) > 1
+    assert len(os.listdir(testpath)) > 1

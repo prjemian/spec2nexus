@@ -13,11 +13,11 @@
 import datetime
 import os
 
-from . import _core
+from ._core import file_from_tests
 from .. import spec
 
 
-TEST_SPEC_FILE = os.path.join(_core.TEST_DATA_DIR, "issue161_spock_spec_file")
+TEST_SPEC_FILE = file_from_tests("issue161_spock_spec_file")
 
 
 def test_date_and_epoch():

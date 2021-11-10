@@ -13,12 +13,11 @@
 import os
 import sys
 
+from ._core import file_from_tests
 from .. import extractSpecScan
 from .. import spec
 
-from ._core import TEST_DATA_DIR
-
-TESTFILE = os.path.join(TEST_DATA_DIR, "issue64_data.txt")
+TESTFILE = file_from_tests("issue64_data.txt")
 ARGV0 = sys.argv[0]
 
 
