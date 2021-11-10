@@ -37,27 +37,6 @@ def is_spec_file(fname):
     return spec.is_spec_file(abs_data_fname(fname))
 
 
-def getActiveSpecDataFile(path):
-    """Simulate a SPEC data file in-use for data acquisition."""
-    assert os.path.exists(path)
-    spec_data_file = os.path.join(path, "active_data_file.spec")
-    assert not os.path.exists(spec_data_file)
-
-    starting_file = os.path.join(_core.TEST_DATA_DIR, "refresh1.txt")
-    assert os.path.exists(starting_file)
-    shutil.copy(starting_file, spec_data_file)
-    return spec_data_file
-
-
-def addMoreScans(spec_data_file):
-    """Simulate addition of scans to active SPEC data file."""
-    more_content_file = os.path.join(_core.TEST_DATA_DIR, "refresh2.txt")
-    with open(more_content_file, "r") as fp:
-        more_scans = fp.read()
-    with open(spec_data_file, "a") as fp:
-        fp.write(more_scans)
-
-
 def test_strip_first_word():
     assert utils.strip_first_word("one two three") == "two three"
 
@@ -392,7 +371,7 @@ def test_str_parm(filename):
 
 def test_specfile_update_available(tempdir):
     """test the ``update_available`` property"""
-    spec_file = getActiveSpecDataFile(tempdir)
+    spec_file = _core.getActiveSpecDataFile(tempdir)
 
     sdf = spec.SpecDataFile(spec_file)
     assert sdf.mtime> 0
@@ -406,14 +385,14 @@ def test_specfile_update_available(tempdir):
     assert sdf.last_scan == "3"
 
     # update the file with more data
-    addMoreScans(spec_file)
+    _core.addMoreScans(spec_file)
     time.sleep(SHORT_WAIT)
 
     assert sdf.update_available
 
 
 def test_specfile_refresh(tempdir):
-    spec_file = getActiveSpecDataFile(tempdir)
+    spec_file = _core.getActiveSpecDataFile(tempdir)
     sdf = spec.SpecDataFile(spec_file)
     assert sdf.last_scan != None
     assert len(sdf.getScanNumbers()) == 3
@@ -424,7 +403,7 @@ def test_specfile_refresh(tempdir):
     assert sdf.filesize == expected
 
     # update the file with more data
-    addMoreScans(spec_file)
+    _core.addMoreScans(spec_file)
     time.sleep(SHORT_WAIT)
 
     scan_number = sdf.refresh()

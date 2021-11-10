@@ -36,17 +36,6 @@ def hfile():
         os.remove(hfile)
 
 
-# @pytest.fixture(scope="function")
-# def sfile():
-#     tfile = tempfile.NamedTemporaryFile(suffix=".spec", delete=False)
-#     tfile.close()
-#     sfile = tfile.name
-#     yield sfile
-
-#     if os.path.exists(sfile):
-#         os.remove(sfile)
-
-
 @pytest.fixture(scope="function")
 def tempdir():
     path = tempfile.mkdtemp()
@@ -54,3 +43,24 @@ def tempdir():
 
     if os.path.exists(path):
         shutil.rmtree(path, ignore_errors=True)
+
+
+def getActiveSpecDataFile(path):
+    """Simulate a SPEC data file in-use for data acquisition."""
+    assert os.path.exists(path)
+    spec_data_file = os.path.join(path, "active_data_file.spec")
+    assert not os.path.exists(spec_data_file)
+
+    starting_file = os.path.join(TEST_DATA_DIR, "refresh1.txt")
+    assert os.path.exists(starting_file)
+    shutil.copy(starting_file, spec_data_file)
+    return spec_data_file
+
+
+def addMoreScans(spec_data_file):
+    """Simulate addition of scans to active SPEC data file."""
+    more_content_file = os.path.join(TEST_DATA_DIR, "refresh2.txt")
+    with open(more_content_file, "r") as fp:
+        more_scans = fp.read()
+    with open(spec_data_file, "a") as fp:
+        fp.write(more_scans)

@@ -44,12 +44,12 @@ def suite(*args, **kw):
     # from tests import test_plugin
     # from tests import test_scanf
     # from tests import test_spec
-    from tests import test_specplot
+    # from tests import test_specplot
     from tests import test_specplot_gallery
     # from tests import test_utils
     # from tests import test_uxml
-    from tests import test_writer
-    from tests import test_XPCS
+    # from tests import test_writer
+    # from tests import test_XPCS
 
     test_list = [
         # test_data_03_06_JanTest,
@@ -73,11 +73,11 @@ def suite(*args, **kw):
         # test_scanf,
         # test_spec,
         test_specplot_gallery,
-        test_specplot,
+        # test_specplot,
         # test_utils,
         # test_uxml,
-        test_writer,
-        test_XPCS,
+        # test_writer,
+        # test_XPCS,
     ]
 
     test_suite = unittest.TestSuite()
