@@ -51,7 +51,7 @@ jobs:
     - name: Run tests with pytest
       run: |
         source $CONDA/bin/activate $ENV_NAME
-        pytest tests
+        pytest -vvv
       env:
         PY_VER: ${{ matrix.python-version }}
         ENV_NAME: anaconda-client-env-py-${{ matrix.python-version }}
