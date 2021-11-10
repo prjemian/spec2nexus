@@ -48,7 +48,7 @@ def tempdir():
 def getActiveSpecDataFile(path):
     """Simulate a SPEC data file in-use for data acquisition."""
     assert os.path.exists(path)
-    spec_data_file = os.path.join(path, "active_data_file.spec")
+    spec_data_file = os.path.join(path, "specdata.txt")
     assert not os.path.exists(spec_data_file)
 
     starting_file = os.path.join(TEST_DATA_DIR, "refresh1.txt")
@@ -57,9 +57,9 @@ def getActiveSpecDataFile(path):
     return spec_data_file
 
 
-def addMoreScans(spec_data_file):
+def addMoreScans(spec_data_file, more_file="refresh2.txt"):
     """Simulate addition of scans to active SPEC data file."""
-    more_content_file = os.path.join(TEST_DATA_DIR, "refresh2.txt")
+    more_content_file = os.path.join(TEST_DATA_DIR, more_file)
     with open(more_content_file, "r") as fp:
         more_scans = fp.read()
     with open(spec_data_file, "a") as fp:

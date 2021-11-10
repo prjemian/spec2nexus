@@ -28,13 +28,13 @@ def suite(*args, **kw):
     # from tests import test_diffractometers
     # from tests import test_extractSpecScan
     # from tests import test_eznx
-    from tests import test_issue107
-    from tests import test_issue119
-    from tests import test_issue123
-    from tests import test_issue161
-    from tests import test_issue188
-    from tests import test_issue191
-    from tests import test_issue216
+    # from tests import test_issue107
+    # from tests import test_issue119
+    # from tests import test_issue123
+    # from tests import test_issue161
+    # from tests import test_issue188
+    # from tests import test_issue191
+    # from tests import test_issue216
     # from tests import test_issue64
     # from tests import test_issue8
     # from tests import test_issue99_hklscan
@@ -45,7 +45,7 @@ def suite(*args, **kw):
     # from tests import test_scanf
     # from tests import test_spec
     # from tests import test_specplot
-    from tests import test_specplot_gallery
+    # from tests import test_specplot_gallery
     # from tests import test_utils
     # from tests import test_uxml
     # from tests import test_writer
@@ -56,13 +56,13 @@ def suite(*args, **kw):
         # test_diffractometers,
         # test_extractSpecScan,
         # test_eznx,
-        test_issue107,
-        test_issue119,
-        test_issue123,
-        test_issue161,
-        test_issue188,
-        test_issue191,
-        test_issue216,
+        # test_issue107,
+        # test_issue119,
+        # test_issue123,
+        # test_issue161,
+        # test_issue188,
+        # test_issue191,
+        # test_issue216,
         # test_issue64,
         # test_issue8,
         # test_issue99_hklscan,
@@ -72,7 +72,7 @@ def suite(*args, **kw):
         # test_plugin,
         # test_scanf,
         # test_spec,
-        test_specplot_gallery,
+        # test_specplot_gallery,
         # test_specplot,
         # test_utils,
         # test_uxml,
