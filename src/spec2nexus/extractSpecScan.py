@@ -293,11 +293,11 @@ def main():
             header_data.insert(0, "# scan: " + str(scanNum))
             header_data.insert(0, "# file: " + str(cmdArgs.spec_file))
 
-            fp = open(outFile, "w")
-            if len(header_data):
-                fp.write("\n".join(header_data) + "\n")
-            fp.write("\n".join(txt))
-            fp.close()
+            with open(outFile, "w") as fp:
+                if len(header_data):
+                    fp.write("\n".join(header_data) + "\n")
+                fp.write("\n".join(txt))
+
             if cmdArgs.reporting_level in (
                 REPORTING_STANDARD,
                 REPORTING_VERBOSE,
