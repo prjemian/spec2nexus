@@ -1,31 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
-
 """
-Provides a set of classes to read the contents of a SPEC data file.
+A set of classes to read the contents of a SPEC data file.
 
 :author: Pete Jemian
 :email: jemian@anl.gov
 
 :meth:`~spec2nexus.spec.SpecDataFile` is the only class users will need to call.
-All other :mod:`~spec2nexus.spec` classes are called from this class.
-The :meth:`~spec2nexus.spec.SpecDataFile.read` method is called automatically.
+All other :mod:`~spec2nexus.spec` classes are called from this class. The
+:meth:`~spec2nexus.spec.SpecDataFile.read` method is called automatically.
 
-The user should create a class instance for each spec data file,
-specifying the file reference (by path reference as needed)
-and the internal routines will take care of all that is necessary
-to read and interpret the information.
+The user should create a class instance for each spec data file, specifying the
+file reference (by path reference as needed) and the internal routines will take
+care of all that is necessary to read and interpret the information.
 
 .. autosummary::
 
@@ -36,26 +24,27 @@ to read and interpret the information.
     ~SpecDataFileScan
 
 
-..  -----------------------------------------------------------------------------------------
+..  ----------------------------------------------------------------------
     old documentation
-    -----------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------
 
     .. index:: SPEC data file structure
 
-    The parser makes the assumption that a SPEC data file is composed from
-    a sequence of component blocks.  The component blocks are either header
-    or scan blocks.  Header blocks have the first line starting with ``#F``
-    while scan blocks have the first line starting with ``#S``.  Usually,
-    there is only one header block in a SPEC data file, followed by many
-    scan blocks.  The header block contains information common to all the
-    scan blocks that follow it.  Content for each block continues until
-    the next block starts or the file ends.  The pattern is:
+    The parser makes the assumption that a SPEC data file is composed from a
+    sequence of component blocks.  The component blocks are either header or
+    scan blocks.  Header blocks have the first line starting with ``#F`` while
+    scan blocks have the first line starting with ``#S``.  Usually, there is
+    only one header block in a SPEC data file, followed by many scan blocks.
+    The header block contains information common to all the scan blocks that
+    follow it.  Content for each block continues until the next block starts or
+    the file ends.  The pattern is:
 
     * #F line starts a header block
     * there could be multiple #F lines in a data file
     * #S lines start a SPEC scan
     * everything between #F and the next #S is header content
-    * everything after a #S line is scan content (until EOF, the next #S or the next #F)
+    * everything after a #S line is scan content (until EOF, the next #S or the
+      next #F)
 
     .. rubric:: Additional assumptions
 
@@ -370,71 +359,33 @@ class SpecDataFile(object):
         """
         SECTION_CONTROL_KEYS = "#E #F #S".split()
 
-        # method = "regexp"
-        method = "state machine"
-        # method = "str compare"
+        file_lines = self._read_file_(self.fileName).splitlines()
 
-        if method == "state machine":
-            buf = self._read_file_(self.fileName).splitlines()
-            sections, block = [], []
+        def is_section_start(text):
+            if len(text.strip()) == 0:
+                return False
+            f = text.split()[0]
+            if len(f) != 2:
+                return False
+            return f in SECTION_CONTROL_KEYS
 
-            for _line_num, text in enumerate(buf):
-                if len(text.strip()) > 0:
-                    f = text.split()[0]
-                    if len(f) == 2 and f in SECTION_CONTROL_KEYS:
-                        if len(block) > 0:
-                            sections.append("\n".join(block))
-                        block = []
-                block.append(text)
+        boundaries = [
+            _line_num
+            for _line_num, text in enumerate(file_lines)
+            if is_section_start(text)
+        ]
+        if len(boundaries) == 0:
+            raise NotASpecDataFile(
+                f"None of these SPEC control keys ({SECTION_CONTROL_KEYS})"
+                f" found in file: {self.fileName}"
+            )
+        # last section goes all the way to the end
+        boundaries.append(len(file_lines))
 
-            if len(block) > 0:
-                sections.append("\n".join(block))
-
-        elif method == "regexp":
-            import re
-
-            with open(self.fileName, "r") as fp:
-                file_text = fp.read()
-            offsets = [
-                match.start()
-                for key in SECTION_CONTROL_KEYS
-                for match in re.finditer(f"(\n)*{key} ", file_text)
-            ]
-            offsets.append(len(file_text))
-            offsets.sort()
-            sections = [
-                file_text[start: finish].lstrip()
-                for start, finish in zip(offsets[:-1], offsets[1:])
-            ]
-
-        else:  # method == "str compare"
-            file_lines = self._read_file_(self.fileName).splitlines()
-
-            def is_section_start(text):
-                if len(text.strip()) == 0:
-                    return False
-                f = text.split()[0]
-                if len(f) != 2:
-                    return False
-                return f in SECTION_CONTROL_KEYS
-
-            boundaries = [
-                _line_num
-                for _line_num, text in enumerate(file_lines)
-                if is_section_start(text)
-            ]
-            if len(boundaries) == 0:
-                raise NotASpecDataFile(
-                    f"None of these SPEC control keys ({SECTION_CONTROL_KEYS})"
-                    f" found in file: {self.fileName}"
-                )
-            # last section goes all the way to the end
-            boundaries.append(len(file_lines))
-
-            sections = [
-                "\n".join(file_lines[start: finish])
-                for start, finish in zip(boundaries[:-1], boundaries[1:])
-            ]
+        sections = [
+            "\n".join(file_lines[start: finish])
+            for start, finish in zip(boundaries[:-1], boundaries[1:])
+        ]
 
         return sections
 
@@ -483,7 +434,7 @@ class SpecDataFile(object):
         keys = self.scans.keys()
         try:
             r = sorted(keys, key=int)
-        except ValueError as _exc:
+        except ValueError:
             r = sorted(keys, key=float)
         return r
 
@@ -770,3 +721,13 @@ class SpecDataFileScan(object):
                     "cannot make unique key for duplicated column label!"
                 )
         return key
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------
