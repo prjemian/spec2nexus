@@ -7,6 +7,8 @@ exclude =
     versioneer.py,
     docs/source,
     src/spec2nexus/_version.py,
+    demo,
+    docs/debug*.py,
 
 # E501 line too long
 # many long lines in python code
