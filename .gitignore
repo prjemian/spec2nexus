@@ -1,3 +1,7 @@
+# local developer files
+dev_*.py
+dev_*.ipynb
+
 *.py[cod]
 
 # eclipse PyDev config
