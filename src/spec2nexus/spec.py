@@ -241,13 +241,9 @@ class SpecDataFile(object):
 
         if filename is not None:
             if not os.path.exists(filename):
-                raise SpecDataFileNotFound(
-                    "file does not exist: " + str(filename)
-                )
+                raise SpecDataFileNotFound(f"file does not exist: {filename}")
             if not is_spec_file(filename):
-                raise NotASpecDataFile(
-                    "not a SPEC data file: " + str(filename)
-                )
+                raise NotASpecDataFile(f"not a SPEC data file: {filename}")
             self.fileName = filename
 
             self.read()
@@ -317,9 +313,7 @@ class SpecDataFile(object):
     def _read_file_(self, spec_file_name):
         """Reads a spec data file"""
         if not os.path.exists(spec_file_name):
-            raise SpecDataFileNotFound(
-                "file does not exist: " + str(spec_file_name)
-            )
+            raise SpecDataFileNotFound(f"file does not exist: {spec_file_name}")
 
         try:
             with open(spec_file_name, "r") as fp:
@@ -331,9 +325,7 @@ class SpecDataFile(object):
                     scan_found = True
                     break
             if not scan_found:
-                raise NotASpecDataFile(
-                    f"Not a spec data file: {spec_file_name}"
-                )
+                raise NotASpecDataFile(f"Not a spec data file: {spec_file_name}")
         except IOError:
             raise SpecDataFileCouldNotOpen(
                 f"Could not open spec file: {spec_file_name}"
@@ -383,7 +375,7 @@ class SpecDataFile(object):
         boundaries.append(len(file_lines))
 
         sections = [
-            "\n".join(file_lines[start: finish])
+            "\n".join(file_lines[start:finish])
             for start, finish in zip(boundaries[:-1], boundaries[1:])
         ]
 
@@ -582,7 +574,10 @@ class SpecDataFileScan(object):
         self.data_lines = []
         self.date = ""
         self.G = {}
-        self.header = header  # index number of relevant #F section previously interpreted
+
+        # index number of relevant #F section previously interpreted
+        self.header = header
+
         self.L = []
         self.M = ""
         self.positioner = {}
@@ -721,6 +716,7 @@ class SpecDataFileScan(object):
                     "cannot make unique key for duplicated column label!"
                 )
         return key
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
