@@ -331,15 +331,24 @@ class SpecDataFile(object):
             raise SpecDataFileNotFound(
                 "file does not exist: " + str(spec_file_name)
             )
+
         try:
             with open(spec_file_name, "r") as fp:
                 buf = fp.read()
+
+            scan_found = False
+            for line in buf.splitlines():
+                if line.startswith("#S "):
+                    scan_found = True
+                    break
+            if not scan_found:
+                raise NotASpecDataFile(
+                    f"Not a spec data file: {spec_file_name}"
+                )
         except IOError:
-            msg = "Could not open spec file: " + str(spec_file_name)
-            raise SpecDataFileCouldNotOpen(msg)
-        if not is_spec_file(spec_file_name):
-            msg = "Not a spec data file: " + str(spec_file_name)
-            raise NotASpecDataFile(msg)
+            raise SpecDataFileCouldNotOpen(
+                f"Could not open spec file: {spec_file_name}"
+            )
 
         # caution: some files may have EOL = \r\n
         # convert all '\r\n' to '\n', then all '\r' to '\n'
@@ -350,30 +359,83 @@ class SpecDataFile(object):
         """
         divide (SPEC data file text) buffer into sections
 
-        internal: A *block* starts with either #F | #E | #S
+        internal: A *section* starts with either #F | #E | #S
 
         RETURNS
 
         [block]
-            list of blocks where each block is one or more lines of
+            list of sections where each section is one or more lines of
             text with one of the above control lines at its start
 
         """
-        buf = self._read_file_(self.fileName).splitlines()
+        SECTION_CONTROL_KEYS = "#E #F #S".split()
 
-        sections, block = [], []
+        # method = "regexp"
+        method = "state machine"
+        # method = "str compare"
 
-        for _line_num, text in enumerate(buf):
-            if len(text.strip()) > 0:
+        if method == "state machine":
+            buf = self._read_file_(self.fileName).splitlines()
+            sections, block = [], []
+
+            for _line_num, text in enumerate(buf):
+                if len(text.strip()) > 0:
+                    f = text.split()[0]
+                    if len(f) == 2 and f in SECTION_CONTROL_KEYS:
+                        if len(block) > 0:
+                            sections.append("\n".join(block))
+                        block = []
+                block.append(text)
+
+            if len(block) > 0:
+                sections.append("\n".join(block))
+
+        elif method == "regexp":
+            import re
+
+            with open(self.fileName, "r") as fp:
+                file_text = fp.read()
+            offsets = [
+                match.start()
+                for key in SECTION_CONTROL_KEYS
+                for match in re.finditer(f"(\n)*{key} ", file_text)
+            ]
+            offsets.append(len(file_text))
+            offsets.sort()
+            sections = [
+                file_text[start: finish].lstrip()
+                for start, finish in zip(offsets[:-1], offsets[1:])
+            ]
+
+        else:  # method == "str compare"
+            file_lines = self._read_file_(self.fileName).splitlines()
+
+            def is_section_start(text):
+                if len(text.strip()) == 0:
+                    return False
                 f = text.split()[0]
-                if len(f) == 2 and f in ("#E", "#F", "#S"):
-                    if len(block) > 0:
-                        sections.append("\n".join(block))
-                    block = []
-            block.append(text)
+                if len(f) != 2:
+                    return False
+                return f in SECTION_CONTROL_KEYS
 
-        if len(block) > 0:
-            sections.append("\n".join(block))
+            boundaries = [
+                _line_num
+                for _line_num, text in enumerate(file_lines)
+                if is_section_start(text)
+            ]
+            if len(boundaries) == 0:
+                raise NotASpecDataFile(
+                    f"None of these SPEC control keys ({SECTION_CONTROL_KEYS})"
+                    f" found in file: {self.fileName}"
+                )
+            # last section goes all the way to the end
+            boundaries.append(len(file_lines))
+
+            sections = [
+                "\n".join(file_lines[start: finish])
+                for start, finish in zip(boundaries[:-1], boundaries[1:])
+            ]
+
         return sections
 
     def read(self):
@@ -384,6 +446,8 @@ class SpecDataFile(object):
             if len(block) == 0:
                 continue
             key = manager.getKey(block.splitlines()[0])
+            if not key.startswith("#"):
+                continue  # cannot process this block, skip silently
             manager.process(key, block, self)
 
             if key == "#S":
