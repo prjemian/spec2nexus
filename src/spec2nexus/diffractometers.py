@@ -1,25 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 
 """
 Describe SPEC #G control lines
 
-  #G0 ...          geometry parameters from G[] array (geo mode, sector, etc)
-  #G1 ...          geometry parameters from U[] array (lattice constants, orientation reflections)
-  #            G2 is unused
-  #G3 ...          geometry parameters from UB[] array (orientation matrix)
-  #G4 ...          geometry parameters from Q[] array (lambda, frozen angles, cut points, etc)
+  #G0 ...       G[] array (geo mode, sector, etc)
+  #G1 ...       U[] array (lattice constants, orientation reflections)
+  #G2 is unused
+  #G3 ...       UB[] array (orientation matrix)
+  #G4 ...       Q[] array (lambda, frozen angles, cut points, etc)
 
 API
 
@@ -31,18 +21,17 @@ API
     ~get_geometry_catalog
     ~reset_geometry_catalog
 
-
 """
 
 from collections import namedtuple, OrderedDict
 import logging
 import numpy
-import os
+import pathlib
 
 
 logger = logging.getLogger(__name__)
-_path = os.path.dirname(__file__)
-DICT_FILE = os.path.join(_path, "diffractometer-geometries.dict")
+_path = pathlib.Path(__file__).parent
+DICT_FILE = _path / "diffractometer-geometries.dict"
 
 
 KeyDescriptionValue = namedtuple(
@@ -244,9 +233,8 @@ class Diffractometer:
         self.geometry_parameters.update(Q)
 
 
-_geometry_catalog = (
-    None  # singleton reference to DiffractometerGeometryCatalog
-)
+# singleton reference to DiffractometerGeometryCatalog
+_geometry_catalog = None
 
 
 def get_geometry_catalog():
@@ -279,9 +267,11 @@ class DiffractometerGeometryCatalog:
 
     def __init__(self):
         if _geometry_catalog is None:
-            msg = "Do not create DiffractometerGeometryCatalog()."
-            msg += "  Instead, call: get_geometry_catalog()"
-            raise RuntimeError(msg)
+            raise RuntimeError(
+                "Do not create DiffractometerGeometryCatalog()."
+                "  Instead, call: get_geometry_catalog()"
+                # don't call that here, _geometry_catalog is a singleton
+            )
 
         with open(DICT_FILE, "r") as fp:
             self.db = eval(fp.read())
@@ -451,3 +441,13 @@ class DiffractometerGeometryCatalog:
             match = [self.get_default_geometry()["name"]]
 
         return match[0]
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------
