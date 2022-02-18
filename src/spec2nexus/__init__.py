@@ -2,20 +2,10 @@
 
 """command-line tool to convert SPEC data files to NeXus HDF5"""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 
 __author__ = "Pete R. Jemian"
 __email__ = "prjemian@gmail.com"
-__copyright__ = "2014-2020, Pete R. Jemian"
+__copyright__ = "2014-2022, Pete R. Jemian"
 
 __package_name__ = "spec2nexus"
 
@@ -52,7 +42,7 @@ __classifiers__ = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
-    # "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.10",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Astronomy",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
@@ -70,3 +60,13 @@ from ._version import get_versions
 
 __version__ = get_versions()["version"]
 del get_versions
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------
