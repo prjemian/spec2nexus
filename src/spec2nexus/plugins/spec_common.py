@@ -1573,7 +1573,11 @@ def data_lines_postprocessing(scan):
             if key not in scan.data[MCA_DATA_KEY]:
                 scan.data[MCA_DATA_KEY][key] = []
             # accumulate this spectrum
-            mca_spectrum = list(map(float, parts[1:]))
+            if "." in values:
+                data_type = float
+            else:
+                data_type = int
+            mca_spectrum = list(map(data_type, parts[1:]))
             scan.data[MCA_DATA_KEY][key].append(mca_spectrum)
         else:
             try:

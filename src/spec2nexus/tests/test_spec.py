@@ -10,6 +10,7 @@
 # The full license is in the file LICENSE.txt, distributed with this software.
 # -----------------------------------------------------------------------------
 
+import numpy as np
 import os
 import platform
 import pytest
@@ -168,8 +169,63 @@ def test_33id_spec():
     assert scan.column_last == "I0"
     assert scan.positioner["DCM theta"] == 12.747328
     assert scan.positioner["ana.theta"] == -0.53981253
-    # TODO: test MCA data (#1 but MCA data is all zero, need better test file) - mca_spectra_example.dat
-    # test mesh (#22), Escan (#105)
+
+
+def test_MCA_single_spectrum():
+    """Multiple MCA spectra."""
+    fname = file_from_examples("33id_spec.dat")
+    sfile = spec.SpecDataFile(fname)
+    scan = sfile.getScan(1)
+
+    assert not scan.__interpreted__
+    assert "_mca" not in scan.data
+    mca_spectra = scan.data["_mca_"]
+    assert scan.__interpreted__
+
+    rows = 41
+    channels = 91
+    assert "Epoch" in scan.data
+    assert len(scan.data["Epoch"]) == rows
+    assert "_mca_" in scan.data
+
+    mca = "mca"
+    assert mca in mca_spectra
+    assert len(mca_spectra[mca]) == rows
+    assert len(mca_spectra[mca][0]) == channels
+
+    spectra = np.array(scan.data["_mca_"][mca])
+    assert spectra.shape == (rows, channels)
+    assert spectra.min() == 0
+    assert spectra.max() == 0  # ALL of these spectra are zero
+
+
+def test_MCA_multiple_spectra():
+    """Multiple MCA spectra."""
+    fname = file_from_examples("mca_spectra_example.dat")
+    sfile = spec.SpecDataFile(fname)
+    scan = sfile.getScan(1)
+
+    assert not scan.__interpreted__
+    scan.interpret()
+    assert scan.__interpreted__
+
+    # 1353 data rows, 4 MCAs, each with 256 channels (so 1353x256 arrays)
+    num_MCAs = 4
+    rows = 1353
+    channels = 256
+    assert "Epoch" in scan.data
+    assert len(scan.data["Epoch"]) == rows
+    assert "_mca_" in scan.data
+    for n in range(num_MCAs):
+        mca = f"mca{n+1}"
+        assert mca in scan.data["_mca_"]
+        assert len(scan.data["_mca_"][mca]) == rows
+        assert len(scan.data["_mca_"][mca][0]) == channels
+
+        spectra = np.array(scan.data["_mca_"][mca])
+        assert spectra.shape == (rows, channels)
+        assert spectra.min() == 0
+        assert spectra.max() > 0
 
 
 def test_APS_spec_data():
