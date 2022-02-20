@@ -27,15 +27,10 @@ def test_specplot_lmn40_scan64():
     assert isinstance(plotter, specplot.HKLScanPlotter)
 
     plotter.scan = scan
-    plotter.set_plot_title(
-        plotter.plot_title() or plotter.data_file_name()
-    )
+    plotter.set_plot_title(plotter.plot_title() or plotter.data_file_name())
     plotter.set_plot_subtitle(
         plotter.plot_subtitle()
-        or "#"
-        + str(plotter.scan.scanNum)
-        + ": "
-        + plotter.scan.scanCmd
+        or "#" + str(plotter.scan.scanNum) + ": " + plotter.scan.scanCmd
     )
     plotter.set_timestamp(plotter.timestamp() or plotter.scan.date)
 
@@ -70,15 +65,10 @@ def test_specplot_lmn40_scan244():
     assert isinstance(plotter, specplot.HKLScanPlotter)
 
     plotter.scan = scan
-    plotter.set_plot_title(
-        plotter.plot_title() or plotter.data_file_name()
-    )
+    plotter.set_plot_title(plotter.plot_title() or plotter.data_file_name())
     plotter.set_plot_subtitle(
         plotter.plot_subtitle()
-        or "#"
-        + str(plotter.scan.scanNum)
-        + ": "
-        + plotter.scan.scanCmd
+        or "#" + str(plotter.scan.scanNum) + ": " + plotter.scan.scanCmd
     )
     plotter.set_timestamp(plotter.timestamp() or plotter.scan.date)
 
@@ -92,6 +82,7 @@ def test_specplot_lmn40_scan244():
     assert not plotter.y_log()
     assert not plotter.z_log()
     assert plotter.plot_subtitle().startswith("#" + str(scan_number))
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

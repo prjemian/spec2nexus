@@ -33,6 +33,7 @@ def test_data_file():
     assert isinstance(scan.scanNum, str)
     assert scan.scanNum == "1.17"
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

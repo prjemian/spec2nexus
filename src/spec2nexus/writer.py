@@ -92,7 +92,7 @@ class Writer(object):
                     "NXdata",
                     signal="no_y_data",
                     axes="no_x_data",
-                    no_x_data_indices=[0,],
+                    no_x_data_indices=[0],
                 )
                 eznx.makeDataset(
                     nxdata,
@@ -129,7 +129,7 @@ class Writer(object):
         )
         try:
             c = header0.comments[0]
-            user = c[c.find("User = ") :].split("=")[1].strip()
+            user = c[c.find("User = "):].split("=")[1].strip()
             dd["SPEC_user"] = user
         except Exception:
             pass
@@ -289,7 +289,7 @@ class Writer(object):
         ):  # stopped scan before second row started
             signal, axes = self.oneD(nxdata, scan)  # fallback support
         else:
-            axis1 = axis1[0 : intervals1 + 1]
+            axis1 = axis1[0: intervals1 + 1]
             axis2 = [
                 axis2[row]
                 for row in range(len(axis2))

@@ -45,7 +45,7 @@ class MD_apstools(ControlLineHandler):
         if p > len("# MD "):
             # f"#MD {key} = {value}"
             key = text.split()[1]
-            value = text[p + 1 :].strip()
+            value = text[p + 1:].strip()
         else:
             # badly-formed #MD control line
             key = "MD_line_%d" % (len(scan.MD) + 1)

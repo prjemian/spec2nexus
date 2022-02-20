@@ -5,9 +5,7 @@ import pytest
 from ..scanf import scanf
 
 
-@pytest.mark.parametrize(
-    "degc_sp", [21.1, 20]
-)
+@pytest.mark.parametrize("degc_sp", [21.1, 20])
 def test_temperature_numbers(degc_sp):
     fmt = "#X %gKohm (%gC)"
 
@@ -31,10 +29,11 @@ def test_temperature_numbers(degc_sp):
         ((0,), "%g", ".0"),
         ((0,), "%g", ".0e-21"),
         (None, "%g", "."),
-    ]
+    ],
 )
 def test_battery(fmt, arg, expected):
     assert scanf(fmt, arg) == expected
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

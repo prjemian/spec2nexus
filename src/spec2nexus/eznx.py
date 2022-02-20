@@ -178,7 +178,7 @@ def makeLink(parent, sourceObject, targetName):
     :param str targetName: HDF5 node path to be created,
                             such as ``/entry/data/data``
     """
-    if not "target" in sourceObject.attrs:
+    if "target" not in sourceObject.attrs:
         # NeXus link, NOT an HDF5 link!
         sourceObject.attrs["target"] = str(sourceObject.name)
     str_source = sourceObject.name.encode("ascii", "ignore")

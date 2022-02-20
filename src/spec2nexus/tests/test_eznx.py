@@ -18,19 +18,10 @@ def test_example(testpath):
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
     eznx.write_dataset(nxentry, "title", "simple test data")
     nxdata = eznx.makeGroup(
-        nxentry,
-        "data",
-        "NXdata",
-        signal="counts",
-        axes="tth",
-        tth_indices=0,
+        nxentry, "data", "NXdata", signal="counts", axes="tth", tth_indices=0,
     )
-    eznx.write_dataset(
-        nxdata, "tth", [10.0, 10.1, 10.2, 10.3], units="degrees"
-    )
-    eznx.write_dataset(
-        nxdata, "counts", [1, 50, 1000, 5], units="counts", axes="tth"
-    )
+    eznx.write_dataset(nxdata, "tth", [10.0, 10.1, 10.2, 10.3], units="degrees")
+    eznx.write_dataset(nxdata, "counts", [1, 50, 1000, 5], units="counts", axes="tth")
     root.close()
 
     """
@@ -79,9 +70,7 @@ def test_example(testpath):
         assert tth.attrs.get("units") == "degrees"
 
         # test the data
-        fields = eznx.read_nexus_group_fields(
-            nxentry, "data", "counts tth".split()
-        )
+        fields = eznx.read_nexus_group_fields(nxentry, "data", "counts tth".split())
         counts = fields["counts"]
         assert len(counts) == 4
         assert counts[2] == [1, 50, 1000, 5][2]
@@ -136,16 +125,12 @@ def test_makeExternalLink(testpath):
     assert os.path.exists(testpath)
     os.chdir(testpath)
 
-    external = eznx.makeFile(
-        "external.h5", creator="eznx", default="entry"
-    )
+    external = eznx.makeFile("external.h5", creator="eznx", default="entry")
     eznx.write_dataset(external, "text", "some text")
 
     root = eznx.makeFile(hfile, creator="eznx", default="entry")
     nxentry = eznx.makeGroup(root, "entry", "NXentry", default="data")
-    eznx.makeExternalLink(
-        root, "external.h5", "/text", nxentry.name + "/external_text"
-    )
+    eznx.makeExternalLink(root, "external.h5", "/text", nxentry.name + "/external_text")
 
     # check the external file first
     with h5py.File("external.h5", "r") as hp:
@@ -162,9 +147,7 @@ def test_makeExternalLink(testpath):
         assert "external_text" in nxentry
         value = eznx.read_nexus_field(nxentry, "external_text")
         assert value == "some text"
-        value = eznx.read_nexus_field(
-            nxentry, "external_text", astype=str
-        )
+        value = eznx.read_nexus_field(nxentry, "external_text", astype=str)
         assert value == "some text"
 
 
@@ -185,7 +168,7 @@ def test_read_nexus_field_alternatives(testpath):
         nxentry = root["entry"]
 
         value = eznx.read_nexus_field(nxentry, "key_error")
-        assert value == None
+        assert value is None
 
         value = eznx.read_nexus_field(nxentry, "text")
         assert value == "some text"
@@ -210,6 +193,7 @@ def test_read_nexus_field_alternatives(testpath):
         with pytest.raises(RuntimeError) as exc:
             value = eznx.read_nexus_field(nxentry, "array")
         assert str(exc).find("unexpected 2-D data") > 0
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

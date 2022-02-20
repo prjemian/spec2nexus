@@ -43,6 +43,7 @@ def test_nexus_file():
     with pytest.raises(ValueError):
         scan.interpret()
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

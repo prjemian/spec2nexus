@@ -63,7 +63,7 @@ def iso8601(date):
     spec_fmt = "%a %b %d %H:%M:%S %Y"
     try:
         t_obj = time.strptime(date, spec_fmt)
-    except ValueError as ex:
+    except ValueError:
         spock_fmt = "%m/%d/%y %H:%M:%S"
         try:
             t_obj = time.strptime(date, spock_fmt)
@@ -122,7 +122,7 @@ def reshape_data(scan_data, scan_shape):
     elif scan_data.size < scan_size:
         data = numpy.empty(scan_size)
         data.fill(numpy.NaN)  # pad data with NaN
-        data[0 : scan_data.size] = scan_data.ravel()  # flatten & insert
+        data[0: scan_data.size] = scan_data.ravel()  # flatten & insert
     else:
         data = scan_data.ravel()  # flatten
         data = data[0:scan_size]  # truncate extra data

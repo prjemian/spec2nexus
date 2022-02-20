@@ -21,6 +21,7 @@ TEST_SPEC_FILE = os.path.join(_core.EXAMPLES_PATH, "startup_1.spec")
 #             self.sys_argv0,
 #         ]
 
+
 def test_scan_unrecognized():
     assert os.path.exists(TEST_SPEC_FILE)
 
@@ -58,6 +59,7 @@ def test_data_file():
         n = len(scan.data.keys())
         if n > 0:  # if ==0, then no data present
             assert len(scan.L) == n, "scan %s #L line" % scanNum
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

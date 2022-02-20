@@ -21,14 +21,19 @@ def test_date_and_epoch():
     header = specData.headers[0]
     assert hasattr(header, "date")
     assert hasattr(header, "epoch")
-    assert datetime.datetime.strptime(header.date, spec_fmt) == datetime.datetime.fromtimestamp(header.epoch), "date and epoch are identical"
+    assert datetime.datetime.strptime(
+        header.date, spec_fmt
+    ) == datetime.datetime.fromtimestamp(header.epoch), "date and epoch are identical"
 
     scanNum = 1
     scan = specData.getScan(scanNum)
     assert hasattr(scan, "date")
     assert hasattr(scan, "epoch")
-    assert datetime.datetime.strptime(scan.date, spec_fmt) == datetime.datetime.fromtimestamp(scan.epoch), "date and epoch are identical"
+    assert datetime.datetime.strptime(
+        scan.date, spec_fmt
+    ) == datetime.datetime.fromtimestamp(scan.epoch), "date and epoch are identical"
     assert isinstance(scan, spec.SpecDataFileScan)
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

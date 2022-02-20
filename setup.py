@@ -32,7 +32,7 @@ setup(
     platforms="any",
     install_requires=package.__install_requires__,
     package_dir={"": "src"},
-    packages=["spec2nexus", "spec2nexus.plugins",],
+    packages=["spec2nexus", "spec2nexus.plugins"],
     package_data={
         "spec2nexus": [
             "data/02_03_setup_fly/*",
@@ -52,7 +52,7 @@ setup(
             "specplot=spec2nexus.specplot:main",
             "specplot_gallery=spec2nexus.specplot_gallery:main",
         ],
-        #'gui_scripts': [],
+        # 'gui_scripts': [],
     },
 )
 

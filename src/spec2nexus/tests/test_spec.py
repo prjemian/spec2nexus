@@ -35,9 +35,7 @@ def test_isSpecFileThis():
     assert spec.is_spec_file(file_from_examples("APS_spec_data.dat"))
     assert not spec.is_spec_file_with_header("file does not exist")
     assert spec.is_spec_file_with_header(file_from_examples("APS_spec_data.dat"))
-    assert not spec.is_spec_file_with_header(
-        file_from_examples("spec_from_spock.spc")
-    )
+    assert not spec.is_spec_file_with_header(file_from_examples("spec_from_spock.spc"))
 
 
 @pytest.mark.parametrize(
@@ -58,7 +56,7 @@ def test_isSpecFileThis():
         ["Data_Q.h5", False],
         ["lmn40.hdf5", False],
         ["writer_1_3.h5", False],
-    ]
+    ],
 )
 def test_isSpecFile(filename, expected):
     """Test all the known data files to see if they are SPEC."""
@@ -73,7 +71,7 @@ def test_isSpecFile(filename, expected):
         [spec.DuplicateSpecScanNumber, Exception],
         [spec.NotASpecDataFile, Exception],
         [spec.UnknownSpecFilePart, Exception],
-    ]
+    ],
 )
 def test_custom_exceptions(trigger_exception, base_exception):
     with pytest.raises(base_exception):
@@ -105,7 +103,9 @@ def test_33bm_spec():
     assert scan.scanNum == "1"
     cmd = "ascan  th 19.022 19.222  60 -20000"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     x = "theta"
     y = "signal"
     assert scan.column_first == x
@@ -143,7 +143,9 @@ def test_33id_spec():
     assert scan.scanNum == "1"
     cmd = "ascan  eta 43.6355 44.0355  40 1"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     assert scan.column_first == "eta"
     assert scan.column_last == "I0"
     assert len(scan.positioner) == 27
@@ -232,7 +234,9 @@ def test_APS_spec_data():
     assert scan.scanNum == "1"
     cmd = "ascan  mr 15.6102 15.6052  30 0.3"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     x = "mr"
     y = "I0"
     assert scan.column_first == x
@@ -266,7 +270,9 @@ def test_CdSe():
     assert scan.scanNum == "1"
     cmd = "ascan  herixE -5 5  40 1"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     x = "HerixE"
     y = "Seconds"
     assert scan.column_first == x
@@ -300,7 +306,9 @@ def test_lmn40():
     assert scan.scanNum == "1"
     cmd = "ascan  tth -0.7 -0.5  101 1"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     x = "Two Theta"
     y = "winCZT"
     assert scan.column_first == x
@@ -335,7 +343,9 @@ def test_YSZ011_ALDITO_Fe2O3_planar_fired_1():
     assert scan.scanNum == "1"
     cmd = "ascan  th 26.7108 27.1107  60 0.05"
     assert scan.scanCmd == cmd
-    assert sfile.getScanCommands([1,]) == ["#S 1 " + cmd,]
+    assert sfile.getScanCommands([1, ]) == [
+        "#S 1 " + cmd,
+    ]
     x = "theta"
     y = "imroi1"
     assert scan.column_first == x
@@ -376,7 +386,9 @@ def test_extra_control_line_content__issue109():
     assert scan.T == "0", "received expected count time"
     assert "Seco nds" in scan.data, "found counting base"
     assert scan.data["Seco nds"][0] == 1, "received expected count time"
-    assert scan.T != str(scan.data["Seco nds"][0]), "did not report what they were about to do"
+    assert scan.T != str(
+        scan.data["Seco nds"][0]
+    ), "did not report what they were about to do"
 
     # check scan 11, #M line said 400000 counts
     scan_number = 11
@@ -396,9 +408,7 @@ def test_extra_control_line_content__issue109():
     assert len(scan.data[key]) == 61, "embedded comment not part of data"
 
 
-@pytest.mark.parametrize(
-    "filename", [None, "issue109_data.txt"]
-)
+@pytest.mark.parametrize("filename", [None, "issue109_data.txt"])
 def test_str_parm(filename):
     if filename is None:
         specFile = None
@@ -416,7 +426,7 @@ def test_specfile_update_available(testpath):
     spec_file = _core.getActiveSpecDataFile(testpath)
 
     sdf = spec.SpecDataFile(spec_file)
-    assert sdf.mtime> 0
+    assert sdf.mtime > 0
     assert not sdf.update_available
     if platform.system() == "Windows":
         expected = 1877  # 2-byte EOL
@@ -436,7 +446,7 @@ def test_specfile_update_available(testpath):
 def test_specfile_refresh(testpath):
     spec_file = _core.getActiveSpecDataFile(testpath)
     sdf = spec.SpecDataFile(spec_file)
-    assert sdf.last_scan != None
+    assert sdf.last_scan is not None
     assert len(sdf.getScanNumbers()) == 3
     if platform.system() == "Windows":
         expected = 1877  # 2-byte EOL
@@ -455,16 +465,17 @@ def test_specfile_refresh(testpath):
         expected = 4013  # 1-byte EOL
     assert sdf.filesize == expected
     assert len(sdf.getScanNumbers()) == 5
-    assert scan_number != None
-    assert sdf.last_scan != None
+    assert scan_number is not None
+    assert sdf.last_scan is not None
     assert scan_number != sdf.last_scan
     assert scan_number != sdf.getLastScanNumber()
     assert sdf.last_scan == sdf.getLastScanNumber()
 
     time.sleep(SHORT_WAIT)
     scan_number = sdf.refresh()
-    assert scan_number == None
+    assert scan_number is None
     assert len(sdf.getScanNumbers()) == 5
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

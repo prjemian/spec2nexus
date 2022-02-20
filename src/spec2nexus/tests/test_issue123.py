@@ -79,6 +79,7 @@ def test_33id_file():
     assert len(header.O) == 4, "defined positioner label rows"
     assert len(header.H) == 21, "defined metadata label rows"
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

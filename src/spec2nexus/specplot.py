@@ -724,7 +724,7 @@ class MeshPlotter(ImageMaker):
             self.data[self.signal] = self.scan.data[self.signal]
             return
 
-        axis1 = axis1[0 : intervals1 + 1]
+        axis1 = axis1[0: intervals1 + 1]
         self.data[label1] = axis1  # 1-D array
 
         axis2 = [

@@ -32,9 +32,7 @@ def test_split_name_variation():
     assert nm == "two"
     assert variant is not None
     assert variant == "parts"
-    nm, variant = diffractometers.split_name_variation(
-        "more.than.two.parts"
-    )
+    nm, variant = diffractometers.split_name_variation("more.than.two.parts")
     assert nm == "more.than.two.parts"
     assert variant is None
 
@@ -153,12 +151,16 @@ def test_class_DiffractometerGeometryCatalog():
         # [TEST_DATA_DIR, 'test_3_error.spec', -1, 'spec'],                  # FIXME: #UXML, plugin has error
         [TEST_DATA_PATH, "test_3.spec", -1, "spec"],  # predates #o (mnemonics) lines
         [TEST_DATA_PATH, "test_4.spec", -1, "spec"],  # predates #o (mnemonics) lines
-
         [EXAMPLES_PATH, "02_03_setup.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "03_06_JanTest.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "05_02_test.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "33bm_spec.dat", -1, "fourc.default"],
-        [EXAMPLES_PATH, "33id_spec.dat", -1, "spec"],  # psic but predates #o (mnemonics) lines
+        [
+            EXAMPLES_PATH,
+            "33id_spec.dat",
+            -1,
+            "spec",
+        ],  # psic but predates #o (mnemonics) lines
         [EXAMPLES_PATH, "APS_spec_data.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "CdOsO", -1, "fourc.default"],
         [EXAMPLES_PATH, "CdSe", -1, "fourc.default"],
@@ -169,7 +171,7 @@ def test_class_DiffractometerGeometryCatalog():
         [EXAMPLES_PATH, "usaxs-bluesky-specwritercallback.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "user6idd.dat", -1, "spec"],  # predates #o (mnemonics) lines
         [EXAMPLES_PATH, "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc", -1, "fourc.default"],
-    ]
+    ],
 )
 def test_file_processing(base_path, filename, scan_number, geo_name):
     dgc = diffractometers.get_geometry_catalog()
@@ -200,6 +202,7 @@ def test_class_Diffractometer():
     assert gonio.geometry_name == "big"
     assert gonio.variant == "little"
     assert gonio.geometry_parameters is not None
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
