@@ -19,9 +19,9 @@ jobs:
       run: |
         pip install -e .
 
-    - name: Install sphinx-rtd-theme
-      run: |
-        pip install sphinx-rtd-theme
+    # - name: Install sphinx-rtd-theme
+    #   run: |
+    #     pip install sphinx-rtd-theme
 
     - name: Build and Commit
       uses: sphinx-notes/pages@master
