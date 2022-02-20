@@ -1,6 +1,6 @@
 name: Unit Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build-linux:
@@ -49,7 +49,7 @@ jobs:
 
     - name: Diagnostic
       run: |
-        source $CONDA/bin/activate $ENV_NAME
+        $CONDA/bin/conda env list
         $CONDA/bin/conda list --name $ENV_NAME
       env:
         PY_VER: ${{ matrix.python-version }}
