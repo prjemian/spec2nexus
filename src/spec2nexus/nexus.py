@@ -63,9 +63,7 @@ def get_user_parameters():
         help="overwrite output file if it exists",
         default=False,
     )
-    parser.add_argument(
-        "-v", "--version", action="version", version=version
-    )
+    parser.add_argument("-v", "--version", action="version", version=version)
     msg = "specify which scans to save"
     msg += ", such as: -s all  or  -s 1  or  -s 1,2,3-5  (no spaces!)"
     msg += ", default = %s" % SCAN_LIST_ALL
@@ -170,10 +168,7 @@ def main():
             print(msg)
             continue
 
-        if user_parms.reporting_level in (
-            REPORTING_STANDARD,
-            REPORTING_VERBOSE,
-        ):
+        if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE,):
             print("reading SPEC data file: " + spec_data_file_name)
         spec_data = spec.SpecDataFile(spec_data_file_name)
 
@@ -181,22 +176,14 @@ def main():
         scan_list = list(pick_scans(all_scans, user_parms.scan_list))
         if user_parms.reporting_level in (REPORTING_VERBOSE):
             print("  discovered %d scans" % len(spec_data.scans.keys()))
-            print(
-                "  converting scan number(s): "
-                + ", ".join(map(str, scan_list))
-            )
+            print("  converting scan number(s): " + ", ".join(map(str, scan_list)))
 
         basename = os.path.splitext(spec_data_file_name)[0]
         nexus_output_file_name = basename + user_parms.hdf5_extension
-        if user_parms.force_write or not os.path.exists(
-            nexus_output_file_name
-        ):
+        if user_parms.force_write or not os.path.exists(nexus_output_file_name):
             out = writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
-            if user_parms.reporting_level in (
-                REPORTING_STANDARD,
-                REPORTING_VERBOSE,
-            ):
+            if user_parms.reporting_level in (REPORTING_STANDARD, REPORTING_VERBOSE,):
                 print("wrote NeXus HDF5 file: " + nexus_output_file_name)
 
 
