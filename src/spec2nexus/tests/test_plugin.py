@@ -32,20 +32,26 @@ def test_plugin_handler_keys():
         ["#G\\d+", r"#G0 0 0 0 0 0 1 0 0 0 0 0 0 50 0 0 0 1 0 0 0 0"],
         ["#V\\d+", r"#V110 101.701 56 1 4 1 1 1 1 992.253"],
         ["#N", r"#N 14"],
-        ["#L", r"#L eta H K L elastic Kalpha Epoch seconds signal I00 harmonic signal2 I0 I0"],
+        [
+            "#L",
+            r"#L eta H K L elastic Kalpha Epoch seconds signal I00 harmonic signal2 I0 I0",
+        ],
         ["#@MCA", r"#@MCA 16C"],
         ["#@CHANN", r"#@CHANN 1201 1110 1200 1"],
         [r"#o\d+", r"#o0 un0 mx my waxsx ax un5 az un7"],
-        [r'@A\d*'       , r'@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\'],
+        [r"@A\d*", r"@A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\"],
         [r"@A\d*", r"@A1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\"],
-        [r'@A\d*'       , r'@A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\'],
-        ['scan_data'    , r' 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'.lstrip()],
+        [r"@A\d*", r"@A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\\"],
+        ["scan_data", r" 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0".lstrip()],
         ["#H\\d+", r"#H4 FB_o2_on FB_o2_r FB_o2_sp"],
         [None, r"#Pete wrote this stuff"],
-        ["scan_data", r"43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225"],
-        ['#@[cC][aA][lL][iI][bB]'  , r'#@CALIB 1 2 3'],
+        [
+            "scan_data",
+            r"43.6835 0.998671 -0.0100246 11.0078 1 0 66 1 0 863 0 0 1225 1225",
+        ],
+        ["#@[cC][aA][lL][iI][bB]", r"#@CALIB 1 2 3"],
         ["#@[cC][aA][lL][iI][bB]", r"#@Calib 0.0501959 0.0141105 0 mca1"],
-    ]
+    ],
 )
 def test_plugin_getKey(control_key, sample):
     manager = plugin.get_plugin_manager()
@@ -123,11 +129,14 @@ def test_geometry_plugin(hfile):
         group = nxentry["instrument/geometry_parameters"]
 
         assert "instrument/name" in nxentry
-        assert nxentry["instrument/name"][0] == scan.diffractometer.geometry_name_full.encode()
+        assert (
+            nxentry["instrument/name"][0]
+            == scan.diffractometer.geometry_name_full.encode()
+        )
         checks = dict(
-            diffractometer_simple = b"fourc",
-            diffractometer_full = b"fourc.default",
-            diffractometer_variant = b"default",
+            diffractometer_simple=b"fourc",
+            diffractometer_full=b"fourc.default",
+            diffractometer_variant=b"default",
         )
         for k, v in checks.items():
             assert k in group
@@ -157,7 +166,10 @@ def test_geometry_plugin(hfile):
 
         assert "instrument/monochromator/wavelength" in nxentry
         assert "sample/beam/incident_wavelength" in nxentry
-        assert nxentry["instrument/monochromator/wavelength"] == nxentry["sample/beam/incident_wavelength"]
+        assert (
+            nxentry["instrument/monochromator/wavelength"]
+            == nxentry["sample/beam/incident_wavelength"]
+        )
 
 
 def test_empty_positioner():
@@ -206,6 +218,7 @@ def test_nonempty_positioner():
     assert len(scan.positioner) == 1
     assert "m_stage_r" in scan.positioner
     assert scan.positioner["m_stage_r"] == float("8.824977")
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

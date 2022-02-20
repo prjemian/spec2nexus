@@ -26,16 +26,13 @@ def test_nexus_file(testpath):
 
     assert os.path.exists(testpath)
     nexus_output_file_name = (
-        os.path.join(
-            testpath,
-            os.path.basename(os.path.splitext(TEST_SPEC_FILE)[0]),
-        )
+        os.path.join(testpath, os.path.basename(os.path.splitext(TEST_SPEC_FILE)[0]),)
         + ".h5"
     )
     assert not os.path.exists(nexus_output_file_name)
 
     out = writer.Writer(sdf)
-    out.save(nexus_output_file_name, [scanNum,])
+    out.save(nexus_output_file_name, [scanNum, ])
 
     assert os.path.exists(nexus_output_file_name)
     with h5py.File(nexus_output_file_name, "r") as h5:
@@ -67,6 +64,7 @@ def test_nexus_file(testpath):
         assert pg.attrs.get("NX_class") == "NXnote"
         assert ipg.attrs.get("target") != ipg.name
         assert ipg.attrs.get("target") == pg.name
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

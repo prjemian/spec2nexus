@@ -28,12 +28,14 @@ def test_CdSe_scan_92(capsys):
     for item, text in enumerate("program: read: wrote:".split()):
         assert out[item].startswith(text)
 
-    outfile = out[2][len("wrote: ") :]
+    outfile = out[2][len("wrote: "):]
     assert os.path.exists(outfile)
     buf = open(outfile, "r").readlines()
 
     assert len(buf) == 22, "number of lines in data file"
-    assert "# file: " + fname == buf[0].strip(), "original SPEC data file name in data file"
+    assert (
+        "# file: " + fname == buf[0].strip()
+    ), "original SPEC data file name in data file"
     assert "# scan: 92" == buf[1].strip(), "scan number in data file"
     assert "# " + "\t".join(columns) == buf[2].strip(), "column labels in data file"
 
@@ -42,7 +44,7 @@ def test_CdSe_scan_92(capsys):
     checks = [
         # line  [expected 3 values]
         [3, [-10.118571, 297.467, 66.0]],  # first line
-        [-1, [-5.5910424, 297.483, 66.0]]  # last line
+        [-1, [-5.5910424, 297.483, 66.0]],  # last line
     ]
     for line_number, expected in checks:
         got = list(map(float, buf[line_number].split()))
@@ -73,12 +75,14 @@ def test_CdSe_scan_95(capsys):
     for item, text in enumerate("program: read: wrote:".split()):
         assert out[item].startswith(text)
 
-    outfile = out[2][len("wrote: ") :]
+    outfile = out[2][len("wrote: "):]
     assert os.path.exists(outfile)
     buf = open(outfile, "r").readlines()
 
     assert len(buf) == 44, "number of lines in data file"
-    assert "# file: " + fname == buf[0].strip(), "original SPEC data file name in data file"
+    assert (
+        "# file: " + fname == buf[0].strip()
+    ), "original SPEC data file name in data file"
     assert "# scan: 95" == buf[1].strip(), "scan number in data file"
     assert "# " + "\t".join(columns) == buf[2].strip(), "column labels in data file"
 
@@ -87,7 +91,7 @@ def test_CdSe_scan_95(capsys):
     checks = [
         # line  [expected 3 values]
         [3, [-12.063282, 297.529, 66.0]],  # first line
-        [-1, [-2.0358687, 297.553, 66.0]]  # last line
+        [-1, [-2.0358687, 297.553, 66.0]],  # last line
     ]
     for line_number, expected in checks:
         got = list(map(float, buf[line_number].split()))
@@ -96,6 +100,7 @@ def test_CdSe_scan_95(capsys):
 
     os.remove(outfile)
     assert not os.path.exists(outfile)
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

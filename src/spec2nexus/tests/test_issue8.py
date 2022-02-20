@@ -25,6 +25,7 @@ def test_data_file():
     assert len(scan.data["mr"]) == 31
     assert not hasattr(scan, "_mca_")
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

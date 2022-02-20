@@ -75,7 +75,8 @@ def test_issue133_data_file(hfile):
         assert u.get("header_1") is not None, "dataset /S1/UserReserved/header_1"
         assert u.get("header_2") is None, "dataset /S1/UserReserved/header_2"
         assert u.get("item_1") is None, "dataset /S1/UserReserved/item_1"
-        assert u.get("item_2") == None, "dataset /S1/UserReserved/item_2"
+        assert u.get("item_2") is None, "dataset /S1/UserReserved/item_2"
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

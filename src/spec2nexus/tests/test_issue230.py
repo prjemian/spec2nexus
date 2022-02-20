@@ -80,6 +80,7 @@ def test_array_float(hfile):
         value = ds[()]
         assert isinstance(value, np.ndarray)
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

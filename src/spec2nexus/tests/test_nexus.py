@@ -28,7 +28,7 @@ ARGV0 = sys.argv[0]
         ["spec_from_spock.spc", "-f --%s   -s 116", "quiet"],
         ["mca_spectra_example.dat", "-f --%s   -s 1", "quiet"],
         ["xpcs_plugin_sample.spec", "-f --%s   -s 1", "quiet"],
-    ]
+    ],
 )
 def test_example(filename, opts, noise, testpath):
     specfile = os.path.join(_core.EXAMPLES_PATH, filename)
@@ -62,6 +62,7 @@ def test_example(filename, opts, noise, testpath):
         nxdata = nxentry[default]
         assert nxdata is not None, "NXentry group has NXdata group"
         assert isinstance(nxdata, h5py.Group), default + " is HDF5 Group"
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

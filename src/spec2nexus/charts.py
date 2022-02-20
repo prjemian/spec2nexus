@@ -21,7 +21,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import spec2nexus
 
 
-SCALING_FACTOR = 1  #  2**24
+SCALING_FACTOR = 1  # 2**24
 PLOT_H_INT = 9  # 7
 PLOT_V_INT = 5  # 3
 COLORMAP = "cubehelix"  # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps

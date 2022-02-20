@@ -81,9 +81,13 @@ def test_command_line_spec_data_file_03_06_JanTest(testpath):
     assert os.path.exists(plot_path)
     assert os.path.exists(os.path.join(plot_path, "03_06_JanTest.dat"))
     assert os.path.exists(os.path.join(plot_path, "index.html"))
-    assert os.path.exists(os.path.join(plot_path, "s00001" + specplot_gallery.PLOT_TYPE))
+    assert os.path.exists(
+        os.path.join(plot_path, "s00001" + specplot_gallery.PLOT_TYPE)
+    )
     # TODO: #69: look for handling of scan 1
-    assert not os.path.exists(os.path.join(plot_path, "s1" + specplot_gallery.PLOT_TYPE))
+    assert not os.path.exists(
+        os.path.join(plot_path, "s1" + specplot_gallery.PLOT_TYPE)
+    )
     # TODO: look for that scan in index.html?
 
 
@@ -160,7 +164,12 @@ def test_command_line_spec_data_file_list_reversed_chronological_issue_79(testpa
 
 
 def test_command_line_specified_directory_not_found_issue_98():
-    sys.argv = [ARGV0, "-d", "Goofball-directory_does_not_exist", file_from_examples("APS_spec_data.dat")]
+    sys.argv = [
+        ARGV0,
+        "-d",
+        "Goofball-directory_does_not_exist",
+        file_from_examples("APS_spec_data.dat"),
+    ]
 
     with pytest.raises(specplot_gallery.DirectoryNotFoundError):
         specplot_gallery.main()
@@ -186,15 +195,10 @@ def test_refresh(testpath):
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     assert os.path.exists(gallery)
-    assert os.path.exists(
-        os.path.join(gallery, specplot_gallery.MTIME_CACHE_FILE)
-    )
+    assert os.path.exists(os.path.join(gallery, specplot_gallery.MTIME_CACHE_FILE))
 
     def children_mtimes(plotdir, children):
-        return {
-            k: os.path.getmtime(os.path.join(plotdir, k))
-            for k in children
-        }
+        return {k: os.path.getmtime(os.path.join(plotdir, k)) for k in children}
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     plotdir = os.path.join(gallery, "2010", "11", "specdata")
@@ -205,9 +209,7 @@ def test_refresh(testpath):
     assert os.path.exists(os.path.join(gallery, "2010", "11", "specdata"))
     assert os.path.exists(plotdir)
     children = [
-        k
-        for k in sorted(os.listdir(plotdir))
-        if k.endswith(specplot_gallery.PLOT_TYPE)
+        k for k in sorted(os.listdir(plotdir)) if k.endswith(specplot_gallery.PLOT_TYPE)
     ]
     assert len(children) == 3
     mtimes = children_mtimes(plotdir, children)
@@ -224,9 +226,7 @@ def test_refresh(testpath):
         # should pass all but the latest (#S 3)
         assert os.path.getmtime(os.path.join(plotdir, k)) == mtimes[k], k
     children = [
-        k
-        for k in sorted(os.listdir(plotdir))
-        if k.endswith(specplot_gallery.PLOT_TYPE)
+        k for k in sorted(os.listdir(plotdir)) if k.endswith(specplot_gallery.PLOT_TYPE)
     ]
     mtimes = children_mtimes(plotdir, children)
     assert len(children) == 5
@@ -237,9 +237,7 @@ def test_refresh(testpath):
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     children = [
-        k
-        for k in sorted(os.listdir(plotdir))
-        if k.endswith(specplot_gallery.PLOT_TYPE)
+        k for k in sorted(os.listdir(plotdir)) if k.endswith(specplot_gallery.PLOT_TYPE)
     ]
     assert len(children) == 6
     for k in children[:-2]:
@@ -254,9 +252,7 @@ def test_refresh(testpath):
 
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     children = [
-        k
-        for k in sorted(os.listdir(plotdir))
-        if k.endswith(specplot_gallery.PLOT_TYPE)
+        k for k in sorted(os.listdir(plotdir)) if k.endswith(specplot_gallery.PLOT_TYPE)
     ]
     assert len(children) == 3
     for k in children:
@@ -273,24 +269,18 @@ def test_refresh(testpath):
     src = file_from_tests("refresh1.txt")
     shutil.copy(src, spec_file)
 
-    specplot_gallery.PlotSpecFileScans(
-        [spec_file], gallery, reverse_chronological=True
-    )
+    specplot_gallery.PlotSpecFileScans([spec_file], gallery, reverse_chronological=True)
     assert len(children) == 3
     _core.addMoreScans(spec_file)
     time.sleep(SHORT_WAIT)
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     children = [
-        k
-        for k in sorted(os.listdir(plotdir))
-        if k.endswith(specplot_gallery.PLOT_TYPE)
+        k for k in sorted(os.listdir(plotdir)) if k.endswith(specplot_gallery.PLOT_TYPE)
     ]
 
     # issue #206 here
     # edit mtime_cache.json
-    mtime_file = os.path.join(
-        gallery, specplot_gallery.MTIME_CACHE_FILE
-    )
+    mtime_file = os.path.join(gallery, specplot_gallery.MTIME_CACHE_FILE)
     assert os.path.exists(mtime_file)
     with open(mtime_file, "r") as fp:
         mtimes = json.loads(fp.read())
@@ -303,14 +293,10 @@ def test_refresh(testpath):
     specplot_gallery.PlotSpecFileScans([spec_file], gallery)
     # list of all available plot images
     plots = [
-        f
-        for f in sorted(os.listdir(plotdir))
-        if f.endswith(specplot_gallery.PLOT_TYPE)
+        f for f in sorted(os.listdir(plotdir)) if f.endswith(specplot_gallery.PLOT_TYPE)
     ]
     # look at the index.html file
-    index_file = os.path.join(
-        plotdir, specplot_gallery.HTML_INDEX_FILE
-    )
+    index_file = os.path.join(plotdir, specplot_gallery.HTML_INDEX_FILE)
     with open(index_file, "r") as fp:
         html = fp.read()
     for line in html.splitlines():
@@ -325,6 +311,7 @@ def test_refresh(testpath):
                 msg = "plot %s is not linked" % str(plot)
                 msg += " in `%s`" % specplot_gallery.HTML_INDEX_FILE
                 assert line.startswith("<a href="), msg
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

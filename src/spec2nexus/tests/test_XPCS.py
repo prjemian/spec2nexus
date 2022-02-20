@@ -13,9 +13,7 @@ TEST_DATA_FILE = os.path.join(_core.EXAMPLES_PATH, "xpcs_plugin_sample.spec")
 @pytest.mark.parametrize(
     "key, count",
     [
-        ["VA", 2],
-        ["VD", 1],
-        ["VE", 2],
+        ["VA", 2], ["VD", 1], ["VE", 2],
     ]
 )
 def test_key_counts(key, count):
@@ -29,22 +27,16 @@ def test_key_counts(key, count):
 @pytest.mark.parametrize(
     "key, terms",
     [
-        ["VA",
+        [
+            "VA",
             [
                 "ta1zu ta1zdo ta1zdi ta1xu ta1xd ta2zu ta2zdo ta2zdi",
-                "ta2xu ta2xd motor 23 ta2rotact sa1zu sa1xu sa1zd sa1xd"
-            ]
+                "ta2xu ta2xd motor 23 ta2rotact sa1zu sa1xu sa1zd sa1xd",
+            ],
         ],
-        ["VD",
-            ["gonio1 gonio2"]
-        ],
-        ["VE",
-            [
-                "te2xu te2xd te2y te2zu te2zdi te2zdo",
-                "se2b se2t se2o se2i"
-            ]
-        ],
-    ]
+        ["VD", ["gonio1 gonio2"]],
+        ["VE", ["te2xu te2xd te2y te2zu te2zdi te2zdo", "se2b se2t se2o se2i"]],
+    ],
 )
 def test_keys(key, terms):
     sd = spec.SpecDataFile(TEST_DATA_FILE)
@@ -74,6 +66,7 @@ def test_XPCS_scan7():
     assert "XPCS" in scan.__dict__
     for key in "batch_name preset compression multi_img".split():
         assert key in scan.XPCS
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

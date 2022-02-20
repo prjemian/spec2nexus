@@ -60,6 +60,7 @@ def test_the_data_file(hfile):
         signal = nxdata.attrs.get("signal")
         assert signal in nxdata
 
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

@@ -79,8 +79,8 @@ def test_save_data_hklmesh(hfile):
         nxdata = root["/S17/data"]
         signal = nxdata.attrs["signal"]
         axes = nxdata.attrs["axes"]
-        assert bytes(axes[0].encode('utf8')) == b"H"
-        assert bytes(axes[1].encode('utf8')) == b"K"
+        assert bytes(axes[0].encode("utf8")) == b"H"
+        assert bytes(axes[1].encode("utf8")) == b"K"
         assert signal == "signal"
 
 
@@ -90,7 +90,7 @@ def test_save_data_hklmesh(hfile):
         ["lmn40.spe", 74, "NaI", "H"],
         ["33id_spec.dat", 104, "I0", "K"],
         ["33bm_spec.dat", 14, "signal", "L"],
-    ]
+    ],
 )
 def test_hkl_scans(filename, scan_number, signal, axes, hfile):
     spec_file = os.path.join(_core.EXAMPLES_PATH, filename)
@@ -105,6 +105,7 @@ def test_hkl_scans(filename, scan_number, signal, axes, hfile):
         nxdata = root["/S%d/data" % scan_number]
         assert nxdata.attrs["signal"] == signal
         assert nxdata.attrs["axes"] == axes
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

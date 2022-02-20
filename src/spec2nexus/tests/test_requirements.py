@@ -4,6 +4,7 @@ import pytest
 
 from .. import _requirements
 
+
 @pytest.mark.parametrize(
     "package", "docopt h5py lxml matplotlib numpy pyRestTable six".split()
 )
@@ -13,6 +14,7 @@ def test_learn_requirements(package):
     assert len(reqs) > 0
     assert len(reqs) == 7
     assert package in reqs
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

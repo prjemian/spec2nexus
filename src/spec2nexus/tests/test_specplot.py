@@ -107,7 +107,7 @@ def test_command_line(testpath):
         ["33id_spec.dat", 22],  # issue 72 -- mesh
         ["33bm_spec.dat", 17],  # issue 72 -- hklmesh
         ["33bm_spec.dat", 14],  # issue 80 -- hklscan, l
-    ]
+    ],
 )
 def test_command_line_plot(filename, scan_number, testpath):
     specFile = file_from_examples(filename)
@@ -218,6 +218,7 @@ def test_refresh(testpath):
             assert os.path.exists(plot2)
             assert os.path.getmtime(plot2) > mtime
             assert os.path.getsize(plot2) != plotsize
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

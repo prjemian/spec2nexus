@@ -24,7 +24,7 @@ SPEC_DATA_FILE_LINES = """
 #UXML   <dataset name="attenuator_transmission" type="float">3.55764458e-02</dataset>
 #UXML   <dataset name="status">Out</dataset>
 #UXML </group>
-	"""
+"""
 
 
 def test_process():
@@ -162,7 +162,7 @@ def test_file_3(hfile):
         unique_id = group.attrs.get("unique_id")
         assert prefix == "33idd:filter:"
         assert description == "33-ID-D Filters"
-        assert unique_id == None
+        assert unique_id is None
 
         # <dataset name="corrdet_counter">corrdet</dataset>
         assert "corrdet_counter" in group
@@ -174,7 +174,6 @@ def test_file_3(hfile):
         # <dataset name="wait_time" type="float" units="s">0.500</dataset>
         assert "wait_time" in group
         ds = group["wait_time"]
-        attrs = dict(ds.attrs)
         assert ds.attrs.get("units") == "s"
         value = ds[()]  # ds.value deprecated in h5py
         assert value == numpy.array([0.5])
@@ -214,6 +213,7 @@ def test_file_4(hfile):
         assert target is not None
         assert target == source.name
         assert target == link.attrs.get("target")
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

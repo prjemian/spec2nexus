@@ -34,7 +34,7 @@ def test_extractSpecScans_issue_64(capsys):
     for item, text in enumerate("program: read: wrote:".split()):
         assert out[item].startswith(text)
 
-    outfile = out[2][len("wrote: ") :]
+    outfile = out[2][len("wrote: "):]
     assert os.path.exists(outfile)
     os.remove(outfile)
     assert not os.path.exists(outfile)
@@ -50,10 +50,11 @@ def test_extractSpecScans_issue_66_verbose_reporting_mismatch_P_O(capsys):
 
     assert len(out) == 5, "extractSpecScan"
 
-    outfile = out[2][len("wrote: ") :]
+    outfile = out[2][len("wrote: "):]
     assert os.path.exists(outfile)
     os.remove(outfile)
     assert not os.path.exists(outfile)
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
