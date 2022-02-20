@@ -4,7 +4,7 @@
 """
 Parses SPEC data using spec2nexus.eznx API (only requires h5py).
 
-(internal library) 
+(internal library)
 """
 
 

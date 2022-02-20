@@ -1,3 +1,5 @@
+"""plugins"""
+
 from . import spec_common
 from . import fallback
 from . import apstools_specwriter
