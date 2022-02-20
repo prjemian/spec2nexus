@@ -13,6 +13,11 @@ Change History
 Production
 **********
 
+:2021.2.0: release expected 2022-03-15
+
+    * `#239 <https://github.com/prjemian/spec2nexus/issues/239>`_
+       publish documentation at https://prjemian.github.io/spec2nexus/
+
 :2021.1.8: released *2020.11.10*
 
     * `#221 <https://github.com/prjemian/spec2nexus/issues/221>`_

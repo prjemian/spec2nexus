@@ -78,9 +78,7 @@ except NameError:
 MTIME_CACHE_FILE = "mtime_cache.json"
 PLOT_TYPE = ".svg"
 HTML_INDEX_FILE = "index.html"
-DOC_URL = (
-    "http://spec2nexus.readthedocs.io/en/latest/specplot_gallery.html"
-)
+DOC_URL = "https://prjemian.github.io/spec2nexus/specplot_gallery.html"
 
 
 class DirectoryNotFoundError(ValueError):

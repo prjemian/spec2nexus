@@ -10,7 +10,7 @@ and recorded during the execution of a scan.  The data are stored
 in a dictionary of each scan: ``scan.MD``.  If there are no
 ``#MD`` control lines, then ``scan.MD`` does not exist.
 
-**see** https://apstools.readthedocs.io/en/latest/source/_filewriters.html#apstools.filewriters.SpecWriterCallback
+**see** https://prjemian.github.io/spec2nexus/source/_filewriters.html#apstools.filewriters.SpecWriterCallback
 
 ----
 
