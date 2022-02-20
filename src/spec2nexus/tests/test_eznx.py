@@ -1,15 +1,5 @@
 """Tests for the writer module."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import h5py
 import numpy
 import pytest
@@ -220,3 +210,13 @@ def test_read_nexus_field_alternatives(testpath):
         with pytest.raises(RuntimeError) as exc:
             value = eznx.read_nexus_field(nxentry, "array")
         assert str(exc).find("unexpected 2-D data") > 0
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

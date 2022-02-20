@@ -1,15 +1,5 @@
 """Test issues 107 and 133."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import h5py
 import os
 
@@ -86,3 +76,13 @@ def test_issue133_data_file(hfile):
         assert u.get("header_2") is None, "dataset /S1/UserReserved/header_2"
         assert u.get("item_1") is None, "dataset /S1/UserReserved/item_1"
         assert u.get("item_2") == None, "dataset /S1/UserReserved/item_2"
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

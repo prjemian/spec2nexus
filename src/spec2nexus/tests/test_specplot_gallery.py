@@ -1,15 +1,5 @@
 """Tests for the specplot_gallery module."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import json
 from lxml import etree
 import os
@@ -335,3 +325,13 @@ def test_refresh(testpath):
                 msg = "plot %s is not linked" % str(plot)
                 msg += " in `%s`" % specplot_gallery.HTML_INDEX_FILE
                 assert line.startswith("<a href="), msg
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------
