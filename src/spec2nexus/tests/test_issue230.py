@@ -79,3 +79,13 @@ def test_array_float(hfile):
         assert ds.size == 2
         value = ds[()]
         assert isinstance(value, np.ndarray)
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

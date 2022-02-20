@@ -2,16 +2,6 @@
 unit tests for the diffractometers module
 """
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import numpy
 import os
 import pytest
@@ -210,3 +200,13 @@ def test_class_Diffractometer():
     assert gonio.geometry_name == "big"
     assert gonio.variant == "little"
     assert gonio.geometry_parameters is not None
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
+"""
+Parses SPEC data using spec2nexus.eznx API (only requires h5py).
 
-
-"""(internal library) Parses SPEC data using spec2nexus.eznx API (only requires h5py)"""
+(internal library) 
+"""
 
 
 import h5py
@@ -363,3 +356,13 @@ class Writer(object):
         eznx.write_dataset(
             group, clean_name, data, spec_name=label, **attr
         )
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

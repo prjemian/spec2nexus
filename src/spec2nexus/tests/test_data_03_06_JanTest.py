@@ -1,15 +1,5 @@
 """Unit tests for a specific data file."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import h5py
 import os
 
@@ -69,3 +59,13 @@ def test_the_data_file(hfile):
 
         signal = nxdata.attrs.get("signal")
         assert signal in nxdata
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

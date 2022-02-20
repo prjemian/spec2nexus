@@ -1,15 +1,5 @@
 """Tests for the writer module."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import h5py
 import os
 import pytest
@@ -115,3 +105,13 @@ def test_hkl_scans(filename, scan_number, signal, axes, hfile):
         nxdata = root["/S%d/data" % scan_number]
         assert nxdata.attrs["signal"] == signal
         assert nxdata.attrs["axes"] == axes
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

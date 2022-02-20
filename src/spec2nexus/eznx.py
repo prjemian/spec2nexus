@@ -1,16 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 
 """
 (Easy NeXus) support reading & writing NeXus HDF5 files using h5py
@@ -279,3 +269,13 @@ def read_nexus_group_fields(parent, name, fields):
     """
     group = parent[name]
     return {key: read_nexus_field(group, key) for key in fields}
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

@@ -1,15 +1,5 @@
 """Tests for the writer module."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import h5py
 import os
 import pytest
@@ -72,3 +62,13 @@ def test_example(filename, opts, noise, testpath):
         nxdata = nxentry[default]
         assert nxdata is not None, "NXentry group has NXdata group"
         assert isinstance(nxdata, h5py.Group), default + " is HDF5 Group"
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

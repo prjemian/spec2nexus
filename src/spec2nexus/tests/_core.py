@@ -67,3 +67,13 @@ def addMoreScans(spec_data_file, more_file="refresh2.txt"):
         more_scans = fp.read()
     with open(spec_data_file, "a") as fp:
         fp.write(more_scans)
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------

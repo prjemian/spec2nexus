@@ -1,15 +1,5 @@
 """Test data file with no #E control lines."""
 
-# -----------------------------------------------------------------------------
-# :author:    Pete R. Jemian
-# :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2020, Pete R. Jemian
-#
-# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
-#
-# The full license is in the file LICENSE.txt, distributed with this software.
-# -----------------------------------------------------------------------------
-
 import datetime
 import os
 
@@ -39,3 +29,13 @@ def test_date_and_epoch():
     assert hasattr(scan, "epoch")
     assert datetime.datetime.strptime(scan.date, spec_fmt) == datetime.datetime.fromtimestamp(scan.epoch), "date and epoch are identical"
     assert isinstance(scan, spec.SpecDataFileScan)
+
+# -----------------------------------------------------------------------------
+# :author:    Pete R. Jemian
+# :email:     prjemian@gmail.com
+# :copyright: (c) 2014-2022, Pete R. Jemian
+#
+# Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
+#
+# The full license is in the file LICENSE.txt, distributed with this software.
+# -----------------------------------------------------------------------------
