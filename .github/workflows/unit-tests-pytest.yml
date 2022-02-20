@@ -51,6 +51,7 @@ jobs:
       run: |
         $CONDA/bin/conda list --name $ENV_NAME
       env:
+        source $CONDA/bin/activate $ENV_NAME
         PY_VER: ${{ matrix.python-version }}
         ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
 
