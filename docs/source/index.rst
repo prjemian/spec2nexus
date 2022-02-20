@@ -26,8 +26,8 @@ Package Information
 * **author**:    Pete R. Jemian
 * **email**:     prjemian@gmail.com
 * **copyright**: 2014-2020, Pete R. Jemian
-* **license**:   Creative Commons Attribution 4.0 International Public License (see `LICENSE.txt <http://spec2nexus.readthedocs.io/en/latest/license.html>`_ file)
-* **URL**:       documentation: http://spec2nexus.readthedocs.io
+* **license**:   Creative Commons Attribution 4.0 International Public License (see `LICENSE.txt <https://prjemian.github.io/spec2nexus/license.html>`_ file)
+* **URL**:       documentation: https://prjemian.github.io/spec2nexus/
 * **git**:       source: https://github.com/prjemian/spec2nexus
 * **PyPI**:      Distribution: https://pypi.python.org/pypi/spec2nexus/ 
 * **OpenHub**:   Compare open source software: https://www.openhub.net/p/spec2nexus

@@ -35,7 +35,7 @@ the help message::
                           spec_file
    
    Save columns from SPEC data file scan(s) to TSV files URL:
-   http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html v2016.1025.0
+   https://prjemian.github.io/spec2nexus//extractSpecScan.html v2016.1025.0
    
    positional arguments:
      spec_file             SPEC data file name(s)

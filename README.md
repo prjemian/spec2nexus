@@ -45,8 +45,8 @@ term | description
 **author** | Pete R. Jemian
 **email** | prjemian@gmail.com
 **copyright** | 2014-2022, Pete R. Jemian
-**license** | Creative Commons Attribution 4.0 International Public License (see [LICENSE.txt](http://spec2nexus.readthedocs.io/en/latest/license.html) file)
-**documentation** | <http://spec2nexus.readthedocs.io>
+**license** | Creative Commons Attribution 4.0 International Public License (see [LICENSE.txt](https://prjemian.github.io/spec2nexus/license.html) file)
+**documentation** | <https://prjemian.github.io/spec2nexus/>
 **source** | <https://github.com/prjemian/spec2nexus>
 **PyPI** | <https://pypi.python.org/pypi/spec2nexus/>
 **Release Notes** | <https://github.com/prjemian/spec2nexus/wiki/Release-Notes>

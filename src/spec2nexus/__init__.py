@@ -16,7 +16,7 @@ __description__ = (
 )
 __author_name__ = __author__
 __author_email__ = __email__
-__url__ = u"http://spec2nexus.readthedocs.org"
+__url__ = u"https://prjemian.github.io/spec2nexus"
 __keywords__ = [
     "SPEC",
     "diffraction",

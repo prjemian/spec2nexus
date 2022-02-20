@@ -28,9 +28,7 @@ Compatible with Python 2.7+
 
 from __future__ import print_function
 
-__url__ = (
-    "http://spec2nexus.readthedocs.org/en/latest/extractSpecScan.html"
-)
+__url__ = "https://prjemian.github.io/spec2nexus/extractSpecScan.html"
 
 import os
 import sys

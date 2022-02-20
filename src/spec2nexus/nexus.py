@@ -5,7 +5,7 @@
 
 # this is the main code for the *spec2nexus* application
 
-__url__ = "http://spec2nexus.readthedocs.org/en/latest/spec2nexus.html"
+__url__ = "https://prjemian.github.io/spec2nexus/spec2nexus.html"
 
 import os
 import sys
