@@ -10,6 +10,8 @@ Production
 
 :2021.2.0: release expected 2022-03-15
 
+:2021.1.10: released *2022.02.24*
+
 :2021.1.9: released *2022.02.24*
 
     * `#239 <https://github.com/prjemian/spec2nexus/issues/239>`_
