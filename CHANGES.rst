@@ -10,7 +10,13 @@ Production
 
 :2021.2.0: release expected 2022-03-15
 
+:2021.1.11: released *2022.02.24*
+
+   * re-release due to documentation publishing workflow problem
+
 :2021.1.10: released *2022.02.24*
+
+   * re-release due to documentation publishing workflow problem
 
 :2021.1.9: released *2022.02.24*
 
