@@ -4,16 +4,13 @@
 Change History
 ##############
 
-.. note:: Python 2 end of support
-
-   spec2nexus stopped development for Python 2 after release *2021.1.7*, *2019-11-21*.
-   For more information, visit https://python3statement.org/.
-
 
 Production
 **********
 
 :2021.2.0: release expected 2022-03-15
+
+:2021.1.9: released *2022.02.24*
 
     * `#239 <https://github.com/prjemian/spec2nexus/issues/239>`_
        publish documentation at https://prjemian.github.io/spec2nexus/
@@ -24,6 +21,11 @@ Production
        move CI from travis-ci to Github Actions, test with python 3.8
     * `#217 <https://github.com/prjemian/spec2nexus/issues/217>`_
        raise ValueError when ``#L`` and ``#N`` lines do not agree
+
+.. note:: Python 2 end of support
+
+   spec2nexus stopped development for Python 2 after release *2021.1.7*, *2019-11-21*.
+   For more information, visit https://python3statement.org/.
 
 :2021.1.7: released *2019-11-21*
 
