@@ -337,7 +337,7 @@ class Diffractometer:
             "scan #": scan.scanNum,
             "SPEC scanCmd": scan.scanCmd,
         }
-        if hasattr(scan, "EPOCH"):
+        if hasattr(scan, "epoch"):
             s["date"] = datetime.datetime.fromtimestamp(scan.epoch)
         s.update(self._get_info_dict("pa"))
         s.update(self._positioners_dict(scan))
