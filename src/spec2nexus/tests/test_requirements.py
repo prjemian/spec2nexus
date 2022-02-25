@@ -4,8 +4,8 @@ import pytest
 
 from .. import _requirements
 
-
 EXPECTED_PACKAGES = "h5py lxml matplotlib-base numpy".split()
+
 
 @pytest.mark.parametrize("package", EXPECTED_PACKAGES)
 def test_learn_requirements(package):

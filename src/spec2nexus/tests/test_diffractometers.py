@@ -4,6 +4,7 @@ unit tests for the diffractometers module
 
 import numpy
 import os
+import pathlib
 import pytest
 
 from ._core import EXAMPLES_PATH
@@ -203,6 +204,112 @@ def test_class_Diffractometer():
     assert gonio.variant == "little"
     assert gonio.geometry_parameters is not None
 
+
+def test_print_str():
+    DATA = pathlib.Path(__file__).absolute().parent.parent / "data"
+    assert DATA.exists()
+
+    TESTSCAN = 14
+    TESTFILE = DATA / "33bm_spec.dat"
+    TESTFILE.exists()
+
+    sdf = spec.SpecDataFile(str(TESTFILE))
+    scan = sdf.getScan(TESTSCAN)
+    s = str(scan.diffractometer)
+    assert s.startswith("Diffractometer(")
+    assert "geometry=" in s
+    assert "wavelength=" in s
+    assert "mode=" in s
+    assert "sector=" in s
+    assert "h=" in s
+    assert "k=" in s
+    assert "l=" in s
+
+
+def test_print_brief():
+    DATA = pathlib.Path(__file__).absolute().parent.parent / "data"
+    assert DATA.exists()
+
+    TESTSCAN = 14
+    TESTFILE = DATA / "33bm_spec.dat"
+    TESTFILE.exists()
+
+    sdf = spec.SpecDataFile(str(TESTFILE))
+    scan = sdf.getScan(TESTSCAN)
+    assert not scan.__interpreted__
+    assert scan.scanCmd.startswith("hklscan")
+    assert len(dir(scan)) == 62
+    assert not scan.__interpreted__
+
+    scan.interpret()
+    assert scan.__interpreted__
+    assert len(dir(scan)) == 66
+
+    out = scan.diffractometer.print_brief(scan).strip()
+    assert len(out) > 0
+    out = out.splitlines()
+    assert len(out) == 8
+    assert out[0] == "fourc"
+    assert out[1].startswith("h k l = ")
+    assert out[2].startswith("alpha=")
+    assert "alpha=" in out[2]
+    assert "beta=" in out[2]
+    assert "azimuth=" in out[2]
+    assert "omega=" in out[3]
+    assert "wavelength=" in out[3]
+    assert out[4].startswith("2-theta = ")
+    assert out[5].startswith("theta = ")
+    assert out[6].startswith("chi = ")
+    assert out[7].startswith("phi = ")
+
+
+def test_print_all():
+    DATA = pathlib.Path(__file__).absolute().parent.parent / "data"
+    assert DATA.exists()
+
+    TESTSCAN = 14
+    TESTFILE = DATA / "33bm_spec.dat"
+    TESTFILE.exists()
+
+    sdf = spec.SpecDataFile(str(TESTFILE))
+    scan = sdf.getScan(TESTSCAN)
+    scan.interpret()
+
+    out = scan.diffractometer.print_all(scan).strip()
+    assert len(out) > 0
+    out = out.splitlines()
+    assert len(out) == 26
+    expected = """
+        SPEC file
+        scan #
+        SPEC scanCmd
+        date
+        geometry
+        wavelength
+        mode
+        sector
+        h
+        k
+        l
+        lattice
+        alpha
+        beta
+        azimuth
+        omega
+        full_geometry_name
+        UB
+        [
+        [
+        reflection 1
+        reflection 2
+        2-theta
+        theta
+        chi
+        phi
+    """.strip().splitlines()
+    for i, k in enumerate([k.strip() for k in expected]):
+        assert f"{k}" in out[i]
+        assert out[i].strip().startswith(f"{k}")
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
