@@ -23,6 +23,7 @@ API
 """
 
 from collections import namedtuple, OrderedDict
+import datetime
 import logging
 import numpy
 import pathlib
@@ -107,7 +108,6 @@ class Diffractometer:
         ~parse
         ~print_all
         ~print_brief
-        ~report
     """
 
     def __init__(self, geo_name):
@@ -145,19 +145,18 @@ class Diffractometer:
 
         level str :
             Level of detail for desired report.
-            One of these values: ``pa``, ``report``, ``str``, ``wh``.
+            One of these values: ``pa``, ``str``, ``wh``.
             Default: ``str``
         """
         info = {}
         gpars = self.geometry_parameters
 
-        if level in ("pa", "str", "wh"):
-            info["geometry"] = f"'{self.geometry_name}'"
-            info["wavelength"] = f"{self.wavelength}"
-            info["mode"] = f"'{self.mode}'"
-            info["sector"] = f"{self.sector}"
-            for key in self.Q_names:
-                info[key] = f"{gpars[key.upper()].value}"
+        info["geometry"] = f"'{self.geometry_name}'"
+        info["wavelength"] = f"{self.wavelength}"
+        info["mode"] = f"'{self.mode}'"
+        info["sector"] = f"{self.sector}"
+        for key in self._Q_names:
+            info[key] = f"{gpars[key.upper()].value}"
 
         if level in ("pa", "wh"):
             info["lattice"] = f"{self.lattice}"
@@ -165,9 +164,11 @@ class Diffractometer:
                 if key.upper() in gpars:
                     info[key.lower()] = f"{gpars[key.upper()].value}"
 
-        if level in ("pa"):
+        if level in ("pa", ):
             full_name = self.geometry_name_full
             info["full_geometry_name"] = f"'{full_name}'"
+            if hasattr(self, "lattice") and self.lattice is not None:
+                info["lattice"] = f"{self.lattice}"
             if hasattr(self, "UB"):
                 info["UB"] = self.UB
             if hasattr(self, "reflections"):
@@ -185,7 +186,7 @@ class Diffractometer:
         return f"Diffractometer({', '.join(s)})"
 
     @property
-    def Q_names(self):
+    def _Q_names(self):
         """
         List of names used to define Q (typically: h k l).  All lower case.
         """
@@ -208,10 +209,10 @@ class Diffractometer:
         geometry = get_geometry_catalog().get(self.geometry_name_full)
         number_motors_in_geometry = geometry["numgeo"]
         return {
-            k : scan.positioner[k]
+            k: scan.positioner[k]
             for k in list(scan.positioner.keys())[:number_motors_in_geometry]
         }
-            
+
     def _get_Q_dict(self, info):
         """
         Dictionary with all the Q-related terms & values (hkl, for example).
@@ -221,63 +222,7 @@ class Diffractometer:
         info dict :
             from `_get_info_dict()`
         """
-        return {key : info[key] for key in self.Q_names}
-
-    def print_all(self, scan):
-        """
-        Print All (pa) about this diffractometer scan.
-
-        PARAMETERS
-
-        scan obj :
-            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).
-        """
-        info = self._get_info_dict("pa")
-
-        s = {}
-        s.update(info)
-        s.update(self._positioners_dict(scan))
-
-        width = max([len(k) for k in s.keys()])
-        return '\n'.join([f"{k:^{width}} = {v}" for k, v in s.items()])
-
-    def print_brief(self, scan):
-        """
-        Print brief information (wh: where) about this diffractometer scan.
-
-        PARAMETERS
-
-        scan obj :
-            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).
-        """
-        info = self._get_info_dict("wh")
-        qdict = self._get_Q_dict(info)
-
-        s = []
-
-        s.append(info["geometry"].strip("'"))
-
-        if len(qdict):
-            label = f"{' '.join([k for k in qdict.keys()])}"
-            r = f"{'  '.join(qdict.values())}"
-            s.append(f"{label} = {r}")
-
-        def _compose_row_(labels):
-            return "  ".join(
-                [
-                    f"{k}={info[k]}"
-                    for k in labels
-                    if k in info
-                ]
-            )
-
-        s.append(_compose_row_("alpha beta azimuth".split()))
-        s.append(_compose_row_("omega wavelength".split()))
-
-        for k, v in self._positioners_dict(scan).items():
-            s.append(f"{k} = {v}")
-
-        return '\n'.join(s)
+        return {key: info[key] for key in self._Q_names}
 
     def parse(self, scan):
         dgc = DiffractometerGeometryCatalog()
@@ -377,8 +322,65 @@ class Diffractometer:
                     self.wavelength = Q["LAMBDA"].value
         self.geometry_parameters.update(Q)
 
-    def report(self):
+    def print_all(self, scan):
+        """
+        Print All (pa) about this diffractometer scan.
+
+        PARAMETERS
+
+        scan obj :
+            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).
+        """
+        scan.interpret()
+        s = {
+            "SPEC file": scan.specFile,
+            "scan #": scan.scanNum,
+            "SPEC scanCmd": scan.scanCmd,
+        }
+        if hasattr(scan, "EPOCH"):
+            s["date"] = datetime.datetime.fromtimestamp(scan.epoch)
+        s.update(self._get_info_dict("pa"))
+        s.update(self._positioners_dict(scan))
+
+        width = max([len(k) for k in s.keys()])
+        return '\n'.join([f"{k:^{width}} = {v}" for k, v in s.items()])
+
+    def print_brief(self, scan):
+        """
+        Print brief information (wh: where) about this diffractometer scan.
+
+        PARAMETERS
+
+        scan obj :
+            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).
+        """
+        info = self._get_info_dict("wh")
+        qdict = self._get_Q_dict(info)
+
         s = []
+
+        s.append(info["geometry"].strip("'"))
+
+        if len(qdict):
+            label = f"{' '.join([k for k in qdict.keys()])}"
+            r = f"{'  '.join(qdict.values())}"
+            s.append(f"{label} = {r}")
+
+        def _compose_row_(labels):
+            return "  ".join(
+                [
+                    f"{k}={info[k]}"
+                    for k in labels
+                    if k in info
+                ]
+            )
+
+        s.append(_compose_row_("alpha beta azimuth".split()))
+        s.append(_compose_row_("omega wavelength".split()))
+
+        for k, v in self._positioners_dict(scan).items():
+            s.append(f"{k} = {v}")
+
         return '\n'.join(s)
 
 
