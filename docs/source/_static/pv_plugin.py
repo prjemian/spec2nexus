@@ -1,11 +1,9 @@
 from collections import OrderedDict
-import six
 from spec2nexus.plugin import AutoRegister
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word
 
-@six.add_metaclass(AutoRegister)
-class PV_ControlLine(ControlLineHandler):
+class PV_ControlLine(ControlLineHandler, metaclass=AutoRegister):
     '''**#PV** -- EPICS PV associates mnemonic with PV'''
     
     key = '#PV'

@@ -1,11 +1,9 @@
-import six
 from spec2nexus.plugin import AutoRegister
 from spec2nexus.plugin import ControlLineHandler
 from spec2nexus.utils import strip_first_word
 
 
-@six.add_metaclass(AutoRegister)
-class MyControlLineHandler(ControlLineHandler):
+class MyControlLineHandler(ControlLineHandler, metaclass=AutoRegister):
     """**#TEST** -- custom control line handler"""
 
     key = "#TEST"

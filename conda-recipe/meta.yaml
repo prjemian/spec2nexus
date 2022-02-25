@@ -32,16 +32,14 @@ requirements:
     - setuptools
     - h5py
     - lxml
-    - matplotlib
+    - matplotlib-base
     - numpy
-    - six
 
   run:
     - h5py
     - lxml
-    - matplotlib
+    - matplotlib-base
     - numpy
-    - six
 
 test:
 
@@ -50,7 +48,6 @@ test:
 
   commands:
     - spec2nexus --help
-    - python run_test.py
 
 extra:
   recipe-maintainers:

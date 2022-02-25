@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 """
 (Easy NeXus) support reading & writing NeXus HDF5 files using h5py
 
@@ -59,10 +58,8 @@ The resulting (binary) data file has this structure::
 
 """
 
-
 import h5py  # HDF5 support
 import numpy
-import six
 
 
 def makeFile(filename, **attr):
@@ -140,7 +137,7 @@ def makeDataset(parent, name, data=None, **attr):
         # https://stackoverflow.com/questions/23220513/
         # [n.encode("ascii", "ignore") for n in data]
         def encoder(value):
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 return value.encode("ascii", "ignore")
             return value
 

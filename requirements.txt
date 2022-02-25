@@ -1,8 +1,4 @@
-coverage
-docopt
 h5py
 lxml
-matplotlib
+matplotlib-base
 numpy
-pyRestTable
-six
