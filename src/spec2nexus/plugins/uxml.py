@@ -7,7 +7,6 @@
 
 from lxml import etree
 import os
-import six
 
 from .. import eznx
 from ..plugin import AutoRegister
@@ -24,8 +23,7 @@ class UXML_Error(Exception):
     pass
 
 
-@six.add_metaclass(AutoRegister)
-class UXML_metadata(ControlLineHandler):
+class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
 
     """
     **#UXML** -- XML metadata in scan header

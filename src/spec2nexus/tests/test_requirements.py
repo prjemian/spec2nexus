@@ -5,14 +5,14 @@ import pytest
 from .. import _requirements
 
 
-@pytest.mark.parametrize(
-    "package", "docopt h5py lxml matplotlib numpy pyRestTable six".split()
-)
+EXPECTED_PACKAGES = "h5py lxml matplotlib-base numpy".split()
+
+@pytest.mark.parametrize("package", EXPECTED_PACKAGES)
 def test_learn_requirements(package):
     reqs = _requirements.learn_requirements()
     assert isinstance(reqs, list)
     assert len(reqs) > 0
-    assert len(reqs) == 7
+    assert len(reqs) == len(EXPECTED_PACKAGES)
     assert package in reqs
 
 

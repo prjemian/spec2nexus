@@ -1,12 +1,9 @@
-name: pyRestTable
+name: spec2nexus
 channels:
   - defaults
   - conda-forge
-  - prjemian
 dependencies:
   - h5py
   - lxml
-  - matplotlib
+  - matplotlib-base
   - numpy
-  - pyRestTable
-  - six

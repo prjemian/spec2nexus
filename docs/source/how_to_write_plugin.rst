@@ -65,26 +65,18 @@ plugin manager to automatically register your new plugin.
 Write a plugin module
 *********************
 
-Give the custom plugin module a name ending with ``.py``.
-As with any Python module, the name must be unique within a directory.
-If the plugin is not in your working directory,
-there must be a ``__init__.py`` file in the same directory (even if 
-that file is empty) so that your plugin module can be loaded with ``import <MODULE>``.
+Give the custom plugin module a name ending with ``.py``. As with any Python
+module, the name must be unique within a directory. If the plugin is not in your
+working directory, there must be a ``__init__.py`` file in the same directory
+(even if that file is empty) so that your plugin module can be loaded with
+``import <MODULE>``.
 
-**Plugin module setup**
-
-.. sidebar:: The ``six`` package
-
-   The ``six`` package is used to make our plugins run with either
-   Python 2.7 or Python 3.5+.
-
-Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common`
-for examples.  The custom plugin module should contain, at minimum one subclass of  
-:class:`spec2nexus.plugin.ControlLineHandler` which is decorated
-with ``@six.add_metaclass(spec2nexus.plugin.AutoRegister)``.  
-The ``add_metaclass`` decorator allows our custom ControlLineHandlers 
-to register themselves when their module is imported.
-A custom plugin module can contain many such handlers, as needs dictate.
+Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common` for
+examples.  The custom plugin module should contain, at minimum one subclass of
+:class:`spec2nexus.plugin.ControlLineHandler` and the keyword argument
+``metaclass=AutoRegister``. The ``metaclass`` keyword argument allows our custom
+ControlLineHandlers to register themselves when their module is imported. A
+custom plugin module can contain many such handlers, as needs dictate.
 
 .. sidebar::  Useful ``import``
 
@@ -97,7 +89,6 @@ These imports are necessary to to write plugins for *spec2nexus*:
 .. code-block:: python
    :linenos:
 
-   import six
    from spec2nexus.plugin import AutoRegister
    from spec2nexus.plugin import ControlLineHandler
    from spec2nexus.utils import strip_first_word
@@ -253,12 +244,10 @@ we create one that ignores processing by doing nothing:
 .. code-block:: python
    :linenos:
 
-   import six
    from spec2nexus.plugin import AutoRegister
    from spec2nexus.plugin import ControlLineHandler
    
-   @six.add_metaclass(AutoRegister)
-   class Ignore_Y_ControlLine(ControlLineHandler):
+   class Ignore_Y_ControlLine(ControlLineHandler, metaclass=AutoRegister):
        '''
        **#Y** -- as in ``#Y 1 2 3 4 5``
        
@@ -338,13 +327,11 @@ Gathering all parts of the examples above, the custom plugin module is:
 .. code-block:: python
    :linenos:
 
-   import six
    from spec2nexus.plugin import AutoRegister
    from spec2nexus.plugin import ControlLineHandler
    from spec2nexus.utils import strip_first_word
    
-   @six.add_metaclass(AutoRegister)
-   class User_ControlLine(ControlLineHandler):
+   class User_ControlLine(ControlLineHandler, metaclass=AutoRegister):
        '''**#U** -- User data (#U user1 user2 user3)'''
    
        key = '#U'
@@ -367,8 +354,7 @@ Gathering all parts of the examples above, the custom plugin module is:
        scan.U_sum = sum(scan.U)
    
    
-   @six.add_metaclass(AutoRegister)
-   class Ignore_Y_ControlLine(ControlLineHandler):
+   class Ignore_Y_ControlLine(ControlLineHandler, metaclass=AutoRegister):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
        key = '#Y'
@@ -503,7 +489,7 @@ Summary Requirements for custom plugin
 * for each control line:
 
   * subclass :class:`spec2nexus.plugin.ControlLineHandler`
-  * add ``@six.add_metaclass(AutoRegister)`` decorator to auto-register the plugin
+  * add ``metaclass=AutoRegister`` keyword argument to auto-register the plugin
   * import the module you defined (FIXME:  check this and revise)
   * identify the control line pattern
   * define ``key`` with a regular expression to match [#]_

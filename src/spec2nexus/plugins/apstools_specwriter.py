@@ -22,14 +22,12 @@ EXAMPLE::
 """
 
 from collections import OrderedDict
-import six
 
 from .. import eznx
 from ..plugin import AutoRegister, ControlLineHandler
 
 
-@six.add_metaclass(AutoRegister)
-class MD_apstools(ControlLineHandler):
+class MD_apstools(ControlLineHandler, metaclass=AutoRegister):
 
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 

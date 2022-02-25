@@ -31,13 +31,10 @@
 #UIMC10 imsca4 4 MaxValue
 """
 
-
-import six
 from ..plugin import AutoRegister, ControlLineHandler
 
 
-@six.add_metaclass(AutoRegister)
-class UIM_generic(ControlLineHandler):
+class UIM_generic(ControlLineHandler, metaclass=AutoRegister):
 
     """**#UIM** -- various image header information"""
 
