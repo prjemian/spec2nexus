@@ -273,15 +273,17 @@ def test_print_all():
 
     sdf = spec.SpecDataFile(str(TESTFILE))
     scan = sdf.getScan(TESTSCAN)
+    scan.interpret()
 
     out = scan.diffractometer.print_all(scan).strip()
     assert len(out) > 0
     out = out.splitlines()
-    assert len(out) == 25
+    assert len(out) == 26
     expected = """
         SPEC file
         scan #
         SPEC scanCmd
+        date
         geometry
         wavelength
         mode
