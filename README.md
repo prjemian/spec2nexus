@@ -39,7 +39,7 @@ term | description
 --- | ---
 **links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **copyright** | (c) 2014-2022, Pete R. Jemian
-**citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3246491.svg)](https://doi.org/10.5281/zenodo.3246491)
+**citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6264513.svg)](https://doi.org/10.5281/zenodo.6264513)
 **license** | [![Creative Commons Attribution 4.0 International Public License](https://anaconda.org/conda-forge/spec2nexus/badges/license.svg)](https://prjemian.github.io/spec2nexus/license.html)  ([LICENSE.txt](https://prjemian.github.io/spec2nexus/license.html))
 **current releases** | [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
 **conda-forge** | [![https://anaconda.org/conda-forge/spec2nexus](https://anaconda.org/conda-forge/spec2nexus/badges/installer/conda.svg)](https://anaconda.org/conda-forge/spec2nexus)    [![https://anaconda.org/conda-forge/spec2nexus](https://anaconda.org/conda-forge/spec2nexus/badges/version.svg)](https://anaconda.org/conda-forge/spec2nexus)   [![Anaconda-Server Badge](https://anaconda.org/conda-forge/spec2nexus/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/spec2nexus)
