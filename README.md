@@ -7,10 +7,8 @@ Converts SPEC data files and scans into NeXus HDF5 files:
 
 Writes `path/to/file/specfile.hdf5`
 
--   Conda install:  `conda install -c prjemian spec2nexus` (alternate)
--   Conda install:  `conda install -c aps-anl-tag spec2nexus` (production)
-- Conda install:  `conda install -c aps-anl-dev spec2nexus` (development)
--   Pip install:  `pip install spec2nexus`
+- Conda install:  `conda install -c conda-forge spec2nexus`
+- Pip install:  `pip install spec2nexus`
 
 NOTE
 

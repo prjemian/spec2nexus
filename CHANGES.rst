@@ -1,14 +1,72 @@
 ..
   This file describes user-visible changes between the versions.
 
+  subsections could include these headings (in this order), omit if no content
+
+    Notice
+    Breaking Changes
+    New Features and/or Enhancements
+    Fixes
+    Maintenance
+    Deprecations
+    Contributors
+
 Change History
 ##############
-
 
 Production
 **********
 
-:2021.2.0: release expected 2022-03-15
+2021.2.0
++++++++++++++
+
+release expected by middle 2022-03
+
+Notice
+------------------------------------
+
+* Use conda-forge now: ``conda install -c conda-forge spec2nexus``
+* Updated format for new Change History entries.
+
+Breaking Changes
+------------------------------------
+
+* (planned) Scans now identified by numeric keys instead of strings.
+
+New Features and/or Enhancements
+------------------------------------
+
+Add new diffractometer configuration reports:
+
+* ``str(scan.diffractometer)``:  minimal view of ``scan``
+* ``scan.diffractometer.print_brief(scan)`` : content similar to SPEC's ``wh``
+* ``scan.diffractometer.print_all(scan)`` : content similar to SPEC's ``pa``
+
+Fixes
+------------------------------------
+
+* ``eznx``: needs to return text as ``str`` (not ``bytes``).
+
+Maintenance
+------------------------------------
+
+* Optimize initial load times for data files.
+* Code tests now use real examples of non-zero MCA data using files with both
+  single and multiple MCA detectors.
+* Tests of code using Python 3.7, 3.8, 3.9, 3.10
+* All unit test code now in-source using ``pytest``
+* Code is not compliant with [PEP8](https://pep8.org/) (Python code style guide).
+* Increase number of unit tests to improve code coverage (now ~95%).
+* Resume use of test code coverage reporting:
+  https://coveralls.io/github/prjemian/spec2nexus
+
+Deprecations
+------------------------------------
+
+* Python versions lower than 3.7 are no longer supported.
+
+.. Contributors
+   ------------------------------------
 
 :2021.1.11: released *2022.02.24*
 
@@ -92,18 +150,18 @@ Production
        plugins: interpret #Gn control lines
 
 :2021.1.1: released *2019.07.22*, refactor
-    
+
     * `#181 <https://github.com/prjemian/spec2nexus/issues/181>`_
        plugins: revised technique to load control line handlers
 
 :2021.1.0: released *2019.07.15*, new features
-    
+
     **NEW**
-    
+
     * support for ``#UXML`` metadata
     * support for ``hklscan`` scans
     * improved support for ``mesh`` and ``hklmesh`` scans
-    
+
     * `#159 <https://github.com/prjemian/spec2nexus/issues/159>`_
        handle #UXML metadata control lines
     * `#155 <https://github.com/prjemian/spec2nexus/issues/155>`_
@@ -130,7 +188,7 @@ Production
     Changed how plugins are defined and registered.
     Custom plugins must be modified and import code revised
     to work with new system.
-    
+
     * `#168 <https://github.com/prjemian/spec2nexus/pull/168>`_
        plugins are now self-registering
     * `#166 <https://github.com/prjemian/spec2nexus/issues/166>`_
@@ -138,9 +196,9 @@ Production
 
 :2020.0.2: released *2019.07.09*, bug fixes and code review suggestions
 
-    NOTE: conda package is broken (no plugins directory).  
+    NOTE: conda package is broken (no plugins directory).
     Only use ``pip install spec2nexus`` with this release.
-    
+
     * `#164 <https://github.com/prjemian/spec2nexus/issues/164>`_
        post conda packages to `aps-anl-tag` channel
     * `#161 <https://github.com/prjemian/spec2nexus/issues/161>`_
@@ -180,7 +238,7 @@ Production
 :2.1.0: 2019.04.26, release
 
     * `#135 <https://github.com/prjemian/spec2nexus/issues/135>`_
-       switch to semantic versioning 
+       switch to semantic versioning
     * `#133 <https://github.com/prjemian/spec2nexus/issues/133>`_
        support user control line "#U " with plugin
     * `#131 <https://github.com/prjemian/spec2nexus/issues/131>`_
@@ -258,7 +316,7 @@ Production
 
    * minor update of the *2017.3.0* release
 
-:2017.3.0: 
+:2017.3.0:
 
     * `#103 <https://github.com/prjemian/spec2nexus/issues/103>`_
       changed *converters* back to *utils*
@@ -267,7 +325,7 @@ Production
     * `#90 <https://github.com/prjemian/spec2nexus/issues/90>`_
       use *versioneer* (again)
 
-:2017-0202.0: 
+:2017-0202.0:
 
     * `#99 <https://github.com/prjemian/spec2nexus/issues/99>`_
       fix list index error in *hklscan* when hkl are all constant
@@ -275,10 +333,10 @@ Production
     * `#96 <https://github.com/prjemian/spec2nexus/issues/96>`_
       combine steps when publishing to PyPI
 
-:2017-0201.0: 
+:2017-0201.0:
 
     * `milestone punch list <https://github.com/prjemian/spec2nexus/milestone/3?closed=1>`_
-    
+
     * `#73 <https://github.com/prjemian/spec2nexus/issues/73>`_
       refactor mesh and MCA data parsing code
 
@@ -299,14 +357,14 @@ Production
 
     * `#56 <https://github.com/prjemian/spec2nexus/issues/56>`_
       *specplot* and *specplot_gallery*: add from USAXS instrument and generalize
-    
+
 :2016.1025.0: standardize the versioning kit with pyRestTable and pvWebMonitor
-:2016.1004.0: 
+:2016.1004.0:
 
     * `#61 <https://github.com/prjemian/spec2nexus/issues/61>`_
       release info from git (dropped versioneer package)
 
-:2016.0829.0: 
+:2016.0829.0:
 
     * `#60 <https://github.com/prjemian/spec2nexus/issues/60>`_
       Add new plugin test for XPCS plugin (thanks to John Hammonds)
@@ -323,13 +381,13 @@ Production
       accept arbitrary number of MCA spectra
 
 :2016.0601.0: match complete keys, use unix EOL internally, do not fail if no metadata
-:2016.0216.0: 
+:2016.0216.0:
 
     * `#36 <https://github.com/prjemian/spec2nexus/issues/36>`_
       identify NIAC2014-compliant NeXus files
 
 :2016.0210.0: bugfix: eznx.makeGroup() now correctly sets attributes on new group + documentation for NIAC2014 attributes
-:2016.0204.0: 
+:2016.0204.0:
 
     * `#45 <https://github.com/prjemian/spec2nexus/issues/45>`_
       handle case when no data points in scan ,
@@ -338,18 +396,18 @@ Production
       spec.getScan() ensures argument is used as ``str``
 
 :2016.0201.0: added spec.getScanNumbersChronological(), spec.getFirstScanNumber(), and spec.getLastScanNumber()
-:2016.0131.0: 
+:2016.0131.0:
 
     * `#43 <https://github.com/prjemian/spec2nexus/issues/43>`_
-      support new NeXus method for default/signal/axes/_indices, 
+      support new NeXus method for default/signal/axes/_indices,
 
 :2016.0130.0: fixed `#44 <https://github.com/prjemian/spec2nexus/issues/44>`_
-:2015.1221.1: 
+:2015.1221.1:
 
     * `#40 <https://github.com/prjemian/spec2nexus/issues/40>`_
       added versioneer support
 
-:2015.1221.0: 
+:2015.1221.0:
 
     * `#39 <https://github.com/prjemian/spec2nexus/issues/39>`_
       read scans with repeated scan numbers
@@ -414,7 +472,7 @@ Production: USAXS livedata
 :2010-2014: production use
 
   * support livedata WWW page of APS USAXS instrument
-  
+
     * (http://usaxs.xray.aps.anl.gov/livedata/),
 
   * https://subversion.xray.aps.anl.gov/trac/small_angle/browser/USAXS/livedata/prjPySpec.py
