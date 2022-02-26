@@ -24,7 +24,7 @@ import spec2nexus.specplot_gallery
 def read_reduced_fly_scan_file(hdf5_file_name):
     '''
     read any and all reduced data from the HDF5 file, return in a dictionary
-    
+
     dictionary = {
       'full': dict(Q, R, R_max, ar, fwhm, centroid)
       '250':  dict(Q, R, dR)
@@ -78,17 +78,17 @@ def retrieve_flyScanData(scan):
 class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
     '''
     customize `FlyScan` handling, plot :math:`log(I)` *vs.* :math:`log(Q)`
-    
+
     The USAXS FlyScan data is stored in a NeXus HDF5 file in a subdirectory
     below the SPEC data file.  This code uses existing code from the
     USAXS instrument to read that file.
     '''
-    
+
     def retrieve_plot_data(self):
         '''retrieve reduced data from the FlyScan's HDF5 file'''
         # get the data from the HDF5 file
         fly_data = retrieve_flyScanData(self.scan)
-        
+
         if len(fly_data) != 2:
             raise spec2nexus.specplot.NoDataToPlot(str(self.scan))
 
@@ -105,7 +105,7 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
         self.set_y_log(True)
         self.set_x_title(r'$|\vec{Q}|, 1/\AA$')
         self.set_y_title(r'USAXS $R(|\vec{Q}|)$, a.u.')
-    
+
     def plottable(self):
         '''
         can this data be plotted as expected?

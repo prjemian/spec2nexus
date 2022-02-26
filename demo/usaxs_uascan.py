@@ -15,7 +15,7 @@ import spec2nexus.specplot_gallery
 
 class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
     '''simple customize of `uascan` handling'''
-    
+
     def retrieve_plot_data(self):
         '''plot the vertical axis on log scale'''
         spec2nexus.specplot.LinePlotter.retrieve_plot_data(self)
