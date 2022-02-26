@@ -1,7 +1,7 @@
 """
 singletons: Python 2 and 3 Compatible Version
 
-:see: http://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
+:see: https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
 
 USAGE::
 

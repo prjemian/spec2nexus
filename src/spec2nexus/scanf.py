@@ -12,12 +12,12 @@ This implementation of scanf translates the simple scanf-format into
 regular expressions. Unlike C you can be sure that there are no buffer overflows
 possible.
 
-source: http://code.activestate.com/recipes/502213-simple-scanf-implementation/
+source: https://code.activestate.com/recipes/502213-simple-scanf-implementation/
 
 For more information see:
 
-  * http://www.python.org/doc/current/lib/node49.html
-  * http://en.wikipedia.org/wiki/Scanf
+  * https://www.python.org/doc/current/lib/node49.html
+  * https://en.wikipedia.org/wiki/Scanf
 
 """
 

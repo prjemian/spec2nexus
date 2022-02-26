@@ -28,7 +28,7 @@ def clean_name(key):
 
     :param str key: identifying string from SPEC data file
 
-    :see: http://download.nexusformat.org/doc/html/datarules.html
+    :see: https://download.nexusformat.org/doc/html/datarules.html
 
     The "sanitized" name fits this regexp::
 
@@ -93,7 +93,7 @@ def sanitize_name(group, key):  # for legacy support only
     :param str group: unused
     :param str key: identifying string from SPEC data file
 
-    :see: http://download.nexusformat.org/doc/html/datarules.html
+    :see: https://download.nexusformat.org/doc/html/datarules.html
 
     sanitized name fits this regexp::
 

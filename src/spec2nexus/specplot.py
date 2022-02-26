@@ -602,13 +602,13 @@ class MeshPlotter(ImageMaker):
 
     ..rubric:: References:
 
-    :mesh 2-D parser: http://www.certif.com/spec_help/mesh.html
+    :mesh 2-D parser: https://www.certif.com/spec_help/mesh.html
 
         ::
 
             mesh motor1 start1 end1 intervals1 motor2 start2 end2 intervals2 time
 
-    :hklmesh 2-D parser: http://www.certif.com/spec_help/hklmesh.html
+    :hklmesh 2-D parser: https://www.certif.com/spec_help/hklmesh.html
 
         ::
 

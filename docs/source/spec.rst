@@ -98,10 +98,10 @@ This manual is taken as a suggested starting point for most users.
 Data files with deviations from this standard are produced at some facilities.
 
 
-.. [#] SPEC manual: http://www.certif.com/spec_manual/user_1_4_1.html
+.. [#] SPEC manual: https://www.certif.com/spec_manual/user_1_4_1.html
 
 ..
-   :see: http://www.certif.com/cplot_manual/ch0c_C_11_3.html
+   :see: https://www.certif.com/cplot_manual/ch0c_C_11_3.html
 
    The scan files contain control lines, data lines and blank lines.
 

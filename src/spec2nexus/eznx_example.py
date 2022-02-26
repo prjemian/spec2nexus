@@ -5,7 +5,7 @@
 Writes a simple NeXus HDF5 file using h5py with links.
 
 This example is based on ``writer_2_1`` of the NeXus Manual:
-http://download.nexusformat.org/doc/html/examples/h5py/index.html
+https://download.nexusformat.org/doc/html/examples/h5py/index.html
 """
 
 from spec2nexus import eznx

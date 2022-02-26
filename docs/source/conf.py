@@ -4,7 +4,7 @@
 #
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
+# https://www.sphinx-doc.org/en/master/config
 
 # -- Path setup --------------------------------------------------------------
 
@@ -197,5 +197,5 @@ todo_include_todos = True
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autodoc_mock_imports
+# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autodoc_mock_imports
 autodoc_mock_imports = "h5py numpy matplotlib".split()

@@ -167,7 +167,7 @@ def test_file_3(hfile):
         # <dataset name="corrdet_counter">corrdet</dataset>
         assert "corrdet_counter" in group
         ds = group["corrdet_counter"]
-        # http://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
+        # https://docs.h5py.org/en/stable/whatsnew/2.1.html?highlight=dataset#dataset-value-property-is-now-deprecated
         value = ds[()]
         assert value == [b"corrdet"]
 

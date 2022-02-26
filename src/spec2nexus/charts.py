@@ -24,7 +24,7 @@ import spec2nexus
 SCALING_FACTOR = 1  # 2**24
 PLOT_H_INT = 9  # 7
 PLOT_V_INT = 5  # 3
-COLORMAP = "cubehelix"  # http://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
+COLORMAP = "cubehelix"  # https://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
 WATERMARK_TEXT = "%s, (C) %s" % (
     spec2nexus.__package_name__,
     spec2nexus.__copyright__.split(",")[0],
@@ -168,7 +168,7 @@ def xy_plot(
         will eventually run out of memory.
 
         Here's the fix used in this module:
-        http://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
+        https://stackoverflow.com/questions/16334588/create-a-figure-that-is-reference-counted/16337909#16337909
 
     """
     fig = matplotlib.figure.Figure(figsize=(hsize, vsize))

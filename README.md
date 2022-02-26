@@ -18,8 +18,8 @@ Writes `path/to/file/specfile.hdf5`
 
 ## This Package Provides ...
 
-- **spec2nexus** : command-line tool: Convert [SPEC](http://certif.com) data
-  files to [NeXus](http://nexusformat.org) [HDF5](http://hdfgroup.org)
+- **spec2nexus** : command-line tool: Convert [SPEC](https://certif.com) data
+  files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)
 
 - **extractSpecScan** : command-line tool: Save columns from SPEC data file
   scan(s) to TSV files

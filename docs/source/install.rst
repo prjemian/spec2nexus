@@ -17,7 +17,7 @@ use this install command::
 The latest development versions of spec2nexus can be downloaded
 from the GitHub repository listed above::
 
-    $ git clone http://github.com/prjemian/spec2nexus.git
+    $ git clone https://github.com/prjemian/spec2nexus.git
 
 To install in the standard Python location::
 

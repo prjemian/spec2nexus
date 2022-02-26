@@ -6,7 +6,7 @@
 
 :predecessor: NeXus h5py example code: ``my_lib.py`` [#]_
 
-.. [#] http://download.nexusformat.org/doc/html/examples/h5py/index.html#mylib-support-module
+.. [#] https://download.nexusformat.org/doc/html/examples/h5py/index.html#mylib-support-module
 
 
 .. rubric:: Dependencies
@@ -198,7 +198,7 @@ def makeExternalLink(hdf5FileObject, sourceFile, sourcePath, targetPath):
        its ".file" and ".parent" properties will refer to
        objects in that file, not the file in which the link resides.
 
-    :see: http://www.h5py.org/docs-1.3/guide/group.html#external-links
+    :see: https://www.h5py.org/docs-1.3/guide/group.html#external-links
 
     This routine is provided as a reminder how to do this simple operation.
     """

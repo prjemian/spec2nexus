@@ -16,7 +16,7 @@ from . import spec
 from . import utils
 
 
-# see: http://download.nexusformat.org/doc/html/classes/base_classes/index.html
+# see: https://download.nexusformat.org/doc/html/classes/base_classes/index.html
 # CONTAINER_CLASS = 'NXlog'          # information that is recorded against time
 CONTAINER_CLASS = "NXnote"  # any additional freeform information not covered by the other base classes
 # CONTAINER_CLASS = 'NXparameters'   # Container for parameters, usually used in processing or analysis
@@ -180,7 +180,7 @@ class Writer(object):
         # if len(signal) == 0:
         #     pass
 
-        # Syntax of axes attribute (http://wiki.nexusformat.org/2014_axes_and_uncertainties):
+        # Syntax of axes attribute (https://wiki.nexusformat.org/2014_axes_and_uncertainties):
         #  @axes="H:K"       INCOREECT
         #  @axes="H", "K"    CORRECT
         if axes.find(":") >= 0:
@@ -258,9 +258,9 @@ class Writer(object):
         """*internal*: data parser for 2-D mesh and hklmesh"""
         # TODO: refactor to use NeXus data model: signal, axes, data
 
-        # 2-D parser: http://www.certif.com/spec_help/mesh.html
+        # 2-D parser: https://www.certif.com/spec_help/mesh.html
         # mesh motor1 start1 end1 intervals1 motor2 start2 end2 intervals2 time
-        # 2-D parser: http://www.certif.com/spec_help/hklmesh.html
+        # 2-D parser: https://www.certif.com/spec_help/hklmesh.html
         #  hklmesh Q1 start1 end1 intervals1 Q2 start2 end2 intervals2 time
         # mesh:    data/33id_spec.dat  scan 22
         # hklmesh: data/33bm_spec.dat  scan 17
