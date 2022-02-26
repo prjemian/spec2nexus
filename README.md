@@ -12,11 +12,11 @@ Writes `path/to/file/specfile.hdf5`
 **Contents**
 
 - [spec2nexus](#spec2nexus)
-  - [This Package Provides ...](#this-package-provides-)
+  - [This Package Provides](#this-package-provides)
   - [Package Information](#package-information)
   - [NOTE about support for Python version 2](#note-about-support-for-python-version-2)
 
-## This Package Provides ...
+## This Package Provides 
 
 - **spec2nexus** : command-line tool: Convert [SPEC](https://certif.com) data
   files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)

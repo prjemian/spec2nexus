@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Plot data from the USAXS FlyScan macro
+Plot data from the USAXS FlyScan macro.
 
 .. autosummary::
 
@@ -23,7 +23,7 @@ import spec2nexus.specplot_gallery
 # methods picked (& modified) from the USAXS livedata project
 def read_reduced_fly_scan_file(hdf5_file_name):
     """
-    read any and all reduced data from the HDF5 file, return in a dictionary
+    Read any and all reduced data from the HDF5 file, return in a dictionary.
 
     dictionary = {
       'full': dict(Q, R, R_max, ar, fwhm, centroid)
@@ -55,7 +55,7 @@ REDUCED_FLY_SCAN_BINS = 250  # the default
 
 
 def retrieve_flyScanData(scan):
-    """retrieve reduced, rebinned data from USAXS Fly Scans"""
+    """Retrieve reduced, rebinned data from USAXS Fly Scans."""
     path = os.path.dirname(scan.header.parent.fileName)
     key_string = "FlyScan file name = "
     comment = scan.comments[2]
@@ -78,7 +78,7 @@ def retrieve_flyScanData(scan):
 
 class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
     """
-    customize `FlyScan` handling, plot :math:`log(I)` *vs.* :math:`log(Q)`
+    Customize `FlyScan` handling, plot :math:`log(I)` *vs.* :math:`log(Q)`.
 
     The USAXS FlyScan data is stored in a NeXus HDF5 file in a subdirectory
     below the SPEC data file.  This code uses existing code from the
@@ -86,7 +86,7 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
     """
 
     def retrieve_plot_data(self):
-        """retrieve reduced data from the FlyScan's HDF5 file"""
+        """Retrieve reduced data from the FlyScan's HDF5 file."""
         # get the data from the HDF5 file
         fly_data = retrieve_flyScanData(self.scan)
 
