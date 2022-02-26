@@ -30,6 +30,9 @@ due to a race condition, as demonstrated with releases
 
 These channels are used for older releases, prior to the 2021.1.11 release.
 
-*   `prjemian` personal channel
-*   `aps-anl-tag` production releases
-*   `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
+* `prjemian` personal channel
+
+* `aps-anl-tag` production releases
+
+* `aps-anl-dev` anything else, such as: pre-release,
+  release candidates, or testing purposes
