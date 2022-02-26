@@ -1,30 +1,35 @@
-# Packaging Hints
+# Release Packaging
+
+Packages for upload to [PyPI](https://pypi.org/project/spec2nexus/) and
+[conda-forge](https://anaconda.org/conda-forge/spec2nexus) are built by GitHub
+Actions workflows with every push to the GitHub repository.
+
+Uploads to the PyPI & conda-forge package providers are limiited in each
+workflow to new repository tags.
 
 ## Define Release
 
-    RELEASE=`python ./setup.py version | grep "^Version: " | cut -d' ' -f2`
-    # next line will show if ANY changes since tag
-    echo ${RELEASE} | grep +
+Once all [issues](https://github.com/prjemian/spec2nexus/issues) and [pull
+requests](https://github.com/prjemian/spec2nexus/pulls) have been completed for
+a particular [release
+milestone](https://github.com/prjemian/spec2nexus/milestones) and there are no
+failures noted in any of the [workflow
+actions](https://github.com/prjemian/spec2nexus/actions), then a new release may
+be created.
 
-## PyPI upload
+To create a new tag and release, [draft a new
+release](https://github.com/prjemian/spec2nexus/releases/new) (use the option to create the new tag at the same time) on the GitHub web
+site rather than pushing a new tag.  (When pushing a new tag from the remote
+clone, the [publishing workflow
+fails](https://github.com/prjemian/spec2nexus/runs/5324908848?check_suite_focus=true)
+due to a race condition, as demonstrated with releases
+[2021.1.9](https://github.com/prjemian/spec2nexus/releases/tag/2021.1.9) and
+[2021.1.10](https://github.com/prjemian/spec2nexus/releases/tag/2021.1.10).)
 
-Preceed the wildcard with tag text (`spec2nexus-${RELEASE}*`)::
+## legacy Conda channels
 
-	python setup.py sdist bdist_wheel
-	twine upload dist/spec2nexus-${RELEASE}*
-
-### alternate Conda channels
+These channels are used for older releases, prior to the 2021.1.11 release.
 
 *   `prjemian` personal channel
 *   `aps-anl-tag` production releases
 *   `aps-anl-dev` anything else, such as: pre-release, release candidates, or testing purposes
-
-	CHANNEL=prjemian
-
-## Conda upload
-
-In the upload command below, use the text reported 
-at (near) the end of a successful conda build.
-
-	conda build ./conda-recipe/
-	anaconda upload -u $CHANNEL /home/mintadmin/Apps/anaconda/conda-bld/noarch/spec2nexus-${RELEASE}-py*_0.tar.bz2
