@@ -46,7 +46,7 @@ attribute       description
 =============   =============================================================
 
 .. [#] NeXus *NXdata* base class:
-   http://download.nexusformat.org/doc/html/classes/base_classes/NXdata.html 
+   https://download.nexusformat.org/doc/html/classes/base_classes/NXdata.html 
 
 .. [#] The number of names provided in `self.axes` is equal to the *rank*
    of the *signal* data (`self.data[self.signal]`).  

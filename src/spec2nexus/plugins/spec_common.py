@@ -5,7 +5,7 @@
 SPEC data file standard control lines
 
 :see: SPEC manual, *Standard Data File Format*,
-   http://www.certif.com/spec_manual/user_1_4_1.html
+   https://www.certif.com/spec_manual/user_1_4_1.html
 
 """
 
@@ -202,7 +202,7 @@ class SPEC_Scan(ControlLineHandler, metaclass=AutoRegister):
         "The top-level NeXus group which contains all the data
         and associated information that comprise a single measurement."
 
-        -- http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
+        -- https://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
 
     IN-MEMORY REPRESENTATION
 
@@ -332,7 +332,7 @@ class SPEC_Geometry(ControlLineHandler, metaclass=AutoRegister):
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         # e.g.: SPECD/four.mac
-        # http://certif.com/spec_manual/fourc_4_9.html
+        # https://certif.com/spec_manual/fourc_4_9.html
         desc = "SPEC geometry arrays, meanings defined by SPEC diffractometer support"
         group = makeGroup(h5parent, "G", nxclass, description=desc)
         dd = {}
@@ -420,7 +420,7 @@ class SPEC_Geometry(ControlLineHandler, metaclass=AutoRegister):
                             description="diffractometer angle",
                         )
             if scan.diffractometer.wavelength is not None:
-                # see: http://download.nexusformat.org/doc/html/strategies.html#strategies-wavelength
+                # see: https://download.nexusformat.org/doc/html/strategies.html#strategies-wavelength
                 nxmono = openGroup(
                     nxinstrument, "monochromator", "NXmonochromator"
                 )
@@ -430,7 +430,7 @@ class SPEC_Geometry(ControlLineHandler, metaclass=AutoRegister):
                     scan.diffractometer.wavelength,
                     units="angstrom",
                 )
-                # and: http://download.nexusformat.org/doc/html/classes/base_classes/NXbeam.html#nxbeam
+                # and: https://download.nexusformat.org/doc/html/classes/base_classes/NXbeam.html#nxbeam
                 nxsample = openGroup(h5parent, "sample", "NXsample")
                 nxbeam = openGroup(nxsample, "beam", "NXbeam")
                 # link them
@@ -1102,7 +1102,7 @@ class SPEC_DataLine(ControlLineHandler, metaclass=AutoRegister):
 
 # MCA: multi-channel analyzer
 
-# see ESRF BLISS group: http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
+# see ESRF BLISS group: https://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
 
 class SPEC_MCA(ControlLineHandler, metaclass=AutoRegister):
@@ -1113,7 +1113,7 @@ class SPEC_MCA(ControlLineHandler, metaclass=AutoRegister):
     declares this scan contains MCA data (SPEC's array_dump() format, such as ``"#@MCA 16C"``)
 
     From documentation provided by the ESRF BLISS group:
-    (http://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac)
+    (https://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac)
 
         #@MCA 16C
         Format string passed to data_dump() function.

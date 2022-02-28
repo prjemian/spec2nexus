@@ -9,7 +9,7 @@ __copyright__ = "2014-2022, Pete R. Jemian"
 
 __package_name__ = "spec2nexus"
 
-__license_url__ = "http://creativecommons.org/licenses/by/4.0/deed.en_US"
+__license_url__ = "https://creativecommons.org/licenses/by/4.0/deed.en_US"
 __license__ = "Creative Commons Attribution 4.0 International Public License (see LICENSE file)"
 __description__ = (
     "Converts SPEC data files and scans into NeXus HDF5 files"

@@ -182,7 +182,7 @@ def is_spec_file_with_header(filename):
         #D Wed Jun 16 18:24:36 2010
         #C LNO_LAO  User = epix33bm
 
-    .. [#] SPEC manual, *Standard Data File Format*, http://www.certif.com/spec_manual/user_1_4_1.html
+    .. [#] SPEC manual, *Standard Data File Format*, https://www.certif.com/spec_manual/user_1_4_1.html
     """
     if not os.path.exists(filename) or not os.path.isfile(filename):
         return False

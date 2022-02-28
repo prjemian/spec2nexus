@@ -96,7 +96,7 @@ These imports are necessary to to write plugins for *spec2nexus*:
 .. sidebar:: regular expressions
 
    There are several regular expression testers available on the web.
-   Try this one, for example: http://regexpal.com/
+   Try this one, for example: https://regexpal.com/
 
 **Attribute: ``key`` (required)**
 
@@ -538,10 +538,10 @@ Footnotes
 
 .. [#] The key name must be unique amongst all postprocessing functions.
    A good choice is the name of the postprocessing function itself.
-.. [#] http://nexusformat.org
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
-.. [#] http://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
+.. [#] https://nexusformat.org
+.. [#] https://download.nexusformat.org/doc/html/classes/base_classes/
+.. [#] https://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
+.. [#] https://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
    :meth:`~spec2nexus.plugins.spec_common.SPEC_DataLine.match_key()`
