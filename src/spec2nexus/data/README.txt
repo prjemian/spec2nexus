@@ -9,7 +9,7 @@ They are used to test various components of the interface.
 
 
 ======================================  ==========  ==========================================================================
-file						            type	    description
+file                                    type        description
 ======================================  ==========  ==========================================================================
 02_03_setup.dat                         SPEC scans  1-D scans, some have no data lines (data are stored in HDF5 file)
 03_06_JanTest.dat                       SPEC scans  1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines
@@ -25,7 +25,7 @@ lmn40.spe                               SPEC scans  1-D & 2-D scans (hklmesh), t
 mca_spectra_example.dat                 SPEC scans  1-D scans (cscan) with 4 MCA spectra in each scan (issue #55)
 spec_from_spock.spc                     SPEC scans  no header section, uses "nan", from sardana
 startup_1.spec                          SPEC scans  1-D scans with SCA spectra & UXML headers for RSM code
-user6idd.dat                            SPEC scans  1-D scans, aborted scan, control lines:  #R #UB #UE #UX #UX1 #UX2 #X, 
+user6idd.dat                            SPEC scans  1-D scans, aborted scan, control lines:  #R #UB #UE #UX #UX1 #UX2 #X,
                                                     non-default format in #X lines
 usaxs-bluesky-specwritercallback.dat    SPEC scans  1-D scans, #MD control lines
 writer_1_3.h5                           NeXus HDF5  1-D NeXus User Manual example
