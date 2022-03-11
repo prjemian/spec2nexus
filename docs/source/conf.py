@@ -8,14 +8,9 @@
 
 # -- Path setup --------------------------------------------------------------
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
-#
-import os
+import pathlib
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
+sys.path.insert(0, str(pathlib.Path().absolute().parent.parent / "src"))
 import spec2nexus
 
 
@@ -92,12 +87,18 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output -------------------------------------------------
 
+html_short_title = project
+html_title = f"{project} {version}"
+if len(release) > 0:
+    html_title += f" ({release})"
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
 #html_theme = 'alabaster'
 # html_theme = 'sphinx_rtd_theme'
-html_theme = "bizstyle"
+# html_theme = "bizstyle"
+html_theme = "furo"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
