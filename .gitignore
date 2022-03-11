@@ -73,3 +73,6 @@ nosetests.xml
 
 # IPython session logs
 .logs/
+
+# PyTest
+.pytest_cache/
