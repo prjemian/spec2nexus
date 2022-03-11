@@ -67,7 +67,7 @@ jobs:
     - name: Coverage Report
       run: |
         source $CONDA/bin/activate $ENV_NAME
-        coverage report --precision 3
+        coverage report -m --precision 3
       env:
         PY_VER: ${{ matrix.python-version }}
         ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}

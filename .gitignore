@@ -70,3 +70,6 @@ nosetests.xml
 #########
 /.settings
 /src/spec2nexus/__plots__
+
+# IPython session logs
+.logs/

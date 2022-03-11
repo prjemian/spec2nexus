@@ -1,18 +1,16 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 Fallback handling for any SPEC data file control lines not recognized by other handlers
 """
 
-from collections import OrderedDict
+# use absolute imports (not relative)
+from spec2nexus.eznx import makeGroup
+from spec2nexus.plugin_core import ControlLineBase
+from spec2nexus.spec import UNRECOGNIZED_KEY
+from spec2nexus.spec import SpecDataFileHeader
+from spec2nexus.spec import SpecDataFileScan
 
-from ..eznx import makeGroup
-from ..plugin import AutoRegister, ControlLineHandler
-from ..spec import UNRECOGNIZED_KEY, SpecDataFileHeader, SpecDataFileScan
 
-
-class UnrecognizedControlLine(ControlLineHandler, metaclass=AutoRegister):
+class UnrecognizedControlLine(ControlLineBase):
 
     """unrecognized control line"""
 
@@ -24,9 +22,7 @@ class UnrecognizedControlLine(ControlLineHandler, metaclass=AutoRegister):
         if not hasattr(spec_obj, "_unrecognized"):
             spec_obj._unrecognized = []
         spec_obj._unrecognized.append(text)
-        if isinstance(spec_obj, SpecDataFileHeader) or isinstance(
-            spec_obj, SpecDataFileScan
-        ):
+        if isinstance(spec_obj, (SpecDataFileHeader, SpecDataFileScan)):
             spec_obj.addH5writer(self.key, self.writer)
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
@@ -41,9 +37,7 @@ class UnrecognizedControlLine(ControlLineHandler, metaclass=AutoRegister):
             if nm not in h5parent.keys():
                 group = makeGroup(h5parent, nm, nxclass, description=desc)
                 success = True
-        dd = OrderedDict()
-        for i, value in enumerate(scan._unrecognized):
-            dd["u" + str(i)] = value
+        dd = {f"u{i}": value for i, value in enumerate(scan._unrecognized)}
         writer.save_dict(group, dd)
 
 # -----------------------------------------------------------------------------

@@ -8,10 +8,9 @@
 from lxml import etree
 import os
 
-from .. import eznx
-from ..plugin import AutoRegister
-from ..plugin import ControlLineHandler
-from ..utils import strip_first_word
+from spec2nexus.eznx import makeGroup, makeLink, makeDataset
+from spec2nexus.plugin_core import ControlLineBase
+from spec2nexus.utils import strip_first_word
 
 
 DEFAULT_XML_ROOT_TAG = "UXML"
@@ -23,7 +22,7 @@ class UXML_Error(Exception):
     pass
 
 
-class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
+class UXML_metadata(ControlLineBase):
 
     """
     **#UXML** -- XML metadata in scan header
@@ -102,9 +101,7 @@ class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
             try:
                 xml_schema.assertValid(root)  # basic exception report
             except etree.DocumentInvalid as exc:
-                emsg = "UXML error: " + str(exc)
-                # logger.warn(emsg)
-                raise UXML_Error(emsg)
+                raise UXML_Error(f"UXML error: {exc}")
 
         scan.addH5writer("UXML_metadata", self.writer)
 
@@ -118,7 +115,7 @@ class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
 
         # parse the XML and store
         self.walk_xml_tree(
-            eznx.makeGroup(
+            makeGroup(
                 nxentry, "UXML", "NXnote", desc="UXML metadata"
             ),
             scan.UXML_root,
@@ -137,7 +134,7 @@ class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
             if target_id in self.unique_id:
                 target_group, target_name = self.target_id[target_id]
                 source = self.unique_id[target_id]
-                eznx.makeLink(target_group, source, target_name)
+                makeLink(target_group, source, target_name)
 
     def prune_dict(self, d, keys):
         """remove keys from dictionary d"""
@@ -158,7 +155,7 @@ class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
             emsg = "unexpected type='%s'" % data_type
             raise UXML_Error(emsg)
 
-        ds = eznx.makeDataset(h5parent, nm, value, **attrs)
+        ds = makeDataset(h5parent, nm, value, **attrs)
 
         if unique_id is not None:
             self.unique_id[unique_id] = ds
@@ -173,7 +170,7 @@ class UXML_metadata(ControlLineHandler, metaclass=AutoRegister):
         unique_id = attrs.get("unique_id")
         attrs = self.prune_dict(attrs, "name NX_class unique_id".split())
 
-        group = eznx.makeGroup(h5parent, nm, NX_class, **attrs)
+        group = makeGroup(h5parent, nm, NX_class, **attrs)
 
         if unique_id is not None:
             self.unique_id[unique_id] = group

@@ -3,6 +3,7 @@ import pytest
 import shutil
 import tempfile
 
+from ..spec import UNRECOGNIZED_KEY
 
 # parent (package source code) directory
 _ppath = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -12,6 +13,46 @@ _tpath = os.path.dirname(__file__)
 EXAMPLES_PATH = os.path.join(_ppath, "data")
 PLUGINS_PATH = os.path.join(_ppath, "plugins")
 TEST_DATA_PATH = os.path.abspath(os.path.join(_tpath, "data"))
+
+CONTROL_KEYS_TO_BE_TESTED = set([
+    UNRECOGNIZED_KEY,
+    "@A\\d*",
+    "#@[cC][aA][lL][iI][bB]",
+    "#@CHANN",
+    "#@CTIME",
+    "#@MCA",
+    "#@ROI",
+    "#C",
+    "#CCD",
+    "#D",
+    "#E",
+    "#F",
+    "#G\\d+",
+    "#H\\d+",
+    "#I",
+    "#j\\d+",
+    "#J\\d+",
+    "#L",
+    "#M",
+    "#MD\\w*",
+    "#N",
+    "#o\\d+",
+    "#O\\d+",
+    "#P\\d+",
+    "#Q",
+    "#S",
+    "#T",
+    "#U",
+    "#UIM\\w*",
+    "#UXML",
+    "#V\\d+",
+    "#VA\\d+",
+    "#VD\\d+",
+    "#VE\\d+",
+    "#X",
+    "#XPCS",
+    "scan_data",
+])
 
 
 @pytest.fixture

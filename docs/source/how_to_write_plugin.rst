@@ -39,22 +39,18 @@ Load a plugin module
 ******************** 
 
 Control line handling plugins for *spec2nexus* will automatically
-register themselves when their module is imported.  Be sure that
-you call :func:`~spec2nexus.plugin.get_plugin_manager()` **before**
-you ``import`` your plugin code.  This step sets up the
-plugin manager to automatically register your new plugin.
+register themselves when their module is imported.
 
 .. code-block:: python
    :linenos:
 
-   import spec2nexus.plugin
+   import pathlib
+   import spec2nexus.plugin_core
    import spec2nexus.spec
    
-   # get the plugin manager BEFORE you import any custom plugins
-   manager = plugin.get_plugin_manager()
-   
-   import MY_PLUGIN_MODULE
-   # ... more if needed ...
+   # load each custom plugin file:
+   path = pathlib.Path("my_plugin_file.py").absolute()
+   spec2nexus.plugin_core.install_user_plugin(path)
    
    # read a SPEC data file, scan 5
    spec_data_file = spec2nexus.spec.SpecDataFile("path/to/spec/datafile")
@@ -73,10 +69,9 @@ working directory, there must be a ``__init__.py`` file in the same directory
 
 Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common` for
 examples.  The custom plugin module should contain, at minimum one subclass of
-:class:`spec2nexus.plugin.ControlLineHandler` and the keyword argument
-``metaclass=AutoRegister``. The ``metaclass`` keyword argument allows our custom
-ControlLineHandlers to register themselves when their module is imported. A
-custom plugin module can contain many such handlers, as needs dictate.
+:class:`spec2nexus.plugin_core.ControlLineBase` which allows them to register
+themselves when their module is imported. A custom plugin module can contain
+many such handlers, as needs dictate.
 
 .. sidebar::  Useful ``import``
 
@@ -89,8 +84,7 @@ These imports are necessary to to write plugins for *spec2nexus*:
 .. code-block:: python
    :linenos:
 
-   from spec2nexus.plugin import AutoRegister
-   from spec2nexus.plugin import ControlLineHandler
+   from spec2nexus.plugin_core import ControlLineBase
    from spec2nexus.utils import strip_first_word
 
 .. sidebar:: regular expressions
@@ -105,9 +99,6 @@ control line key.
 It is possible to override any of the supplied plugins for scan :index:`control line`
 control lines.
 Caution is advised to avoid introducing instability.
-
-.. A :class:`~spec2nexus.plugin.DuplicateControlLineKey` 
-   exception is raised if ``key`` is not defined.
 
 **Attribute: ``scan_attributes_defined`` (optional)**
 
@@ -244,10 +235,9 @@ we create one that ignores processing by doing nothing:
 .. code-block:: python
    :linenos:
 
-   from spec2nexus.plugin import AutoRegister
-   from spec2nexus.plugin import ControlLineHandler
+   from spec2nexus.plugin_core import ControlLineBase
    
-   class Ignore_Y_ControlLine(ControlLineHandler, metaclass=AutoRegister):
+   class Ignore_Y_ControlLine(ControlLineBase):
        '''
        **#Y** -- as in ``#Y 1 2 3 4 5``
        
@@ -327,11 +317,10 @@ Gathering all parts of the examples above, the custom plugin module is:
 .. code-block:: python
    :linenos:
 
-   from spec2nexus.plugin import AutoRegister
-   from spec2nexus.plugin import ControlLineHandler
+   from spec2nexus.plugin_core import ControlLineBase
    from spec2nexus.utils import strip_first_word
    
-   class User_ControlLine(ControlLineHandler, metaclass=AutoRegister):
+   class User_ControlLine(ControlLineBase):
        '''**#U** -- User data (#U user1 user2 user3)'''
    
        key = '#U'
@@ -354,7 +343,7 @@ Gathering all parts of the examples above, the custom plugin module is:
        scan.U_sum = sum(scan.U)
    
    
-   class Ignore_Y_ControlLine(ControlLineHandler, metaclass=AutoRegister):
+   class Ignore_Y_ControlLine(ControlLineBase):
        '''**#Y** -- as in ``#Y 1 2 3 4 5``'''
    
        key = '#Y'
@@ -442,7 +431,7 @@ Custom key match function
 *************************
 
 The default test that a given line
-matches a specific :class:`spec2nexus.plugin.ControlLineHandler` subclass
+matches a specific :class:`spec2nexus.plugin_core.ControlLineBase` subclass
 is to use a regular expression match.  
 
 .. code-block:: python
@@ -457,13 +446,12 @@ is to use a regular expression match.
         return False
 
 
-In some cases, that may
-prove tedious or difficult, such as when testing for a
-floating point number with optional preceding white space
-at the start of a line.  This is typical for data lines in a scan
-or continued lines from an MCA spectrum.  in such cases, the handler
-can override the :meth:`match_key()` method.  Here is an example
-from :class:`~spec2nexus.plugins.spec_common.SPEC_DataLine`:
+In some cases, that may prove tedious or difficult, such as when testing for a
+floating point number with optional preceding white space at the start of a
+line.  This is typical for data lines in a scan or continued lines from an MCA
+spectrum.  in such cases, the handler can override the :meth:`match_key()`
+method.  Here is an example from
+:class:`~spec2nexus.plugins.spec_common.SPEC_DataLine`:
 
 .. code-block:: python
    :linenos:
@@ -484,13 +472,19 @@ from :class:`~spec2nexus.plugins.spec_common.SPEC_DataLine`:
 Summary Requirements for custom plugin
 **************************************
 
-* file can go in your working directory or any directory that has ``__init__.py`` file
-* multiple control line handlers can go in a single file
+.. sidebar:: Needs Review
+
+   These notes need review.  It may not be possible at this writing to add a
+   custom plugin.  Check the code in the loader
+   :func:`spec2nexus.control_lines._plugin_files()` for how it handles
+   `user_plugin_list`.
+
+* file can go in your working directory
+* directory does not need a ``__init__.py`` file
+* multiple control line handlers (plugins) can go in a single file
 * for each control line:
 
-  * subclass :class:`spec2nexus.plugin.ControlLineHandler`
-  * add ``metaclass=AutoRegister`` keyword argument to auto-register the plugin
-  * import the module you defined (FIXME:  check this and revise)
+  * subclass :class:`spec2nexus.plugin_core.ControlLineBase`
   * identify the control line pattern
   * define ``key`` with a regular expression to match [#]_
   
@@ -507,8 +501,18 @@ Summary Requirements for custom plugin
   * write the function
   * register the function with spec_obj.addPostProcessor(key_name, the_function) in the handler's :meth:`process`
 
+* for each plugin file you want to load
+  * call :func:`spec2nexus.plugin_core.install_user_plugin()` with the absolute path to the file
 
 ----------
+
+.. _howto_changes_plugin_2022_release:
+
+Changes in plugin format with release 2021.2.0
+**********************************************
+
+* subclassing is easier (no need for ``metaclass`` kwarg)
+* now, subclass from :class:`~spec2nexus.plugin_core.ControlLineBase`
 
 .. _howto_changes_plugin_2021_release:
 

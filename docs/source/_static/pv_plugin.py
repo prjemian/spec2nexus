@@ -1,9 +1,7 @@
-from collections import OrderedDict
-from spec2nexus.plugin import AutoRegister
-from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.plugin_core import ControlLineBase
 from spec2nexus.utils import strip_first_word
 
-class PV_ControlLine(ControlLineHandler, metaclass=AutoRegister):
+class PV_ControlLine(ControlLineBase):
     '''**#PV** -- EPICS PV associates mnemonic with PV'''
     
     key = '#PV'
@@ -15,5 +13,5 @@ class PV_ControlLine(ControlLineHandler, metaclass=AutoRegister):
         pv = args[1]
         if not hasattr(spec_obj, "EPICS_PV"):
             # use OrderedDict since it remembers the order we found these
-            spec_obj.EPICS_PV = OrderedDict()
+            spec_obj.EPICS_PV = {}
         spec_obj.EPICS_PV[mne] = pv

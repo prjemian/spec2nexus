@@ -114,7 +114,6 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
-from . import plugin
 
 
 UNRECOGNIZED_KEY = "unrecognized_control_line"
@@ -383,15 +382,16 @@ class SpecDataFile(object):
 
     def read(self):
         """Reads and parses a spec data file"""
-        manager = plugin.get_plugin_manager()
+        from .control_lines import control_line_registry
+
         sections = self.dissect_file()
         for block in sections:
             if len(block) == 0:
                 continue
-            key = manager.getKey(block.splitlines()[0])
+            key = control_line_registry.get_control_key(block.splitlines()[0])
             if not key.startswith("#"):
                 continue  # cannot process this block, skip silently
-            manager.process(key, block, self)
+            control_line_registry.process(key, block, self)
 
             if key == "#S":
                 scan = list(self.scans.values())[-1]
@@ -399,7 +399,7 @@ class SpecDataFile(object):
                     if len(line) > 0:
                         key = line.split()[0]
                         if key in ("#D",):
-                            manager.process(key, line, scan)
+                            control_line_registry.process(key, line, scan)
                             break
 
         # fix any missing parts
@@ -499,23 +499,24 @@ class SpecDataFileHeader(object):
         self.h5writers = {}
 
     def interpret(self):
-        """ interpret the supplied buffer with the spec data file header"""
-        manager = plugin.get_plugin_manager()
+        """Interpret the supplied buffer with the spec data file header."""
+        from .control_lines import control_line_registry
+
         for _i, line in enumerate(self.raw.splitlines(), start=1):
             if len(line) == 0:
                 continue  # ignore blank lines
-            key = manager.getKey(line)
+            key = control_line_registry.get_control_key(line)
             if key is None:
                 # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
                 # raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))
                 key = UNRECOGNIZED_KEY
-                manager.process(key, line, self)
+                control_line_registry.process(key, line, self)
             elif key == "#E":
                 pass  # avoid recursion
             else:
                 # most of the work is done here
-                manager.process(key, line, self)
+                control_line_registry.process(key, line, self)
 
         # call any post-processing hook functions from the plugins
         for func in self.postprocessors.values():
@@ -607,7 +608,7 @@ class SpecDataFileScan(object):
         self.postprocessors = {}
         self.h5writers = {}
 
-        # the attributes defined in PluginManager().lazy_attributes
+        # the control_key_registry.lazy_attributes
         # are set only after a call to self.interpret()
         # That call is triggered on the first call for any of these attributes.
         self.__lazy_interpret__ = True
@@ -617,8 +618,9 @@ class SpecDataFileScan(object):
         return self.S
 
     def __getattribute__(self, attr):
-        manager = plugin.get_plugin_manager()
-        if attr in manager.lazy_attributes:
+        from .control_lines import control_line_registry
+
+        if attr in control_line_registry.lazy_attributes:
             if self.__lazy_interpret__:
                 self.interpret()
         return object.__getattribute__(self, attr)
@@ -630,8 +632,9 @@ class SpecDataFileScan(object):
         return self.scanCmd.split()[0]
 
     def interpret(self):
-        """interpret the supplied buffer with the spec scan data"""
-        manager = plugin.get_plugin_manager()
+        """Interpret the supplied buffer with the spec scan data."""
+        from .control_lines import control_line_registry
+
         if self.__interpreted__:  # do not do this twice
             return
         self.__lazy_interpret__ = False  # set now to avoid recursion
@@ -639,7 +642,7 @@ class SpecDataFileScan(object):
         for _i, line in enumerate(lines, start=1):
             if len(line) == 0:
                 continue  # ignore blank lines
-            key = manager.getKey(line.lstrip())
+            key = control_line_registry.get_control_key(line.lstrip())
             if key is None:
                 # __s__ = '<' + line + '>'
                 # _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)
@@ -647,10 +650,10 @@ class SpecDataFileScan(object):
                 # log message instead of raise exception
                 # https://github.com/prjemian/spec2nexus/issues/57
                 key = UNRECOGNIZED_KEY
-                manager.process(key, line, self)
+                control_line_registry.process(key, line, self)
             elif key != "#S":  # avoid recursion
                 # most of the work is done here
-                manager.process(key, line, self)
+                control_line_registry.process(key, line, self)
 
         # call any post-processing hook functions from the plugins
         for func in self.postprocessors.values():

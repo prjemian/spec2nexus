@@ -1,9 +1,8 @@
-from spec2nexus.plugin import AutoRegister
-from spec2nexus.plugin import ControlLineHandler
+from spec2nexus.plugin_core import ControlLineBase
 from spec2nexus.utils import strip_first_word
 
 
-class MyControlLineHandler(ControlLineHandler, metaclass=AutoRegister):
+class MyControlLinePlugin(ControlLineBase):
     """**#TEST** -- custom control line handler"""
 
     key = "#TEST"

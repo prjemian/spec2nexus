@@ -2,24 +2,26 @@
 
 import h5py
 import os
+import pathlib
 import pytest
-import sys
 
 from . import _core
 from ._core import hfile
 from ._core import file_from_tests
 from ._core import TEST_DATA_PATH
-from .. import plugin
+from ..control_lines import control_line_registry
+from ..control_lines import ControlLines
+from ..plugin_core import install_user_plugin
 from .. import spec
 from .. import writer
 
 
 os.environ["SPEC2NEXUS_PLUGIN_PATH"] = "C://Users//Pete//Desktop, /tmp"
+EXAMPLES = pathlib.Path(_core.EXAMPLES_PATH)
 
 
 def test_plugin_handler_keys():
-    manager = plugin.get_plugin_manager()
-    h = manager.registry["#F"]
+    h = control_line_registry.known_keys["#F"]
     assert h.key == "#F"
 
 
@@ -53,33 +55,31 @@ def test_plugin_handler_keys():
         ["#@[cC][aA][lL][iI][bB]", r"#@Calib 0.0501959 0.0141105 0 mca1"],
     ],
 )
-def test_plugin_getKey(control_key, sample):
-    manager = plugin.get_plugin_manager()
-    assert isinstance(manager, plugin.PluginManager)
+def test_plugin_get_control_key(control_key, sample):
     if control_key is not None:
-        assert control_key in manager.registry
-    value = manager.getKey(sample)
+        assert control_key in control_line_registry.known_keys
+    value = control_line_registry.get_control_key(sample)
     if control_key is not None:
         assert value is not None, sample
     assert value == control_key
 
 
 def test_custom_plugin():
-    manager = plugin.get_plugin_manager()
-    assert manager is not None
-    assert isinstance(manager, plugin.PluginManager)
-    num_known_control_lines_before = len(manager.lazy_attributes)
+    assert control_line_registry is not None
+    assert isinstance(control_line_registry, ControlLines)
+    num_known_control_lines_before = len(control_line_registry.lazy_attributes)
     assert num_known_control_lines_before != 0
 
-    _filename = os.path.join(
-        _core.TEST_DATA_PATH, "..", "custom_plugins", "specfile.txt"
-    )
+    path = pathlib.Path(__file__).absolute().parent / "custom_plugins"
+    assert path.exists()
+
+    _filename = str(path / "specfile.txt")
     # custom_key = "#TEST"            # in SPEC data file
     # custom_attribute = "MyTest"     # in python, scan.MyTest
 
     # first, test data with custom control line without plugin loaded
-    assert "#TEST" not in manager.registry
-    assert "MyTest" not in manager.lazy_attributes
+    assert "#TEST" not in control_line_registry.known_keys
+    assert "MyTest" not in control_line_registry.lazy_attributes
     sdf = spec.SpecDataFile(_filename)
     scan = sdf.getScan(50)
     assert "G0" in scan.G
@@ -91,13 +91,12 @@ def test_custom_plugin():
     assert exc.value.args[0] == expected
 
     # next, test again after loading plugin
-    sys.path.append(file_from_tests(".."))
-    from custom_plugins import process_only_plugin
+    install_user_plugin(path / "process_only_plugin.py")
 
-    num_known_control_lines_after = len(manager.lazy_attributes)
+    num_known_control_lines_after = len(control_line_registry.lazy_attributes)
     assert num_known_control_lines_after > num_known_control_lines_before
-    assert "#TEST" in manager.registry
-    assert "MyTest" in manager.lazy_attributes
+    assert "#TEST" in control_line_registry.known_keys
+    assert "MyTest" in control_line_registry.lazy_attributes
 
     sdf = spec.SpecDataFile(_filename)
     scan = sdf.getScan(50)
@@ -109,10 +108,9 @@ def test_custom_plugin():
     assert scan.MyTest[0] == expected
 
 
-def test_geometry_plugin(hfile):
-    fname = os.path.join(_core.EXAMPLES_PATH, "33bm_spec.dat")
+def test_diffractometer_geometry_plugin(hfile):
     scan_number = 17
-    sdf = spec.SpecDataFile(fname)
+    sdf = spec.SpecDataFile(str(EXAMPLES / "33bm_spec.dat"))
     scan = sdf.getScan(scan_number)
 
     assert scan.diffractometer.geometry_name_full == "fourc.default"

@@ -9,7 +9,7 @@ import pytest
 from . import _core
 from ._core import hfile
 from ._core import file_from_tests
-from .. import plugins
+from ..plugins import uxml
 from .. import writer
 from ..spec import SpecDataFile, SpecDataFileScan
 
@@ -33,8 +33,8 @@ def test_process():
     assert isinstance(scan, SpecDataFileScan)
 
     # test create instance
-    uxml = plugins.uxml.UXML_metadata()
-    assert isinstance(uxml, plugins.uxml.UXML_metadata)
+    handler = uxml.UXML_metadata()
+    assert isinstance(handler, uxml.UXML_metadata)
 
     # test that specific attributes not yet defined
     txt = "this is text"
@@ -42,10 +42,10 @@ def test_process():
     assert "UXML_metadata" not in scan.postprocessors
 
     # test that specific attributes now defined
-    uxml.process("#UXML " + txt, scan)
+    handler.process("#UXML " + txt, scan)
     assert hasattr(scan, "UXML")
     assert "UXML_metadata" in scan.postprocessors
-    assert scan.postprocessors["UXML_metadata"] == uxml.postprocess
+    assert scan.postprocessors["UXML_metadata"] == handler.postprocess
     assert isinstance(scan.UXML, list)
     assert scan.UXML == [txt]
 
@@ -54,11 +54,11 @@ def test_parse():
     """test that UXML lines are parsed"""
 
     scan = SpecDataFileScan(None, "")
-    uxml = plugins.uxml.UXML_metadata()
+    handler = uxml.UXML_metadata()
     for line in SPEC_DATA_FILE_LINES.strip().splitlines():
         txt = line.strip()
         if len(txt) > 0:
-            uxml.process(txt, scan)
+            handler.process(txt, scan)
     assert hasattr(scan, "UXML")
     # print ('\n'.join([ '%3d: %s' % (i,j) for i,j in enumerate(scan.UXML) ]))
     assert 9 == len(scan.UXML)
@@ -70,13 +70,13 @@ def test_parse():
 def test_postprocess():
     """test the :meth:`postprocess` method"""
     scan = SpecDataFileScan(None, "")
-    uxml = plugins.uxml.UXML_metadata()
+    handler = uxml.UXML_metadata()
     for line in SPEC_DATA_FILE_LINES.strip().splitlines():
         txt = line.strip()
         if len(txt) > 0:
-            uxml.process(txt, scan)
+            handler.process(txt, scan)
 
-    uxml.postprocess(scan)
+    handler.postprocess(scan)
     assert "UXML_metadata" in scan.h5writers
     assert hasattr(scan, "UXML_root")
     root = scan.UXML_root
@@ -97,12 +97,12 @@ def test_postprocess():
 def test_writer():
     """test the :meth:`writer` method"""
     scan = SpecDataFileScan(None, "")
-    uxml = plugins.uxml.UXML_metadata()
+    handler = uxml.UXML_metadata()
     for line in SPEC_DATA_FILE_LINES.strip().splitlines():
         txt = line.strip()
         if len(txt) > 0:
-            uxml.process(txt, scan)
-    uxml.postprocess(scan)
+            handler.process(txt, scan)
+    handler.postprocess(scan)
 
     assert hasattr(scan, "UXML_root"), "need to test writer()"
     root = scan.UXML_root
@@ -123,7 +123,7 @@ def test_UXML_Error(hfile):
 
     scan = spec_data.getScan(1)
 
-    with pytest.raises(plugins.uxml.UXML_Error) as exc:
+    with pytest.raises(uxml.UXML_Error) as exc:
         scan.interpret()
     received = str(exc.value.args[0])
     expected = (

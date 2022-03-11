@@ -108,6 +108,6 @@ Plugins for these control lines [#]_ are provided in **spec2nexus**:
 source code documentation
 *************************
 
-.. automodule:: spec2nexus.plugin
+.. automodule:: spec2nexus.plugin_core
     :members: 
     :synopsis: Define the plug-in architecture.

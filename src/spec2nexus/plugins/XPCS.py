@@ -10,13 +10,13 @@
 SPEC data file control lines unique to the APS XPCS instrument
 """
 
-from ..eznx import makeGroup
-from ..plugin import AutoRegister, ControlLineHandler
-from ..spec import SpecDataFileHeader, SpecDataFileScan
-from ..utils import strip_first_word
+from spec2nexus.eznx import makeGroup
+from spec2nexus.plugin_core import ControlLineBase
+from spec2nexus.spec import SpecDataFileHeader, SpecDataFileScan
+from spec2nexus.utils import strip_first_word
 
 
-class XPCS_VA(ControlLineHandler, metaclass=AutoRegister):
+class XPCS_VA(ControlLineBase):
     """**#VA**"""
 
     key = r"#VA\d+"
@@ -40,7 +40,7 @@ class XPCS_VA(ControlLineHandler, metaclass=AutoRegister):
         writer.save_dict(group, dd)
 
 
-class XPCS_VD(ControlLineHandler, metaclass=AutoRegister):
+class XPCS_VD(ControlLineBase):
     """**#VD** """
 
     key = r"#VD\d+"
@@ -65,7 +65,7 @@ class XPCS_VD(ControlLineHandler, metaclass=AutoRegister):
         writer.save_dict(group, dd)
 
 
-class XPCS_VE(ControlLineHandler, metaclass=AutoRegister):
+class XPCS_VE(ControlLineBase):
     """**#VE** """
 
     key = r"#VE\d+"
@@ -90,7 +90,7 @@ class XPCS_VE(ControlLineHandler, metaclass=AutoRegister):
         writer.save_dict(group, dd)
 
 
-class XPCS_XPCS(ControlLineHandler, metaclass=AutoRegister):
+class XPCS_XPCS(ControlLineBase):
     """#XPCS"""
 
     key = r"#XPCS"
@@ -108,7 +108,7 @@ class XPCS_XPCS(ControlLineHandler, metaclass=AutoRegister):
         pass
 
 
-class XPCS_CCD(ControlLineHandler, metaclass=AutoRegister):
+class XPCS_CCD(ControlLineBase):
     """#CCD"""
 
     key = r"#CCD"

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 **#H** & **#V** - Metadata in SPEC data files as defined by APS UNICAT
 
@@ -11,12 +8,13 @@ in the scans using #H/#V pairs of labels/values.
 
 import re
 
-from .. import eznx
-from ..plugin import AutoRegister, ControlLineHandler
-from ..utils import strip_first_word
+# use absolute imports (not relative)
+from spec2nexus import eznx
+from spec2nexus.plugin_core import ControlLineBase
+from spec2nexus.utils import strip_first_word
 
 
-class UNICAT_MetadataMnemonics(ControlLineHandler, metaclass=AutoRegister):
+class UNICAT_MetadataMnemonics(ControlLineBase):
 
     """
     **#H** -- UNICAT metadata names (numbered rows: #H0, #H1, ...)
@@ -50,7 +48,7 @@ class UNICAT_MetadataMnemonics(ControlLineHandler, metaclass=AutoRegister):
         spec_obj.H.append(labels)
 
 
-class UNICAT_MetadataValues(ControlLineHandler, metaclass=AutoRegister):
+class UNICAT_MetadataValues(ControlLineBase):
 
     """
     **#V** -- UNICAT metadata values (numbered rows: #V0, #V1, ...)

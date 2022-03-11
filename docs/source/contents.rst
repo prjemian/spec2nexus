@@ -13,7 +13,7 @@ Contents
    charts
    specplot_custom_scan_macro
    eznx
-   plugin
+   plugin_core
    utils
    scanf
    singletons

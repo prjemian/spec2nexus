@@ -7,7 +7,7 @@
 :deprecated: in favor of UXML
 """
 
-# TODO: for each ControlLineHandler, describe where data goes, both internally and in HDF5 file
+# TODO: for each ControlLineBase, describe where data goes, both internally and in HDF5 file
 
 """
 #UIM Image header information from areaDetector
@@ -31,10 +31,10 @@
 #UIMC10 imsca4 4 MaxValue
 """
 
-from ..plugin import AutoRegister, ControlLineHandler
+from spec2nexus.plugin_core import ControlLineBase
 
 
-class UIM_generic(ControlLineHandler, metaclass=AutoRegister):
+class UIM_generic(ControlLineBase):
 
     """**#UIM** -- various image header information"""
 
