@@ -1,4 +1,5 @@
-"""Python plugin support for handling SPEC control lines (such as #S, #D, ...).
+"""
+Python plugin support for handling SPEC control lines (such as #S, #D, ...).
 
 .. autosummary::
 
@@ -25,7 +26,6 @@ UNDEFINED_KEY = object()
 
 
 class DuplicateKeyError(KeyError):
-
     """Cannot add more than one plugin for the same control key."""
 
 
@@ -154,7 +154,7 @@ class ControlLineBase(metaclass=PluginMounter):
     scan_attributes_defined = []
 
     def __str__(self):
-        """String representation of this class instance"""
+        """String representation of this class instance."""
         return (
             f"{self.__class__.__name__}("
             f"key='{self.key}'"

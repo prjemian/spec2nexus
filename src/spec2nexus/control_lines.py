@@ -33,9 +33,7 @@ def _plugin_files():  # TODO: (user_plugin_list=[]):
 
 
 class ControlLines:
-    """
-    Access the installed set of control line handling plugins.
-    """
+    """Access the installed set of control line handling plugins."""
 
     def __init__(self):  # TODO: user_plugin_list=[]):
         for plugin_file in _plugin_files():  # TODO: user_plugin_list):
