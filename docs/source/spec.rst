@@ -62,6 +62,18 @@ which has this output::
    5
    ascan  del 84.3269 84.9269  30 1
 
+Alternatively, it is possible to use choose a scan using `[scan_number]` syntax.
+This code is equivalent to the above:
+
+.. code-block:: guess
+
+   from spec2nexus.spec import SpecDataFile
+
+   specfile = SpecDataFile('data/33id_spec.dat')
+   specscan = specfile[5]
+   print specscan.scanNum
+   print specscan.scanCmd
+
 The data columns are provided in a dictionary.  Using the example above,
 the dictionary is ``specscan.data`` where the keys are the column labels (from the
 #L line) and the values are from each row.  It is possible to make a default
@@ -78,11 +90,129 @@ plot of the last column vs. the first column.  Here's how to find that data:
 Get a list of the scans
 =======================
 
-The complete list of scan numbers from the data file is obtained
-(sorting is necessary since the list of dictionary keys is returned
-in a scrambled order)::
+The complete list of scan numbers from the data file is obtained, sorted
+alphabetically by scan number::
 
-  all_scans = sorted(specfile.scans.keys())
+  all_scans = specfile.getScanNumbers()
+
+
+Same list sorted by date & time::
+
+  all_scans = specfile.getScanNumbersChronological()
+
+.. index: !slicing
+
+Select from the list of the scans
+=================================
+
+.. sidebar: Slicing feature added in release 2021.2.0
+
+Get a scan (or list of scans) by _slicing_ from the
+:class:`~spec2nexus.spec.SpecDataFile()` object.
+
+EXAMPLES:
+
+First, read a SPEC data file::
+
+   >>> from spec2nexus.spec import SpecDataFile
+   >>> specfile = SpecDataFile('data/CdOsO')
+
+Show scan number 5::
+
+   >>> specscan = specfile[5]
+   >>> print(specscan)
+   5  ascan  stblx 1.925 3.925  50 1
+
+Show the last scan::
+
+   >>> print(specfile[-1])
+   73  ascan  micro_y 6.7515 7.1515  20 1
+
+Show scan numbers below 4.  Since the slice uses `:` characters, it returns a
+list of scans::
+
+   >>> for specscan in specfile[:4]:
+   ...    print(specscan)
+   1  ascan  herixE -17.3368 -7.33676  40 1
+   1  ascan  herixE -1.00571 18.9943  20 30
+   2  ascan  herixE -22.3505 -12.3505  40 1
+   3  ascan  micro_y 4.75 6.75  50 1
+
+Note there are two scans with scan number `1`.  Slice the first scan number 1::
+
+   >>> for specscan in specfile[1:2:0]:
+   ...    print(specscan)
+   1  ascan  herixE -17.3368 -7.33676  40 1
+
+Slice the second scan number 1::
+
+   >>> for specscan in specfile[1:2:1]:
+   ...    print(specscan)
+   1  ascan  herixE -1.00571 18.9943  20 30
+
+Slice the last one scan number (same result)::
+
+   >>> for specscan in specfile[1:2:-1]:  # slice the last one (same result)
+   ...    print(specscan)
+   1  ascan  herixE -1.00571 18.9943  20 30
+
+Compare slicing methods.  Same scan::
+
+   >>> specfile.getScan(1.1) == specfile[1.1]
+   True
+
+These are different scans::
+
+   >>> specfile.getScan(1.1) == specfile[1]
+   False
+
+Note that `getScan()` returns a single scan while slicing (using `:`) returns a
+list.  This fails::
+
+   >>> specfile.getScan(1.1) == specfile[1:2:-1]
+   False
+
+and this succeeds::
+
+   >>> [specfile.getScan(1.1)] == specfile[1:2:-1]
+   True
+
+.. index:: ! slice parameters
+.. _slice_parameters:
+
+Slice Parameters
+++++++++++++++++
+
+When slicing the data file object for scans (``specfile[given]``), consider that
+the ``given`` slice has the parameters in the following table:
+
+======================= =======================
+slice                   meaning
+======================= =======================
+``i``                   one scan referenced by ``i`` (or ``None`` if not found)
+``start:``              scan list from ``start`` (start <= scan_number)
+``:finish``             scan list up to ``stop`` (scan_number < stop)
+``::which``             scan list selecting from identical ``#S`` scan_number
+``start:finish:which``  scan list with full slicing syntax
+empty                   raises ``SyntaxError`` if ``[]``
+``None``                raises ``TypeError`` if ``[None]``
+``start:finish``        raises ``IndexError`` if ``start`` and ``finish`` have opposite signs (can't mix relative and absolute slicing)
+======================= =======================
+
+* ``start`` & ``finish`` take these meanings:
+    * ``None`` : match all
+    * string : will be converted to integer
+    * ``>=0`` : match by scan number (from SPEC data file ``#S`` lines)
+    * ``<0`` : match by relative position in the list of scans from :meth:`~spec2nexus.spec.SpecDataFile.getScanNumbersChronological()`
+
+* `which` takes these meanings:
+    * ``None`` : match all
+    * string : will be converted to integer
+    * ``<0`` : match by relative position in the list of duplicated scan numbers
+    * ``>=0`` : match by specific number in the list of duplicated scan numbers
+
+    Example: ``which=1`` will only match scan numbers with ``.1``
+    while ``which=-1`` will match the last of every scan number.
 
 ----
 
