@@ -1,4 +1,5 @@
 import numpy
+import pytest
 
 from ._core import hfile
 from .. import utils
@@ -48,6 +49,19 @@ def test_reshape_data():
     expected = [[0, 1, 2], [3, 4, 5]]
     spec = utils.reshape_data(arr, (2, 3))
     assert (spec == expected).all()
+
+
+@pytest.mark.parametrize(
+    "key, expected",
+    [
+        ["0", (0, 0)],
+        ["0.0", (0, 0)],
+        ["5.2", (5, 2)],
+        ["11.10", (11, 10)],
+    ]
+)
+def test_split_scan_number_string(key, expected):
+    assert utils.split_scan_number_string(key) == expected
 
 
 # -----------------------------------------------------------------------------
