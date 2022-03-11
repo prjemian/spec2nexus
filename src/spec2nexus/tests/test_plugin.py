@@ -4,7 +4,6 @@ import h5py
 import os
 import pathlib
 import pytest
-import sys
 
 from . import _core
 from ._core import hfile

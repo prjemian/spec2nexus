@@ -1,5 +1,4 @@
-"""
-Python plugin support for handling SPEC control lines (such as #S, #D, ...).
+"""Python plugin support for handling SPEC control lines (such as #S, #D, ...).
 
 .. autosummary::
 
@@ -26,6 +25,7 @@ UNDEFINED_KEY = object()
 
 
 class DuplicateKeyError(KeyError):
+
     """Cannot add more than one plugin for the same control key."""
 
 
@@ -62,8 +62,7 @@ class PluginMounter(type):
 
     def __init__(cls, name, bases, attrs):
         """Called when a PluginBase derived class is imported."""
-
-        if not hasattr(cls, 'plugins'):
+        if not hasattr(cls, "plugins"):
             # Called when the metaclass is first instantiated
             cls.plugins = []
             cls.known_keys = {}
@@ -155,6 +154,7 @@ class ControlLineBase(metaclass=PluginMounter):
     scan_attributes_defined = []
 
     def __str__(self):
+        """String representation of this class instance"""
         return (
             f"{self.__class__.__name__}("
             f"key='{self.key}'"
@@ -176,9 +176,7 @@ class ControlLineBase(metaclass=PluginMounter):
             :class:`~spec2nexus.spec.SpecDataFileScan`
         """
 
-        raise NotImplementedError(
-            "MUST define 'process()' method in subclass."
-        )
+        raise NotImplementedError("MUST define 'process()' method in subclass.")
 
     def postprocess(self, header, *args, **kws):
         """
@@ -211,7 +209,7 @@ class ControlLineBase(metaclass=PluginMounter):
         """
 
         def _match_(text, plugin):
-            """text is a line from a SPEC data file."""
+            """Text is first word of a line from a SPEC data file."""
             # ensure that #X and #XPCS do not both match #X
             full_pattern = "^" + plugin.key + "$"
             t = re.match(full_pattern, text)
@@ -224,6 +222,7 @@ class ControlLineBase(metaclass=PluginMounter):
             return self.key
 
         return None
+
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
