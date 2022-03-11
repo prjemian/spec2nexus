@@ -104,7 +104,8 @@ def split_scan_number_string(key):
         >>> split_scan_number_string("0.5")
         (0, 5)
     """
-    parts = list(map(int, str(key).split(".")))
+    # rstrip(".") is for pathological key="0."
+    parts = list(map(int, str(key).rstrip(".").split(".")))
     if len(parts) == 0:
         parts = [0]
     if len(parts) == 1:
