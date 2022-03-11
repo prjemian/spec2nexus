@@ -13,14 +13,16 @@ Provides
 
 .. keywords - SPEC, NeXus, HDF5, h5py
 
-### Command-line tools
+Command-line tools
+------------------
 
 * **spec2nexus**       : Convert `SPEC <https://certif.com>`_ data files to `NeXus <https://nexusformat.org>`_ `HDF5 <https://hdfgroup.org>`_
 * **extractSpecScan**  : Save columns from SPEC data file scan(s) to TSV files
 * **specplot**         : plot a SPEC scan to an image file
 * **specplot_gallery** : call **specplot** for all scans in a list of files, makes a web gallery
 
-### Libraries
+Libraries
+---------
 
 * **spec**             : python binding to read SPEC data files
 * **eznx**             : (Easy NeXus) supports writing NeXus HDF5 files using h5py
