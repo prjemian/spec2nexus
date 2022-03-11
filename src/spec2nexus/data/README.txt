@@ -14,6 +14,7 @@ file                                    type        description
 02_03_setup.dat                         SPEC scans  1-D scans, some have no data lines (data are stored in HDF5 file)
 03_06_JanTest.dat                       SPEC scans  1-D scans, USAXS scans, Fly scans, #O+#o and #J+#j control lines
 05_02_test.dat                          SPEC scans  1-D scans, USAXS scans, Fly scans, multiple #F control lines, multiple #S 1 control lines
+20220311-161530.dat                     SPEC scans  1-D scans, repeated scan numbers, simulated fly scans with motor and scaler using Bluesky
 33bm_spec.dat                           SPEC scans  1-D & 2-D scans (includes hklscan & hklmesh)
 33id_spec.dat                           SPEC scans  1-D & 2-D scans (includes mesh & Escan scans & MCA data)
 APS_spec_data.dat                       SPEC scans  1-D scans (ascan & uascan), includes lots of metadata and comments

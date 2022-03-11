@@ -1,0 +1,2418 @@
+#F /home/prjemian/20220311-161530.dat
+#E 1647036930
+#D Fri Mar 11 16:15:30 2022
+#C Bluesky  user = prjemian  host = zap
+#O0 
+#o0 
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:19:58 2022
+#C Fri Mar 11 16:19:58 2022.  plan_type = generator
+#C Fri Mar 11 16:19:58 2022.  uid = 05eec9d5-85fc-480f-a7a5-361a9744a61e
+#MD uid = 05eec9d5-85fc-480f-a7a5-361a9744a61e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 100.0
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7898800373077393 1 0.15 2.0 4000000.0 1.0 2.0 1.0 1.0 2.0 0.4
+1.354731559753418 1 0.39 2.0 5000000.0 3.0 2.0 4.0 3.0 2.0 0.5
+1.8804519176483154 2 0.59 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6
+2.413005828857422 2 0.8300000000000001 2.0 5000000.0 2.0 2.0 1.0 1.0 2.0 0.5
+2.9500224590301514 3 1.03 2.0 6000000.0 2.0 1.0 4.0 3.0 3.0 0.6000000000000001
+3.4667885303497314 3 1.23 2.0 4000000.0 1.0 2.0 2.0 3.0 2.0 0.3999999999999999
+3.9784128665924072 4 1.43 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.6000000000000001
+4.490501165390015 4 1.6300000000000001 2.0 5000000.0 2.0 3.0 3.0 3.0 1.0 0.49999999999999956
+5.016589164733887 5 1.87 2.0 5000000.0 3.0 2.0 1.0 2.0 3.0 0.5
+5.54512357711792 6 2.0 2.0 5000000.0 2.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:20:04 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:20:04 2022.  num_events_primary = 10
+#C Fri Mar 11 16:20:04 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:20:04 2022
+#C Fri Mar 11 16:20:04 2022.  plan_type = generator
+#C Fri Mar 11 16:20:04 2022.  uid = 9f609f37-4b97-467d-a0da-69b491e5778e
+#MD uid = 9f609f37-4b97-467d-a0da-69b491e5778e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 100.0
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.9153640270233154 1 0.15 2.0 4000000.0 2.0 1.0 1.0 0.0 1.0 0.4
+1.4293830394744873 1 0.35000000000000003 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.6
+1.9550113677978516 2 0.55 2.0 6000000.0 3.0 2.0 2.0 3.0 1.0 0.5
+2.4946436882019043 2 0.79 2.0 6000000.0 2.0 4.0 5.0 4.0 5.0 0.6000000000000001
+3.036064624786377 3 0.99 2.0 4000000.0 3.0 2.0 2.0 3.0 2.0 0.3999999999999999
+3.56846022605896 4 1.19 2.0 6000000.0 3.0 3.0 2.0 3.0 3.0 0.6000000000000001
+4.094817161560059 4 1.43 2.0 5000000.0 2.0 2.0 3.0 2.0 3.0 0.5
+4.6200220584869385 5 1.6300000000000001 2.0 5000000.0 2.0 4.0 3.0 2.0 3.0 0.49999999999999956
+5.131187677383423 5 1.83 2.0 5000000.0 3.0 2.0 2.0 3.0 3.0 0.5
+5.657756090164185 6 2.0 2.0 6000000.0 3.0 3.0 4.0 2.0 4.0 0.6000000000000005
+6.1680073738098145 6 2.0 2.0 5000000.0 2.0 3.0 4.0 2.0 3.0 0.5
+#C Fri Mar 11 16:20:10 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:20:10 2022.  num_events_primary = 11
+#C Fri Mar 11 16:20:10 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:20:11 2022
+#C Fri Mar 11 16:20:11 2022.  plan_type = generator
+#C Fri Mar 11 16:20:11 2022.  uid = a342e18c-dfba-49d1-92cb-f5c0f95ee9ac
+#MD uid = a342e18c-dfba-49d1-92cb-f5c0f95ee9ac
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 100.0
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 0
+#C no data column labels identified
+#C Fri Mar 11 16:20:33 2022.  num_events_baseline = 1
+#C Fri Mar 11 16:20:33 2022.  exit_status = abort
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:20:40 2022
+#C Fri Mar 11 16:20:40 2022.  plan_type = generator
+#C Fri Mar 11 16:20:40 2022.  uid = 894ef461-a8cc-4674-9a5e-2fbc769b3796
+#MD uid = 894ef461-a8cc-4674-9a5e-2fbc769b3796
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.9193236827850342 1 0.15 2.0 4000000.0 2.0 1.0 2.0 2.0 2.0 0.4
+1.4387097358703613 1 0.39 2.0 5000000.0 2.0 2.0 3.0 2.0 3.0 0.5
+1.9642300605773926 2 0.59 2.0 5000000.0 4.0 2.0 3.0 4.0 4.0 0.4999999999999999
+2.494861125946045 2 0.79 2.0 6000000.0 3.0 3.0 1.0 4.0 2.0 0.6000000000000001
+3.0247037410736084 3 0.99 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.5
+3.551384687423706 4 1.23 2.0 5000000.0 2.0 4.0 2.0 2.0 3.0 0.5
+4.08099365234375 4 1.43 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.5
+4.6117095947265625 5 1.6300000000000001 2.0 6000000.0 3.0 3.0 4.0 4.0 3.0 0.5999999999999996
+5.139176607131958 5 1.87 2.0 4000000.0 1.0 2.0 0.0 3.0 3.0 0.5
+5.668014287948608 6 2.0 2.0 6000000.0 3.0 3.0 4.0 2.0 3.0 0.5
+#C Fri Mar 11 16:20:46 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:20:46 2022.  num_events_primary = 10
+#C Fri Mar 11 16:20:46 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:20:51 2022
+#C Fri Mar 11 16:20:51 2022.  plan_type = generator
+#C Fri Mar 11 16:20:51 2022.  uid = 523dae45-626d-499e-aa14-5c35ba97a707
+#MD uid = 523dae45-626d-499e-aa14-5c35ba97a707
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7809371948242188 1 0.15 2.0 3000000.0 1.0 1.0 1.0 1.0 1.0 0.3
+1.3155276775360107 1 0.35000000000000003 2.0 6000000.0 4.0 3.0 3.0 3.0 4.0 0.6000000000000001
+1.8425047397613525 2 0.59 2.0 5000000.0 2.0 3.0 2.0 2.0 2.0 0.4999999999999999
+2.368772268295288 2 0.79 2.0 6000000.0 4.0 2.0 4.0 3.0 2.0 0.6000000000000001
+2.897897243499756 3 0.99 2.0 4000000.0 2.0 2.0 2.0 2.0 2.0 0.3999999999999999
+3.427456855773926 3 1.19 2.0 6000000.0 2.0 3.0 4.0 1.0 2.0 0.6000000000000001
+3.954829454421997 4 1.43 2.0 5000000.0 3.0 2.0 2.0 2.0 4.0 0.6000000000000001
+4.48452353477478 4 1.6300000000000001 2.0 6000000.0 2.0 4.0 3.0 3.0 2.0 0.49999999999999956
+5.011828422546387 5 1.83 2.0 5000000.0 4.0 2.0 2.0 2.0 3.0 0.5
+5.544917821884155 6 2.0 2.0 5000000.0 2.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:20:57 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:20:57 2022.  num_events_primary = 10
+#C Fri Mar 11 16:20:57 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:02 2022
+#C Fri Mar 11 16:21:02 2022.  plan_type = generator
+#C Fri Mar 11 16:21:02 2022.  uid = 3da929b7-edc0-4e55-aac3-77064e9b488f
+#MD uid = 3da929b7-edc0-4e55-aac3-77064e9b488f
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7778303623199463 1 0.15 2.0 4000000.0 1.0 2.0 2.0 1.0 1.0 0.4
+1.3106675148010254 1 0.35000000000000003 2.0 5000000.0 3.0 2.0 2.0 3.0 3.0 0.5
+1.8228356838226318 2 0.59 2.0 5000000.0 2.0 3.0 2.0 2.0 1.0 0.4999999999999999
+2.3496618270874023 2 0.79 2.0 6000000.0 2.0 4.0 4.0 2.0 5.0 0.6000000000000001
+2.861593246459961 3 0.99 2.0 5000000.0 3.0 2.0 3.0 3.0 3.0 0.5
+3.376901388168335 3 1.19 2.0 4000000.0 2.0 2.0 2.0 1.0 2.0 0.5
+3.9077563285827637 4 1.3900000000000001 2.0 6000000.0 3.0 3.0 3.0 4.0 2.0 0.5
+4.438598871231079 4 1.6300000000000001 2.0 6000000.0 2.0 3.0 2.0 2.0 4.0 0.5999999999999996
+4.97848105430603 5 1.83 2.0 5000000.0 4.0 3.0 2.0 3.0 4.0 0.5
+5.505105972290039 6 2.0 2.0 5000000.0 2.0 1.0 1.0 2.0 2.0 0.5
+#C Fri Mar 11 16:21:08 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:21:08 2022.  num_events_primary = 10
+#C Fri Mar 11 16:21:08 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:14 2022
+#C Fri Mar 11 16:21:14 2022.  plan_type = generator
+#C Fri Mar 11 16:21:14 2022.  uid = a41713b7-eb51-46b7-937e-f9ca82ed2c61
+#MD uid = a41713b7-eb51-46b7-937e-f9ca82ed2c61
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7900261878967285 1 0.15 2.0 4000000.0 1.0 2.0 2.0 1.0 2.0 0.4
+1.317615032196045 1 0.39 2.0 6000000.0 4.0 4.0 4.0 2.0 3.0 0.6
+1.8476066589355469 2 0.59 2.0 4000000.0 2.0 1.0 2.0 2.0 2.0 0.3999999999999999
+2.3776628971099854 2 0.79 2.0 6000000.0 3.0 3.0 3.0 3.0 4.0 0.6000000000000001
+2.9089159965515137 3 0.99 2.0 6000000.0 3.0 3.0 3.0 4.0 3.0 0.6000000000000001
+3.4384984970092773 3 1.23 2.0 5000000.0 1.0 3.0 1.0 3.0 3.0 0.5
+3.970054864883423 4 1.43 2.0 5000000.0 3.0 4.0 3.0 3.0 3.0 0.5
+4.501837253570557 5 1.6300000000000001 2.0 5000000.0 4.0 1.0 3.0 2.0 2.0 0.49999999999999956
+5.033645391464233 5 1.87 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6000000000000005
+5.563103437423706 6 2.0 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+#C Fri Mar 11 16:21:19 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:21:19 2022.  num_events_primary = 10
+#C Fri Mar 11 16:21:19 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:25 2022
+#C Fri Mar 11 16:21:25 2022.  plan_type = generator
+#C Fri Mar 11 16:21:25 2022.  uid = 652a1496-be94-480d-98b7-98a7966903e2
+#MD uid = 652a1496-be94-480d-98b7-98a7966903e2
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8424596786499023 1 0.19 2.0 4000000.0 3.0 2.0 2.0 2.0 1.0 0.4
+1.3640990257263184 1 0.39 2.0 6000000.0 2.0 3.0 5.0 3.0 3.0 0.6
+1.8914592266082764 2 0.59 2.0 4000000.0 2.0 1.0 2.0 3.0 3.0 0.3999999999999999
+2.403688669204712 2 0.79 2.0 6000000.0 3.0 4.0 3.0 2.0 4.0 0.6000000000000001
+2.911231517791748 3 1.03 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+3.4383487701416016 3 1.23 2.0 5000000.0 3.0 4.0 1.0 3.0 2.0 0.5
+3.9672882556915283 4 1.43 2.0 5000000.0 3.0 3.0 2.0 2.0 3.0 0.5
+4.48284387588501 4 1.6300000000000001 2.0 5000000.0 2.0 3.0 2.0 4.0 3.0 0.5999999999999996
+4.999027729034424 5 1.83 2.0 6000000.0 4.0 3.0 2.0 3.0 2.0 0.5
+5.507700204849243 6 2.0 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+#C Fri Mar 11 16:21:30 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:21:30 2022.  num_events_primary = 10
+#C Fri Mar 11 16:21:30 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:36 2022
+#C Fri Mar 11 16:21:36 2022.  plan_type = generator
+#C Fri Mar 11 16:21:36 2022.  uid = 671cda1e-7928-49dd-8d06-671a9567beb9
+#MD uid = 671cda1e-7928-49dd-8d06-671a9567beb9
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.792177677154541 1 0.15 2.0 4000000.0 2.0 2.0 2.0 2.0 1.0 0.4
+1.3260176181793213 1 0.39 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.5
+1.8541967868804932 2 0.59 2.0 5000000.0 2.0 3.0 0.0 3.0 3.0 0.4999999999999999
+2.3843138217926025 2 0.79 2.0 6000000.0 3.0 3.0 3.0 4.0 3.0 0.6000000000000001
+2.926971435546875 3 0.99 2.0 5000000.0 3.0 2.0 4.0 2.0 2.0 0.5
+3.4553935527801514 3 1.23 2.0 5000000.0 3.0 3.0 2.0 1.0 2.0 0.5
+3.984780788421631 4 1.43 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6000000000000001
+4.517620086669922 5 1.6300000000000001 2.0 5000000.0 3.0 3.0 2.0 2.0 3.0 0.49999999999999956
+5.047727108001709 5 1.87 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+5.577726602554321 6 2.0 2.0 5000000.0 3.0 2.0 3.0 3.0 3.0 0.6000000000000005
+#C Fri Mar 11 16:21:41 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:21:41 2022.  num_events_primary = 10
+#C Fri Mar 11 16:21:41 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:47 2022
+#C Fri Mar 11 16:21:47 2022.  plan_type = generator
+#C Fri Mar 11 16:21:47 2022.  uid = 87267682-8dd0-4f49-888f-6dce98a9e6c7
+#MD uid = 87267682-8dd0-4f49-888f-6dce98a9e6c7
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7902069091796875 1 0.15 2.0 4000000.0 1.0 1.0 2.0 3.0 3.0 0.4
+1.320807695388794 1 0.39 2.0 5000000.0 3.0 3.0 4.0 2.0 2.0 0.5
+1.8499267101287842 2 0.59 2.0 5000000.0 4.0 3.0 3.0 3.0 2.0 0.4999999999999999
+2.504216432571411 3 0.79 2.0 6000000.0 3.0 2.0 3.0 2.0 3.0 0.6000000000000001
+3.0294268131256104 3 1.07 2.0 7000000.0 3.0 1.0 2.0 3.0 4.0 0.7000000000000002
+3.558011531829834 4 1.27 2.0 4000000.0 3.0 1.0 4.0 3.0 2.0 0.3999999999999999
+4.088040590286255 4 1.47 2.0 6000000.0 3.0 4.0 3.0 2.0 4.0 0.6000000000000001
+4.62006950378418 5 1.67 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+5.150059938430786 5 1.9100000000000001 2.0 6000000.0 2.0 4.0 3.0 2.0 2.0 0.5999999999999996
+5.677673101425171 6 2.0 2.0 5000000.0 2.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:21:53 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:21:53 2022.  num_events_primary = 10
+#C Fri Mar 11 16:21:53 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:21:58 2022
+#C Fri Mar 11 16:21:58 2022.  plan_type = generator
+#C Fri Mar 11 16:21:58 2022.  uid = 1bea1803-83b2-4f2d-869f-d92e4668c915
+#MD uid = 1bea1803-83b2-4f2d-869f-d92e4668c915
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7961127758026123 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 1.0 0.4
+1.342933177947998 1 0.39 2.0 6000000.0 2.0 4.0 3.0 3.0 4.0 0.6
+1.8723604679107666 2 0.59 2.0 5000000.0 2.0 3.0 3.0 3.0 4.0 0.5
+2.3990814685821533 2 0.79 2.0 5000000.0 2.0 2.0 2.0 3.0 1.0 0.5
+2.9278807640075684 3 1.03 2.0 5000000.0 1.0 3.0 3.0 3.0 2.0 0.5
+3.4552042484283447 3 1.23 2.0 6000000.0 2.0 4.0 2.0 4.0 4.0 0.6000000000000001
+3.987483263015747 4 1.43 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.6000000000000001
+4.520182847976685 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 4.0 2.0 0.39999999999999947
+5.051114797592163 5 1.87 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.6000000000000005
+5.579448461532593 6 2.0 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+#C Fri Mar 11 16:22:04 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:22:04 2022.  num_events_primary = 10
+#C Fri Mar 11 16:22:04 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:22:10 2022
+#C Fri Mar 11 16:22:10 2022.  plan_type = generator
+#C Fri Mar 11 16:22:10 2022.  uid = f5f611b6-3131-4117-936c-7f07015dfd10
+#MD uid = f5f611b6-3131-4117-936c-7f07015dfd10
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8058934211730957 1 0.15 2.0 4000000.0 2.0 1.0 2.0 0.0 2.0 0.4
+1.3489711284637451 1 0.39 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.5
+1.8808419704437256 2 0.59 2.0 5000000.0 2.0 2.0 2.0 1.0 3.0 0.4999999999999999
+2.4105825424194336 2 0.79 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.6000000000000001
+2.94620943069458 3 1.03 2.0 6000000.0 3.0 3.0 4.0 1.0 4.0 0.6000000000000001
+3.475505828857422 3 1.23 2.0 4000000.0 2.0 2.0 1.0 2.0 1.0 0.3999999999999999
+4.005313396453857 4 1.43 2.0 6000000.0 3.0 3.0 3.0 5.0 3.0 0.6000000000000001
+4.534056663513184 5 1.67 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.49999999999999956
+5.06359601020813 5 1.87 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+5.594496250152588 6 2.0 2.0 5000000.0 3.0 4.0 3.0 3.0 2.0 0.5
+#C Fri Mar 11 16:22:15 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:22:15 2022.  num_events_primary = 10
+#C Fri Mar 11 16:22:15 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:22:21 2022
+#C Fri Mar 11 16:22:21 2022.  plan_type = generator
+#C Fri Mar 11 16:22:21 2022.  uid = 5166bc9f-2505-4cd9-861a-f2e7bbe23ba4
+#MD uid = 5166bc9f-2505-4cd9-861a-f2e7bbe23ba4
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7703723907470703 1 0.15 2.0 4000000.0 1.0 1.0 2.0 2.0 1.0 0.4
+1.2978472709655762 1 0.35000000000000003 2.0 5000000.0 3.0 1.0 3.0 2.0 3.0 0.5
+1.8292078971862793 2 0.59 2.0 5000000.0 2.0 3.0 1.0 3.0 3.0 0.4999999999999999
+2.3604190349578857 2 0.79 2.0 6000000.0 3.0 2.0 3.0 3.0 3.0 0.6000000000000001
+2.89711856842041 3 0.99 2.0 5000000.0 2.0 3.0 3.0 2.0 2.0 0.5
+3.4252548217773438 3 1.19 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+3.9548146724700928 4 1.43 2.0 5000000.0 2.0 3.0 1.0 2.0 2.0 0.5
+4.482764959335327 4 1.6300000000000001 2.0 6000000.0 4.0 3.0 2.0 3.0 3.0 0.5999999999999996
+5.0132386684417725 5 1.83 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+5.539335012435913 6 2.0 2.0 5000000.0 2.0 2.0 4.0 2.0 2.0 0.5
+#C Fri Mar 11 16:22:26 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:22:26 2022.  num_events_primary = 10
+#C Fri Mar 11 16:22:26 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:22:32 2022
+#C Fri Mar 11 16:22:32 2022.  plan_type = generator
+#C Fri Mar 11 16:22:32 2022.  uid = 8482adf1-7a3f-45b0-899d-6ca412db9a0f
+#MD uid = 8482adf1-7a3f-45b0-899d-6ca412db9a0f
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7991523742675781 1 0.15 2.0 4000000.0 2.0 2.0 2.0 2.0 2.0 0.4
+1.3352124691009521 1 0.39 2.0 6000000.0 3.0 3.0 1.0 3.0 2.0 0.6
+1.8629624843597412 2 0.59 2.0 5000000.0 3.0 1.0 2.0 3.0 2.0 0.5
+2.392913579940796 2 0.79 2.0 5000000.0 1.0 3.0 2.0 3.0 3.0 0.5
+2.923971652984619 3 0.99 2.0 5000000.0 3.0 2.0 1.0 3.0 2.0 0.5
+3.451486110687256 3 1.23 2.0 6000000.0 4.0 3.0 4.0 3.0 3.0 0.6000000000000001
+3.984121084213257 4 1.43 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+4.513874769210815 5 1.6300000000000001 2.0 5000000.0 3.0 3.0 4.0 3.0 4.0 0.49999999999999956
+5.045236825942993 5 1.87 2.0 6000000.0 1.0 3.0 3.0 2.0 2.0 0.6000000000000005
+5.574749946594238 6 2.0 2.0 5000000.0 2.0 3.0 2.0 2.0 3.0 0.5
+#C Fri Mar 11 16:22:38 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:22:38 2022.  num_events_primary = 10
+#C Fri Mar 11 16:22:38 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:22:43 2022
+#C Fri Mar 11 16:22:43 2022.  plan_type = generator
+#C Fri Mar 11 16:22:43 2022.  uid = e5c9d629-5d57-4cce-98d1-eb9e3eb50dc2
+#MD uid = e5c9d629-5d57-4cce-98d1-eb9e3eb50dc2
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7962415218353271 1 0.15 2.0 4000000.0 2.0 1.0 2.0 1.0 2.0 0.4
+1.3252713680267334 1 0.39 2.0 6000000.0 2.0 3.0 2.0 2.0 4.0 0.6
+1.8536157608032227 2 0.59 2.0 5000000.0 1.0 3.0 3.0 2.0 3.0 0.5
+2.385848045349121 2 0.79 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.5
+2.8973758220672607 3 0.99 2.0 5000000.0 2.0 3.0 3.0 3.0 1.0 0.5
+3.418776273727417 3 1.19 2.0 6000000.0 4.0 2.0 4.0 3.0 2.0 0.6000000000000001
+3.927905559539795 4 1.43 2.0 5000000.0 3.0 3.0 3.0 2.0 4.0 0.5
+4.44015097618103 4 1.6300000000000001 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.49999999999999956
+4.965535879135132 5 1.83 2.0 5000000.0 3.0 3.0 3.0 2.0 2.0 0.5
+5.495306730270386 5 2.0 2.0 6000000.0 4.0 3.0 5.0 3.0 2.0 0.6000000000000005
+6.0072877407073975 6 2.0 2.0 5000000.0 2.0 2.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:22:49 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:22:49 2022.  num_events_primary = 11
+#C Fri Mar 11 16:22:49 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:22:55 2022
+#C Fri Mar 11 16:22:55 2022.  plan_type = generator
+#C Fri Mar 11 16:22:55 2022.  uid = 3bacfd9c-92e7-431b-88ee-cea3066ed440
+#MD uid = 3bacfd9c-92e7-431b-88ee-cea3066ed440
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7885525226593018 1 0.15 2.0 4000000.0 1.0 2.0 1.0 1.0 2.0 0.4
+1.351041316986084 1 0.39 2.0 6000000.0 4.0 3.0 4.0 4.0 3.0 0.6
+1.8844244480133057 2 0.59 2.0 6000000.0 1.0 3.0 3.0 3.0 3.0 0.6000000000000001
+2.396674871444702 2 0.79 2.0 4000000.0 1.0 1.0 2.0 2.0 2.0 0.3999999999999999
+2.9212160110473633 3 0.99 2.0 6000000.0 4.0 2.0 3.0 3.0 2.0 0.6000000000000001
+3.4476873874664307 3 1.23 2.0 5000000.0 2.0 2.0 2.0 3.0 4.0 0.5
+3.975120782852173 4 1.43 2.0 6000000.0 4.0 2.0 3.0 3.0 2.0 0.6000000000000001
+4.506052732467651 5 1.6300000000000001 2.0 4000000.0 3.0 2.0 3.0 3.0 3.0 0.39999999999999947
+5.034743309020996 5 1.87 2.0 6000000.0 2.0 2.0 4.0 3.0 4.0 0.6000000000000005
+5.563659191131592 6 2.0 2.0 5000000.0 4.0 2.0 2.0 2.0 3.0 0.5
+#C Fri Mar 11 16:23:01 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:01 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:01 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:23:06 2022
+#C Fri Mar 11 16:23:06 2022.  plan_type = generator
+#C Fri Mar 11 16:23:06 2022.  uid = 7038188f-2a85-42c7-b58f-17e0becb6642
+#MD uid = 7038188f-2a85-42c7-b58f-17e0becb6642
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.796459436416626 1 0.15 2.0 4000000.0 2.0 2.0 2.0 1.0 1.0 0.4
+1.307584524154663 1 0.39 2.0 6000000.0 4.0 3.0 3.0 3.0 4.0 0.6
+1.839223861694336 2 0.59 2.0 4000000.0 2.0 2.0 2.0 3.0 3.0 0.3999999999999999
+2.3653557300567627 2 0.79 2.0 5000000.0 2.0 3.0 4.0 3.0 3.0 0.6000000000000001
+2.893691301345825 3 0.99 2.0 6000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+3.415498733520508 3 1.23 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.5
+3.9446921348571777 4 1.43 2.0 5000000.0 2.0 2.0 1.0 2.0 3.0 0.5
+4.474514961242676 4 1.6300000000000001 2.0 6000000.0 2.0 3.0 4.0 3.0 2.0 0.5999999999999996
+5.003459215164185 5 1.83 2.0 5000000.0 4.0 2.0 4.0 3.0 1.0 0.5
+5.53544807434082 6 2.0 2.0 5000000.0 2.0 4.0 2.0 2.0 3.0 0.5
+#C Fri Mar 11 16:23:12 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:12 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:12 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:23:17 2022
+#C Fri Mar 11 16:23:17 2022.  plan_type = generator
+#C Fri Mar 11 16:23:17 2022.  uid = 77cd62cc-1dab-41b5-91d2-331fee5c1495
+#MD uid = 77cd62cc-1dab-41b5-91d2-331fee5c1495
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.976524829864502 1 0.15 2.0 4000000.0 1.0 1.0 2.0 2.0 0.0 0.4
+1.497100591659546 1 0.43 2.0 7000000.0 3.0 3.0 5.0 4.0 3.0 0.7000000000000001
+2.023200511932373 2 0.67 2.0 6000000.0 4.0 3.0 4.0 2.0 2.0 0.5999999999999999
+2.5679755210876465 3 0.87 2.0 4000000.0 2.0 0.0 0.0 3.0 1.0 0.40000000000000013
+3.09483003616333 3 1.07 2.0 6000000.0 2.0 2.0 3.0 2.0 1.0 0.6000000000000001
+3.622743844985962 4 1.27 2.0 5000000.0 3.0 3.0 2.0 3.0 5.0 0.5999999999999996
+4.150900363922119 4 1.51 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.5
+4.679460048675537 5 1.71 2.0 5000000.0 2.0 1.0 2.0 2.0 3.0 0.5
+5.2109785079956055 5 1.9100000000000001 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+5.731822967529297 6 2.0 2.0 6000000.0 3.0 1.0 3.0 3.0 3.0 0.6000000000000005
+#C Fri Mar 11 16:23:23 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:23 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:23 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:23:29 2022
+#C Fri Mar 11 16:23:29 2022.  plan_type = generator
+#C Fri Mar 11 16:23:29 2022.  uid = c493c6a6-4c7d-406f-9e79-530b93b16f91
+#MD uid = c493c6a6-4c7d-406f-9e79-530b93b16f91
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7794456481933594 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 1.0 0.4
+1.3077425956726074 1 0.35000000000000003 2.0 5000000.0 1.0 2.0 4.0 4.0 2.0 0.5
+1.8377659320831299 2 0.59 2.0 6000000.0 4.0 3.0 2.0 3.0 3.0 0.6
+2.365899085998535 2 0.79 2.0 6000000.0 4.0 3.0 3.0 2.0 3.0 0.6000000000000001
+2.9045145511627197 3 0.99 2.0 4000000.0 3.0 2.0 3.0 2.0 2.0 0.3999999999999999
+3.43192982673645 3 1.23 2.0 6000000.0 2.0 2.0 2.0 3.0 1.0 0.6000000000000001
+3.968872547149658 4 1.43 2.0 5000000.0 2.0 2.0 3.0 3.0 3.0 0.5
+4.498871803283691 4 1.6300000000000001 2.0 5000000.0 2.0 4.0 2.0 3.0 3.0 0.49999999999999956
+5.028360605239868 5 1.83 2.0 5000000.0 3.0 2.0 3.0 3.0 4.0 0.6000000000000005
+5.557014226913452 6 2.0 2.0 6000000.0 2.0 3.0 2.0 1.0 2.0 0.5
+#C Fri Mar 11 16:23:34 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:34 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:34 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:23:40 2022
+#C Fri Mar 11 16:23:40 2022.  plan_type = generator
+#C Fri Mar 11 16:23:40 2022.  uid = 8e5909c1-08ed-4141-b2cb-b6fdbbaba66c
+#MD uid = 8e5909c1-08ed-4141-b2cb-b6fdbbaba66c
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7762806415557861 1 0.15 2.0 4000000.0 2.0 2.0 2.0 1.0 2.0 0.4
+1.3129868507385254 1 0.35000000000000003 2.0 6000000.0 4.0 3.0 2.0 2.0 4.0 0.6
+1.8430423736572266 2 0.59 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+2.372340679168701 2 0.79 2.0 5000000.0 2.0 2.0 3.0 4.0 3.0 0.5
+2.9031026363372803 3 0.99 2.0 5000000.0 2.0 3.0 2.0 2.0 2.0 0.6000000000000001
+3.4329910278320312 3 1.23 2.0 6000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+3.9617111682891846 4 1.43 2.0 6000000.0 3.0 3.0 4.0 3.0 2.0 0.6000000000000001
+4.495490550994873 4 1.6300000000000001 2.0 4000000.0 2.0 3.0 4.0 2.0 3.0 0.39999999999999947
+5.02554726600647 5 1.83 2.0 6000000.0 3.0 2.0 3.0 3.0 3.0 0.6000000000000005
+5.5549798011779785 6 2.0 2.0 5000000.0 4.0 2.0 1.0 3.0 3.0 0.5
+#C Fri Mar 11 16:23:46 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:46 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:46 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:23:51 2022
+#C Fri Mar 11 16:23:51 2022.  plan_type = generator
+#C Fri Mar 11 16:23:51 2022.  uid = 4db47df6-3764-45a6-ac6e-76b92a1dcb2b
+#MD uid = 4db47df6-3764-45a6-ac6e-76b92a1dcb2b
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.809258222579956 1 0.15 2.0 4000000.0 2.0 1.0 1.0 2.0 2.0 0.4
+1.3544602394104004 1 0.39 2.0 6000000.0 2.0 2.0 3.0 3.0 2.0 0.6
+1.8827018737792969 2 0.59 2.0 4000000.0 2.0 3.0 2.0 3.0 1.0 0.3999999999999999
+2.419820785522461 2 0.79 2.0 6000000.0 3.0 4.0 4.0 2.0 3.0 0.6000000000000001
+2.9484751224517822 3 1.03 2.0 6000000.0 2.0 3.0 2.0 3.0 2.0 0.6000000000000001
+3.4785635471343994 3 1.23 2.0 5000000.0 2.0 3.0 2.0 3.0 3.0 0.5
+3.992955446243286 4 1.43 2.0 5000000.0 1.0 3.0 2.0 2.0 3.0 0.5
+4.521809101104736 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 4.0 2.0 2.0 0.49999999999999956
+5.051188707351685 5 1.87 2.0 6000000.0 3.0 2.0 4.0 3.0 5.0 0.6000000000000005
+5.586916923522949 6 2.0 2.0 5000000.0 1.0 2.0 2.0 4.0 2.0 0.5
+#C Fri Mar 11 16:23:57 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:23:57 2022.  num_events_primary = 10
+#C Fri Mar 11 16:23:57 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:02 2022
+#C Fri Mar 11 16:24:02 2022.  plan_type = generator
+#C Fri Mar 11 16:24:02 2022.  uid = 820f0489-1dad-4d18-bae7-ca81ffec20df
+#MD uid = 820f0489-1dad-4d18-bae7-ca81ffec20df
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8059077262878418 1 0.15 2.0 4000000.0 2.0 0.0 2.0 2.0 1.0 0.4
+1.3655385971069336 1 0.39 2.0 6000000.0 3.0 4.0 3.0 3.0 4.0 0.6
+1.8987126350402832 2 0.59 2.0 6000000.0 4.0 4.0 4.0 2.0 3.0 0.6000000000000001
+2.4284753799438477 2 0.8300000000000001 2.0 4000000.0 2.0 3.0 3.0 3.0 1.0 0.3999999999999999
+2.9538700580596924 3 1.03 2.0 6000000.0 3.0 2.0 2.0 1.0 2.0 0.6000000000000001
+3.4814000129699707 3 1.23 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+4.012727737426758 4 1.43 2.0 6000000.0 4.0 4.0 2.0 3.0 2.0 0.6000000000000001
+4.54194450378418 5 1.67 2.0 4000000.0 3.0 2.0 2.0 3.0 1.0 0.39999999999999947
+5.070770740509033 5 1.87 2.0 6000000.0 3.0 2.0 1.0 2.0 4.0 0.6000000000000005
+5.598545789718628 6 2.0 2.0 5000000.0 2.0 2.0 2.0 3.0 2.0 0.5
+#C Fri Mar 11 16:24:08 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:24:08 2022.  num_events_primary = 10
+#C Fri Mar 11 16:24:08 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:14 2022
+#C Fri Mar 11 16:24:14 2022.  plan_type = generator
+#C Fri Mar 11 16:24:14 2022.  uid = 900f531d-611d-4825-8e6e-1b0958f47018
+#MD uid = 900f531d-611d-4825-8e6e-1b0958f47018
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8025784492492676 1 0.15 2.0 3000000.0 1.0 1.0 1.0 0.0 1.0 0.3
+1.3372178077697754 1 0.39 2.0 6000000.0 3.0 2.0 3.0 3.0 2.0 0.6000000000000001
+1.8638577461242676 2 0.59 2.0 5000000.0 2.0 2.0 3.0 3.0 3.0 0.4999999999999999
+2.391251564025879 2 0.79 2.0 6000000.0 2.0 3.0 3.0 2.0 4.0 0.6000000000000001
+2.9214653968811035 3 0.99 2.0 4000000.0 2.0 3.0 1.0 3.0 2.0 0.3999999999999999
+3.4522414207458496 3 1.23 2.0 6000000.0 2.0 3.0 3.0 2.0 3.0 0.6000000000000001
+3.9829506874084473 4 1.43 2.0 5000000.0 3.0 3.0 1.0 3.0 2.0 0.5
+4.514059066772461 5 1.6300000000000001 2.0 6000000.0 3.0 2.0 4.0 4.0 3.0 0.5999999999999996
+5.048133134841919 5 1.87 2.0 5000000.0 2.0 3.0 2.0 3.0 4.0 0.5
+5.58015513420105 6 2.0 2.0 5000000.0 2.0 3.0 3.0 2.0 2.0 0.5
+#C Fri Mar 11 16:24:19 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:24:19 2022.  num_events_primary = 10
+#C Fri Mar 11 16:24:19 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:25 2022
+#C Fri Mar 11 16:24:25 2022.  plan_type = generator
+#C Fri Mar 11 16:24:25 2022.  uid = c2f6f44a-4de1-413d-b0b2-7038989e6e70
+#MD uid = c2f6f44a-4de1-413d-b0b2-7038989e6e70
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7817978858947754 1 0.15 2.0 3000000.0 1.0 0.0 1.0 1.0 1.0 0.3
+1.321441411972046 1 0.39 2.0 6000000.0 3.0 4.0 1.0 3.0 4.0 0.6000000000000001
+1.8489997386932373 2 0.59 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.4999999999999999
+2.3763039112091064 2 0.79 2.0 6000000.0 3.0 2.0 3.0 4.0 4.0 0.6000000000000001
+2.9045157432556152 3 0.99 2.0 4000000.0 3.0 1.0 4.0 1.0 2.0 0.3999999999999999
+3.434346914291382 3 1.23 2.0 6000000.0 3.0 3.0 2.0 3.0 4.0 0.6000000000000001
+3.9639804363250732 4 1.43 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.6000000000000001
+4.495060920715332 4 1.6300000000000001 2.0 5000000.0 3.0 2.0 2.0 2.0 2.0 0.49999999999999956
+5.024425506591797 5 1.83 2.0 5000000.0 3.0 2.0 4.0 2.0 2.0 0.5
+5.552413702011108 6 2.0 2.0 5000000.0 1.0 3.0 1.0 3.0 2.0 0.5
+#C Fri Mar 11 16:24:31 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:24:31 2022.  num_events_primary = 10
+#C Fri Mar 11 16:24:31 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:36 2022
+#C Fri Mar 11 16:24:36 2022.  plan_type = generator
+#C Fri Mar 11 16:24:36 2022.  uid = ce927aa2-1ca3-40bf-8a70-c4ce5ac41d18
+#MD uid = ce927aa2-1ca3-40bf-8a70-c4ce5ac41d18
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7829082012176514 1 0.15 2.0 4000000.0 2.0 2.0 2.0 1.0 1.0 0.4
+1.3128392696380615 1 0.35000000000000003 2.0 5000000.0 2.0 1.0 2.0 2.0 3.0 0.5
+1.844940185546875 2 0.59 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.4999999999999999
+2.3749372959136963 2 0.79 2.0 6000000.0 3.0 3.0 2.0 4.0 4.0 0.6000000000000001
+2.906006336212158 3 0.99 2.0 5000000.0 2.0 1.0 3.0 2.0 2.0 0.5
+3.438936471939087 3 1.23 2.0 5000000.0 3.0 4.0 3.0 2.0 2.0 0.5
+3.9664552211761475 4 1.43 2.0 6000000.0 3.0 2.0 4.0 4.0 3.0 0.6000000000000001
+4.495782136917114 4 1.6300000000000001 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.49999999999999956
+5.024956703186035 5 1.83 2.0 6000000.0 3.0 3.0 4.0 4.0 2.0 0.6000000000000005
+5.553763151168823 6 2.0 2.0 4000000.0 1.0 1.0 2.0 2.0 3.0 0.39999999999999947
+#C Fri Mar 11 16:24:42 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:24:42 2022.  num_events_primary = 10
+#C Fri Mar 11 16:24:42 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:47 2022
+#C Fri Mar 11 16:24:47 2022.  plan_type = generator
+#C Fri Mar 11 16:24:47 2022.  uid = 5b1bbc0e-264c-40a7-b978-1097016a629c
+#MD uid = 5b1bbc0e-264c-40a7-b978-1097016a629c
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8151102066040039 1 0.15 2.0 4000000.0 2.0 3.0 2.0 1.0 1.0 0.4
+1.3491458892822266 1 0.39 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6
+1.8768105506896973 2 0.59 2.0 5000000.0 1.0 4.0 2.0 2.0 3.0 0.5
+2.4024744033813477 2 0.79 2.0 5000000.0 2.0 2.0 3.0 4.0 2.0 0.5
+2.928483724594116 3 1.03 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+3.4548842906951904 3 1.23 2.0 6000000.0 4.0 3.0 3.0 2.0 3.0 0.6000000000000001
+3.984066963195801 4 1.43 2.0 5000000.0 2.0 2.0 2.0 3.0 1.0 0.5
+4.513937473297119 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 1.0 2.0 0.49999999999999956
+5.039778709411621 5 1.87 2.0 6000000.0 3.0 4.0 4.0 3.0 3.0 0.6000000000000005
+5.566831350326538 6 2.0 2.0 5000000.0 2.0 3.0 2.0 4.0 4.0 0.5
+#C Fri Mar 11 16:24:53 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:24:53 2022.  num_events_primary = 10
+#C Fri Mar 11 16:24:53 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:24:59 2022
+#C Fri Mar 11 16:24:59 2022.  plan_type = generator
+#C Fri Mar 11 16:24:59 2022.  uid = bb6a4eb8-3699-4536-8f9b-9b98c839be2e
+#MD uid = bb6a4eb8-3699-4536-8f9b-9b98c839be2e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7958498001098633 1 0.15 2.0 3000000.0 1.0 0.0 1.0 0.0 0.0 0.3
+1.3336057662963867 1 0.39 2.0 6000000.0 3.0 3.0 4.0 3.0 4.0 0.6000000000000001
+1.8638668060302734 2 0.59 2.0 5000000.0 4.0 3.0 3.0 1.0 1.0 0.4999999999999999
+2.393923282623291 2 0.79 2.0 6000000.0 3.0 2.0 3.0 4.0 4.0 0.6000000000000001
+2.9254796504974365 3 0.99 2.0 4000000.0 3.0 2.0 2.0 2.0 1.0 0.3999999999999999
+3.45278000831604 3 1.23 2.0 6000000.0 4.0 2.0 4.0 3.0 4.0 0.6000000000000001
+3.982764720916748 4 1.43 2.0 5000000.0 2.0 3.0 3.0 4.0 3.0 0.6000000000000001
+4.513514041900635 5 1.6300000000000001 2.0 6000000.0 2.0 2.0 2.0 2.0 2.0 0.49999999999999956
+5.0432963371276855 5 1.87 2.0 5000000.0 2.0 2.0 2.0 3.0 3.0 0.5
+5.567998886108398 6 2.0 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:25:04 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:25:04 2022.  num_events_primary = 10
+#C Fri Mar 11 16:25:04 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:25:10 2022
+#C Fri Mar 11 16:25:10 2022.  plan_type = generator
+#C Fri Mar 11 16:25:10 2022.  uid = 0f04fe94-f78a-4758-b3e9-62498bbd0e2d
+#MD uid = 0f04fe94-f78a-4758-b3e9-62498bbd0e2d
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7805924415588379 1 0.15 2.0 3000000.0 1.0 0.0 1.0 0.0 2.0 0.3
+1.3184363842010498 1 0.35000000000000003 2.0 6000000.0 4.0 4.0 3.0 2.0 3.0 0.6000000000000001
+1.848022222518921 2 0.59 2.0 5000000.0 1.0 3.0 3.0 2.0 3.0 0.4999999999999999
+2.373774290084839 2 0.79 2.0 6000000.0 3.0 2.0 2.0 4.0 4.0 0.6000000000000001
+2.902660369873047 3 0.99 2.0 4000000.0 2.0 1.0 2.0 3.0 1.0 0.3999999999999999
+3.4315361976623535 3 1.23 2.0 6000000.0 3.0 1.0 4.0 3.0 3.0 0.6000000000000001
+3.9612112045288086 4 1.43 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.6000000000000001
+4.476380109786987 4 1.6300000000000001 2.0 5000000.0 1.0 2.0 2.0 2.0 2.0 0.49999999999999956
+5.002413511276245 5 1.83 2.0 4000000.0 1.0 2.0 3.0 3.0 3.0 0.5
+5.537155628204346 6 2.0 2.0 6000000.0 4.0 3.0 4.0 2.0 3.0 0.5
+#C Fri Mar 11 16:25:16 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:25:16 2022.  num_events_primary = 10
+#C Fri Mar 11 16:25:16 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:25:21 2022
+#C Fri Mar 11 16:25:21 2022.  plan_type = generator
+#C Fri Mar 11 16:25:21 2022.  uid = a522326f-5c44-45ec-b046-61d793d4ee4d
+#MD uid = a522326f-5c44-45ec-b046-61d793d4ee4d
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.755298376083374 1 0.15 2.0 4000000.0 1.0 0.0 1.0 2.0 2.0 0.4
+1.2798426151275635 1 0.35000000000000003 2.0 5000000.0 2.0 2.0 4.0 2.0 2.0 0.5
+1.8073656558990479 2 0.55 2.0 5000000.0 1.0 4.0 2.0 3.0 2.0 0.4999999999999999
+2.33689022064209 2 0.79 2.0 6000000.0 3.0 2.0 3.0 2.0 4.0 0.6000000000000001
+2.8667492866516113 3 0.99 2.0 5000000.0 2.0 2.0 4.0 2.0 2.0 0.5
+3.3946170806884766 3 1.19 2.0 5000000.0 2.0 3.0 2.0 3.0 3.0 0.5
+3.926197052001953 4 1.3900000000000001 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+4.458528995513916 4 1.6300000000000001 2.0 6000000.0 3.0 3.0 4.0 4.0 3.0 0.5999999999999996
+4.988088846206665 5 1.83 2.0 5000000.0 3.0 2.0 3.0 1.0 1.0 0.5
+5.515300273895264 6 2.0 2.0 5000000.0 1.0 4.0 1.0 3.0 3.0 0.5
+#C Fri Mar 11 16:25:27 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:25:27 2022.  num_events_primary = 10
+#C Fri Mar 11 16:25:27 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:25:32 2022
+#C Fri Mar 11 16:25:32 2022.  plan_type = generator
+#C Fri Mar 11 16:25:32 2022.  uid = b2de0389-ed10-4b95-9a59-42282b7c9c71
+#MD uid = b2de0389-ed10-4b95-9a59-42282b7c9c71
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8128283023834229 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 1.0 0.4
+1.3493061065673828 1 0.39 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6
+1.877316951751709 2 0.59 2.0 5000000.0 2.0 3.0 3.0 3.0 3.0 0.5
+2.4049031734466553 2 0.79 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+2.919435739517212 3 1.03 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+3.4455151557922363 3 1.23 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6000000000000001
+3.9745495319366455 4 1.43 2.0 5000000.0 3.0 3.0 4.0 3.0 3.0 0.5
+4.505434513092041 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 3.0 3.0 0.49999999999999956
+5.033029079437256 5 1.87 2.0 5000000.0 2.0 3.0 5.0 2.0 1.0 0.6000000000000005
+5.561885595321655 6 2.0 2.0 6000000.0 2.0 2.0 2.0 4.0 3.0 0.5
+#C Fri Mar 11 16:25:38 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:25:38 2022.  num_events_primary = 10
+#C Fri Mar 11 16:25:38 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:25:44 2022
+#C Fri Mar 11 16:25:44 2022.  plan_type = generator
+#C Fri Mar 11 16:25:44 2022.  uid = e12ca434-1f2a-41bb-9bb2-24eff1785728
+#MD uid = e12ca434-1f2a-41bb-9bb2-24eff1785728
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8050475120544434 1 0.15 2.0 4000000.0 2.0 0.0 0.0 2.0 1.0 0.4
+1.3556125164031982 1 0.39 2.0 5000000.0 2.0 2.0 4.0 3.0 2.0 0.5
+1.8884832859039307 2 0.59 2.0 5000000.0 2.0 3.0 4.0 1.0 3.0 0.4999999999999999
+2.419631004333496 2 0.79 2.0 6000000.0 3.0 4.0 2.0 3.0 3.0 0.6000000000000001
+2.9489858150482178 3 1.03 2.0 5000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+3.4790406227111816 3 1.23 2.0 5000000.0 4.0 2.0 2.0 2.0 3.0 0.5
+4.0058159828186035 4 1.43 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.6000000000000001
+4.533962726593018 5 1.67 2.0 5000000.0 2.0 1.0 2.0 2.0 2.0 0.49999999999999956
+5.0429487228393555 5 1.87 2.0 5000000.0 3.0 2.0 2.0 1.0 2.0 0.5
+5.550743818283081 6 2.0 2.0 5000000.0 3.0 2.0 3.0 3.0 3.0 0.5
+#C Fri Mar 11 16:25:49 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:25:49 2022.  num_events_primary = 10
+#C Fri Mar 11 16:25:49 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:25:55 2022
+#C Fri Mar 11 16:25:55 2022.  plan_type = generator
+#C Fri Mar 11 16:25:55 2022.  uid = fef6716e-2d2b-4c78-907c-ab30067d1a03
+#MD uid = fef6716e-2d2b-4c78-907c-ab30067d1a03
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.776444673538208 1 0.15 2.0 4000000.0 1.0 2.0 1.0 2.0 1.0 0.4
+1.308326005935669 1 0.35000000000000003 2.0 6000000.0 3.0 3.0 1.0 2.0 2.0 0.6
+1.8342971801757812 2 0.59 2.0 5000000.0 1.0 1.0 2.0 3.0 2.0 0.5
+2.361710786819458 2 0.79 2.0 6000000.0 4.0 2.0 3.0 2.0 2.0 0.6000000000000001
+2.8880529403686523 3 0.99 2.0 4000000.0 2.0 3.0 2.0 2.0 1.0 0.3999999999999999
+3.4164745807647705 3 1.19 2.0 6000000.0 1.0 2.0 3.0 3.0 4.0 0.6000000000000001
+3.9465746879577637 4 1.43 2.0 5000000.0 2.0 3.0 4.0 3.0 1.0 0.5
+4.473703145980835 4 1.6300000000000001 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.49999999999999956
+5.0033934116363525 5 1.83 2.0 5000000.0 2.0 3.0 3.0 2.0 3.0 0.6000000000000005
+5.533951282501221 6 2.0 2.0 6000000.0 3.0 2.0 2.0 2.0 2.0 0.5
+#C Fri Mar 11 16:26:00 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:00 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:00 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:26:06 2022
+#C Fri Mar 11 16:26:06 2022.  plan_type = generator
+#C Fri Mar 11 16:26:06 2022.  uid = 488fc933-5ca7-4826-a9d0-2c0b4487e895
+#MD uid = 488fc933-5ca7-4826-a9d0-2c0b4487e895
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7845199108123779 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 2.0 0.4
+1.3344740867614746 1 0.39 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+1.8630011081695557 2 0.59 2.0 5000000.0 2.0 2.0 2.0 3.0 4.0 0.6
+2.391812562942505 2 0.79 2.0 6000000.0 4.0 3.0 2.0 4.0 2.0 0.5
+2.922433614730835 3 0.99 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6000000000000001
+3.4517922401428223 3 1.23 2.0 4000000.0 2.0 2.0 1.0 2.0 2.0 0.3999999999999999
+3.9817936420440674 4 1.43 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.6000000000000001
+4.514297723770142 5 1.6300000000000001 2.0 5000000.0 4.0 4.0 3.0 4.0 3.0 0.49999999999999956
+5.044844388961792 5 1.87 2.0 5000000.0 3.0 3.0 1.0 3.0 3.0 0.5
+5.573128938674927 6 2.0 2.0 5000000.0 1.0 1.0 2.0 1.0 1.0 0.6000000000000005
+#C Fri Mar 11 16:26:12 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:12 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:12 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:26:17 2022
+#C Fri Mar 11 16:26:17 2022.  plan_type = generator
+#C Fri Mar 11 16:26:17 2022.  uid = aa348b89-1d6f-4524-8b36-8d4f540f3d3d
+#MD uid = aa348b89-1d6f-4524-8b36-8d4f540f3d3d
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.807549238204956 1 0.15 2.0 4000000.0 1.0 2.0 1.0 2.0 1.0 0.4
+1.3395845890045166 1 0.39 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.6
+1.8706161975860596 2 0.59 2.0 5000000.0 3.0 2.0 2.0 2.0 2.0 0.5
+2.3986306190490723 2 0.79 2.0 5000000.0 4.0 2.0 3.0 3.0 2.0 0.5
+2.9273111820220947 3 1.03 2.0 5000000.0 1.0 3.0 3.0 3.0 2.0 0.5
+3.4549341201782227 3 1.23 2.0 6000000.0 2.0 3.0 3.0 3.0 3.0 0.6000000000000001
+3.9850711822509766 4 1.43 2.0 5000000.0 3.0 4.0 4.0 2.0 3.0 0.6000000000000001
+4.515390872955322 5 1.6300000000000001 2.0 5000000.0 2.0 1.0 2.0 2.0 1.0 0.39999999999999947
+5.043128252029419 5 1.87 2.0 6000000.0 3.0 2.0 2.0 2.0 3.0 0.6000000000000005
+5.572648763656616 6 2.0 2.0 5000000.0 1.0 3.0 2.0 4.0 3.0 0.5
+#C Fri Mar 11 16:26:23 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:23 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:23 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:26:28 2022
+#C Fri Mar 11 16:26:28 2022.  plan_type = generator
+#C Fri Mar 11 16:26:28 2022.  uid = 1db382ec-53f9-4dd4-845d-d1a34fbe2775
+#MD uid = 1db382ec-53f9-4dd4-845d-d1a34fbe2775
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.764460563659668 1 0.15 2.0 4000000.0 2.0 2.0 1.0 2.0 2.0 0.4
+1.2921643257141113 1 0.35000000000000003 2.0 6000000.0 4.0 4.0 3.0 3.0 3.0 0.6
+1.823180913925171 2 0.55 2.0 5000000.0 2.0 4.0 2.0 2.0 2.0 0.5
+2.350736618041992 2 0.79 2.0 5000000.0 4.0 1.0 2.0 3.0 1.0 0.5
+2.8797593116760254 3 0.99 2.0 5000000.0 2.0 1.0 3.0 3.0 2.0 0.5
+3.410839080810547 3 1.19 2.0 6000000.0 3.0 4.0 2.0 2.0 2.0 0.6000000000000001
+3.9415531158447266 4 1.43 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+4.471870183944702 4 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 3.0 2.0 0.49999999999999956
+5.000982284545898 5 1.83 2.0 5000000.0 2.0 2.0 2.0 4.0 2.0 0.6000000000000005
+5.530840158462524 6 2.0 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:26:34 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:34 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:34 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:26:40 2022
+#C Fri Mar 11 16:26:40 2022.  plan_type = generator
+#C Fri Mar 11 16:26:40 2022.  uid = b33af332-e21c-4e38-b017-70c6280e0935
+#MD uid = b33af332-e21c-4e38-b017-70c6280e0935
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.808873176574707 1 0.15 2.0 4000000.0 2.0 1.0 1.0 2.0 1.0 0.4
+1.335167407989502 1 0.39 2.0 5000000.0 1.0 3.0 3.0 4.0 2.0 0.5
+1.86407470703125 2 0.59 2.0 5000000.0 2.0 1.0 1.0 3.0 3.0 0.4999999999999999
+2.3935604095458984 2 0.79 2.0 6000000.0 3.0 3.0 3.0 2.0 2.0 0.6000000000000001
+2.9249978065490723 3 0.99 2.0 5000000.0 4.0 2.0 3.0 3.0 2.0 0.5
+3.4524588584899902 3 1.23 2.0 5000000.0 2.0 2.0 1.0 2.0 2.0 0.5
+3.981766700744629 4 1.43 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+4.510729551315308 5 1.6300000000000001 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.5999999999999996
+5.0390238761901855 5 1.87 2.0 6000000.0 4.0 3.0 3.0 2.0 4.0 0.6000000000000005
+5.567735433578491 6 2.0 2.0 4000000.0 3.0 2.0 2.0 2.0 1.0 0.39999999999999947
+#C Fri Mar 11 16:26:45 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:45 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:45 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:26:51 2022
+#C Fri Mar 11 16:26:51 2022.  plan_type = generator
+#C Fri Mar 11 16:26:51 2022.  uid = 85d23177-5632-471a-a191-c37cb1296bcd
+#MD uid = 85d23177-5632-471a-a191-c37cb1296bcd
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8208818435668945 1 0.15 2.0 4000000.0 2.0 1.0 2.0 1.0 1.0 0.4
+1.367534875869751 1 0.39 2.0 6000000.0 3.0 3.0 2.0 2.0 4.0 0.6
+1.9079017639160156 2 0.59 2.0 5000000.0 4.0 3.0 3.0 3.0 2.0 0.5
+2.4359450340270996 2 0.8300000000000001 2.0 5000000.0 2.0 3.0 3.0 3.0 3.0 0.5
+2.9670417308807373 3 1.03 2.0 6000000.0 3.0 1.0 3.0 4.0 4.0 0.6000000000000001
+3.4953970909118652 3 1.23 2.0 5000000.0 2.0 4.0 3.0 0.0 2.0 0.5
+4.025650501251221 4 1.43 2.0 5000000.0 4.0 3.0 1.0 1.0 2.0 0.5
+4.554628133773804 5 1.67 2.0 5000000.0 2.0 1.0 3.0 4.0 3.0 0.6000000000000001
+5.08566689491272 5 1.87 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+5.619824171066284 6 2.0 2.0 6000000.0 4.0 3.0 2.0 2.0 3.0 0.5999999999999996
+#C Fri Mar 11 16:26:57 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:26:57 2022.  num_events_primary = 10
+#C Fri Mar 11 16:26:57 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:02 2022
+#C Fri Mar 11 16:27:02 2022.  plan_type = generator
+#C Fri Mar 11 16:27:02 2022.  uid = d7740ed3-90ce-4156-ad82-5981f29676d6
+#MD uid = d7740ed3-90ce-4156-ad82-5981f29676d6
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7767946720123291 1 0.15 2.0 4000000.0 2.0 2.0 2.0 2.0 2.0 0.4
+1.302809238433838 1 0.35000000000000003 2.0 6000000.0 4.0 4.0 3.0 3.0 3.0 0.6
+1.8326714038848877 2 0.59 2.0 5000000.0 3.0 2.0 2.0 2.0 3.0 0.5
+2.361156702041626 2 0.79 2.0 5000000.0 2.0 2.0 2.0 3.0 2.0 0.5
+2.887791872024536 3 0.99 2.0 5000000.0 2.0 2.0 2.0 4.0 3.0 0.5
+3.415872812271118 3 1.19 2.0 6000000.0 3.0 2.0 3.0 3.0 3.0 0.6000000000000001
+3.9481852054595947 4 1.43 2.0 4000000.0 2.0 2.0 2.0 3.0 0.0 0.3999999999999999
+4.481247186660767 4 1.6300000000000001 2.0 6000000.0 3.0 1.0 3.0 4.0 4.0 0.5999999999999996
+5.010271787643433 5 1.83 2.0 6000000.0 4.0 3.0 2.0 4.0 4.0 0.6000000000000005
+5.53652286529541 6 2.0 2.0 5000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+#C Fri Mar 11 16:27:08 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:27:08 2022.  num_events_primary = 10
+#C Fri Mar 11 16:27:08 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:14 2022
+#C Fri Mar 11 16:27:14 2022.  plan_type = generator
+#C Fri Mar 11 16:27:14 2022.  uid = aced158b-f165-441e-a903-92976717a7a3
+#MD uid = aced158b-f165-441e-a903-92976717a7a3
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8077623844146729 1 0.15 2.0 4000000.0 1.0 1.0 2.0 2.0 1.0 0.4
+1.3451433181762695 1 0.39 2.0 5000000.0 3.0 3.0 2.0 2.0 3.0 0.5
+1.8747363090515137 2 0.59 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.4999999999999999
+2.4024174213409424 2 0.79 2.0 6000000.0 5.0 1.0 3.0 2.0 3.0 0.6000000000000001
+2.9308009147644043 3 1.03 2.0 5000000.0 3.0 3.0 3.0 3.0 2.0 0.5
+3.457724094390869 3 1.23 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+3.9870033264160156 4 1.43 2.0 6000000.0 3.0 2.0 4.0 3.0 3.0 0.6000000000000001
+4.51828670501709 5 1.6300000000000001 2.0 5000000.0 3.0 2.0 2.0 2.0 2.0 0.49999999999999956
+5.04950213432312 5 1.87 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+5.578822135925293 6 2.0 2.0 5000000.0 3.0 1.0 2.0 1.0 1.0 0.5
+#C Fri Mar 11 16:27:19 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:27:19 2022.  num_events_primary = 10
+#C Fri Mar 11 16:27:19 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:25 2022
+#C Fri Mar 11 16:27:25 2022.  plan_type = generator
+#C Fri Mar 11 16:27:25 2022.  uid = c7a926b6-267f-4bc4-9702-b3286ded4913
+#MD uid = c7a926b6-267f-4bc4-9702-b3286ded4913
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7731544971466064 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 2.0 0.4
+1.300065517425537 1 0.35000000000000003 2.0 5000000.0 3.0 3.0 2.0 3.0 1.0 0.5
+1.831068992614746 2 0.59 2.0 5000000.0 1.0 2.0 3.0 1.0 2.0 0.4999999999999999
+2.3616693019866943 2 0.79 2.0 6000000.0 3.0 3.0 4.0 3.0 2.0 0.6000000000000001
+2.888681650161743 3 0.99 2.0 5000000.0 3.0 2.0 3.0 2.0 1.0 0.5
+3.4163169860839844 3 1.19 2.0 5000000.0 2.0 4.0 2.0 3.0 2.0 0.5
+3.9466841220855713 4 1.43 2.0 5000000.0 3.0 2.0 1.0 2.0 2.0 0.5
+4.467853307723999 4 1.6300000000000001 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.5999999999999996
+4.995380163192749 5 1.83 2.0 4000000.0 2.0 2.0 1.0 4.0 2.0 0.40000000000000036
+5.526878356933594 6 2.0 2.0 6000000.0 3.0 3.0 4.0 2.0 4.0 0.5999999999999996
+#C Fri Mar 11 16:27:30 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:27:30 2022.  num_events_primary = 10
+#C Fri Mar 11 16:27:30 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:36 2022
+#C Fri Mar 11 16:27:36 2022.  plan_type = generator
+#C Fri Mar 11 16:27:36 2022.  uid = 462d2919-a23b-426b-881f-8897bcdfd114
+#MD uid = 462d2919-a23b-426b-881f-8897bcdfd114
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7800583839416504 1 0.15 2.0 4000000.0 1.0 1.0 2.0 1.0 1.0 0.4
+1.3222315311431885 1 0.39 2.0 6000000.0 3.0 5.0 2.0 4.0 4.0 0.6
+1.8312020301818848 2 0.59 2.0 4000000.0 2.0 2.0 3.0 1.0 1.0 0.3999999999999999
+2.3390398025512695 2 0.79 2.0 6000000.0 3.0 2.0 3.0 4.0 2.0 0.6000000000000001
+2.8485915660858154 3 0.99 2.0 5000000.0 3.0 3.0 2.0 1.0 2.0 0.5
+3.3558924198150635 3 1.19 2.0 5000000.0 2.0 1.0 3.0 3.0 1.0 0.5
+3.8816356658935547 4 1.3900000000000001 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+4.392618179321289 4 1.59 2.0 5000000.0 2.0 2.0 2.0 3.0 3.0 0.5
+4.919414520263672 5 1.79 2.0 6000000.0 4.0 4.0 3.0 3.0 3.0 0.5999999999999996
+5.4565887451171875 5 2.0 2.0 4000000.0 2.0 1.0 2.0 1.0 1.0 0.40000000000000036
+5.983803987503052 6 2.0 2.0 6000000.0 4.0 4.0 3.0 2.0 3.0 0.5999999999999996
+#C Fri Mar 11 16:27:42 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:27:42 2022.  num_events_primary = 11
+#C Fri Mar 11 16:27:42 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:48 2022
+#C Fri Mar 11 16:27:48 2022.  plan_type = generator
+#C Fri Mar 11 16:27:48 2022.  uid = edf63a27-8436-44a1-9ba0-fe6cbd10277f
+#MD uid = edf63a27-8436-44a1-9ba0-fe6cbd10277f
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8071401119232178 1 0.15 2.0 4000000.0 2.0 2.0 1.0 1.0 2.0 0.4
+1.333132028579712 1 0.39 2.0 6000000.0 3.0 2.0 3.0 4.0 3.0 0.6
+1.8748283386230469 2 0.59 2.0 5000000.0 2.0 2.0 1.0 1.0 2.0 0.5
+2.4181442260742188 2 0.79 2.0 6000000.0 3.0 4.0 2.0 2.0 3.0 0.6000000000000001
+2.9463329315185547 3 1.03 2.0 5000000.0 2.0 1.0 3.0 2.0 2.0 0.5
+3.4767324924468994 3 1.23 2.0 5000000.0 2.0 1.0 3.0 3.0 3.0 0.5
+4.0070037841796875 4 1.43 2.0 6000000.0 3.0 3.0 4.0 3.0 1.0 0.6000000000000001
+4.535184383392334 5 1.67 2.0 4000000.0 3.0 2.0 2.0 2.0 3.0 0.39999999999999947
+5.066011667251587 5 1.87 2.0 6000000.0 2.0 4.0 2.0 3.0 3.0 0.6000000000000005
+5.594378709793091 6 2.0 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+#C Fri Mar 11 16:27:53 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:27:53 2022.  num_events_primary = 10
+#C Fri Mar 11 16:27:53 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:27:59 2022
+#C Fri Mar 11 16:27:59 2022.  plan_type = generator
+#C Fri Mar 11 16:27:59 2022.  uid = fe5432b9-af5d-47ea-aae2-eb4e1b4385e7
+#MD uid = fe5432b9-af5d-47ea-aae2-eb4e1b4385e7
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.80179762840271 1 0.15 2.0 4000000.0 2.0 1.0 2.0 1.0 2.0 0.4
+1.3360824584960938 1 0.39 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+1.8634648323059082 2 0.59 2.0 5000000.0 1.0 2.0 1.0 3.0 3.0 0.4999999999999999
+2.391162633895874 2 0.79 2.0 6000000.0 2.0 3.0 2.0 3.0 3.0 0.6000000000000001
+2.922311544418335 3 0.99 2.0 4000000.0 3.0 2.0 4.0 2.0 3.0 0.3999999999999999
+3.4506304264068604 3 1.23 2.0 6000000.0 2.0 4.0 1.0 3.0 2.0 0.6000000000000001
+3.978363037109375 4 1.43 2.0 6000000.0 2.0 4.0 2.0 2.0 3.0 0.6000000000000001
+4.506880283355713 5 1.6300000000000001 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.49999999999999956
+5.037233352661133 5 1.87 2.0 5000000.0 2.0 2.0 4.0 3.0 2.0 0.5
+5.566568851470947 6 2.0 2.0 5000000.0 3.0 4.0 2.0 2.0 4.0 0.5
+#C Fri Mar 11 16:28:05 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:28:05 2022.  num_events_primary = 10
+#C Fri Mar 11 16:28:05 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:28:10 2022
+#C Fri Mar 11 16:28:10 2022.  plan_type = generator
+#C Fri Mar 11 16:28:10 2022.  uid = 072312b9-e3d4-4782-965d-1af942bb857e
+#MD uid = 072312b9-e3d4-4782-965d-1af942bb857e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7787008285522461 1 0.15 2.0 4000000.0 2.0 2.0 1.0 2.0 1.0 0.4
+1.3152058124542236 1 0.35000000000000003 2.0 5000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+1.8436965942382812 2 0.59 2.0 5000000.0 4.0 2.0 2.0 2.0 1.0 0.4999999999999999
+2.3772683143615723 2 0.79 2.0 6000000.0 3.0 4.0 3.0 3.0 4.0 0.6000000000000001
+2.908513307571411 3 0.99 2.0 5000000.0 5.0 3.0 3.0 2.0 1.0 0.6000000000000001
+3.442115306854248 3 1.23 2.0 5000000.0 3.0 2.0 1.0 1.0 2.0 0.3999999999999999
+3.9722557067871094 4 1.43 2.0 6000000.0 3.0 3.0 3.0 4.0 3.0 0.6000000000000001
+4.509309768676758 5 1.6300000000000001 2.0 5000000.0 2.0 3.0 3.0 3.0 3.0 0.49999999999999956
+5.040335178375244 5 1.87 2.0 5000000.0 3.0 1.0 3.0 3.0 3.0 0.5
+5.567930459976196 6 2.0 2.0 5000000.0 3.0 2.0 2.0 1.0 2.0 0.5
+#C Fri Mar 11 16:28:16 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:28:16 2022.  num_events_primary = 10
+#C Fri Mar 11 16:28:16 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:28:21 2022
+#C Fri Mar 11 16:28:21 2022.  plan_type = generator
+#C Fri Mar 11 16:28:21 2022.  uid = c258c77a-e6b7-4b1a-8e89-c9dda88eb8b7
+#MD uid = c258c77a-e6b7-4b1a-8e89-c9dda88eb8b7
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.785621166229248 1 0.15 2.0 4000000.0 2.0 3.0 2.0 1.0 2.0 0.4
+1.3119361400604248 1 0.35000000000000003 2.0 6000000.0 2.0 2.0 2.0 2.0 3.0 0.6
+1.8410005569458008 2 0.59 2.0 4000000.0 1.0 2.0 2.0 1.0 2.0 0.3999999999999999
+2.3705482482910156 2 0.79 2.0 6000000.0 3.0 4.0 3.0 2.0 2.0 0.6000000000000001
+2.904437303543091 3 0.99 2.0 5000000.0 1.0 3.0 1.0 2.0 3.0 0.5
+3.431532144546509 3 1.23 2.0 6000000.0 4.0 3.0 2.0 2.0 3.0 0.6000000000000001
+3.962538003921509 4 1.43 2.0 5000000.0 2.0 3.0 2.0 2.0 4.0 0.5
+4.490876197814941 4 1.6300000000000001 2.0 5000000.0 3.0 4.0 2.0 4.0 2.0 0.49999999999999956
+5.021384000778198 5 1.83 2.0 6000000.0 4.0 3.0 3.0 2.0 5.0 0.6000000000000005
+5.557636260986328 6 2.0 2.0 5000000.0 2.0 2.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:28:27 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:28:27 2022.  num_events_primary = 10
+#C Fri Mar 11 16:28:27 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:28:33 2022
+#C Fri Mar 11 16:28:33 2022.  plan_type = generator
+#C Fri Mar 11 16:28:33 2022.  uid = 8578f4da-6edf-4b5f-90a1-88151024d4a8
+#MD uid = 8578f4da-6edf-4b5f-90a1-88151024d4a8
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8045027256011963 1 0.15 2.0 3000000.0 1.0 2.0 1.0 0.0 1.0 0.3
+1.3308138847351074 1 0.39 2.0 6000000.0 2.0 3.0 3.0 4.0 3.0 0.6000000000000001
+1.8588991165161133 2 0.59 2.0 5000000.0 2.0 3.0 2.0 3.0 2.0 0.4999999999999999
+2.3901495933532715 2 0.79 2.0 6000000.0 2.0 3.0 3.0 2.0 4.0 0.6000000000000001
+2.918067216873169 3 0.99 2.0 4000000.0 2.0 2.0 2.0 1.0 1.0 0.3999999999999999
+3.4473459720611572 3 1.23 2.0 6000000.0 4.0 3.0 2.0 3.0 4.0 0.6000000000000001
+3.9769954681396484 4 1.43 2.0 5000000.0 2.0 3.0 2.0 3.0 2.0 0.5
+4.505351305007935 5 1.6300000000000001 2.0 6000000.0 2.0 4.0 3.0 4.0 4.0 0.5999999999999996
+5.033743381500244 5 1.87 2.0 4000000.0 3.0 2.0 1.0 3.0 3.0 0.5
+5.56148099899292 6 2.0 2.0 6000000.0 3.0 3.0 2.0 2.0 2.0 0.5
+#C Fri Mar 11 16:28:38 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:28:38 2022.  num_events_primary = 10
+#C Fri Mar 11 16:28:38 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:28:44 2022
+#C Fri Mar 11 16:28:44 2022.  plan_type = generator
+#C Fri Mar 11 16:28:44 2022.  uid = 509214c0-77e3-40d1-9609-0fa05e7d1aed
+#MD uid = 509214c0-77e3-40d1-9609-0fa05e7d1aed
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8051061630249023 1 0.15 2.0 4000000.0 2.0 1.0 1.0 1.0 2.0 0.4
+1.3321452140808105 1 0.39 2.0 5000000.0 2.0 2.0 4.0 2.0 2.0 0.5
+1.8614633083343506 2 0.59 2.0 5000000.0 2.0 4.0 1.0 2.0 3.0 0.4999999999999999
+2.3913235664367676 2 0.79 2.0 6000000.0 3.0 2.0 3.0 2.0 2.0 0.6000000000000001
+2.928701162338257 3 0.99 2.0 5000000.0 2.0 3.0 2.0 3.0 3.0 0.5
+3.4552412033081055 3 1.23 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+3.9856655597686768 4 1.43 2.0 5000000.0 3.0 2.0 2.0 3.0 3.0 0.6000000000000001
+4.517918348312378 5 1.6300000000000001 2.0 6000000.0 3.0 4.0 2.0 2.0 1.0 0.49999999999999956
+5.045912265777588 5 1.87 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6000000000000005
+5.58138370513916 6 2.0 2.0 4000000.0 1.0 3.0 3.0 2.0 2.0 0.39999999999999947
+#C Fri Mar 11 16:28:49 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:28:49 2022.  num_events_primary = 10
+#C Fri Mar 11 16:28:49 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:28:55 2022
+#C Fri Mar 11 16:28:55 2022.  plan_type = generator
+#C Fri Mar 11 16:28:55 2022.  uid = 8e90ba3f-8c0b-4e70-8637-4f6bc2b11620
+#MD uid = 8e90ba3f-8c0b-4e70-8637-4f6bc2b11620
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+1.0270154476165771 1 0.15 2.0 4000000.0 2.0 2.0 1.0 1.0 2.0 0.4
+1.566148042678833 2 0.39 2.0 6000000.0 2.0 3.0 3.0 3.0 4.0 0.6
+2.101706027984619 2 0.59 2.0 5000000.0 2.0 2.0 3.0 3.0 1.0 0.5
+2.6289126873016357 3 0.8300000000000001 2.0 5000000.0 2.0 3.0 2.0 2.0 4.0 0.5
+3.156759262084961 3 1.03 2.0 5000000.0 3.0 4.0 3.0 4.0 3.0 0.6000000000000001
+3.684565782546997 4 1.23 2.0 6000000.0 1.0 1.0 3.0 4.0 4.0 0.5
+4.21489691734314 4 1.43 2.0 6000000.0 3.0 3.0 2.0 3.0 3.0 0.6000000000000001
+4.749878883361816 5 1.67 2.0 4000000.0 2.0 3.0 3.0 2.0 3.0 0.39999999999999947
+5.278589487075806 5 1.87 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6000000000000005
+5.809727430343628 6 2.0 2.0 5000000.0 2.0 4.0 3.0 3.0 3.0 0.5
+#C Fri Mar 11 16:29:01 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:01 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:01 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:29:07 2022
+#C Fri Mar 11 16:29:07 2022.  plan_type = generator
+#C Fri Mar 11 16:29:07 2022.  uid = 39d00927-34b2-4704-bd02-c6d71d8844e3
+#MD uid = 39d00927-34b2-4704-bd02-c6d71d8844e3
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8082213401794434 1 0.15 2.0 4000000.0 2.0 1.0 2.0 1.0 2.0 0.4
+1.3428964614868164 1 0.39 2.0 6000000.0 4.0 4.0 3.0 3.0 3.0 0.6
+1.873206377029419 2 0.59 2.0 5000000.0 2.0 1.0 2.0 3.0 3.0 0.5
+2.4025166034698486 2 0.79 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+2.9295074939727783 3 1.03 2.0 5000000.0 3.0 1.0 3.0 3.0 3.0 0.5
+3.465818405151367 3 1.23 2.0 6000000.0 4.0 3.0 3.0 2.0 3.0 0.6000000000000001
+3.9944441318511963 4 1.43 2.0 6000000.0 3.0 3.0 2.0 3.0 3.0 0.6000000000000001
+4.524646520614624 5 1.6300000000000001 2.0 4000000.0 1.0 3.0 1.0 3.0 1.0 0.39999999999999947
+5.052291393280029 5 1.87 2.0 6000000.0 5.0 3.0 2.0 4.0 3.0 0.6000000000000005
+5.579808712005615 6 2.0 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:29:12 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:12 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:12 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:29:18 2022
+#C Fri Mar 11 16:29:18 2022.  plan_type = generator
+#C Fri Mar 11 16:29:18 2022.  uid = 0787e597-6b99-47d5-943c-ac0b1cbc4ae9
+#MD uid = 0787e597-6b99-47d5-943c-ac0b1cbc4ae9
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7737953662872314 1 0.15 2.0 4000000.0 1.0 2.0 1.0 2.0 1.0 0.4
+1.3034634590148926 1 0.35000000000000003 2.0 6000000.0 2.0 3.0 3.0 3.0 2.0 0.6
+1.834270715713501 2 0.59 2.0 5000000.0 4.0 2.0 3.0 2.0 4.0 0.5
+2.365128755569458 2 0.79 2.0 5000000.0 2.0 3.0 2.0 3.0 2.0 0.5
+2.8925271034240723 3 0.99 2.0 5000000.0 1.0 2.0 2.0 3.0 3.0 0.5
+3.42240571975708 3 1.19 2.0 6000000.0 4.0 2.0 3.0 2.0 2.0 0.6000000000000001
+3.9537365436553955 4 1.43 2.0 5000000.0 3.0 2.0 3.0 2.0 4.0 0.6000000000000001
+4.482022762298584 4 1.6300000000000001 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.39999999999999947
+5.0125651359558105 5 1.83 2.0 6000000.0 2.0 2.0 4.0 4.0 4.0 0.6000000000000005
+5.5416224002838135 6 2.0 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+#C Fri Mar 11 16:29:23 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:23 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:23 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:29:29 2022
+#C Fri Mar 11 16:29:29 2022.  plan_type = generator
+#C Fri Mar 11 16:29:29 2022.  uid = a096e281-827a-46ca-bc01-8f4a788d162f
+#MD uid = a096e281-827a-46ca-bc01-8f4a788d162f
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7987327575683594 1 0.15 2.0 4000000.0 1.0 0.0 2.0 2.0 1.0 0.4
+1.326223611831665 1 0.39 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.6
+1.8561575412750244 2 0.59 2.0 4000000.0 2.0 2.0 1.0 2.0 2.0 0.3999999999999999
+2.3864262104034424 2 0.79 2.0 6000000.0 2.0 3.0 4.0 4.0 3.0 0.6000000000000001
+2.923138380050659 3 0.99 2.0 5000000.0 3.0 4.0 1.0 2.0 2.0 0.5
+3.4526314735412598 3 1.23 2.0 5000000.0 4.0 3.0 3.0 1.0 3.0 0.5
+3.984325408935547 4 1.43 2.0 5000000.0 3.0 3.0 3.0 4.0 2.0 0.6000000000000001
+4.513942241668701 5 1.6300000000000001 2.0 6000000.0 2.0 3.0 2.0 3.0 2.0 0.49999999999999956
+5.043941974639893 5 1.87 2.0 6000000.0 4.0 3.0 4.0 3.0 3.0 0.6000000000000005
+5.571122169494629 6 2.0 2.0 4000000.0 3.0 3.0 3.0 3.0 2.0 0.39999999999999947
+#C Fri Mar 11 16:29:35 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:35 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:35 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:29:40 2022
+#C Fri Mar 11 16:29:40 2022.  plan_type = generator
+#C Fri Mar 11 16:29:40 2022.  uid = 5ad493c6-47e4-436a-a0f7-05054e05fb96
+#MD uid = 5ad493c6-47e4-436a-a0f7-05054e05fb96
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7828612327575684 1 0.15 2.0 4000000.0 1.0 2.0 1.0 3.0 1.0 0.4
+1.315338373184204 1 0.35000000000000003 2.0 5000000.0 2.0 3.0 2.0 3.0 3.0 0.6
+1.8458642959594727 2 0.59 2.0 6000000.0 2.0 1.0 4.0 1.0 3.0 0.5
+2.3738019466400146 2 0.79 2.0 5000000.0 2.0 3.0 1.0 4.0 1.0 0.5
+2.9048240184783936 3 0.99 2.0 5000000.0 2.0 2.0 2.0 2.0 2.0 0.5
+3.4307284355163574 3 1.23 2.0 6000000.0 3.0 2.0 3.0 3.0 3.0 0.6000000000000001
+3.960603952407837 4 1.43 2.0 4000000.0 2.0 2.0 2.0 1.0 2.0 0.3999999999999999
+4.494601249694824 4 1.6300000000000001 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.5999999999999996
+5.024400949478149 5 1.83 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+5.558609485626221 6 2.0 2.0 6000000.0 4.0 3.0 3.0 2.0 3.0 0.6000000000000005
+#C Fri Mar 11 16:29:46 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:46 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:46 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:29:51 2022
+#C Fri Mar 11 16:29:51 2022.  plan_type = generator
+#C Fri Mar 11 16:29:51 2022.  uid = dccc572d-9a5b-4f72-87d7-233b2fd33e4e
+#MD uid = dccc572d-9a5b-4f72-87d7-233b2fd33e4e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8009088039398193 1 0.15 2.0 4000000.0 1.0 1.0 1.0 1.0 2.0 0.4
+1.3408730030059814 1 0.39 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.6
+1.869776725769043 2 0.59 2.0 5000000.0 3.0 3.0 2.0 4.0 3.0 0.6000000000000001
+2.4095959663391113 2 0.79 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.3999999999999999
+2.93754243850708 3 1.03 2.0 6000000.0 4.0 4.0 3.0 3.0 2.0 0.6000000000000001
+3.4646995067596436 3 1.23 2.0 5000000.0 2.0 2.0 2.0 1.0 2.0 0.5
+3.99180269241333 4 1.43 2.0 6000000.0 2.0 3.0 4.0 2.0 3.0 0.6000000000000001
+4.519727468490601 5 1.6300000000000001 2.0 4000000.0 3.0 2.0 2.0 4.0 2.0 0.39999999999999947
+5.047669410705566 5 1.87 2.0 6000000.0 4.0 4.0 3.0 3.0 3.0 0.6000000000000005
+5.576889991760254 6 2.0 2.0 5000000.0 3.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:29:57 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:29:57 2022.  num_events_primary = 10
+#C Fri Mar 11 16:29:57 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:03 2022
+#C Fri Mar 11 16:30:03 2022.  plan_type = generator
+#C Fri Mar 11 16:30:03 2022.  uid = f18282db-5d84-482a-a5e5-8e05eedebb6a
+#MD uid = f18282db-5d84-482a-a5e5-8e05eedebb6a
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7857787609100342 1 0.15 2.0 3000000.0 0.0 0.0 1.0 1.0 1.0 0.3
+1.3194947242736816 1 0.39 2.0 6000000.0 2.0 3.0 2.0 3.0 2.0 0.6000000000000001
+1.848219394683838 2 0.59 2.0 5000000.0 3.0 2.0 1.0 4.0 2.0 0.4999999999999999
+2.3789563179016113 2 0.79 2.0 6000000.0 2.0 3.0 4.0 2.0 3.0 0.6000000000000001
+2.909334182739258 3 0.99 2.0 4000000.0 3.0 2.0 2.0 2.0 3.0 0.3999999999999999
+3.4381232261657715 3 1.23 2.0 6000000.0 2.0 4.0 2.0 2.0 3.0 0.6000000000000001
+3.966449022293091 4 1.43 2.0 6000000.0 3.0 3.0 4.0 4.0 3.0 0.6000000000000001
+4.4963109493255615 4 1.6300000000000001 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.49999999999999956
+5.026742696762085 5 1.83 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+5.555182218551636 6 2.0 2.0 5000000.0 1.0 3.0 3.0 2.0 5.0 0.5
+#C Fri Mar 11 16:30:08 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:30:08 2022.  num_events_primary = 10
+#C Fri Mar 11 16:30:08 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:14 2022
+#C Fri Mar 11 16:30:14 2022.  plan_type = generator
+#C Fri Mar 11 16:30:14 2022.  uid = 08eb1348-bbda-4ce2-a987-5f95ec320332
+#MD uid = 08eb1348-bbda-4ce2-a987-5f95ec320332
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8191795349121094 1 0.15 2.0 4000000.0 2.0 1.0 3.0 0.0 2.0 0.4
+1.3657798767089844 1 0.39 2.0 6000000.0 2.0 3.0 2.0 4.0 3.0 0.6
+1.8965637683868408 2 0.59 2.0 5000000.0 3.0 2.0 3.0 3.0 3.0 0.5
+2.4247608184814453 2 0.8300000000000001 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+2.9525158405303955 3 1.03 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6000000000000001
+3.4810421466827393 3 1.23 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+4.013483762741089 4 1.43 2.0 5000000.0 2.0 2.0 2.0 4.0 3.0 0.5
+4.539183855056763 5 1.67 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.49999999999999956
+5.067235946655273 5 1.87 2.0 6000000.0 4.0 4.0 2.0 3.0 3.0 0.6000000000000005
+5.594614505767822 6 2.0 2.0 5000000.0 4.0 3.0 3.0 4.0 3.0 0.5
+#C Fri Mar 11 16:30:19 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:30:19 2022.  num_events_primary = 10
+#C Fri Mar 11 16:30:19 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:25 2022
+#C Fri Mar 11 16:30:25 2022.  plan_type = generator
+#C Fri Mar 11 16:30:25 2022.  uid = 18992e69-6964-41a5-95e7-5b492982860f
+#MD uid = 18992e69-6964-41a5-95e7-5b492982860f
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.806180477142334 1 0.15 2.0 4000000.0 1.0 2.0 2.0 2.0 2.0 0.4
+1.3399302959442139 1 0.39 2.0 6000000.0 2.0 2.0 2.0 3.0 4.0 0.6
+1.8710005283355713 2 0.59 2.0 5000000.0 4.0 2.0 3.0 3.0 1.0 0.5
+2.4016947746276855 2 0.79 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+2.9290549755096436 3 1.03 2.0 5000000.0 3.0 2.0 3.0 0.0 3.0 0.5
+3.4586915969848633 3 1.23 2.0 6000000.0 3.0 2.0 3.0 4.0 3.0 0.6000000000000001
+3.986154556274414 4 1.43 2.0 6000000.0 3.0 3.0 3.0 4.0 4.0 0.6000000000000001
+4.516533374786377 5 1.6300000000000001 2.0 4000000.0 2.0 3.0 2.0 2.0 1.0 0.39999999999999947
+5.053507328033447 5 1.87 2.0 6000000.0 3.0 2.0 4.0 2.0 3.0 0.6000000000000005
+5.580994129180908 6 2.0 2.0 5000000.0 2.0 3.0 2.0 2.0 3.0 0.5
+#C Fri Mar 11 16:30:31 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:30:31 2022.  num_events_primary = 10
+#C Fri Mar 11 16:30:31 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:36 2022
+#C Fri Mar 11 16:30:36 2022.  plan_type = generator
+#C Fri Mar 11 16:30:36 2022.  uid = f85953a0-3ea5-4396-b60b-e54b1cd294f4
+#MD uid = f85953a0-3ea5-4396-b60b-e54b1cd294f4
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7898135185241699 1 0.15 2.0 4000000.0 3.0 1.0 0.0 1.0 2.0 0.4
+1.3251447677612305 1 0.39 2.0 6000000.0 3.0 4.0 3.0 3.0 2.0 0.6
+1.8560004234313965 2 0.59 2.0 5000000.0 3.0 2.0 1.0 2.0 3.0 0.5
+2.380340337753296 2 0.79 2.0 5000000.0 2.0 3.0 3.0 1.0 2.0 0.5
+2.911756992340088 3 0.99 2.0 5000000.0 3.0 4.0 2.0 3.0 2.0 0.5
+3.4428741931915283 3 1.23 2.0 6000000.0 3.0 3.0 4.0 4.0 3.0 0.6000000000000001
+3.9709105491638184 4 1.43 2.0 6000000.0 2.0 1.0 4.0 2.0 5.0 0.6000000000000001
+4.500690460205078 5 1.6300000000000001 2.0 4000000.0 2.0 3.0 3.0 2.0 1.0 0.39999999999999947
+5.0321714878082275 5 1.87 2.0 6000000.0 3.0 3.0 3.0 4.0 4.0 0.6000000000000005
+5.568554401397705 6 2.0 2.0 5000000.0 2.0 2.0 1.0 3.0 2.0 0.5
+#C Fri Mar 11 16:30:42 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:30:42 2022.  num_events_primary = 10
+#C Fri Mar 11 16:30:42 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:48 2022
+#C Fri Mar 11 16:30:48 2022.  plan_type = generator
+#C Fri Mar 11 16:30:48 2022.  uid = 241a391e-f46c-4b4a-9958-82dad7fe8524
+#MD uid = 241a391e-f46c-4b4a-9958-82dad7fe8524
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7741732597351074 1 0.15 2.0 3000000.0 1.0 1.0 1.0 2.0 0.0 0.3
+1.3006572723388672 1 0.35000000000000003 2.0 6000000.0 3.0 2.0 4.0 3.0 4.0 0.6000000000000001
+1.8287646770477295 2 0.59 2.0 5000000.0 4.0 3.0 3.0 2.0 2.0 0.4999999999999999
+2.3580682277679443 2 0.79 2.0 6000000.0 3.0 3.0 4.0 4.0 5.0 0.6000000000000001
+2.8901429176330566 3 0.99 2.0 4000000.0 2.0 2.0 3.0 2.0 3.0 0.3999999999999999
+3.4189534187316895 3 1.19 2.0 6000000.0 2.0 3.0 3.0 2.0 3.0 0.6000000000000001
+3.9477970600128174 4 1.43 2.0 5000000.0 3.0 2.0 2.0 1.0 2.0 0.5
+4.476678133010864 4 1.6300000000000001 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.5999999999999996
+5.007248640060425 5 1.83 2.0 5000000.0 3.0 3.0 2.0 4.0 4.0 0.5
+5.533394813537598 6 2.0 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:30:53 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:30:53 2022.  num_events_primary = 10
+#C Fri Mar 11 16:30:53 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:30:59 2022
+#C Fri Mar 11 16:30:59 2022.  plan_type = generator
+#C Fri Mar 11 16:30:59 2022.  uid = 85d5757c-b9d5-46ec-b630-3fa710a14c4e
+#MD uid = 85d5757c-b9d5-46ec-b630-3fa710a14c4e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.783642053604126 1 0.15 2.0 4000000.0 1.0 2.0 2.0 2.0 2.0 0.4
+1.3160738945007324 1 0.35000000000000003 2.0 5000000.0 4.0 3.0 2.0 3.0 3.0 0.6
+1.845921277999878 2 0.59 2.0 5000000.0 2.0 1.0 3.0 2.0 3.0 0.3999999999999999
+2.3765664100646973 2 0.79 2.0 6000000.0 2.0 3.0 5.0 2.0 2.0 0.6000000000000001
+2.906309127807617 3 0.99 2.0 5000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+3.4357898235321045 3 1.23 2.0 6000000.0 2.0 2.0 4.0 3.0 2.0 0.6000000000000001
+3.966282844543457 4 1.43 2.0 4000000.0 2.0 3.0 2.0 2.0 1.0 0.3999999999999999
+4.493481159210205 4 1.6300000000000001 2.0 6000000.0 3.0 3.0 3.0 4.0 3.0 0.5999999999999996
+5.023935556411743 5 1.83 2.0 5000000.0 2.0 2.0 3.0 3.0 2.0 0.5
+5.550115585327148 6 2.0 2.0 6000000.0 3.0 4.0 4.0 3.0 2.0 0.6000000000000005
+#C Fri Mar 11 16:31:04 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:31:04 2022.  num_events_primary = 10
+#C Fri Mar 11 16:31:04 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:31:10 2022
+#C Fri Mar 11 16:31:10 2022.  plan_type = generator
+#C Fri Mar 11 16:31:10 2022.  uid = 65cfaafd-a058-4322-9bb5-00ad97a90889
+#MD uid = 65cfaafd-a058-4322-9bb5-00ad97a90889
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7873213291168213 1 0.15 2.0 4000000.0 2.0 2.0 1.0 1.0 1.0 0.4
+1.3206193447113037 1 0.35000000000000003 2.0 6000000.0 4.0 3.0 3.0 5.0 3.0 0.6
+1.8517537117004395 2 0.59 2.0 4000000.0 2.0 2.0 3.0 1.0 3.0 0.3999999999999999
+2.37886643409729 2 0.79 2.0 6000000.0 3.0 3.0 3.0 2.0 3.0 0.6000000000000001
+2.9084770679473877 3 0.99 2.0 5000000.0 3.0 3.0 2.0 4.0 2.0 0.6000000000000001
+3.4361050128936768 3 1.23 2.0 6000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+3.965066909790039 4 1.43 2.0 5000000.0 1.0 3.0 3.0 2.0 2.0 0.5
+4.492938756942749 4 1.6300000000000001 2.0 5000000.0 3.0 2.0 2.0 3.0 3.0 0.49999999999999956
+5.023822784423828 5 1.83 2.0 6000000.0 2.0 3.0 3.0 2.0 3.0 0.6000000000000005
+5.555223226547241 6 2.0 2.0 5000000.0 3.0 3.0 2.0 3.0 2.0 0.5
+#C Fri Mar 11 16:31:16 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:31:16 2022.  num_events_primary = 10
+#C Fri Mar 11 16:31:16 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:31:21 2022
+#C Fri Mar 11 16:31:21 2022.  plan_type = generator
+#C Fri Mar 11 16:31:21 2022.  uid = 518703aa-e1b5-4eb8-979c-fadf9b89578d
+#MD uid = 518703aa-e1b5-4eb8-979c-fadf9b89578d
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7692074775695801 1 0.15 2.0 4000000.0 0.0 2.0 2.0 1.0 2.0 0.4
+1.3170900344848633 1 0.35000000000000003 2.0 6000000.0 4.0 3.0 3.0 4.0 2.0 0.6
+1.847337245941162 2 0.59 2.0 5000000.0 3.0 4.0 3.0 3.0 3.0 0.5
+2.3762807846069336 2 0.79 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.5
+2.9048807621002197 3 0.99 2.0 5000000.0 2.0 0.0 3.0 4.0 2.0 0.6000000000000001
+3.4354307651519775 3 1.23 2.0 6000000.0 3.0 4.0 3.0 4.0 3.0 0.5
+3.963996648788452 4 1.43 2.0 6000000.0 4.0 3.0 3.0 4.0 2.0 0.6000000000000001
+4.489831924438477 4 1.6300000000000001 2.0 4000000.0 3.0 1.0 2.0 1.0 1.0 0.39999999999999947
+5.018501043319702 5 1.83 2.0 6000000.0 3.0 4.0 3.0 4.0 2.0 0.6000000000000005
+5.5521299839019775 6 2.0 2.0 5000000.0 3.0 3.0 3.0 1.0 3.0 0.5
+#C Fri Mar 11 16:31:27 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:31:27 2022.  num_events_primary = 10
+#C Fri Mar 11 16:31:27 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:31:32 2022
+#C Fri Mar 11 16:31:32 2022.  plan_type = generator
+#C Fri Mar 11 16:31:32 2022.  uid = d1c64800-d06e-4eb2-ac91-01afdb6d1e73
+#MD uid = d1c64800-d06e-4eb2-ac91-01afdb6d1e73
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7729158401489258 1 0.15 2.0 4000000.0 2.0 2.0 1.0 2.0 2.0 0.4
+1.3075075149536133 1 0.35000000000000003 2.0 5000000.0 3.0 2.0 3.0 3.0 2.0 0.5
+1.8376502990722656 2 0.59 2.0 5000000.0 1.0 3.0 3.0 2.0 2.0 0.4999999999999999
+2.3643853664398193 2 0.79 2.0 6000000.0 3.0 4.0 2.0 3.0 3.0 0.6000000000000001
+2.8909480571746826 3 0.99 2.0 5000000.0 2.0 2.0 2.0 4.0 3.0 0.5
+3.4206957817077637 3 1.19 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+3.9444150924682617 4 1.43 2.0 5000000.0 2.0 0.0 1.0 3.0 3.0 0.5
+4.470133304595947 4 1.6300000000000001 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.5999999999999996
+4.998236894607544 5 1.83 2.0 4000000.0 2.0 1.0 2.0 2.0 1.0 0.40000000000000036
+5.530185699462891 6 2.0 2.0 6000000.0 3.0 3.0 3.0 3.0 3.0 0.5999999999999996
+#C Fri Mar 11 16:31:38 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:31:38 2022.  num_events_primary = 10
+#C Fri Mar 11 16:31:38 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:31:44 2022
+#C Fri Mar 11 16:31:44 2022.  plan_type = generator
+#C Fri Mar 11 16:31:44 2022.  uid = 014390fc-280a-421d-bb16-ed6e04d6a4df
+#MD uid = 014390fc-280a-421d-bb16-ed6e04d6a4df
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7855188846588135 1 0.15 2.0 4000000.0 1.0 1.0 1.0 1.0 1.0 0.4
+1.324944257736206 1 0.39 2.0 6000000.0 4.0 2.0 4.0 3.0 4.0 0.6
+1.8551290035247803 2 0.59 2.0 4000000.0 1.0 3.0 2.0 2.0 3.0 0.3999999999999999
+2.382844924926758 2 0.79 2.0 6000000.0 3.0 3.0 2.0 3.0 5.0 0.6000000000000001
+2.918509006500244 3 0.99 2.0 6000000.0 2.0 3.0 2.0 4.0 3.0 0.6000000000000001
+3.446851968765259 3 1.23 2.0 5000000.0 4.0 2.0 3.0 4.0 2.0 0.5
+3.9758644104003906 4 1.43 2.0 5000000.0 4.0 2.0 2.0 3.0 2.0 0.5
+4.504653215408325 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 2.0 2.0 0.49999999999999956
+5.0338544845581055 5 1.87 2.0 6000000.0 5.0 4.0 3.0 4.0 2.0 0.6000000000000005
+5.545574903488159 6 2.0 2.0 4000000.0 2.0 2.0 2.0 0.0 3.0 0.39999999999999947
+#C Fri Mar 11 16:31:49 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:31:49 2022.  num_events_primary = 10
+#C Fri Mar 11 16:31:49 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:31:55 2022
+#C Fri Mar 11 16:31:55 2022.  plan_type = generator
+#C Fri Mar 11 16:31:55 2022.  uid = 735cb6a2-2d76-4d46-be9f-1a8843314e84
+#MD uid = 735cb6a2-2d76-4d46-be9f-1a8843314e84
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7804231643676758 1 0.15 2.0 4000000.0 2.0 2.0 1.0 1.0 1.0 0.4
+1.3164076805114746 1 0.35000000000000003 2.0 6000000.0 2.0 3.0 3.0 3.0 3.0 0.6
+1.8379454612731934 2 0.59 2.0 4000000.0 1.0 2.0 4.0 3.0 3.0 0.3999999999999999
+2.360644817352295 2 0.79 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6000000000000001
+2.882166862487793 3 0.99 2.0 5000000.0 1.0 3.0 2.0 2.0 2.0 0.5
+3.4064621925354004 3 1.19 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.6000000000000001
+3.934910535812378 4 1.43 2.0 4000000.0 3.0 3.0 1.0 1.0 3.0 0.3999999999999999
+4.463115215301514 4 1.6300000000000001 2.0 6000000.0 4.0 2.0 4.0 4.0 4.0 0.5999999999999996
+4.993145227432251 5 1.83 2.0 5000000.0 2.0 2.0 2.0 3.0 2.0 0.5
+5.526195287704468 6 2.0 2.0 6000000.0 2.0 3.0 5.0 4.0 2.0 0.6000000000000005
+#C Fri Mar 11 16:32:00 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:00 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:00 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:32:06 2022
+#C Fri Mar 11 16:32:06 2022.  plan_type = generator
+#C Fri Mar 11 16:32:06 2022.  uid = 388fdc24-664f-4e1b-a32a-5c481aaefaa7
+#MD uid = 388fdc24-664f-4e1b-a32a-5c481aaefaa7
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7974328994750977 1 0.15 2.0 4000000.0 2.0 2.0 1.0 1.0 1.0 0.4
+1.3427436351776123 1 0.39 2.0 5000000.0 2.0 4.0 2.0 1.0 3.0 0.5
+1.873636245727539 2 0.59 2.0 5000000.0 3.0 3.0 3.0 3.0 2.0 0.4999999999999999
+2.40134859085083 2 0.79 2.0 6000000.0 5.0 3.0 2.0 3.0 4.0 0.6000000000000001
+2.9282214641571045 3 1.03 2.0 5000000.0 2.0 4.0 3.0 3.0 4.0 0.5
+3.458617687225342 3 1.23 2.0 5000000.0 2.0 2.0 3.0 1.0 3.0 0.5
+3.9888620376586914 4 1.43 2.0 6000000.0 3.0 4.0 2.0 4.0 2.0 0.6000000000000001
+4.517873525619507 5 1.6300000000000001 2.0 5000000.0 3.0 1.0 3.0 3.0 2.0 0.49999999999999956
+5.039673566818237 5 1.87 2.0 5000000.0 1.0 3.0 2.0 2.0 2.0 0.5
+5.564215898513794 6 2.0 2.0 5000000.0 4.0 3.0 2.0 1.0 1.0 0.5
+#C Fri Mar 11 16:32:12 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:12 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:12 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:32:17 2022
+#C Fri Mar 11 16:32:17 2022.  plan_type = generator
+#C Fri Mar 11 16:32:17 2022.  uid = afce2158-f254-479b-9599-ae131a43449e
+#MD uid = afce2158-f254-479b-9599-ae131a43449e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7645916938781738 1 0.15 2.0 3000000.0 1.0 1.0 1.0 1.0 1.0 0.3
+1.3118534088134766 1 0.35000000000000003 2.0 6000000.0 2.0 2.0 3.0 3.0 4.0 0.6000000000000001
+1.8387119770050049 2 0.59 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.4999999999999999
+2.368476152420044 2 0.79 2.0 6000000.0 3.0 5.0 3.0 4.0 2.0 0.6000000000000001
+2.903475522994995 3 0.99 2.0 5000000.0 3.0 3.0 2.0 2.0 2.0 0.5
+3.4312524795532227 3 1.23 2.0 5000000.0 1.0 3.0 3.0 4.0 3.0 0.5
+3.962109088897705 4 1.43 2.0 6000000.0 3.0 3.0 3.0 2.0 5.0 0.6000000000000001
+4.494675636291504 4 1.6300000000000001 2.0 5000000.0 2.0 2.0 2.0 4.0 3.0 0.49999999999999956
+5.023752450942993 5 1.83 2.0 5000000.0 2.0 2.0 3.0 2.0 3.0 0.5
+5.550619125366211 6 2.0 2.0 5000000.0 3.0 2.0 3.0 3.0 2.0 0.5
+#C Fri Mar 11 16:32:23 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:23 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:23 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:32:28 2022
+#C Fri Mar 11 16:32:28 2022.  plan_type = generator
+#C Fri Mar 11 16:32:28 2022.  uid = 4666cb8a-f43b-4ca7-8840-24348c949e8e
+#MD uid = 4666cb8a-f43b-4ca7-8840-24348c949e8e
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7667257785797119 1 0.15 2.0 4000000.0 1.0 2.0 1.0 2.0 2.0 0.4
+1.2994630336761475 1 0.35000000000000003 2.0 6000000.0 4.0 2.0 3.0 2.0 2.0 0.6
+1.8271331787109375 2 0.59 2.0 4000000.0 2.0 1.0 2.0 2.0 2.0 0.3999999999999999
+2.35880446434021 2 0.79 2.0 6000000.0 4.0 3.0 3.0 3.0 2.0 0.6000000000000001
+2.888819456100464 3 0.99 2.0 5000000.0 1.0 3.0 2.0 3.0 2.0 0.5
+3.416851758956909 3 1.19 2.0 6000000.0 2.0 3.0 3.0 4.0 3.0 0.6000000000000001
+3.945490598678589 4 1.43 2.0 4000000.0 2.0 3.0 2.0 3.0 2.0 0.3999999999999999
+4.476512908935547 4 1.6300000000000001 2.0 6000000.0 2.0 3.0 3.0 2.0 4.0 0.5999999999999996
+5.007482290267944 5 1.83 2.0 5000000.0 2.0 3.0 4.0 2.0 2.0 0.6000000000000005
+5.526424169540405 6 2.0 2.0 5000000.0 2.0 1.0 3.0 2.0 3.0 0.39999999999999947
+#C Fri Mar 11 16:32:34 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:34 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:34 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:32:40 2022
+#C Fri Mar 11 16:32:40 2022.  plan_type = generator
+#C Fri Mar 11 16:32:40 2022.  uid = 302ff0eb-3dc1-4632-85b9-c276de6d5550
+#MD uid = 302ff0eb-3dc1-4632-85b9-c276de6d5550
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8248484134674072 1 0.15 2.0 4000000.0 1.0 1.0 1.0 0.0 2.0 0.4
+1.3613715171813965 1 0.39 2.0 5000000.0 2.0 2.0 3.0 1.0 2.0 0.5
+1.8944265842437744 2 0.59 2.0 5000000.0 2.0 2.0 3.0 2.0 1.0 0.4999999999999999
+2.425632953643799 2 0.79 2.0 6000000.0 5.0 4.0 3.0 2.0 4.0 0.6000000000000001
+2.953766345977783 3 1.03 2.0 5000000.0 2.0 1.0 3.0 2.0 2.0 0.5
+3.4837584495544434 3 1.23 2.0 5000000.0 2.0 3.0 2.0 4.0 2.0 0.5
+4.012949466705322 4 1.43 2.0 6000000.0 4.0 2.0 3.0 2.0 3.0 0.6000000000000001
+4.53961443901062 5 1.67 2.0 5000000.0 2.0 3.0 3.0 2.0 2.0 0.49999999999999956
+5.0770957469940186 5 1.87 2.0 5000000.0 2.0 1.0 3.0 3.0 2.0 0.5
+5.587435960769653 6 2.0 2.0 5000000.0 3.0 3.0 2.0 4.0 3.0 0.5
+#C Fri Mar 11 16:32:45 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:45 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:45 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:32:51 2022
+#C Fri Mar 11 16:32:51 2022.  plan_type = generator
+#C Fri Mar 11 16:32:51 2022.  uid = de40e0b9-bacb-413a-b028-b5271c56c4ad
+#MD uid = de40e0b9-bacb-413a-b028-b5271c56c4ad
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7651314735412598 1 0.15 2.0 4000000.0 2.0 1.0 1.0 2.0 2.0 0.4
+1.2940552234649658 1 0.35000000000000003 2.0 6000000.0 3.0 3.0 2.0 3.0 2.0 0.6
+1.8277711868286133 2 0.55 2.0 5000000.0 3.0 3.0 2.0 3.0 3.0 0.5
+2.358694553375244 2 0.79 2.0 5000000.0 3.0 3.0 0.0 2.0 3.0 0.5
+2.886948823928833 3 0.99 2.0 5000000.0 3.0 2.0 3.0 3.0 2.0 0.5
+3.4154469966888428 3 1.19 2.0 6000000.0 4.0 3.0 3.0 3.0 2.0 0.6000000000000001
+3.945427179336548 4 1.43 2.0 5000000.0 2.0 2.0 1.0 1.0 4.0 0.5
+4.47693395614624 4 1.6300000000000001 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.49999999999999956
+5.002382040023804 5 1.83 2.0 6000000.0 3.0 3.0 2.0 4.0 4.0 0.6000000000000005
+5.519428730010986 6 2.0 2.0 5000000.0 2.0 3.0 3.0 2.0 3.0 0.5
+#C Fri Mar 11 16:32:56 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:32:56 2022.  num_events_primary = 10
+#C Fri Mar 11 16:32:56 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:02 2022
+#C Fri Mar 11 16:33:02 2022.  plan_type = generator
+#C Fri Mar 11 16:33:02 2022.  uid = aa793bef-bc90-47e1-a3ce-280f7bec81a2
+#MD uid = aa793bef-bc90-47e1-a3ce-280f7bec81a2
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.819209098815918 1 0.15 2.0 4000000.0 1.0 1.0 1.0 2.0 2.0 0.4
+1.3515424728393555 1 0.39 2.0 6000000.0 3.0 4.0 3.0 2.0 1.0 0.6
+1.8830485343933105 2 0.59 2.0 4000000.0 1.0 1.0 2.0 3.0 3.0 0.3999999999999999
+2.4123048782348633 2 0.79 2.0 6000000.0 4.0 5.0 5.0 3.0 2.0 0.6000000000000001
+2.9429290294647217 3 1.03 2.0 6000000.0 2.0 2.0 2.0 3.0 3.0 0.6000000000000001
+3.473222494125366 3 1.23 2.0 5000000.0 4.0 3.0 2.0 3.0 3.0 0.5
+4.006505250930786 4 1.43 2.0 5000000.0 2.0 3.0 2.0 2.0 1.0 0.5
+4.53694748878479 5 1.67 2.0 5000000.0 3.0 3.0 3.0 2.0 2.0 0.49999999999999956
+5.0485289096832275 5 1.87 2.0 6000000.0 2.0 3.0 3.0 3.0 3.0 0.6000000000000005
+5.57391619682312 6 2.0 2.0 4000000.0 2.0 2.0 2.0 2.0 2.0 0.39999999999999947
+#C Fri Mar 11 16:33:08 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:33:08 2022.  num_events_primary = 10
+#C Fri Mar 11 16:33:08 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:13 2022
+#C Fri Mar 11 16:33:13 2022.  plan_type = generator
+#C Fri Mar 11 16:33:13 2022.  uid = 33c87eb3-afe6-43ed-bb92-265dc58969d8
+#MD uid = 33c87eb3-afe6-43ed-bb92-265dc58969d8
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8044052124023438 1 0.15 2.0 4000000.0 1.0 2.0 2.0 2.0 1.0 0.4
+1.3494873046875 1 0.39 2.0 6000000.0 3.0 3.0 3.0 4.0 4.0 0.6
+1.8816335201263428 2 0.59 2.0 5000000.0 2.0 3.0 4.0 3.0 2.0 0.5
+2.4097635746002197 2 0.79 2.0 5000000.0 2.0 3.0 2.0 4.0 4.0 0.5
+2.938375234603882 3 1.03 2.0 6000000.0 3.0 3.0 3.0 3.0 4.0 0.6000000000000001
+3.4659721851348877 3 1.23 2.0 5000000.0 3.0 3.0 3.0 3.0 2.0 0.5
+3.9926350116729736 4 1.43 2.0 5000000.0 3.0 3.0 3.0 2.0 2.0 0.5
+4.51874852180481 5 1.6300000000000001 2.0 5000000.0 3.0 1.0 3.0 3.0 3.0 0.49999999999999956
+5.05268406867981 5 1.87 2.0 6000000.0 3.0 4.0 3.0 3.0 3.0 0.6000000000000005
+5.5814595222473145 6 2.0 2.0 5000000.0 3.0 2.0 3.0 3.0 4.0 0.5
+#C Fri Mar 11 16:33:19 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:33:19 2022.  num_events_primary = 10
+#C Fri Mar 11 16:33:19 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:24 2022
+#C Fri Mar 11 16:33:24 2022.  plan_type = generator
+#C Fri Mar 11 16:33:24 2022.  uid = 9222e5d9-b8a7-4f33-8f38-c0c91dea5807
+#MD uid = 9222e5d9-b8a7-4f33-8f38-c0c91dea5807
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7712466716766357 1 0.15 2.0 4000000.0 1.0 2.0 1.0 2.0 1.0 0.4
+1.299452304840088 1 0.35000000000000003 2.0 6000000.0 3.0 4.0 4.0 3.0 3.0 0.6
+1.8272922039031982 2 0.59 2.0 5000000.0 3.0 3.0 3.0 2.0 2.0 0.5
+2.356128215789795 2 0.79 2.0 5000000.0 3.0 3.0 2.0 2.0 1.0 0.5
+2.867872476577759 3 0.99 2.0 5000000.0 1.0 1.0 2.0 3.0 3.0 0.5
+3.391692638397217 3 1.19 2.0 6000000.0 4.0 3.0 3.0 2.0 2.0 0.6000000000000001
+3.9198546409606934 4 1.3900000000000001 2.0 5000000.0 3.0 2.0 1.0 3.0 4.0 0.5
+4.451695442199707 4 1.6300000000000001 2.0 5000000.0 2.0 2.0 3.0 1.0 2.0 0.49999999999999956
+4.980659484863281 5 1.83 2.0 5000000.0 3.0 3.0 3.0 3.0 3.0 0.5
+5.514420747756958 6 2.0 2.0 6000000.0 3.0 2.0 4.0 4.0 3.0 0.6000000000000005
+#C Fri Mar 11 16:33:30 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:33:30 2022.  num_events_primary = 10
+#C Fri Mar 11 16:33:30 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:36 2022
+#C Fri Mar 11 16:33:36 2022.  plan_type = generator
+#C Fri Mar 11 16:33:36 2022.  uid = ae057a7c-48e9-4405-aac9-eab6bc50a748
+#MD uid = ae057a7c-48e9-4405-aac9-eab6bc50a748
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8056299686431885 1 0.15 2.0 4000000.0 1.0 1.0 3.0 3.0 2.0 0.4
+1.3420629501342773 1 0.39 2.0 5000000.0 3.0 4.0 1.0 2.0 3.0 0.5
+1.868027687072754 2 0.59 2.0 5000000.0 3.0 3.0 2.0 2.0 1.0 0.4999999999999999
+2.394603729248047 2 0.79 2.0 6000000.0 4.0 3.0 3.0 3.0 3.0 0.6000000000000001
+2.9258599281311035 3 1.03 2.0 5000000.0 2.0 3.0 2.0 3.0 1.0 0.5
+3.45631742477417 3 1.23 2.0 5000000.0 3.0 2.0 2.0 2.0 4.0 0.5
+3.994539499282837 4 1.43 2.0 6000000.0 3.0 3.0 3.0 3.0 2.0 0.6000000000000001
+4.524668216705322 5 1.6300000000000001 2.0 5000000.0 2.0 2.0 3.0 3.0 3.0 0.49999999999999956
+5.049728155136108 5 1.87 2.0 6000000.0 4.0 4.0 4.0 3.0 3.0 0.6000000000000005
+5.578427076339722 6 2.0 2.0 4000000.0 2.0 2.0 1.0 3.0 3.0 0.39999999999999947
+#C Fri Mar 11 16:33:41 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:33:41 2022.  num_events_primary = 10
+#C Fri Mar 11 16:33:41 2022.  exit_status = success
+
+#S 1  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:47 2022
+#C Fri Mar 11 16:33:47 2022.  plan_type = generator
+#C Fri Mar 11 16:33:47 2022.  uid = 1b234fa3-dd42-4cda-a0ed-ad108541298d
+#MD uid = 1b234fa3-dd42-4cda-a0ed-ad108541298d
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7941591739654541 1 0.15 2.0 4000000.0 1.0 1.0 0.0 1.0 2.0 0.4
+1.310779333114624 1 0.35000000000000003 2.0 6000000.0 4.0 3.0 3.0 2.0 3.0 0.6
+1.8384449481964111 2 0.59 2.0 4000000.0 2.0 1.0 2.0 2.0 3.0 0.3999999999999999
+2.3658604621887207 2 0.79 2.0 6000000.0 4.0 2.0 2.0 3.0 3.0 0.6000000000000001
+2.8904683589935303 3 0.99 2.0 5000000.0 2.0 3.0 1.0 3.0 2.0 0.5
+3.410810708999634 3 1.19 2.0 5000000.0 4.0 2.0 3.0 2.0 4.0 0.5
+3.940112829208374 4 1.43 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.5
+4.458375692367554 4 1.6300000000000001 2.0 6000000.0 2.0 2.0 3.0 2.0 2.0 0.5999999999999996
+4.988133192062378 5 1.83 2.0 5000000.0 3.0 3.0 2.0 4.0 2.0 0.5
+5.50197696685791 6 2.0 2.0 5000000.0 4.0 3.0 2.0 1.0 3.0 0.5
+6.026149749755859 6 2.0 2.0 5000000.0 2.0 2.0 2.0 3.0 3.0 0.5
+#C Fri Mar 11 16:33:53 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:33:53 2022.  num_events_primary = 11
+#C Fri Mar 11 16:33:53 2022.  exit_status = success
+
+#S 2  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:33:59 2022
+#C Fri Mar 11 16:33:59 2022.  plan_type = generator
+#C Fri Mar 11 16:33:59 2022.  uid = 3e08d0c7-a47b-4653-9711-196f495c218b
+#MD uid = 3e08d0c7-a47b-4653-9711-196f495c218b
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8106956481933594 1 0.15 2.0 4000000.0 2.0 1.0 2.0 2.0 1.0 0.4
+1.3425688743591309 1 0.39 2.0 6000000.0 2.0 4.0 2.0 2.0 4.0 0.6
+1.8667964935302734 2 0.59 2.0 5000000.0 3.0 2.0 3.0 2.0 3.0 0.5
+2.395646810531616 2 0.79 2.0 5000000.0 3.0 4.0 3.0 3.0 2.0 0.5
+2.921386957168579 3 0.99 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+3.4345571994781494 3 1.23 2.0 6000000.0 4.0 2.0 2.0 2.0 3.0 0.6000000000000001
+3.9580063819885254 4 1.43 2.0 5000000.0 3.0 4.0 2.0 3.0 3.0 0.5
+4.469828128814697 4 1.6300000000000001 2.0 5000000.0 2.0 2.0 1.0 3.0 1.0 0.49999999999999956
+4.997164011001587 5 1.83 2.0 5000000.0 1.0 3.0 3.0 2.0 4.0 0.5
+5.52709436416626 6 2.0 2.0 6000000.0 3.0 3.0 4.0 3.0 3.0 0.6000000000000005
+#C Fri Mar 11 16:34:04 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:34:04 2022.  num_events_primary = 10
+#C Fri Mar 11 16:34:04 2022.  exit_status = success
+
+#S 3  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:34:10 2022
+#C Fri Mar 11 16:34:10 2022.  plan_type = generator
+#C Fri Mar 11 16:34:10 2022.  uid = 5dd4b886-fbde-4f90-880f-e707061401bc
+#MD uid = 5dd4b886-fbde-4f90-880f-e707061401bc
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7570295333862305 1 0.15 2.0 4000000.0 1.0 2.0 2.0 2.0 1.0 0.4
+1.2856953144073486 1 0.35000000000000003 2.0 5000000.0 2.0 2.0 3.0 3.0 5.0 0.6
+1.812955617904663 2 0.55 2.0 5000000.0 1.0 1.0 2.0 2.0 2.0 0.3999999999999999
+2.3399925231933594 2 0.79 2.0 6000000.0 4.0 3.0 4.0 4.0 3.0 0.6000000000000001
+2.870378255844116 3 0.99 2.0 5000000.0 3.0 4.0 2.0 3.0 3.0 0.5
+3.3795807361602783 3 1.19 2.0 6000000.0 1.0 4.0 1.0 2.0 2.0 0.6000000000000001
+3.905243158340454 4 1.3900000000000001 2.0 4000000.0 2.0 1.0 1.0 1.0 2.0 0.3999999999999999
+4.440618991851807 4 1.6300000000000001 2.0 6000000.0 4.0 3.0 3.0 3.0 3.0 0.5999999999999996
+4.970666408538818 5 1.83 2.0 5000000.0 2.0 2.0 1.0 2.0 3.0 0.5
+5.499340057373047 5 2.0 2.0 6000000.0 4.0 2.0 5.0 1.0 3.0 0.6000000000000005
+6.028146743774414 6 2.0 2.0 4000000.0 2.0 2.0 3.0 1.0 2.0 0.39999999999999947
+#C Fri Mar 11 16:34:16 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:34:16 2022.  num_events_primary = 11
+#C Fri Mar 11 16:34:16 2022.  exit_status = success
+
+#S 4  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:34:22 2022
+#C Fri Mar 11 16:34:22 2022.  plan_type = generator
+#C Fri Mar 11 16:34:22 2022.  uid = a1fec8d6-5403-4be0-821a-3e90c4309a26
+#MD uid = a1fec8d6-5403-4be0-821a-3e90c4309a26
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.8325808048248291 1 0.19 2.0 4000000.0 2.0 1.0 1.0 2.0 1.0 0.4
+1.3620388507843018 1 0.39 2.0 5000000.0 1.0 3.0 2.0 4.0 3.0 0.5
+1.8897361755371094 2 0.59 2.0 5000000.0 3.0 1.0 4.0 2.0 2.0 0.4999999999999999
+2.4202539920806885 2 0.79 2.0 6000000.0 2.0 3.0 2.0 4.0 2.0 0.6000000000000001
+2.9502780437469482 3 1.03 2.0 5000000.0 3.0 2.0 2.0 2.0 3.0 0.5
+3.478625774383545 3 1.23 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.5
+3.988711357116699 4 1.43 2.0 6000000.0 2.0 3.0 2.0 2.0 3.0 0.6000000000000001
+4.515552520751953 5 1.6300000000000001 2.0 5000000.0 3.0 2.0 3.0 2.0 2.0 0.49999999999999956
+5.043835163116455 5 1.87 2.0 5000000.0 3.0 2.0 2.0 3.0 2.0 0.5
+5.574275016784668 6 2.0 2.0 5000000.0 3.0 1.0 2.0 2.0 4.0 0.5
+#C Fri Mar 11 16:34:27 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:34:27 2022.  num_events_primary = 10
+#C Fri Mar 11 16:34:27 2022.  exit_status = success
+
+#S 5  example(scaler='scaler1', positioner='m8', start_position=0, end_position=2, num_points=10, velocity=0.4)
+#D Fri Mar 11 16:34:33 2022
+#C Fri Mar 11 16:34:33 2022.  plan_type = generator
+#C Fri Mar 11 16:34:33 2022.  uid = 90e8ab2a-dcf0-485e-b194-b581f5b57c4c
+#MD uid = 90e8ab2a-dcf0-485e-b194-b581f5b57c4c
+#MD acquire_period = 0.5
+#MD beamline_id = Bluesky_training
+#MD expected_scan_time = 5.0
+#MD instrument_name = Bluesky Case Studies
+#MD login_id = prjemian@zap
+#MD pid = 396855
+#MD proposal_id = training
+#MD velocity = 0.4
+#MD versions = {'apstools': '1.6.1+2.g1de05de', 'bluesky': '1.8.2', 'databroker': '1.2.4', 'epics': '3.5.0', 'h5py': '3.6.0', 'intake': '0.6.3', 'matplotlib': '3.5.1', 'numpy': '1.21.2', 'ophyd': '1.6.3', 'pyRestTable': '2020.0.3', 'spec2nexus': '2021.1.11+41.g544065d.dirty'}
+#P0 
+#N 11
+#L Epoch_float  Epoch  m8  m8_user_setpoint  incremental_timebase  incremental_I0  incremental_scint  incremental_diode  incremental_I000  incremental_I00  incremental_scaler1_time
+0.7846968173980713 1 0.15 2.0 4000000.0 2.0 1.0 2.0 1.0 2.0 0.4
+1.3143885135650635 1 0.35000000000000003 2.0 5000000.0 3.0 2.0 4.0 1.0 3.0 0.5
+1.8444700241088867 2 0.59 2.0 5000000.0 3.0 2.0 1.0 4.0 2.0 0.4999999999999999
+2.3760364055633545 2 0.79 2.0 6000000.0 3.0 4.0 4.0 3.0 4.0 0.6000000000000001
+2.9072587490081787 3 0.99 2.0 5000000.0 1.0 2.0 3.0 4.0 3.0 0.5
+3.435197591781616 3 1.23 2.0 5000000.0 2.0 2.0 3.0 2.0 2.0 0.5
+3.9616637229919434 4 1.43 2.0 6000000.0 4.0 3.0 4.0 2.0 3.0 0.6000000000000001
+4.47388482093811 4 1.6300000000000001 2.0 5000000.0 2.0 3.0 3.0 3.0 2.0 0.49999999999999956
+5.004089117050171 5 1.83 2.0 4000000.0 2.0 2.0 2.0 2.0 3.0 0.5
+5.526341199874878 6 2.0 2.0 6000000.0 3.0 3.0 4.0 2.0 2.0 0.5
+#C Fri Mar 11 16:34:38 2022.  num_events_baseline = 2
+#C Fri Mar 11 16:34:38 2022.  num_events_primary = 10
+#C Fri Mar 11 16:34:38 2022.  exit_status = success
