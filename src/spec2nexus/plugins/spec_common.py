@@ -13,23 +13,24 @@ from collections import OrderedDict
 import datetime
 import time
 
-from ..diffractometers import get_geometry_catalog, Diffractometer
-from ..eznx import write_dataset, makeGroup, openGroup, makeLink
-from ..plugin import AutoRegister, ControlLineHandler
-from ..scanf import scanf
-from ..spec import (
+from spec2nexus.plugin_core import ControlLineBase
+
+from spec2nexus.diffractometers import get_geometry_catalog, Diffractometer
+from spec2nexus.eznx import write_dataset, makeGroup, openGroup, makeLink
+from spec2nexus.scanf import scanf
+from spec2nexus.spec import (
     SpecDataFileHeader,
     SpecDataFileScan,
     DuplicateSpecScanNumber,
     MCA_DATA_KEY,
 )
-from ..utils import (
+from spec2nexus.utils import (
     strip_first_word,
     iso8601,
     split_column_labels,
     clean_name,
 )
-from ..writer import CONTAINER_CLASS
+from spec2nexus.writer import CONTAINER_CLASS
 
 
 SCAN_DATA_KEY = "scan_data"
@@ -39,7 +40,7 @@ SCAN_DATA_KEY = "scan_data"
 # header block
 
 
-class SPEC_File(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_File(ControlLineBase):
 
     """
     **#F** -- original data file name (starts a file header block)
@@ -66,7 +67,7 @@ class SPEC_File(ControlLineHandler, metaclass=AutoRegister):
             spec_file_obj.specFile = strip_first_word(text)
 
 
-class SPEC_Epoch(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Epoch(ControlLineBase):
 
     """
     **#E** -- the UNIX epoch (seconds from 00:00 GMT 1/1/70)
@@ -103,7 +104,7 @@ class SPEC_Epoch(ControlLineHandler, metaclass=AutoRegister):
         header.interpret()  # parse the full header
 
 
-class SPEC_Date(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Date(ControlLineBase):
 
     """
     **#D** -- date/time stamp
@@ -147,7 +148,7 @@ class SPEC_Date(ControlLineHandler, metaclass=AutoRegister):
         write_dataset(h5parent, "date", iso8601(sdf_object.date))
 
 
-class SPEC_Comment(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Comment(ControlLineBase):
 
     """
     **#C** -- any comment either in the scan header or somewhere in the scan
@@ -189,7 +190,7 @@ class SPEC_Comment(ControlLineHandler, metaclass=AutoRegister):
 # scan block
 
 
-class SPEC_Scan(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Scan(ControlLineBase):
 
     """
     **#S** -- SPEC scan
@@ -287,7 +288,7 @@ class SPEC_Scan(ControlLineHandler, metaclass=AutoRegister):
         sdf.scans[scan.scanNum] = scan
 
 
-class SPEC_Geometry(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Geometry(ControlLineBase):
 
     """
     **#G** -- diffractometer geometry (numbered rows: #G0, #G1, ...)
@@ -454,7 +455,7 @@ class SPEC_Geometry(ControlLineHandler, metaclass=AutoRegister):
                     )
 
 
-class SPEC_NormalizingFactor(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_NormalizingFactor(ControlLineBase):
 
     """
     **#I** -- intensity normalizing factor
@@ -480,7 +481,7 @@ class SPEC_NormalizingFactor(ControlLineHandler, metaclass=AutoRegister):
             writer.write_dataset(h5parent, "intensity_factor", scan.I)
 
 
-class SPEC_CounterNames(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_CounterNames(ControlLineBase):
 
     """
     **#J** -- names of counters (each separated by two spaces) (new with SPEC v6)
@@ -531,7 +532,7 @@ class SPEC_CounterNames(ControlLineHandler, metaclass=AutoRegister):
             write_dataset(group, key, value)
 
 
-class SPEC_CounterMnemonics(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_CounterMnemonics(ControlLineBase):
 
     """
     **#j** -- mnemonics of counter  (new with SPEC v6)
@@ -593,7 +594,7 @@ def counter_xref_postprocessing(header):
             header.counter_xref[mne] = name_row[column_number]
 
 
-class SPEC_Labels(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Labels(ControlLineBase):
 
     """
     **#L** -- data column labels
@@ -631,7 +632,7 @@ class SPEC_Labels(ControlLineHandler, metaclass=AutoRegister):
         scan.column_last = scan.L[-1]
 
 
-class SPEC_Monitor(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Monitor(ControlLineBase):
 
     """
     **#M** -- counting against this constant monitor count (see #T)
@@ -668,7 +669,7 @@ class SPEC_Monitor(ControlLineHandler, metaclass=AutoRegister):
         )
 
 
-class SPEC_NumColumns(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_NumColumns(ControlLineBase):
 
     """
     **#N** -- number of columns of data [ num2 sets per row ]
@@ -690,7 +691,7 @@ class SPEC_NumColumns(ControlLineHandler, metaclass=AutoRegister):
         scan.N = list(map(int, strip_first_word(text).split()))
 
 
-class SPEC_PositionerNames(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_PositionerNames(ControlLineBase):
 
     """
     **#O** -- positioner names (numbered rows: #O0, #O1, ...)
@@ -729,7 +730,7 @@ class SPEC_PositionerNames(ControlLineHandler, metaclass=AutoRegister):
         sdf_object.O.append(content)
 
 
-class SPEC_PositionerMnemonics(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_PositionerMnemonics(ControlLineBase):
 
     """
     **#o** -- positioner mnemonics (new with SPEC v6)
@@ -796,7 +797,7 @@ def positioner_xref_postprocessing(header):
             header.positioner_xref[mne] = name_row[column_number]
 
 
-class SPEC_Positioners(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_Positioners(ControlLineBase):
 
     """
     **#P** -- positioner values at start of scan (numbered rows: #P0, #P1, ...)
@@ -869,7 +870,7 @@ class SPEC_Positioners(ControlLineHandler, metaclass=AutoRegister):
         makeLink(h5parent, group, nxinstrument.name + "/positioners")
 
 
-class SPEC_HKL(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_HKL(ControlLineBase):
 
     """
     **#Q** -- :math:`Q` (:math:`hkl`) at start of scan
@@ -898,7 +899,7 @@ class SPEC_HKL(ControlLineHandler, metaclass=AutoRegister):
         write_dataset(h5parent, "Q", scan.Q, description=desc)
 
 
-class SPEC_CountTime(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_CountTime(ControlLineBase):
 
     """
     **#T** -- counting against this constant number of seconds (see #M)
@@ -935,7 +936,7 @@ class SPEC_CountTime(ControlLineHandler, metaclass=AutoRegister):
         )
 
 
-class SPEC_UserReserved(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_UserReserved(ControlLineBase):
 
     """
     **#U** -- Reserved for user
@@ -981,7 +982,7 @@ class SPEC_UserReserved(ControlLineHandler, metaclass=AutoRegister):
             )
 
 
-class SPEC_TemperatureSetPoint(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_TemperatureSetPoint(ControlLineBase):
 
     """
     **#X** -- Temperature Set Point (desired temperature)
@@ -996,7 +997,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler, metaclass=AutoRegister):
         fmt = "#X %fKohm (%fC)"
 
     Depending on the circumstances, this might be a good candidate to override
-    with a custom *ControlLineHandler* that parses the data as written.
+    with a custom *ControlLineBase* that parses the data as written.
     If the conversion process fails for any reason in this implementation, the *#X* line is ignored.
 
     IN-MEMORY REPRESENTATION
@@ -1046,7 +1047,7 @@ class SPEC_TemperatureSetPoint(ControlLineHandler, metaclass=AutoRegister):
             )
 
 
-class SPEC_DataLine(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_DataLine(ControlLineBase):
 
     """
     **(scan_data)** -- scan data line
@@ -1105,7 +1106,7 @@ class SPEC_DataLine(ControlLineHandler, metaclass=AutoRegister):
 # see ESRF BLISS group: https://www.esrf.eu/blissdb/macros/getsource.py?macname=mca.mac
 
 
-class SPEC_MCA(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA(ControlLineBase):
 
     """
     **#@MCA** -- MCA data formatting declaration (ignored for now)
@@ -1138,7 +1139,7 @@ class SPEC_MCA(ControlLineHandler, metaclass=AutoRegister):
         pass  # not sure how to handle this, ignore it for now
 
 
-class SPEC_MCA_Array(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA_Array(ControlLineBase):
 
     """
     **@A** -- MCA Array data
@@ -1183,7 +1184,7 @@ class SPEC_MCA_Array(ControlLineHandler, metaclass=AutoRegister):
         data_lines_postprocessing(scan)
 
 
-class SPEC_MCA_Calibration(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA_Calibration(ControlLineBase):
 
     """
     **#@CALIB** -- coefficients to compute a scale based on the MCA channel number
@@ -1242,7 +1243,7 @@ class SPEC_MCA_Calibration(ControlLineHandler, metaclass=AutoRegister):
                         )
 
 
-class SPEC_MCA_ChannelInformation(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA_ChannelInformation(ControlLineBase):
 
     """
     **#@CHANN** -- MCA channel information
@@ -1303,7 +1304,7 @@ class SPEC_MCA_ChannelInformation(ControlLineHandler, metaclass=AutoRegister):
                 makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
 
 
-class SPEC_MCA_CountTime(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA_CountTime(ControlLineBase):
 
     """
     **#@CTIME** -- MCA count times
@@ -1364,7 +1365,7 @@ class SPEC_MCA_CountTime(ControlLineHandler, metaclass=AutoRegister):
                 makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
 
 
-class SPEC_MCA_RegionOfInterest(ControlLineHandler, metaclass=AutoRegister):
+class SPEC_MCA_RegionOfInterest(ControlLineBase):
 
     """
     **#@ROI** -- MCA ROI (Region Of Interest) channel information

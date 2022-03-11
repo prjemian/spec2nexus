@@ -2,7 +2,6 @@
 unit tests for a specific data file, look for Bluesky metadata
 """
 
-from collections import OrderedDict
 import h5py
 import os
 
@@ -26,7 +25,7 @@ def test_the_data_file(hfile):
         msg = "Scan %s MD test" % scan_num
         scan.interpret()  # force lazy-loader to parse this scan
         assert hasattr(scan, "MD"), msg
-        assert isinstance(scan.MD, OrderedDict), msg
+        assert isinstance(scan.MD, dict), msg
         assert len(scan.MD) > 0, msg
 
     # test the metadata in a NeXus file

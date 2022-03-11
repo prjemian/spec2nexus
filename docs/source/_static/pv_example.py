@@ -1,15 +1,17 @@
-import spec2nexus.plugin
+import spec2nexus.plugin_core
 import spec2nexus.spec
-
-# call get_plugin_manager() BEFORE you import any custom plugins
-manager = spec2nexus.plugin.get_plugin_manager()
+from spec2nexus.control_lines import control_line_registry
+from spec2nexus.plugin_core import install_user_plugin
 
 # show our plugin is not loaded
-print("known: ", "#PV" in manager.registry) # expect False
+print("known: ", "#PV" in control_line_registry.known_keys) # expect False
 
-import pv_plugin
+# load our new plugin
+import pathlib
+install_user_plugin(pathlib.Path("pv_plugin.py").absolute())
+
 # show that our plugin is registered
-print("known: ", "#PV" in manager.registry) # expect True
+print("known: ", "#PV" in control_line_registry.known_keys) # expect True
 
 # read a SPEC data file, scan 1
 spec_data_file = spec2nexus.spec.SpecDataFile("pv_data.txt")

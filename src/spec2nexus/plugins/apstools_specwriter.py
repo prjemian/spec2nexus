@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 **#MD** : Bluesky metadata from apstools SpecWriterCallback.
 
@@ -21,13 +18,12 @@ EXAMPLE::
     #MD tune_parameters = {'num': 31, 'width': -0.004, 'initial_position': 8.824885, 'peak_choice': 'com', 'x_axis': 'm_stage_r', 'y_axis': 'I0_USAXS'}
 """
 
-from collections import OrderedDict
+# use absolute imports (not relative)
+from spec2nexus.eznx import makeGroup
+from spec2nexus.plugin_core import ControlLineBase
 
-from .. import eznx
-from ..plugin import AutoRegister, ControlLineHandler
 
-
-class MD_apstools(ControlLineHandler, metaclass=AutoRegister):
+class MD_apstools(ControlLineBase):
 
     """**#MD** -- Bluesky metadata from apstools SpecWriterCallback"""
 
@@ -37,7 +33,7 @@ class MD_apstools(ControlLineHandler, metaclass=AutoRegister):
     def process(self, text, scan, *args, **kws):
         """read #MD lines from SPEC data file"""
         if not hasattr(scan, "MD"):
-            scan.MD = OrderedDict()
+            scan.MD = {}
 
         p = text.find("=")
         if p > len("# MD "):
@@ -56,7 +52,7 @@ class MD_apstools(ControlLineHandler, metaclass=AutoRegister):
         nxclass = "NXcollection"
         if hasattr(scan, "MD") and len(scan.MD) > 0:
             desc = "Bluesky metadata (as written by apstools.SpecWriterCallback)"
-            group = eznx.makeGroup(
+            group = makeGroup(
                 h5parent, "bluesky_metadata", nxclass, description=desc
             )
             writer.save_dict(group, scan.MD)
