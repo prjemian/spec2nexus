@@ -107,7 +107,7 @@ Select from the list of the scans
 
 .. sidebar: Slicing feature added in release 2021.2.0
 
-Get a scan (or list of scans) by _slicing_ from the
+Get a scan (or list of scans) by *slicing* from the
 :class:`~spec2nexus.spec.SpecDataFile()` object.
 
 EXAMPLES:
@@ -128,7 +128,7 @@ Show the last scan::
    >>> print(specfile[-1])
    73  ascan  micro_y 6.7515 7.1515  20 1
 
-Show scan numbers below 4.  Since the slice uses `:` characters, it returns a
+Show scan numbers below 4.  Since the slice uses ``:`` characters, it returns a
 list of scans::
 
    >>> for specscan in specfile[:4]:
@@ -138,7 +138,7 @@ list of scans::
    2  ascan  herixE -22.3505 -12.3505  40 1
    3  ascan  micro_y 4.75 6.75  50 1
 
-Note there are two scans with scan number `1`.  Slice the first scan number 1::
+Note there are two scans with scan number ``1``.  Slice the first scan number 1::
 
    >>> for specscan in specfile[1:2:0]:
    ...    print(specscan)
@@ -166,7 +166,7 @@ These are different scans::
    >>> specfile.getScan(1.1) == specfile[1]
    False
 
-Note that `getScan()` returns a single scan while slicing (using `:`) returns a
+Note that ``getScan()`` returns a single scan while slicing (using `:`) returns a
 list.  This fails::
 
    >>> specfile.getScan(1.1) == specfile[1:2:-1]
@@ -205,19 +205,6 @@ empty                   raises ``SyntaxError`` if ``[]``
     * ``>=0`` : match by scan number (from SPEC data file ``#S`` lines)
     * ``<0`` : match by relative position in the list of scans from :meth:`~spec2nexus.spec.SpecDataFile.getScanNumbersChronological()`
 
-.. sidebar:: duplicated scan numbers
-
-   When there are _many_ duplicates of a scan number, it may be necessary to
-   use a string representation to distinguish between, for example ``.1`` (second
-   occurrence) and ``.10`` (eleventh occurrence).
-
-   Examples::
-
-        >>> specfile['4.10'] != specfile[4.10]
-        False
-        >>> specfile['4.1'] == specfile[4.10]
-        True
-
 * `which` takes these meanings:
     * ``None`` : match all
     * string : will be converted to integer
@@ -226,6 +213,19 @@ empty                   raises ``SyntaxError`` if ``[]``
 
     Example: ``which=1`` will only match scan numbers with ``.1``
     while ``which=-1`` will match the last of every scan number.
+
+**Many duplicated scan numbers**
+
+When there are *many* duplicates of a scan number, it may be necessary to
+use a string representation to distinguish between, for example ``.1`` (second
+occurrence) and ``.10`` (eleventh occurrence).
+
+Examples::
+
+    >>> specfile['4.10'] != specfile[4.10]
+    False
+    >>> specfile['4.1'] == specfile[4.10]
+    True
 
 ----
 
