@@ -205,6 +205,19 @@ empty                   raises ``SyntaxError`` if ``[]``
     * ``>=0`` : match by scan number (from SPEC data file ``#S`` lines)
     * ``<0`` : match by relative position in the list of scans from :meth:`~spec2nexus.spec.SpecDataFile.getScanNumbersChronological()`
 
+.. sidebar:: duplicated scan numbers
+
+   When there are _many_ duplicates of a scan number, it may be necessary to
+   use a string representation to distinguish between, for example ``.1`` (second
+   occurrence) and ``.10`` (eleventh occurrence).
+
+   Examples::
+
+        >>> specfile['4.10'] != specfile[4.10]
+        False
+        >>> specfile['4.1'] == specfile[4.10]
+        True
+
 * `which` takes these meanings:
     * ``None`` : match all
     * string : will be converted to integer
