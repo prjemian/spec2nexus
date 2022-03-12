@@ -517,7 +517,7 @@ def test_slicing(filename, slice, scanlist):
 
     expected = [sdf.getScan(n) for n in scanlist]
     for s, e in zip(scans, expected):
-        assert s == e, f"{slice=}  s='{s.date}' = e='{e.date}'"
+        assert s == e, f"slice={slice}  s='{s.date}' = e='{e.date}'"
 
 
 @pytest.mark.parametrize(

@@ -270,7 +270,9 @@ class SpecDataFile(object):
                 # range of absolute scan numbers
                 keys = [k for k in scanlist if start <= float(k) < stop]
             else:
-                raise IndexError(f"slice start and stop must have same sign: {given=}")
+                raise IndexError(
+                    f"slice start and stop must have same sign: given='{given}'"
+                )
             if given.step is not None:
                 step = int(given.step)
                 if step < 0:  # relative choice
