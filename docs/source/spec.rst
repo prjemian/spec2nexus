@@ -100,7 +100,7 @@ Same list sorted by date & time::
 
   all_scans = specfile.getScanNumbersChronological()
 
-.. index: !slicing
+.. index:: !slicing
 
 Select from the list of the scans
 =================================
