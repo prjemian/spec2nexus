@@ -478,7 +478,7 @@ def test_specfile_refresh(testpath):
 
 
 @pytest.mark.parametrize(
-    "filename, slice, scanlist",
+    "filename, given, scanlist",
     [
         ["CdOsO", "5", ["5", ]],
         ["CdOsO", ":4", ["1", "2", "3", "1.1"]],
@@ -507,21 +507,21 @@ def test_specfile_refresh(testpath):
         ["20220311-161530.dat", "::1", ["2.1", "3.1", "4.1", "1.1", "5.1"]],
     ]
 )
-def test_slicing(filename, slice, scanlist):
+def test_slicing(filename, given, scanlist):
     sdf = spec.SpecDataFile(file_from_examples(filename))
-    scans = eval(f"sdf[{slice}]")
+    scans = eval(f"sdf[{given}]")
     if not isinstance(scans, list):
         scans = [scans]
     assert isinstance(scans, list)
-    assert len(scans) == len(scanlist), slice
+    assert len(scans) == len(scanlist), given
 
     expected = [sdf.getScan(n) for n in scanlist]
     for s, e in zip(scans, expected):
-        assert s == e, f"slice={slice}  s='{s.date}' = e='{e.date}'"
+        assert s == e, f"given={given}  s='{s.date}' = e='{e.date}'"
 
 
 @pytest.mark.parametrize(
-    "filename, slice, error",
+    "filename, given, error",
     [
         ["CdOsO", "", SyntaxError],
         ["CdOsO", None, TypeError],
@@ -529,10 +529,10 @@ def test_slicing(filename, slice, scanlist):
         ["CdOsO", "-1:1", IndexError],
     ]
 )
-def test_slicing_errors(filename, slice, error):
+def test_slicing_errors(filename, given, error):
     with pytest.raises(error):
         eval(
-            f"spec.SpecDataFile(file_from_examples('{filename}'))[{slice}]"
+            f"spec.SpecDataFile(file_from_examples('{filename}'))[{given}]"
         )
 
 # -----------------------------------------------------------------------------
