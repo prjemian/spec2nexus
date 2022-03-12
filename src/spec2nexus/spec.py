@@ -114,6 +114,7 @@ Try to read a file that does not exist:
 from collections import OrderedDict
 import os
 import time
+from .utils import split_scan_number_string
 
 
 UNRECOGNIZED_KEY = "unrecognized_control_line"
@@ -249,6 +250,66 @@ class SpecDataFile(object):
 
     def __str__(self):
         return self.fileName or "None"
+
+    def __getitem__(self, given):
+        """Slicing interface: sliced access to SPEC scan list."""
+        if isinstance(given, slice):
+            # print(f"slice: {given.start=} {given.stop=} {given.step=}")
+            scanlist = self.getScanNumbersChronological()
+            start = float(given.start or scanlist[0])
+            stop = float(given.stop or scanlist[-1])
+            # print(f"adjusted: {start=} {stop=}")
+            if (  # relative positions
+                (given.start is None and (given.stop is None or given.stop < 0))
+                or (given.stop is None and (given.start is None or given.start < 0))
+                or (start < 0 and stop < 0)
+            ):
+
+                keys = scanlist[given.start : given.stop]
+            elif start >= 0 and stop >= 0:
+                # range of absolute scan numbers
+                keys = [k for k in scanlist if start <= float(k) < stop]
+            else:
+                raise IndexError(
+                    f"slice start and stop must have same sign: given='{given}'"
+                )
+            if given.step is not None:
+                step = int(given.step)
+                if step < 0:  # relative choice
+                    kd = {}  # create a dictionary for selections
+                    for k in keys:
+                        s, w = split_scan_number_string(k)
+                        # look for multiple occurrences
+                        if w == 0:  # first scan s in file
+                            kd[str(s)] = [k]
+                        else:  # additional scan s in file
+                            kd[str(s)].append(k)
+
+                    # relative or absolute, same indexing _here_
+                    keys = [kd[str(k)][step] for k in kd.keys()]
+                else:  # absolute choice
+                    keys = [k for k in keys if split_scan_number_string(k)[1] == step]
+            return [self.getScan(k) for k in keys]
+        elif isinstance(given, tuple):
+            # print(f"mutiple: {given=}")
+            scans = []
+            for item in given:
+                result = self[item]
+                if isinstance(result, SpecDataFileScan):
+                    result = [result]
+                scans += result
+            return scans
+        else:
+            # a plain index
+            if given is None:
+                raise TypeError("`None` is not a valid index.")
+            if isinstance(given, str) or float(given) >= 0:
+                # absolute scan number match
+                return self.getScan(given)
+            else:
+                # relative position in the list
+                scanlist = self.getScanNumbersChronological()
+                return self.getScan(scanlist[given])
 
     @property
     def update_available(self):

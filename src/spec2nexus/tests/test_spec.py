@@ -477,6 +477,64 @@ def test_specfile_refresh(testpath):
     assert len(sdf.getScanNumbers()) == 5
 
 
+@pytest.mark.parametrize(
+    "filename, given, scanlist",
+    [
+        ["CdOsO", "5", ["5", ]],
+        ["CdOsO", ":4", ["1", "2", "3", "1.1"]],
+        ["CdOsO", ":4:", ["1", "2", "3", "1.1"]],
+        ["CdOsO", ":4:0", ["1", "2", "3"]],
+        ["CdOsO", ":4:1", ["1.1"]],
+        ["CdOsO", ":4:-1", ["1.1", "2", "3"]],
+        ["CdOsO", "-5:", ["69", "70", "71", "72", "73"]],
+        ["CdOsO", "-1", ["73", ]],
+        ["user6idd.dat", "::", ["1", "2"]],
+        ["33bm_spec.dat", "-1", ["17", ]],
+        ["33bm_spec.dat", "6", ["6", ]],
+        ["33bm_spec.dat", "5:11", ["5", "6", "7", "8", "9", "10"]],
+        ["33bm_spec.dat", "9:11, 1:4, 7, -5", ["9", "10", "1", "2", "3", "7", "13"]],
+        ["20220311-161530.dat", "::0", ["2", "3", "4", "1", "5"]],
+        ["20220311-161530.dat", "2", ["2", ]],
+        ["20220311-161530.dat", "4.3", ["4.3", ]],
+        ["20220311-161530.dat", "4.10", ["4.1", ]],
+        ["20220311-161530.dat", "'4.10'", ["4.10", ]],
+        ["20220311-161530.dat", "3,4.3,'4.10'", "3,4.3,4.10".split(",")],
+        ["20220311-161530.dat", "4.8,4.9,'4.10',4.11", "4.8,4.9,4.10,4.11".split(",")],
+        ["20220311-161530.dat", "-5,5", ["1.14", "5"]],
+        ["20220311-161530.dat", "-5:", ["1.14", "2.15", "3.15", "4.15", "5.14"]],
+        ["20220311-161530.dat", "::-1", ["2.15", "3.15", "4.15", "1.14", "5.14"]],
+        ["20220311-161530.dat", "::15", ["2.15", "3.15", "4.15"]],
+        ["20220311-161530.dat", "::1", ["2.1", "3.1", "4.1", "1.1", "5.1"]],
+    ]
+)
+def test_slicing(filename, given, scanlist):
+    sdf = spec.SpecDataFile(file_from_examples(filename))
+    scans = eval(f"sdf[{given}]")
+    if not isinstance(scans, list):
+        scans = [scans]
+    assert isinstance(scans, list)
+    assert len(scans) == len(scanlist), given
+
+    expected = [sdf.getScan(n) for n in scanlist]
+    for s, e in zip(scans, expected):
+        assert s == e, f"given={given}  s='{s.date}' = e='{e.date}'"
+
+
+@pytest.mark.parametrize(
+    "filename, given, error",
+    [
+        ["CdOsO", "", SyntaxError],
+        ["CdOsO", None, TypeError],
+        ["CdOsO", "1:-1", IndexError],
+        ["CdOsO", "-1:1", IndexError],
+    ]
+)
+def test_slicing_errors(filename, given, error):
+    with pytest.raises(error):
+        eval(
+            f"spec.SpecDataFile(file_from_examples('{filename}'))[{given}]"
+        )
+
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com

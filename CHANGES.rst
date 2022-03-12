@@ -36,6 +36,9 @@ Breaking Changes
 New Features and/or Enhancements
 ------------------------------------
 
+Added another way to access scans, using Python's slicing interface.
+See the *Slice Parameters* section for more details and examples.
+
 Add new diffractometer configuration reports:
 
 * ``str(scan.diffractometer)``:  minimal view of ``scan``

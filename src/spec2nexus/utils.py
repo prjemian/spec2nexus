@@ -7,9 +7,11 @@
 
     ~clean_name
     ~iso8601
-    ~strip_first_word
-    ~sanitize_name
     ~reshape_data
+    ~sanitize_name
+    ~split_column_labels
+    ~split_scan_number_string
+    ~strip_first_word
 
 """
 
@@ -84,6 +86,31 @@ def strip_first_word(line):
 def split_column_labels(text):
     """SPEC labels may contain one space"""
     return re.split("  +", text.replace("\t", "  "))
+
+
+def split_scan_number_string(key):
+    """
+    Split a string scan number into its parts.
+
+    key str:
+        A value from the list returned by :meth:`~spec2nexus.spec.SpecDataFile.getScanNumbers()`.
+    returns:
+        tuple of (`#S` number, repeat occurrence number)
+
+    EXAMPLES::
+
+        >>> split_scan_number_string("0")
+        (0, 0)
+        >>> split_scan_number_string("0.5")
+        (0, 5)
+    """
+    # rstrip(".") is for pathological key="0."
+    parts = list(map(int, str(key).rstrip(".").split(".")))
+    if len(parts) == 0:
+        parts = [0]
+    if len(parts) == 1:
+        parts.append(0)
+    return tuple(parts)
 
 
 def sanitize_name(group, key):  # for legacy support only
