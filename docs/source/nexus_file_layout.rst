@@ -20,7 +20,6 @@ NeXus File Layout
     - the MCA group (now an NXnote) could be an NXdetector
     - clarify what items are defined from SPEC macros
     - clarify what items appear on a conditional basis
-    - how to write and load a custom plugin
 
 .. sidebar:: *for reference*: tree view
 
@@ -30,7 +29,8 @@ NeXus File Layout
 
    is used to generate a tree view of an HDF5 file's structure.
 
-SPEC data files contain data from one or more measurements called *scans*. Each
+SPEC data files contain data from one or more measurements called *scans*
+written according to the **Standard Data-File Format**. [#spec.format]_  Each
 scan is numbered (where the number is not necessarily unique within a data
 file).  NeXus files are written [#]_ as HDF5 files with a tree structure [#]_
 where the groups use the NeXus base class [#]_ definitions.
@@ -44,13 +44,10 @@ symbolic            example          meaning
 ==================  ===============  ==================
 ``NAME:NXclass``    ``data:NXdata``  HDF5 name of group and NeXus base class used
 ``{NAME}``          ``scan_number``  name is chosen as described
-``@{NAME}``         ``@default``     HDF5 attribute of the parent group or field [#NXfield]_
-``NX_{datatype}``   ``NX_NUMBER``    NeXus data type [#NX_datatype]_
-``NX_{unittype}``   ``NX_CHAR``      NeXus unit type [#NX_unittype]_
+``@{NAME}``         ``@default``     HDF5 attribute of the parent group or field [#NX.field]_
+``NX_{datatype}``   ``NX_NUMBER``    uses this NeXus data type [#NX.datatype]_
+``NX_{unittype}``   ``NX_CHAR``      uses this NeXus unit type [#NX.unittype]_
 ==================  ===============  ==================
-
-The root level of the file uses the structure of the NeXus **NXroot** [#NXroot]_
-base class.
 
 .. index:: plugin
 .. index:: ! tree structure - NeXus HDF5
@@ -58,10 +55,7 @@ base class.
 Basic Tree Structure
 --------------------
 
-The basic tree structure of the NeXus HDF5 file is (where ``AXIS`` and
-``SIGNAL`` are the names of the first and last columns, respectively, of the
-scan and ``SCAN_N`` is the scan number from the scan's ``#S`` :index:`control line`
-[#control_line]_ in the data file):
+The basic tree structure of the NeXus HDF5 file is shown below:
 
 .. code-block::
    :linenos:
@@ -76,6 +70,23 @@ scan and ``SCAN_N`` is the scan number from the scan's ``#S`` :index:`control li
                 {AXIS}:NX_NUMBER[n] = ... data ...
                 {SIGNAL}:NX_NUMBER[n] = ... data ...
 
+.. sidebar:: ``NXroot``
+
+   It is not required to write a ``NX_class="NXroot"`` attribute to the
+   root of any NeXus data file.  In fact, it is very rare to find this attribute
+   in any NeXus HDF5 file.  We only show it here for guidance in how to build
+   a file using the NeXus standard.
+
+The root level of the file uses the structure of the NeXus **NXroot** [#NXroot]_
+base class.
+
+The ``@default`` attribute points the way to the default plottable data.
+See the NeXus documentation [#NX.default]_ for more details.
+
+Here, ``AXIS`` and ``SIGNAL`` are the names of the first and last columns,
+respectively, of the scan and ``SCAN_N`` is the scan number from the scan's
+``#S`` :index:`control line` [#spec.format]_, [#control_line]_ in the data file.
+
 A NeXus **NXentry** [#NXentry]_ group will be created for each scan to be
 written.  The name of the group is composed from the scan number (``SCAN_N``) as
 ``S{SCAN_N}`` (such as ``S1`` for ``SCAN_N=1``).  If there is more than one scan
@@ -83,16 +94,23 @@ written.  The name of the group is composed from the scan number (``SCAN_N``) as
 sequence number indicating the specific (such as ``S1``, ``S1.1`` and ``S1.2``
 for the first, second, and third scans, respectively, with ``#S 1``)
 
+.. sidebar:: image detectors
+
+   SPEC data files do not usually contain data from a 2-D image
+   detector.  A comment (or other control line such as ``#U``) may be used
+   to describe the location of an external file containing such data
+   and how to find the image frame from that file.  No standard
+   pattern exists for SPEC data files to reference such images.
+
 The scan data will be placed in a **NXdata** [#NXdata]_ group named
 ``data`` below the **NXentry** group. Other information from the scan will be
 written as described in the sections below. There are variations on the tree
 structure as the complexity of a scan increases. Examples of such variation
 include:
 
-* multi-axis scans
-* multiple detectors
-* 2-D and higher dimensionality data (such as mesh scans)
+* multi-axis scans (such as ``a2scan``, ``a3scan``, ``a4scan``)
 * multi-channel detectors
+* 2-D and higher dimensionality scans (such as ``mesh``, ``hklmesh``, MCA)
 * custom metadata
 * comments
 
@@ -100,7 +118,10 @@ Example 1-D scan
 ++++++++++++++++
 
 This SPEC data file (where for brevity of this example, additional content has
-been removed):
+been removed) is a one-dimensional step scan of a counter named ``winCZT`` (last
+column) versus a motor named ``Two Theta`` (first column) using a counting time
+of 1 second per point. Data collection was configured to include data from an
+additional counter named ``ic0``:
 
 .. code-block::
    :linenos:
@@ -132,8 +153,8 @@ been removed):
     -0.67625003  92 1 343733 0
     #C Wed Feb 10 01:12:39 1999.  More scan content removed for brevity.
 
-is written to a NeXus HDF5 file.  The NeXus HDF5 file has this tree structure
-(for brevity, additional structure has been removed):
+The SPEC data file is written to a NeXus HDF5 file with this tree structure (for
+brevity, additional structure has been removed):
 
 .. code-block::
    :linenos:
@@ -159,6 +180,12 @@ SPEC Data File Contents
 -----------------------
 
 The SPEC data file is written to a NeXus HDF5 file by parts as described below.
+
+.. _data.file.name:
+
+File name
++++++++++
+
 The file name (shown in this example):
 
 .. code-block::
@@ -194,7 +221,9 @@ HDF5 file.  Consider this example:
    #C spec1ID  User = polar
    #O0    Theta  Two Theta  sample x  sample y
 
-From this example, these are written to attributes of the file root:
+.. FIXME: get instrument name from first #C? as SPEC_instrument?
+
+From this example, this content is written to attributes of the file root:
 
 .. code-block::
    :linenos:
@@ -202,17 +231,64 @@ From this example, these are written to attributes of the file root:
    @SPEC_epoch = 918630612
    @SPEC_date = "1999-02-10T01:10:12"
    @SPEC_comments = "spec1ID  User = polar"
+   @SPEC_user = "polar"
    @SPEC_num_headers = 1
+
+The ``@SPEC_comments`` attribute includes contents of *all* ``#C`` (comment)
+lines that appear in the header section(s), joined together by newline (``\n``)
+characters. See :ref:`data.file.comments` for how this handled in scans.
 
 The additional information in the positioner names ``#O0`` control line will be
 used later (in :ref:`data.file.positioners`) when writing the positioners to the
-file. The ``@SPEC_comments`` includes *all* :ref:`data.file.comments` that
-appear in the header section(s).
+file.
 
 .. _data.file.scan:
 
 Scan
 ++++
+
+TODO: #S
+
+.. _data.file.scan_data:
+
+Scan Data
++++++++++
+
+TODO:  #L, #N, #M, #T, data
+
+.. _data.file.counters:
+
+Counters
+++++++++
+
+#J & #j
+
+TODO: names and mnemonics
+
+.. _data.file.positioners:
+
+Positioners
++++++++++++
+
+#O, #o, & #P
+
+TODO: names and mnemonics
+
+.. _data.file.geometry:
+
+Geometry
+++++++++
+
+Diffractometer Configuration and sample orientation
+
+#G & #Q
+
+TODO:
+
+.. _data.file.instrument:
+
+Instrument
+++++++++++
 
 TODO:
 
@@ -233,7 +309,7 @@ These comments from an example SPEC data file scan:
    #C Fri Mar 11 16:29:57 2022.  exit_status = success
 
 are written to the :ref:`data.file.scan` entry as a single NeXus *field*
-[#NXfield]_ named ``comments`` where all the scan's comments are joined together
+[#NX.field]_ named ``comments`` where all the scan's comments are joined together
 by newline (``\n``) characters:
 
 .. code-block::
@@ -249,33 +325,18 @@ Note, when printed, the value of this example ``comments`` field looks like::
    Fri Mar 11 16:29:57 2022.  num_events_primary = 10
    Fri Mar 11 16:29:57 2022.  exit_status = success
 
-.. _data.file.counters:
+.. _data.file.metadata:
 
-Counters
+Metadata
 ++++++++
 
-TODO: names and mnemonics
-
-.. _data.file.positioners:
-
-Positioners
-+++++++++++
-
-TODO: names and mnemonics
-
-Diffractometer Configuration
-++++++++++++++++++++++++++++
-
-TODO:
-
-Instruments
-+++++++++++
-
-TODO: names and mnemonics
+TODO:  #U and other (#H/#V, #UXML, ...)
 
 Footnotes
 ---------
 
+.. [#spec.format] SPEC **Standard Data-File Format** :
+   https://certif.com/spec_manual/mac_3_13.html
 .. [#punx] Visualize NeXus file tree structure :
    https://prjemian.github.io/punx/tree.html#tree
 .. [#] NeXus objects and terms:
@@ -286,13 +347,15 @@ Footnotes
    https://manual.nexusformat.org/classes/base_classes/
 .. [#control_line] See :ref:`supplied_plugins` for a full list of the supported
    control lines provided with **spec2nexus**.
-.. [#NX_datatype] List of NeXus data types:
+.. [#NX.datatype] List of NeXus data types:
    https://manual.nexusformat.org/nxdl-types.html#field-types-allowed-in-nxdl-specifications
-.. [#NX_unittype] List of NeXus unit categories:
+.. [#NX.unittype] List of NeXus unit categories:
    https://manual.nexusformat.org/nxdl-types.html#unit-categories-allowed-in-nxdl-specifications
-.. [#NXfield] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is
+.. [#NX.field] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is
    due to historical reasons in NeXus when XML was used as a back-end data file
    storage format.
+.. [#NX.default] Used to identify the default plottable data in a NeXus HDF5 file.
+   https://manual.nexusformat.org/datarules.html#version-3
 
 NeXus base classes
 
