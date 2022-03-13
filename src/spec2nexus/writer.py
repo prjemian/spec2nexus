@@ -42,29 +42,6 @@ class Writer(object):
         save the information in this SPEC data file to a NeXus HDF5 file
 
         Each scan in scan_list will be converted to a **NXentry** group.
-        Scan data will be placed in a **NXdata** group where the attribute **signal=1** is the
-        last column and the corresponding attribute **axes=<name of the first column>**.
-        There are variations on this for 2-D and higher dimensionality data, such as mesh scans.
-
-        In general, the tree structure of the NeXus HDF5 file is::
-
-            hdf5_file: NXroot
-                @default="S1"
-                definition="NXspecdata"
-                # attributes
-                S1:NXentry
-                    @default="data"
-                    # attributes and metadata fields
-                    data:NXdata
-                        @signal=<name of signal field>
-                        @axes=<name(s) of axes of signal>
-                        @<axis>_indices=<list of indices in "axis1">
-                        <signal_is_the_last_column>:NX_NUMBER[number of points] = ... data ...
-                            @signal=1
-                            @axes='<axis_is_name_of_first_column>'
-                            @<axis>_indices=<list of indices in "axis1" used as dimension scales of the "signal">
-                        <axis_is_name_of_first_column>:NX_NUMBER[number of points] = ... data ...
-                        # other columns from the scan
 
         :param str hdf_file: name of NeXus/HDF5 file to be written
         :param [int] scanlist: list of scan numbers to be read
@@ -76,9 +53,9 @@ class Writer(object):
             nxentry = eznx.makeGroup(root, "S" + str(key), "NXentry")
             eznx.makeDataset(
                 nxentry,
-                "definition",
-                "NXspecdata",
-                description="NeXus application definition (status pending)",
+                "experiment_description",
+                "SPEC scan",
+                description="SPEC data file scan",
             )
             self.save_scan(nxentry, self.spec.getScan(key))
             if pick_first_entry:
@@ -140,7 +117,11 @@ class Writer(object):
         scan.interpret()  # ensure interpretation is complete
         eznx.addAttributes(nxentry, default="data")
         eznx.write_dataset(nxentry, "title", str(scan))
-        eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
+        scan_number_tuple = utils.split_scan_number_string(scan.scanNum)
+        ds = eznx.write_dataset(nxentry, "scan_number", scan_number_tuple[0])
+        eznx.addAttributes(ds, spec_name="SCAN_N")
+        if scan_number_tuple[1] > 0:
+            eznx.addAttributes(ds, repeat=scan_number_tuple[1])
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
         for func in scan.header.h5writers.values():
             # ask the header plugins to save their part

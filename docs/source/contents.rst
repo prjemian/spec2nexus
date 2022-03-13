@@ -7,6 +7,7 @@ Contents
    
    spec2nexus
    extractSpecScan
+   nexus_file_layout
    specplot
    specplot_gallery
    spec
