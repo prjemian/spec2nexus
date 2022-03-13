@@ -1,8 +1,9 @@
+.. index:: ! plugin
 
 :mod:`spec2nexus.plugin`
 ########################
 
-An extensible plug-in architecture is used to handle the different possible
+An extensible plugin architecture is used to handle the different possible
 :index:`!control line`
 control lines (such as **#F**, **#E**, **#S**, ...) in a SPEC data file.
 
@@ -110,4 +111,4 @@ source code documentation
 
 .. automodule:: spec2nexus.plugin_core
     :members: 
-    :synopsis: Define the plug-in architecture.
+    :synopsis: Define the plugin architecture.
