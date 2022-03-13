@@ -221,7 +221,7 @@ TODO:
 Comments
 ++++++++
 
-These comments from a SPEC data file scan:
+These comments from an example SPEC data file scan:
 
 .. code-block::
    :linenos:
