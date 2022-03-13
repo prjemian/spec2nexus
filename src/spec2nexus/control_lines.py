@@ -10,33 +10,21 @@ from .plugin_core import install_user_plugin
 import pathlib
 
 
-def _plugin_files():  # TODO: (user_plugin_list=[]):
+def _plugin_files():
     """Generate (a sequence of) all file names containing plugins."""
     from . import spec
 
-    # packaged plugins
-    # load plugins from local files rather than list
-    # each file in the plugins_dir/__init__.py file
+    # Load packaged plugins from local files rather than listing
+    # each file in the plugins_dir/__init__.py file.
     plugin_path = pathlib.Path(spec.__file__).parent / "plugins"
     yield from plugin_path.iterdir()
-
-    # TODO: This is an upgrade feature.  Not used now.
-    # # user plugins
-    # for user_plugin_file_name in user_plugin_list:
-    #     plugin_file = pathlib.Path(user_plugin_file_name)
-    #     if not plugin_file.exists():
-    #         # TODO: or log as error but proceed anyway?
-    #         raise FileExistsError(
-    #             f"File does not exist: {user_plugin_file_name}"
-    #         )
-    #     yield plugin_file
 
 
 class ControlLines:
     """Access the installed set of control line handling plugins."""
 
-    def __init__(self):  # TODO: user_plugin_list=[]):
-        for plugin_file in _plugin_files():  # TODO: user_plugin_list):
+    def __init__(self):
+        for plugin_file in _plugin_files():
             if plugin_file.name.startswith("_"):
                 continue
             if plugin_file.suffix not in (".py",):
