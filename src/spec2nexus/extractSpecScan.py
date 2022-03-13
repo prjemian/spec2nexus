@@ -216,7 +216,7 @@ def main():
     for scanNum in cmdArgs.scan:
         outFile = makeOutputFileName(cmdArgs.spec_file, scanNum)
         scan = specData.getScan(scanNum)
-        scan.interpret()  # force the plug-ins to be processed
+        scan.interpret()  # force the plugins to be processed
 
         # get the column numbers corresponding to the column_labels
         column_numbers = []

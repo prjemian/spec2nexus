@@ -62,7 +62,7 @@ def test_XPCS_scan7():
 
     # finally, start testing the XPCS plugin
     assert "XPCS" not in scan.__dict__
-    scan.interpret()  # force the plug-ins to be processed
+    scan.interpret()  # force the plugins to be processed
     assert "XPCS" in scan.__dict__
     for key in "batch_name preset compression multi_img".split():
         assert key in scan.XPCS

@@ -43,7 +43,7 @@ class Writer(object):
 
         Each scan in scan_list will be converted to a **NXentry** group.
 
-        :param str hdf_file: name of NeXus/HDF5 file to be written
+        :param str hdf_file: name of NeXus HDF5 file to be written
         :param [int] scanlist: list of scan numbers to be read
         """
         scan_list = scan_list or []
