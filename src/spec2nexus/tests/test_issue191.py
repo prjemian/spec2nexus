@@ -38,11 +38,12 @@ def test_nexus_file(testpath):
     with h5py.File(nexus_output_file_name, "r") as h5:
         # check the NXentry/positioners:NXnote group
         assert "/S1/positioners" in h5
+
         pg = h5["/S1/positioners"]
         assert isinstance(pg, h5py.Group)
         assert hasattr(pg, "attrs")
         assert pg.attrs.get("NX_class") == "NXnote"
-        assert pg.attrs.get("target") == pg.name
+        assert pg.attrs.get("target") != pg.name
 
         for var in "Chi DCM_theta Delta GammaScrew Motor_10".split():
             assert var in pg
@@ -58,12 +59,13 @@ def test_nexus_file(testpath):
 
         # check the NXentry/NXinstrument/positioners link
         assert "/S1/instrument/positioners" in h5
+
         ipg = h5["/S1/instrument/positioners"]
         assert isinstance(ipg, h5py.Group)
         assert hasattr(ipg, "attrs")
         assert pg.attrs.get("NX_class") == "NXnote"
-        assert ipg.attrs.get("target") != ipg.name
-        assert ipg.attrs.get("target") == pg.name
+        assert ipg.attrs.get("target") == ipg.name
+        assert ipg.attrs.get("target") != pg.name
 
 
 # -----------------------------------------------------------------------------
