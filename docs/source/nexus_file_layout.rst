@@ -859,7 +859,13 @@ as a child of the scan group.
 Instrument
 ++++++++++
 
-TODO:
+The ``/SCAN/instrument`` group [#NXinstrument]_ is a NeXus base class
+that provides a standardized way to describe the scientific instrument.
+It has provisions to describe detectors, positioners, slits, monochromators,
+and many other items used.
+
+In the sample shown here, the ``/SCAN/instrument/positioners`` group is
+linked to the content in ``/SCAN/positioners``.
 
 .. code-block::
    :linenos:
