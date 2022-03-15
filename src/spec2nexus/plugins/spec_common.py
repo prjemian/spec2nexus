@@ -1033,7 +1033,7 @@ class SPEC_TemperatureSetPoint(ControlLineBase):
             # "#X %g %g",        # note: %g specifier is not available
             "#X %f %f",
 
-            # #X Control: 298.873K  Sample: 299.036K 
+            # #X Control: 298.873K  Sample: 299.036K
             "#X Control: %fK  Sample: %fK",
         ]
         for fmt in format_list:
