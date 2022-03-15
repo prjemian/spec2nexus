@@ -203,14 +203,12 @@ class Writer(object):
         #     pass
 
         if axes.find(":") >= 0:
-            """
-            Syntax of axes attribute ():
+            # Syntax of axes attribute ():
 
-            @axes="H:K"       INCOREECT
-            @axes="H", "K"    CORRECT
+            # @axes="H:K"       INCOREECT
+            # @axes="H", "K"    CORRECT
 
-            see: https://wiki.nexusformat.org/2014_axes_and_uncertainties
-            """
+            # see: https://wiki.nexusformat.org/2014_axes_and_uncertainties
 
             def fixer(s):
                 """
