@@ -521,15 +521,16 @@ class SPEC_CounterNames(ControlLineBase):
         comment = "keys are SPEC counter mnemonics, values are SPEC counter names"
         if nxclass is None:
             nxclass = CONTAINER_CLASS
-        group = makeGroup(
-            h5parent,
-            "counter_cross_reference",
-            nxclass,
-            description=desc,
-            comment=comment,
-        )
-        for key, value in sorted(header.counter_xref.items()):
-            write_dataset(group, key, value)
+        if len(header.counter_xref) > 0:
+            group = makeGroup(
+                h5parent,
+                "counter_cross_reference",
+                nxclass,
+                description=desc,
+                comment=comment,
+            )
+            for key, value in sorted(header.counter_xref.items()):
+                write_dataset(group, key, value)
 
 
 class SPEC_CounterMnemonics(ControlLineBase):
@@ -770,21 +771,22 @@ class SPEC_PositionerMnemonics(ControlLineBase):
     def writer(self, h5parent, writer, header, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         if not hasattr(header, "positioner_xref"):
-            header.counter_xref = {}  # mnemonic:name
+            header.positioner_xref = {}  # mnemonic:name
         desc = "cross-reference SPEC positioner mnemonics and names"
         comment = "keys are SPEC positioner mnemonics, values are SPEC positioner names"
         if nxclass is None:
             nxclass = CONTAINER_CLASS
-        group = makeGroup(
-            h5parent,
-            "positioner_cross_reference",
-            nxclass,
-            description=desc,
-            comment=comment,
-        )
-        for mne, value in sorted(header.positioner_xref.items()):
-            attrs = dict(mne=mne, field_name=clean_name(value))
-            write_dataset(group, mne, value, **attrs)
+        if len(header.positioner_xref) > 0:
+            group = makeGroup(
+                h5parent,
+                "positioner_cross_reference",
+                nxclass,
+                description=desc,
+                comment=comment,
+            )
+            for mne, value in sorted(header.positioner_xref.items()):
+                attrs = dict(mne=mne, field_name=clean_name(value))
+                write_dataset(group, mne, value, **attrs)
 
 
 def positioner_xref_postprocessing(header):
