@@ -1,14 +1,6 @@
 Nomenclature
 ###############
 
-.. sidebar:: *for reference*: tree view
-
-   In this documentation, the command [#punx]_::
-
-       punx tree FILENAME.hdf5
-
-   is used to generate a tree view of an HDF5 file's structure.
-
 This page documents the terms used in the documentation of the NeXus files written
 by **spec2nexus**.
 
@@ -23,8 +15,14 @@ symbolic            example             meaning
 ``/SCAN``           ``/S1.1``           name of the scan **NXentry** [#NXentry] group in the NeXus HDF5 file
 ==================  ==================  ==================
 
-.. [#punx] Visualize NeXus file tree structure :
-   https://prjemian.github.io/punx/tree.html#tree
+.. note:: *for reference*: tree views
+
+   In this documentation, the command [#punx]_::
+
+       punx tree FILENAME.hdf5
+
+   is used to generate a tree view of an HDF5 file's structure.
+
 .. [#spec.format] SPEC **Standard Data-File Format** :
    https://certif.com/spec_manual/mac_3_13.html
 .. [#NX.field] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is
@@ -34,6 +32,8 @@ symbolic            example             meaning
    https://manual.nexusformat.org/nxdl-types.html#field-types-allowed-in-nxdl-specifications
 .. [#NX.unittype] List of NeXus unit categories:
    https://manual.nexusformat.org/nxdl-types.html#unit-categories-allowed-in-nxdl-specifications
+.. [#punx] Visualize NeXus file tree structure :
+   https://prjemian.github.io/punx/tree.html#tree
 
 NeXus base classes
 
