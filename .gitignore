@@ -1,6 +1,7 @@
 # local developer files
 dev_*.py
 dev_*.ipynb
+dev_data/
 
 *.py[cod]
 
