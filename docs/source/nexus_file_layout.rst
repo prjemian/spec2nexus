@@ -11,13 +11,8 @@ NeXus File Layout
 
 .. TODO:
 
-    - use HDF5-style address to clarify (instead of "as a child of " ...)
-      such as ``/SCAN/instrument/monochromator``, where ``/SCAN`` could be
-      ``/s1`` ...
-    - documentation for other NXnote groups
-    - ROI
-    - the MCA group (now an NXnote) could be an NXdetector
-    - clarify what items are defined from SPEC macros
+    - break into separate files (this page is too long)
+    - TODO & FIXME markers
 
 .. sidebar:: *for reference*: tree view
 
@@ -81,12 +76,17 @@ base class.
 The ``@default`` attribute points the way to the default plottable data.
 See the NeXus documentation [#NX.default]_ for more details.
 
-Here, ``AXIS`` and ``SIGNAL`` are the names of the first and last columns,
-respectively, of the scan and ``SCAN_N`` is the scan number from the scan's
-``#S`` :index:`control line` [#spec.format]_, [#control_line]_ in the data file.
+.. note:: Here, the ``@`` character is used symbolically to identify this
+   name is for an *attribute*.  Do not include the actual ``@`` symbol in
+   the actual name of the attribute.
 
-A NeXus **NXentry** [#NXentry]_ group will be created for each scan to be
-written.  See section :ref:`data.file.scan` below for more details.
+.. note:: ``AXIS`` and ``SIGNAL`` are the names of the first and last columns,
+   respectively, of the scan and ``SCAN_N`` is the scan number from the scan's
+   ``#S`` :index:`control line` [#spec.format]_ [#control_line]_ in the data file.
+
+A NeXus **NXentry** [#NXentry]_ group (described symbolically as ``/SCAN``) will
+be created for each scan to be written.  See section :ref:`data.file.scan` below
+for more details.
 
 .. sidebar:: image detectors
 
@@ -109,6 +109,80 @@ increases. Examples of such variation include:
 * 2-D and higher dimensionality scans (such as ``mesh``, ``hklmesh``, MCA)
 * custom metadata
 * comments
+
+
+General Tree Structure
+----------------------
+
+The **general tree structure** (with parts described in the sections below)
+will follow this outline:
+
+.. TODO: convert to table with hdf5-style addresses and links to documentation
+
+   ================== =========== ================================
+   HDF5 address       type        discussion
+   ================== =========== ================================
+   /                  (NXroot)    root of the HDF5 file
+   /@default          str         defines next path to default plottable data
+   /SCAN              NXentry     all information related to a single scan
+   /SCAN/@default     str         defines next path to default plottable data
+   /SCAN/data         NXdata      the scan data
+   ...                ..          ..
+   ================== =========== ================================
+
+.. code-block::
+   :linenos:
+
+    {FILE_NAME}:NXroot
+        {SCAN}:NXentry
+            command:NX_CHAR
+            comments:NX_CHAR
+            counting_basis:NX_CHAR
+            date:NX_CHAR
+            experiment_description:NX_CHAR
+            M:NX_NUMBER
+            Q:NX_NUMBER[3]
+            scan_number:NX_INT
+            T:NX_NUMBER
+            title:NX_CHAR
+            counter_cross_reference:NXnote
+            data:NXdata
+                @axes={AXIS}
+                @signal={SIGNAL}
+                {AXIS}:NX_NUMBER[n]
+                {COLUMN}:NX_NUMBER[n]
+                {SIGNAL}:NX_NUMBER[n]
+            G:NXnote
+            instrument:NXinstrument
+                name:NX_CHAR
+                detector:NXdetector
+                positioners --> /SCAN/positioners
+                geometry_parameters:NXnote
+                monochromator:NXmonochromator
+                    wavelength:NX_NUMBER
+            monitor:NXmonitor
+                preset --> /SCAN/M  or /SCAN/T
+            positioner_cross_reference:NXnote
+            positioners:NXnote
+                {POSITIONER}:NXpositioner
+            sample:NXsample
+                diffractometer_mode:NX_CHAR
+                diffractometer_sector:NX_NUMBER
+                ub_matrix:NX_NUMBER[3,3]
+                unit_cell:NX_NUMBER[6]
+                unit_cell_abc:NX_NUMBER[3]
+                unit_cell_alphabetagamma:NX_NUMBER[3]
+                beam:NXbeam
+                    incident_wavelength --> /SCAN/instrument/monochromator/wavelength
+                or0:NXnote
+                    {ANGLE}:NX_NUMBER
+                    {HKL}:NX_NUMBER
+                    wavelength:NX_NUMBER
+                or1:NXnote
+                    {ANGLE}:NX_NUMBER
+                    {HKL}:NX_NUMBER
+                    wavelength:NX_NUMBER
+            {UNRECOGNIZED}:NXnote
 
 Example 1-D scan
 ++++++++++++++++
@@ -218,8 +292,6 @@ HDF5 file.  Consider this example:
    #C spec1ID  User = polar
    #O0    Theta  Two Theta  sample x  sample y
 
-.. FIXME: get instrument name from first #C? as SPEC_instrument?
-
 From this example, this content is written to attributes of the file root:
 
 .. code-block::
@@ -273,8 +345,8 @@ this example:
    #C Wed Feb 10 01:12:39 1999.  More scan content removed for brevity.
 
 From this example, this structure (from ``#S``, ``#D``, ``#T``, and ``#C``
-control lines) is written as a new **NXentry** [#NXentry] group at the root of
-the NeXus HDF5 file:
+control lines) is written to a new **NXentry** [#NXentry]_ group at
+the root of the NeXus HDF5 file:
 
 .. code-block::
    :linenos:
@@ -295,36 +367,39 @@ the NeXus HDF5 file:
        @spec_name = "SCAN_N"
      title:NX_CHAR = [b'1  ascan  tth -0.7 -0.5  101 1']
 
-The name of the group is composed from the scan number (``SCAN_N``) as::
+.. sidebar:: ``/SCAN``
 
-   S{SCAN_N}
+   We use ``/SCAN`` as a symbolic HDF5 address to refer to the *scan* entry of
+   the NeXus data file. It means use the name formatted as described below
+   (``S{SCAN_N}[.{REPEAT_NUMBER}]``) to identify this scan uniquely in a NeXus
+   HDF5 data file.  Such as ``/S`` and ``/S1.1`` refer, respectively, to the
+   first and second scans with the ``#S 1`` control line.
 
-(such as ``S1`` for ``SCAN_N=1``).
+The name of the group (``/SCAN``) is composed from the scan number (``SCAN_N``) as::
+
+   S{SCAN_N}[.{REPEAT_NUMBER}]
 
 If there is more than one scan with the same ``SCAN_N`` (such as ``#S 1``) in
 the data file, the *additional scans* will be named with an additional decimal
 point and then a sequence number (described here as ``REPEAT_NUMBER``)
-indicating the specific repeat::
+indicating the specific repeat, (such as ``S1``, ``S1.1`` and ``S1.2`` for the
+first, second, and third scans, respectively, with ``#S 1``)
 
-   S{SCAN_N}.{REPEAT_NUMBER}
+The :ref:`data.file.scan_data` will be described in the next section.
 
-(such as ``S1``, ``S1.1`` and ``S1.2`` for the first, second, and third scans,
-respectively, with ``#S 1``) The :ref:`data.file.scan_data` will be described in
-the next section.
+Note that ``command`` and ``title`` are *almost* the same content but not
+*exactly* the same.  The difference is that ``command`` is the ``title`` with
+the scan number removed from the beginning.
 
-Note that ``command`` and ``title`` are almost* the same content but not exactly
-the same.  The difference is that ``command`` is the ``title`` with the scan
-number removed from the beginning.
-
-If the scan had been against a constant monitor count (nstead of a fixed time
-interval), then the ``#T`` line in the scan is replaced by ``#M`` line, such as:
+If the scan uses a constant monitor count (instead of a fixed time interval),
+then the ``#T`` line in the scan is replaced by ``#M`` line, such as:
 
 .. code-block::
    :linenos:
 
    #M 20000  (I0)
 
-In the NeXus HDF5 file, the ``T`` field is replaced by ``M``
+In the NeXus HDF5 file, the ``T`` field [#NX.field]_ is replaced by ``M``
 
 .. code-block::
    :linenos:
@@ -332,8 +407,9 @@ In the NeXus HDF5 file, the ``T`` field is replaced by ``M``
    M:NX_FLOAT64 = 20000.0
       @description = "SPEC scan with constant monitor count"
       @units = "counts"
-
-FIXME: What? No **NXmonitor** [#NXmonitor]_ group?  Link value to M or T field.
+   monitor:NXmonitor
+      @NX_class = "NXmonitor"
+      preset --> /S1/M
 
 .. _data.file.scan_data:
 
@@ -342,8 +418,7 @@ Scan Data
 
 Consider the SPEC scan data shown in section :ref:`data.file.scan` above.  The
 ``#L``, ``#N``, ``#M``, ``#T``, and data lines (those with no ``#`` at the start
-of the line) are written as a new **NXdata** [#NXdata]_ group as a child of the scan
-group (**NXentry**) of the NeXus HDF5 file:
+of the line) are written to ``/SCAN/data`` (a **NXdata** [#NXdata]_ group):
 
 .. code-block::
    :linenos:
@@ -365,7 +440,14 @@ group (**NXentry**) of the NeXus HDF5 file:
      winCZT:NX_FLOAT64[13] = [1.0, 1.0, 1.0, '...', 0.0]
        @spec_name = "winCZT"
 
-.. TODO: describe this
+A field [#NX.field]_ is created for each column of data.  Generally, data rows
+for a scan do not start with a ``#`` sign and are provided after the data labels
+in the ``#L`` row.  (The ``#N`` row tells how many columns are provided in the
+scan.) The name of each column is converted (via
+:func:`~spec2nexus.utils.clean_name()`) to a field name that conforms to the
+NeXus standard. [#NX.naming.datarules]_  The original column name is provided
+by the ``@spec_name`` attribute.
+
 
 .. _data.file.positioners:
 
@@ -381,31 +463,33 @@ lengths within page limits. When present (such as this example), the ``#o``
 lines provide the *mnemonic* (also known as *mne*) names corresponding to the
 positioner names from the ``#O`` lines.
 
-The data from the ``#O`` and ``#P`` lines is written to a **NXnote**
-[#NXnote]_ group named ``positioners``.
-The ``positioners`` group is written as a child of the scan group (**NXentry**)
-of the NeXus HDF5 file.
-This group is also linked to the ``instrument`` group. [#NXinstrument]_ See the
-:ref:`data.file.instrument` section below.
+The data from the ``#O`` and ``#P`` lines is written to ``/SCAN/positioners`` (a
+**NXnote** [#NXnote]_ group). ``/SCAN/positioners`` is also linked to
+``/SCAN/instrument/positioners``. See the :ref:`data.file.instrument` section
+below.
 
-Each positioner (name and value) is written to a **NXpositioner**
-[#NXpositioner]_ group with a name derived (via
-:func:`~spec2nexus.utils.clean_name()`) from the name provided in the SPEC scan.
-_This change of names ensures the field names in the NeXus HDF5 file conform to
-the NeXus standard. [#NX.naming.datarules]  If the SPEC menmonic is available in
-the data file, it is also written as a ``@spec_mne`` attribute with both the
-``name`` and ``value`` fields. The **NXpositioner** groups are written as
-children of the ``positioners`` group.
+Within the ``/SCAN/positioners/`` group, each positioner (name and value) is
+written to a ``/SCAN/positioners/CLEAN_NAME`` **NXpositioner** [#NXpositioner]_
+group.  ``CLEAN_NAME`` is derived (via
+:func:`~spec2nexus.utils.clean_name(spec_positioner_name)`). This change of
+names ensures the field [#NX.field]_ names in the NeXus HDF5 file conform to the
+NeXus standard. [#NX.naming.datarules]_
+
+If the SPEC menmonic for the positioner is available in the data file (from the
+``#o`` control lines), it is also written as a ``@spec_mne`` attribute with both
+the ``name`` and ``value`` fields.
 
 .. index:: units
 
 .. note:: Engineering units are not written
 
-   No ``@units`` attribute is provided for any of the values written by
-   **spec2nexus** (except where provided by custom support). SPEC data files do
-   not provide the engineering units for any of the values and it is not
-   possible to guess the appropriate type of units [#NX.unittype]_ to use. The
-   NeXus documentation about data units [#NX.units.datarules]_ states:
+   Generally, the ``@units`` attribute is not provided for any of the values
+   written by **spec2nexus** (except where provided by custom support or for
+   diffractometers as described later in section :ref:`data.file.geometry`).
+   SPEC data files do not provide the engineering units for any of the values
+   and it is not possible to guess the appropriate type of units [#NX.unittype]_
+   to use. The NeXus documentation about data units [#NX.units.datarules]_
+   states:
 
       ... any field must have a units attribute which describes the units.
 
@@ -452,11 +536,11 @@ children of the ``positioners`` group.
           @spec_mne = "samy"
           @spec_name = "sample y"
 
-When the ``#o`` lines are present in the scan's header, a **NXnote** [#NXnote]_
-group named ``positioner_cross_reference`` is written as a child of the scan
-group (**NXentry**) of the NeXus HDF5 file.  This group describes a
-cross-reference between the *field* names of the ``positioner`` group and the
-positioner names used in the SPEC scan.
+When the ``#o`` lines are present in the scan's header, a cross-reference
+between mnemonic and name is written in ``/SCAN/positioner_cross_reference`` (a
+**NXnote** [#NXnote]_ group).  This group describes a cross-reference between
+the *field* names of the ``positioner`` group and the positioner names used in
+the SPEC scan.
 
 .. code-block::
    :linenos:
@@ -496,9 +580,9 @@ When both types are present in the scan's header, such as this example:
    #J0 seconds  I0  I00  USAXS_PD  TR_diode
    #j0 sec I0 I00 upd2 trd
 
-then a **NXnote** [#NXnote]_ group named ``counter_cross_reference`` is written
-as a child of the scan group (**NXentry**) of the NeXus HDF5 file.  The fields
-of the group are the mnemonics and the values are the names.
+then ``/SCAN/counter_cross_reference`` (a **NXnote** [#NXnote]_ group) is
+written.  The fields of the group are the mnemonics and the values are the
+names.
 
 .. code-block::
    :linenos:
@@ -518,9 +602,9 @@ of the group are the mnemonics and the values are the names.
 Geometry
 ++++++++
 
-FIXME:  finish this section
-
-Diffractometer Configuration and sample orientation
+*Geometry*, in the context of a SPEC data file, refers to the geometry of the
+**diffractometer** used for the measurements, its configuration, and information
+about the orientation of a specific crystalline sample on the diffractometer.
 
 When a diffractometer geometry is used, any of the control lines in the next table
 may be present in a scan.
@@ -536,15 +620,23 @@ control line    array       description
 ``#Q``          ..          *hkl* values at start of scan
 ==============  ==========  ========================================
 
-Very compact format
+Information provided by each of these control lines is encoded in a very compact
+format, with just a sequence of values provided.  The content of some lines
+depends on the specific diffractometer geometry used for the measurements. The
+**name** of the diffractometer geometry is not reported in the data file.  To
+identify the diffractometer geometry, it is necessary to examine the number and
+names of the first motors defined in the ``#O`` control lines, and compare the
+number of items in the various ``#G`` control lines with the SPEC standard
+macros to match.  The **spec2nexus** code has a small database
+[#diffractometer.dict]_ with this information to make a best efforts
+identification of the specific diffractometer geometry name.
 
-Content of some lines depends on diffractometer geometry in use but that
-geometry is not reported in the data file.
+Since SPEC uses specific engineering :index:`units` when diffractometers are
+used, it is possible to add appropriate units: [#NX.unittype]_
 
-Can report ``@units`` since it is known that motors are angles in degrees and lengths
-are in angstrom.
-
-information in https://github.com/prjemian/spec2nexus/blob/main/src/spec2nexus/diffractometer-geometries.dict
+* motors (angles): ``@units="degrees"`` for motors
+* wavelength: ``@units="angstrom"``
+* crystal dimensions: ``@units="angstrom"``
 
 .. code-block::
    :linenos:
@@ -565,8 +657,7 @@ as shown below, the geometry is inferred as **fourc**.
 
    #O0  2-theta     theta       chi       phi   antheta  an2theta    z-axis     m_1_8
 
-The *hkl* values at the start of the scan are written to the scan group in the
-NeXus HDF5 file as shown here:
+The *hkl* values at the start of the scan are written to ``/SCAN/Q`` as shown here:
 
 .. code-block::
    :linenos:
@@ -575,7 +666,7 @@ NeXus HDF5 file as shown here:
       @description = "hkl at start of scan"
 
 The uninterpreted information from the ``#G`` control lines is written to
-the scan group in the NeXus HDF5 file as shown here:
+``/SCAN/G`` as shown here:
 
 .. code-block::
    :linenos:
@@ -592,9 +683,8 @@ the scan group in the NeXus HDF5 file as shown here:
       G4:NX_FLOAT64[26] = [3.986173683, 4.00012985, 0.0, '...', 0.0]
         @spec_name = "G4"
 
-The interpreted information from the ``G[]`` array is written to the
-``geometry_parameters`` group (**NXnote** [#NXnote]_), a child of the
-``instrument`` group (see section :ref:`data.file.geometry`).  Text description
+The interpreted information from the ``G[]`` array is written to ``/SCAN/instrument/geometry_parameters``
+(see section :ref:`data.file.geometry`).  Text description
 of each parameter is provided when available.
 
 If it was possible to determine the name of the diffractometer geometry, that
@@ -602,8 +692,9 @@ name will be reported in the ``name`` field.  In SPEC, some of the geometries
 have variants.  The variant is appended to the name as:
 ``{GEOMETRY}.{VARIANT}``.  In the example below, the name is ``fourc.default``.
 
-If the wavelength of the scan is available in the ``#G`` lines, it is written to
-a **NXmonochromator** [#NXmonochromator] group as a child of the ``instrument``
+The **wavelength** of the scan, if available in the ``#G`` lines, is written to
+the ``/SCAN/instrument/monochromator/wavelength`` field, [#NX.field]_ where
+``/SCAN/instrument/monochromator`` is a **NXmonochromator** [#NXmonochromator]
 group.
 
 Consult the SPEC documentation (https://certif.com) or macros for further
@@ -789,8 +880,7 @@ descrption of any of the geometry information.
           @units = "angstrom"
 
 Crystal sample orientation information (``UB`` matrix, orientation reflections
-and wavelength) is written to a **NXsample** [#NXsample]_ group named ``sample``
-as a child of the scan group.
+and wavelength) is written to ``/SCAN/sample`` (a **NXsample** [#NXsample]_ group).
 
 .. code-block::
    :linenos:
@@ -859,10 +949,10 @@ as a child of the scan group.
 Instrument
 ++++++++++
 
-The ``/SCAN/instrument`` group [#NXinstrument]_ is a NeXus base class
-that provides a standardized way to describe the scientific instrument.
-It has provisions to describe detectors, positioners, slits, monochromators,
-and many other items used.
+The ``/SCAN/instrument`` group is a NeXus **NXinstrument** [#NXinstrument]_ base
+class that provides a standardized way to describe the scientific instrument. It
+has provisions to describe detectors, positioners, slits, monochromators, and
+many other items used.
 
 In the sample shown here, the ``/SCAN/instrument/positioners`` group is
 linked to the content in ``/SCAN/positioners``.
@@ -913,6 +1003,24 @@ Metadata
 ++++++++
 
 TODO:  #U and other (#H/#V, #UXML, ...)
+
+.. _data.file.mca:
+
+Multi-channel analyzer
+++++++++++++++++++++++
+
+TODO: write
+
+FIXME: the MCA group (now NXnote) could/should be NXdetector
+
+.. _data.file.roi:
+
+Regions of Interest
++++++++++++++++++++
+
+part of MCA support
+
+TODO: write
 
 .. _data.file.unrecognized:
 
@@ -972,9 +1080,12 @@ Footnotes
    storage format.
 .. [#NX.default] Used to identify the default plottable data in a NeXus HDF5 file.
    https://manual.nexusformat.org/datarules.html#version-3
+.. [#diffractometer.dict] database of diffractometer geometries in SPEC data files:
+   https://github.com/prjemian/spec2nexus/blob/main/src/spec2nexus/diffractometer-geometries.dict
 
 NeXus base classes
 
+.. [#NXbeam] **NXbeam**:   https://manual.nexusformat.org/classes/base_classes/NXbeam.html
 .. [#NXdata] **NXdata**:   https://manual.nexusformat.org/classes/base_classes/NXdata.html
 .. [#NXdetector] **NXdetector**:   https://manual.nexusformat.org/classes/base_classes/NXdetector.html
 .. [#NXentry] **NXentry**:   https://manual.nexusformat.org/classes/base_classes/NXentry.html
