@@ -1029,14 +1029,20 @@ class SPEC_TemperatureSetPoint(ControlLineBase):
         # Try a list of formats until one succeeds
         format_list = [
             "#X %fKohm (%fC)",
+
             # "#X %g %g",        # note: %g specifier is not available
             "#X %f %f",
+
+            # #X Control: 298.873K  Sample: 299.036K 
+            "#X Control: %fK  Sample: %fK",
         ]
         for fmt in format_list:
             result = scanf(fmt, text)
+            # print(fmt, result)
             if result is not None:
                 scan.TEMP_SP, scan.DEGC_SP = result
                 scan.addH5writer(self.key, self.writer)
+                break
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -1313,6 +1319,9 @@ class SPEC_MCA_ChannelInformation(ControlLineBase):
             )
             if "MCA" not in nxinstrument:
                 makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+            # turn the link around
+            target = nxinstrument["MCA"]
+            target.attrs["target"] = target.name
 
 
 class SPEC_MCA_CountTime(ControlLineBase):
