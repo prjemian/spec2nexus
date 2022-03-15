@@ -139,11 +139,13 @@ will follow this outline:
             comments:NX_CHAR
             counting_basis:NX_CHAR
             date:NX_CHAR
+            DEGC_SP:NX_NUMBER
             experiment_description:NX_CHAR
             M:NX_NUMBER
             Q:NX_NUMBER[3]
             scan_number:NX_INT
             T:NX_NUMBER
+            TEMP_SP:NX_NUMBER
             title:NX_CHAR
             counter_cross_reference:NXnote
             data:NXdata
@@ -1004,6 +1006,35 @@ Metadata
 
 TODO:  #U and other (#H/#V, #UXML, ...)
 
+.. _data.file.temperature:
+
+Temperature
++++++++++++
+
+TODO: ``#X`` (example calib.dat, scan 11) - Temperature Set Point
+
+https://certif.com/spec_manual/mac_3_10.html
+
+============  ========================
+SPEC term     meaning
+============  ========================
+``TEMP_SP``  	The set point of the controller in ohms, volts, etc.
+``DEGC_SP``  	The temperature from which the set point is derived.
+============  ========================
+
+https://manual.nexusformat.org/classes/base_classes/NXsensor.html#nxsensor
+
+::
+
+  #X Control: 298.873K  Sample: 299.036K
+
+    DEGC_SP:NX_FLOAT64 = 299.036
+    TEMP_SP:NX_FLOAT64 = 298.873
+    /SCAN/sample/temperature:NXlog
+        value --> /SCAN/DEGC_SP
+        target_value --> /SCAN/TEMP_SP
+
+
 .. _data.file.mca:
 
 Multi-channel analyzer
@@ -1011,16 +1042,69 @@ Multi-channel analyzer
 
 TODO: write
 
-FIXME: the MCA group (now NXnote) could/should be NXdetector
+.. issue for the future: the MCA group (now NXnote) could/should be NXdetector
 
-.. _data.file.roi:
+::
 
-Regions of Interest
-+++++++++++++++++++
+      * Dataset **_mca_** : *float* MCA data reported on *@A* lines
+      * Dataset **_mca_channel_**: provided as HDF5 dimension scale for **_mca_** dataset
+          * if CALIB data specified: *float* scaled MCA channels -- :math:`x_k = a +bk + ck^2`
+          * if CALIB data not specified: *int* MCA channel numbers
 
-part of MCA support
+TODO: show with one MCA
 
-TODO: write
+TODO: show with CALIB
+
+.. code-block::
+   :linenos:
+
+   #@CALIB -0.00442719 0.0161734 0 mca1
+   #@ROI  FeKa(mca1 R1) 377 413
+   #@ROI  MnKa(mca1 R0) 344 376
+
+.. code-block::
+   :linenos:
+
+   MCA:NXnote
+      @NX_class = "NXnote"
+      @description = "MCA metadata"
+      calib_a:NX_FLOAT64 = -0.00442719
+      calib_b:NX_FLOAT64 = 0.0161734
+      calib_c:NX_FLOAT64 = 0.0
+
+
+In this fragment, 4 MCA detectors are used, each with 256 channels:
+
+.. code-block::
+   :linenos:
+
+   @A1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 0 0 35 0 71 0 0 0 0 35 35 0 35 0 107 143 143 143 215 322 358 645 502 681 502 861 1112 1148 1758 1148 1507 1327 1184 1004 466 430 287 179 71 0 35 35 71 71 35 107 71 35 107 71 35 0 0 35 0 0 0 35 35 0 0 0 0 0 71 0 0 0 0 0 0 0 0 35 0 35 0 35 35 0 0 35 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   @A2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 0 35 0 0 0 35 0 0 0 107 107 35 71 143 179 394 322 107 322 645 466 681 897 1471 1291 1794 2009 1578 1973 1865 1758 2224 1255 789 574 538 215 251 143 107 71 143 107 107 0 71 35 35 107 143 35 0 71 0 71 35 0 35 143 35 0 0 35 0 0 35 107 0 0 71 35 35 71 0 0 35 35 107 0 0 71 0 0 0 35 0 0 0 0 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   @A3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 35 0 0 0 0 0 0 0 71 0 0 0 0 0 35 35 35 0 71 71 107 35 107 215 179 394 251 358 358 538 538 717 717 574 609 897 538 538 609 502 358 287 107 71 35 143 71 35 0 0 0 0 143 35 0 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 35 0 35 0 35 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   @A4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 35 0 35 0 0 0 35 0 35 0 0 0 0 71 215 215 35 358 251 179 358 322 538 753 466 574 466 1686 1507 1327 1148 1794 1363 1507 1112 861 717 394 179 143 35 35 71 35 35 107 35 71 179 35 107 71 107 35 179 0 35 35 35 35 71 0 0 0 71 0 35 0 71 0 0 0 0 0 0 0 0 0 0 35 35 35 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+Written into the ``/SCAN/data`` group with the other scan motors and counters:
+
+.. code-block::
+   :linenos:
+
+    _mca1_:NX_INT64[1353,256] = __array
+        __array = [
+            [0, 0, 0, '...', 0]
+            [0, 0, 0, '...', 0]
+            [0, 0, 0, '...', 0]
+            ...
+            [0, 0, 0, '...', 0]
+          ]
+        @axes = "Energy:_mca1_channel_"
+        @spec_name = "_mca1_"
+        @units = "counts"
+    _mca1_channel_:NX_INT64[256] = [1, 2, 3, '...', 256]
+        @spec_name = "_mca1_channel_"
+        @units = "channel"
+    _mca1_channel_scaled_x:NX_INT64[256] = [1, 1, 1, '...', 1]
+        @spec_name = "_mca1_channel_scaled_x"
+        @units = ""
 
 .. _data.file.unrecognized:
 
