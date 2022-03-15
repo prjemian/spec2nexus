@@ -143,6 +143,10 @@ class Writer(object):
         for func in scan.h5writers.values():
             # ask the scan plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
+        if ("positioners" in nxentry) and ("instrument/positioners" in nxentry):
+            target = nxentry["instrument/positioners"]
+            # turn the link around
+            target.attrs["target"] = target.name
         if ("M" in nxentry) or ("T" in nxentry):
             if "M" in nxentry:
                 target = nxentry["M"]
@@ -150,9 +154,22 @@ class Writer(object):
                 target = nxentry["T"]
             else:
                 raise KeyError("Should not get here.")
-            target.attrs["target"] = target.name
             nxmonitor = eznx.makeGroup(nxentry, "monitor", "NXmonitor")
             nxmonitor["preset"] = target
+            target.attrs["target"] = nxmonitor["preset"].name
+        if ("TEMP_SP" in nxentry) or ("DEGC_SP" in nxentry):
+            if "sample" not in nxentry:
+                pass
+            nxsample = nxentry["sample"]
+            nxtemperature = eznx.makeGroup(nxsample, "temperature", "NXlog")
+            if ("TEMP_SP" in nxentry):
+                target = nxentry["TEMP_SP"]
+                nxtemperature["target_value"] = target
+                target.attrs["target"] = nxtemperature["target_value"].name
+            if ("DEGC_SP" in nxentry):
+                target = nxentry["DEGC_SP"]
+                nxtemperature["value"] = target
+                target.attrs["target"] = nxtemperature["value"].name
 
     def save_dict(self, group, data):
         """*internal*: store a dictionary"""
