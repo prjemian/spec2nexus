@@ -521,15 +521,16 @@ class SPEC_CounterNames(ControlLineBase):
         comment = "keys are SPEC counter mnemonics, values are SPEC counter names"
         if nxclass is None:
             nxclass = CONTAINER_CLASS
-        group = makeGroup(
-            h5parent,
-            "counter_cross_reference",
-            nxclass,
-            description=desc,
-            comment=comment,
-        )
-        for key, value in sorted(header.counter_xref.items()):
-            write_dataset(group, key, value)
+        if len(header.counter_xref) > 0:
+            group = makeGroup(
+                h5parent,
+                "counter_cross_reference",
+                nxclass,
+                description=desc,
+                comment=comment,
+            )
+            for key, value in sorted(header.counter_xref.items()):
+                write_dataset(group, key, value)
 
 
 class SPEC_CounterMnemonics(ControlLineBase):
@@ -770,20 +771,22 @@ class SPEC_PositionerMnemonics(ControlLineBase):
     def writer(self, h5parent, writer, header, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
         if not hasattr(header, "positioner_xref"):
-            header.counter_xref = {}  # mnemonic:name
+            header.positioner_xref = {}  # mnemonic:name
         desc = "cross-reference SPEC positioner mnemonics and names"
         comment = "keys are SPEC positioner mnemonics, values are SPEC positioner names"
         if nxclass is None:
             nxclass = CONTAINER_CLASS
-        group = makeGroup(
-            h5parent,
-            "positioner_cross_reference",
-            nxclass,
-            description=desc,
-            comment=comment,
-        )
-        for key, value in sorted(header.positioner_xref.items()):
-            write_dataset(group, key, value)
+        if len(header.positioner_xref) > 0:
+            group = makeGroup(
+                h5parent,
+                "positioner_cross_reference",
+                nxclass,
+                description=desc,
+                comment=comment,
+            )
+            for mne, value in sorted(header.positioner_xref.items()):
+                attrs = dict(mne=mne, field_name=clean_name(value))
+                write_dataset(group, mne, value, **attrs)
 
 
 def positioner_xref_postprocessing(header):
@@ -861,11 +864,19 @@ class SPEC_Positioners(ControlLineBase):
             h5parent, "positioners", nxclass, description=desc
         )
         # writer.save_dict(group, scan.positioner)
-        for k, v in scan.positioner.items():
-            safe_name = clean_name(k)
-            pg = openGroup(group, safe_name, "NXpositioner")
-            write_dataset(pg, "name", safe_name, spec_name=k)
-            write_dataset(pg, "value", v, spec_name=k)
+        for i, nv in enumerate(scan.positioner.items()):
+            spec_name, field_value = nv
+            field_name = clean_name(spec_name)
+            pg = openGroup(group, field_name, "NXpositioner")
+            attrs = dict(spec_name=spec_name)
+            if hasattr(scan.header, "positioner_xref"):
+                # Cannot trust spec_name to be unique.
+                # Reference the mnemonic by position in the positioner_xref
+                # since the list of positioners is stored in an ordered dict
+                mne_list = list(scan.header.positioner_xref.keys())
+                attrs["spec_mne"] = mne_list[i]
+            write_dataset(pg, "name", field_name, **attrs)
+            write_dataset(pg, "value", field_value, **attrs)
         nxinstrument = openGroup(h5parent, "instrument", "NXinstrument")
         makeLink(h5parent, group, nxinstrument.name + "/positioners")
 
@@ -1018,14 +1029,20 @@ class SPEC_TemperatureSetPoint(ControlLineBase):
         # Try a list of formats until one succeeds
         format_list = [
             "#X %fKohm (%fC)",
+
             # "#X %g %g",        # note: %g specifier is not available
             "#X %f %f",
+
+            # #X Control: 298.873K  Sample: 299.036K
+            "#X Control: %fK  Sample: %fK",
         ]
         for fmt in format_list:
             result = scanf(fmt, text)
+            # print(fmt, result)
             if result is not None:
                 scan.TEMP_SP, scan.DEGC_SP = result
                 scan.addH5writer(self.key, self.writer)
+                break
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -1302,6 +1319,9 @@ class SPEC_MCA_ChannelInformation(ControlLineBase):
             )
             if "MCA" not in nxinstrument:
                 makeLink(h5parent, mca_group, nxinstrument.name + "/MCA")
+            # turn the link around
+            target = nxinstrument["MCA"]
+            target.attrs["target"] = target.name
 
 
 class SPEC_MCA_CountTime(ControlLineBase):

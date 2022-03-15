@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Parses SPEC data using spec2nexus.eznx API (only requires h5py).
+(internal library) Parses SPEC data using spec2nexus.eznx API (only requires h5py).
 
-(internal library)
+.. autosummary::
+
+    ~Writer
 """
 
 
@@ -32,6 +34,18 @@ class Writer(object):
     writes out scans from SPEC data file to NeXus HDF5 file
 
     :param obj spec_data: instance of :class:`~spec2nexus.spec.SpecDataFile`
+
+    .. autosummary::
+
+        ~mca_spectra
+        ~mesh
+        ~oneD
+        ~root_attributes
+        ~save
+        ~save_data
+        ~save_dict
+        ~save_scan
+        ~write_ds
     """
 
     def __init__(self, spec_data):
@@ -42,31 +56,8 @@ class Writer(object):
         save the information in this SPEC data file to a NeXus HDF5 file
 
         Each scan in scan_list will be converted to a **NXentry** group.
-        Scan data will be placed in a **NXdata** group where the attribute **signal=1** is the
-        last column and the corresponding attribute **axes=<name of the first column>**.
-        There are variations on this for 2-D and higher dimensionality data, such as mesh scans.
 
-        In general, the tree structure of the NeXus HDF5 file is::
-
-            hdf5_file: NXroot
-                @default="S1"
-                definition="NXspecdata"
-                # attributes
-                S1:NXentry
-                    @default="data"
-                    # attributes and metadata fields
-                    data:NXdata
-                        @signal=<name of signal field>
-                        @axes=<name(s) of axes of signal>
-                        @<axis>_indices=<list of indices in "axis1">
-                        <signal_is_the_last_column>:NX_NUMBER[number of points] = ... data ...
-                            @signal=1
-                            @axes='<axis_is_name_of_first_column>'
-                            @<axis>_indices=<list of indices in "axis1" used as dimension scales of the "signal">
-                        <axis_is_name_of_first_column>:NX_NUMBER[number of points] = ... data ...
-                        # other columns from the scan
-
-        :param str hdf_file: name of NeXus/HDF5 file to be written
+        :param str hdf_file: name of NeXus HDF5 file to be written
         :param [int] scanlist: list of scan numbers to be read
         """
         scan_list = scan_list or []
@@ -76,9 +67,9 @@ class Writer(object):
             nxentry = eznx.makeGroup(root, "S" + str(key), "NXentry")
             eznx.makeDataset(
                 nxentry,
-                "definition",
-                "NXspecdata",
-                description="NeXus application definition (status pending)",
+                "experiment_description",
+                "SPEC scan",
+                description="SPEC data file scan",
             )
             self.save_scan(nxentry, self.spec.getScan(key))
             if pick_first_entry:
@@ -140,7 +131,11 @@ class Writer(object):
         scan.interpret()  # ensure interpretation is complete
         eznx.addAttributes(nxentry, default="data")
         eznx.write_dataset(nxentry, "title", str(scan))
-        eznx.write_dataset(nxentry, "scan_number", scan.scanNum)
+        scan_number_tuple = utils.split_scan_number_string(scan.scanNum)
+        ds = eznx.write_dataset(nxentry, "scan_number", scan_number_tuple[0])
+        eznx.addAttributes(ds, spec_name="SCAN_N")
+        if scan_number_tuple[1] > 0:
+            eznx.addAttributes(ds, repeat=scan_number_tuple[1])
         eznx.write_dataset(nxentry, "command", scan.scanCmd)
         for func in scan.header.h5writers.values():
             # ask the header plugins to save their part
@@ -148,6 +143,33 @@ class Writer(object):
         for func in scan.h5writers.values():
             # ask the scan plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
+        if ("positioners" in nxentry) and ("instrument/positioners" in nxentry):
+            target = nxentry["instrument/positioners"]
+            # turn the link around
+            target.attrs["target"] = target.name
+        if ("M" in nxentry) or ("T" in nxentry):
+            if "M" in nxentry:
+                target = nxentry["M"]
+            elif "T" in nxentry:
+                target = nxentry["T"]
+            else:
+                raise KeyError("Should not get here.")
+            nxmonitor = eznx.makeGroup(nxentry, "monitor", "NXmonitor")
+            nxmonitor["preset"] = target
+            target.attrs["target"] = nxmonitor["preset"].name
+        if ("TEMP_SP" in nxentry) or ("DEGC_SP" in nxentry):
+            if "sample" not in nxentry:
+                pass
+            nxsample = nxentry["sample"]
+            nxtemperature = eznx.makeGroup(nxsample, "temperature", "NXlog")
+            if ("TEMP_SP" in nxentry):
+                target = nxentry["TEMP_SP"]
+                nxtemperature["target_value"] = target
+                target.attrs["target"] = nxtemperature["target_value"].name
+            if ("DEGC_SP" in nxentry):
+                target = nxentry["DEGC_SP"]
+                nxtemperature["value"] = target
+                target.attrs["target"] = nxtemperature["value"].name
 
     def save_dict(self, group, data):
         """*internal*: store a dictionary"""
@@ -180,17 +202,24 @@ class Writer(object):
         # if len(signal) == 0:
         #     pass
 
-        # Syntax of axes attribute (https://wiki.nexusformat.org/2014_axes_and_uncertainties):
-        #  @axes="H:K"       INCOREECT
-        #  @axes="H", "K"    CORRECT
         if axes.find(":") >= 0:
+            # Syntax of axes attribute ():
+
+            # @axes="H:K"       INCOREECT
+            # @axes="H", "K"    CORRECT
+
+            # see: https://wiki.nexusformat.org/2014_axes_and_uncertainties
 
             def fixer(s):
-                # h5py requires list of strings to be encoded
-                # see: https://stackoverflow.com/questions/23220513/storing-a-list-of-strings-to-a-hdf5-dataset-from-python
+                """
+                h5py requires list of strings to be encoded
+
+                see: https://stackoverflow.com/questions/23220513/storing-a-list-of-strings-to-a-hdf5-dataset-from-python
+                """
                 return s.encode("ascii", "ignore")
 
             axes = list(map(fixer, axes.split(":")))
+
         eznx.addAttributes(nxdata, signal=signal, axes=axes)
         indices = [
             0,

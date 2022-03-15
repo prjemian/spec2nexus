@@ -101,7 +101,7 @@ def makeGroup(parent, name, nxclass, **attr):
 
 
 def openGroup(parent, name, nx_class, **attr):
-    """open or create the NeXus/HDF5 group, return the object
+    """open or create the NeXus HDF5 group, return the object
 
     :param obj parent: h5py parent object
     :param str name: valid NeXus group name to open or create
@@ -151,7 +151,7 @@ def makeDataset(parent, name, data=None, **attr):
 
 
 def write_dataset(parent, name, data, **attr):
-    """write to the NeXus/HDF5 dataset, create it if necessary, return the object
+    """write to the NeXus HDF5 dataset, create it if necessary, return the object
 
     :param obj parent: h5py parent object
     :param str name: valid NeXus dataset name to write

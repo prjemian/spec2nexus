@@ -14,9 +14,21 @@ Convert all scans in a SPEC data file::
 
     $ spec2nexus  path/to/file/specfile.dat
 
-Writes ``path/to/file/specfile.hdf5`` (Will not
-overwrite if the HDF5 exists, use the *-f* option
-to force overwrite).
+Writes ``path/to/file/specfile.hdf5`` (Will not overwrite if the HDF5 exists,
+use the ``-f`` option to force overwrite).
+
+Describe the NeXus File
+************************
+
+The NeXus file could be simple or complex, depending on the data available in
+the SPEC data file.  The content of the NeXus file is described in the following
+sections.
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   nexus_layout/index
 
 show installed version
 **********************
@@ -36,12 +48,12 @@ command-line options
       usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-v] [-s SCAN_LIST] [-t]
                         [--quiet | --verbose]
                         infile [infile ...]
-      
+
       spec2nexus: Convert SPEC data file into a NeXus HDF5 file.
-      
+
       positional arguments:
         infile                SPEC data file name(s)
-      
+
       optional arguments:
         -h, --help            show this help message and exit
         -e HDF5_EXTENSION, --hdf5-extension HDF5_EXTENSION
@@ -54,19 +66,19 @@ command-line options
                               or -s 1,2,3-5 (no spaces!), default = all
         --quiet 	            suppress all program output (except errors), do not
                               use with --verbose option
-        --verbose	            print more program output, do not use with --quiet 
+        --verbose	            print more program output, do not use with --quiet
                               option
 
 
 .. note:: Where's the source code to spec2nexus?
 
    In the source code, the *spec2nexus* program
-   is started from file **nexus.py** 
+   is started from file **nexus.py**
    (in the :meth:`spec2nexus.nexus.main`
    method, for those who look at the source code)::
-   
+
       $ python nexus.py specfile.dat
-     
+
    You're not really going to call that from the source directory, are you?
    It will work, *if* you have put that source directory on your PYTHONPATH.
 
@@ -76,6 +88,6 @@ source code documentation
 *************************
 
 .. automodule:: spec2nexus.nexus
-    :members: 
+    :members:
     :synopsis: Converts SPEC data files and scans into NeXus HDF5 files
-    
+

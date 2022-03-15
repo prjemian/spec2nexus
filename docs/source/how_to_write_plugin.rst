@@ -6,8 +6,8 @@ How to write a custom plugin module
 
 .. sidebar:: The code to write plugins has changed with release 2021.0.0.
 
-   The changes are summarized in the
-   section below titled :ref:`howto_changes_plugin_2021_release`.
+   The changes are summarized in the :ref:`howto_changes_plugin_2022_release`
+   and :ref:`howto_changes_plugin_2021_release` sections below.
 
 **Sections**
 
@@ -69,14 +69,13 @@ working directory, there must be a ``__init__.py`` file in the same directory
 
 Please view the existing plugins in :mod:`~spec2nexus.plugins.spec_common` for
 examples.  The custom plugin module should contain, at minimum one subclass of
-:class:`spec2nexus.plugin_core.ControlLineBase` which allows them to register
+:class:`~spec2nexus.plugin_core.ControlLineBase` which allows them to register
 themselves when their module is imported. A custom plugin module can contain
 many such handlers, as needs dictate.
 
-.. sidebar::  Useful ``import``
+.. sidebar:: *tip* : import ``strip_first_word()``
 
-   It is also useful to import the 
-   :meth:`~spec2nexus.utils.strip_first_word` 
+   It is also to import the :meth:`~spec2nexus.utils.strip_first_word` 
    utility method.
 
 These imports are necessary to to write plugins for *spec2nexus*:
@@ -102,11 +101,10 @@ Caution is advised to avoid introducing instability.
 
 **Attribute: ``scan_attributes_defined`` (optional)**
 
-If your plugin creates any attributes to the 
-:class:`spec2nexus.spec.SpecDataScan` object
-(such as the hypotetical ``scan.hdf5_path`` and ``scan.hdf5_file``), 
-you declare the new attributes in the
-``scan_attributes_defined`` list.  Such as this:
+If your plugin creates any attributes to the
+:class:`~spec2nexus.spec.SpecDataScan()` object (such as the hypothetical
+``scan.hdf5_path`` and ``scan.hdf5_file``), you declare the new attributes in
+the ``scan_attributes_defined`` list.  Such as this:
 
 .. code-block:: python
    :linenos:
@@ -142,7 +140,7 @@ Then, define a ``postprocess()`` method in your handler::
     	# handle your custom info here
 
 See section :ref:`howto_postprocessing` below for more details.
-See :mod:`spec2nexus.plugins.spec_common` for many examples.
+See :mod:`~spec2nexus.plugins.spec_common` for many examples.
 
 **Method: ``writer()`` (optional)**
 
@@ -162,7 +160,6 @@ Then, define a ``writer()`` method in your handler.  Here's an example::
         writer.save_dict(group, scan.positioner)
 
 See section :ref:`howto_writer` below for more details.
-
 
 .. _howto_example_PV_control_line:
 
@@ -363,9 +360,9 @@ be called with several arguments:
 
 **h5parent**: *obj* : the HDF5 group that will hold this plugin's data 
 
-**writer**:   *obj* : instance of :class:`spec2nexus.writer.Writer` that manages the content of the HDF5 file
+**writer**:   *obj* : instance of :class:`~spec2nexus.writer.Writer()` that manages the content of the HDF5 file
 
-**scan**:     *obj* : instance of :class:`spec2nexus.spec.SpecDataFileScan` containing this scan's data
+**scan**:     *obj* : instance of :class:`~spec2nexus.spec.SpecDataFileScan()` containing this scan's data
 
 **nxclass**:  *str* : (optional) name of NeXus base class to be created
 
@@ -384,19 +381,30 @@ NeXus base class of this group using code such as this:
    >>> print h5parent.attrs['NX_class']
    <<< NXentry
 
-If your custom HDF5 writer
-must create group and you are uncertain which base class to select, 
-it is recommended to use a **NXcollection** [#]_ (an unvalidated catch-all
-base class) which can store any content.
-But, you are encouraged to find one of the other NeXus base classes that
+Choice of NeXus base class
+==========================
+
+If your custom HDF5 writer must create a group and you are uncertain which base
+class to select, it is recommended to use the **NXnote** [#NXnote]_ base
+class.
+
+If your data does not fit the structure of the **NXnote** base class,
+you are encouraged to find one of the other NeXus base classes that
 best fits your data.  Look at the source code of the supplied plugins
 for examples.
 
-The writer uses the :mod:`spec2nexus.eznx` module to create and write
+As a last resort, if your content cannot fit within the parameters of the NeXus
+standard, use **NXcollection**, [#NXcollection]_ an unvalidated catch-all base
+class) which can store any content.
+
+The writer uses the :mod:`~spec2nexus.eznx` module to create and write
 the various parts of the HDF5 file.
 
+Example ``writer()`` method
+===========================
+
 Here is an example :meth:`writer` method from the
-:mod:`spec2nexus.plugins.unicat` module:
+:mod:`~spec2nexus.plugins.unicat` module:
 
 .. code-block:: python
    :linenos:
@@ -407,7 +415,6 @@ Here is an example :meth:`writer` method from the
             desc='SPEC metadata (UNICAT-style #H & #V lines)'
             group = eznx.makeGroup(h5parent, 'metadata', nxclass, description=desc)
             writer.save_dict(group, scan.metadata)
-
 
 ..  from the source code
 
@@ -422,8 +429,6 @@ Here is an example :meth:`writer` method from the
    
    If this method is to be used, then override this method in the 
    plugin or a :class:`NotImplementedError` exception will be raised.
-
-
 
 .. _custom_key_match_function:
 
@@ -472,37 +477,34 @@ method.  Here is an example from
 Summary Requirements for custom plugin
 **************************************
 
-.. sidebar:: Needs Review
-
-   These notes need review.  It may not be possible at this writing to add a
-   custom plugin.  Check the code in the loader
-   :func:`spec2nexus.control_lines._plugin_files()` for how it handles
-   `user_plugin_list`.
-
-* file can go in your working directory
-* directory does not need a ``__init__.py`` file
+* file can go in any directory
+* directory containing does not need a ``__init__.py`` file
 * multiple control line handlers (plugins) can go in a single file
 * for each control line:
 
-  * subclass :class:`spec2nexus.plugin_core.ControlLineBase`
+  * subclass :class:`~spec2nexus.plugin_core.ControlLineBase`
   * identify the control line pattern
   * define ``key`` with a regular expression to match [#]_
   
     * ``key`` is used to identify control line handlers
     * redefine existing supported :index:`control line` control lines to replace supplied behavior (use caution!)
-    * Note: ``key="scan data"`` is used to process the scan data: :meth:`spec2nexus.plugins.spec_common.SPEC_DataLine`
+    * Note: ``key="scan data"`` is used to process the scan data:
+      :meth:`~spec2nexus.plugins.spec_common.SPEC_DataLine`
   
-  * define :meth:`process` to handle the supplied text
-  * define :meth:`writer` to write the in-memory data structure from this plugin to HDF5+NeXus data file
+  * define a ``process()`` method to handle the supplied text
+  * (optional) define a ``postprocess()`` method to coordinate data from several ``process()`` steps
+  * define a ``writer()`` method to write the in-memory data structure from this plugin to HDF5+NeXus data file
   * (optional) define :meth:`match_key` to override the default regular expression to match the key
 
-* for each postprocessing function:
+* for each postprocessing method:
 
-  * write the function
-  * register the function with spec_obj.addPostProcessor(key_name, the_function) in the handler's :meth:`process`
+  * write the method
+  * register the method with ``spec_obj.addPostProcessor(key_name, the_method)``
+    in the handler's :meth:`~spec2nexus.plugin_core.ControlLineBase.process()` method.
 
-* for each plugin file you want to load
-  * call :func:`spec2nexus.plugin_core.install_user_plugin()` with the absolute path to the file
+* for each plugin file you want to load:
+
+  * call :func:`~spec2nexus.plugin_core.install_user_plugin()` with the absolute path to the file
 
 ----------
 
@@ -511,20 +513,21 @@ Summary Requirements for custom plugin
 Changes in plugin format with release 2021.2.0
 **********************************************
 
-* subclassing is easier (no need for ``metaclass`` kwarg)
-* now, subclass from :class:`~spec2nexus.plugin_core.ControlLineBase`
+* subclassing and installing is easier (no need for ``metaclass`` kwarg)
+
+  * subclass from :class:`~spec2nexus.plugin_core.ControlLineBase`
+  * call :func:`~spec2nexus.plugin_core.install_user_plugin()` to install
 
 .. _howto_changes_plugin_2021_release:
 
 Changes in plugin format with release 2021.0.0
 **********************************************
 
-With release *2021.0.0*, the code to setup plugins has changed.
-The new code allows all plugins in a module to auto-register themselves
-*as long as the module is imported*.
-**All** custom plugins must be modified and import code revised
-to work with new system.
-See the :mod:`spec2nexus.plugins.spec_common` source code for many examples.
+With release *2021.0.0*, the code to setup plugins has changed. The new code
+allows all plugins in a module to auto-register themselves *as long as the
+module is imported*. **All** custom plugins must be modified and import code
+revised to work with new system. See the :mod:`spec2nexus.plugins.spec_common`
+source code for many examples.
 
 * SAME: The basics of writing the plugins remains the same.
 * CHANGED: The method of registering the plugins has changed.
@@ -545,7 +548,8 @@ Footnotes
 .. [#] https://nexusformat.org
 .. [#] https://download.nexusformat.org/doc/html/classes/base_classes/
 .. [#] https://download.nexusformat.org/doc/html/classes/base_classes/NXentry.html
-.. [#] https://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
+.. [#NXnote] https://download.nexusformat.org/doc/html/classes/base_classes/NXnote.html
+.. [#NXcollection] https://download.nexusformat.org/doc/html/classes/base_classes/NXcollection.html
 .. [#] It is possible to override the default regular expression match
    in the subclass with a custom match function.  See the
    :meth:`~spec2nexus.plugins.spec_common.SPEC_DataLine.match_key()`

@@ -189,7 +189,7 @@ class ControlLineBase(metaclass=PluginMounter):
 
     def writer(self, h5parent, writer, scan, nxclass=None, *args, **kws):
         """
-        *optional:* Describe how to store this data in an NeXus/HDF5 file.
+        *optional:* Describe how to store this data in a NeXus HDF5 file.
         """
         raise NotImplementedError(
             "MUST define 'writer()' method in subclass"
