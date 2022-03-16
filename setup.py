@@ -24,7 +24,11 @@ setup(
     license=package.__license__,
     description=package.__description__,
     long_description=readme,
-    long_description_content_type="md",
+
+    # allowed values:
+    # https://packaging.python.org/en/latest/specifications/core-metadata/#description-content-type
+    long_description_content_type="text/markdown",
+
     author=package.__author_name__,
     author_email=package.__author_email__,
     url=package.__url__,
