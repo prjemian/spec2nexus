@@ -1,8 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
-Describe SPEC #G control lines
+Describe SPEC diffractometer geometry #G control lines.
 
   #G0 ...       G[] array (geo mode, sector, etc)
   #G1 ...       U[] array (lattice constants, orientation reflections)

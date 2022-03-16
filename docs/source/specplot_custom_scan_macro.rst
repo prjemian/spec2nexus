@@ -1,8 +1,8 @@
 
 .. _how_to_write_custom_scan_macro_handling:
 
-How to write a custom scan handling for *specplot*
-##################################################
+How to write a custom scan handling class for *specplot*
+#########################################################
 
 Sometimes, it will be obvious that a certain scan macro never generates
 any plot images, or that the default handling creates a plot that

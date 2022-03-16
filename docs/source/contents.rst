@@ -5,22 +5,13 @@ Contents
    :maxdepth: 2
    :glob:
    
-   spec2nexus
-   extractSpecScan
-   specplot
-   specplot_gallery
-   spec
-   charts
-   specplot_custom_scan_macro
-   eznx
-   plugin_core
-   utils
-   scanf
-   singletons
-   writer
    install
-   unit_testing
    example_data
+   applications
+   libraries
+   howto
+   api
+   unit_testing
    changes
    license
 

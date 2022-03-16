@@ -22,7 +22,7 @@ Describe the NeXus File
 
 The NeXus file could be simple or complex, depending on the data available in
 the SPEC data file.  The content of the NeXus file is described in the following
-sections.
+sections.  See the :ref:`example.1d.ascan` section for an example.
 
 .. toctree::
    :maxdepth: 2

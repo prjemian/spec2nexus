@@ -1,3 +1,4 @@
+.. _example.1d.ascan:
 
 Example 1-D scan
 ++++++++++++++++

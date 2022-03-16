@@ -6,6 +6,9 @@
 Example data
 ############
 
+In addition to the example data files below, see the :ref:`example.1d.ascan`
+section an example of the NeXus HDF5 file written by **spec2nexus**.
+
 .. include:: ../../src/spec2nexus/data/README.txt
 
 Downloads
