@@ -1,7 +1,9 @@
 .. _utils:
 
-Common Methods: :mod:`spec2nexus.utils`
+:mod:`spec2nexus.utils`
 ##########################################
+
+Common methods used throughout the package.
 
 source code documentation
 *************************

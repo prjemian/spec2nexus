@@ -48,17 +48,11 @@ These plugin modules are supplied:
 Writing a custom plugin
 ***********************
 
-While **spec2nexus** provides a comprehensive set of plugins
-to handle the common SPEC :index:`control line` control lines, custom control lines
-are used at many facilities to write additional scan data
-and scan metadata into the SPEC data file.  Custom plugins
-are written to process these additions.
-
-.. toctree::
-   :maxdepth: 2
-   :glob:
-
-   how_to_write_plugin
+While **spec2nexus** provides a comprehensive set of plugins to handle the
+common SPEC :index:`control line` control lines, custom control lines are used
+at many facilities to write additional scan data and scan metadata into the SPEC
+data file.  Custom plugins are written to process these additions.  See the
+:ref:`how_to_write_plugin` section for details.
 
 .. _control_line_table:
 

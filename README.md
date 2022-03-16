@@ -9,36 +9,37 @@ Writes `path/to/file/specfile.hdf5`
 - Conda install:  `conda install -c conda-forge spec2nexus`
 - Pip install:  `pip install spec2nexus`
 
-**Contents**
+## Provides
 
-- [spec2nexus](#spec2nexus)
-  - [This Package Provides](#this-package-provides)
-  - [Package Information](#package-information)
-  - [NOTE about support for Python version 2](#note-about-support-for-python-version-2)
+### Applications
 
-## This Package Provides 
-
-- **spec2nexus** : command-line tool: Convert [SPEC](https://certif.com) data
+- [**spec2nexus**](https://prjemian.github.io/spec2nexus/spec2nexus.html) :
+  Convert [SPEC](https://certif.com) data
   files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)
 
-- **extractSpecScan** : command-line tool: Save columns from SPEC data file
-  scan(s) to TSV files
+- [**extractSpecScan**](https://prjemian.github.io/spec2nexus/extractSpecScan.html) :
+  Save columns from SPEC data file scan(s) to TSV files
 
-- **spec** : library: python binding to read SPEC data files
+- [**specplot**](https://prjemian.github.io/spec2nexus/specplot.html) :
+  plot a SPEC scan to an image file
 
-- **eznx** : library: (Easy NeXus) supports writing NeXus HDF5 files using h5py
+- [**specplot\_gallery**](https://prjemian.github.io/spec2nexus/specplot_gallery.html) :
+  call **specplot** for all scans in a list of files, makes a web gallery
 
-- **specplot** : command-line tool: plot a SPEC scan to an image file
+### Libraries
 
-- **specplot\_gallery** : command-line tool: call **specplot** for all scans in
-  a list of files, makes a web gallery
+- [**spec**](https://prjemian.github.io/spec2nexus/spec.html) :
+  python binding to read SPEC data files
+
+- [**eznx**](https://prjemian.github.io/spec2nexus/eznx.html) :
+  (Easy NeXus) supports writing NeXus HDF5 files using h5py
 
 ## Package Information
 
 term | description
 --- | ---
-**links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **copyright** | (c) 2014-2022, Pete R. Jemian
+**links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6264513.svg)](https://doi.org/10.5281/zenodo.6264513)
 **license** | [![Creative Commons Attribution 4.0 International Public License](https://anaconda.org/conda-forge/spec2nexus/badges/license.svg)](https://prjemian.github.io/spec2nexus/license.html)  [LICENSE.txt](https://prjemian.github.io/spec2nexus/license.html)
 **current releases** | [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)

@@ -1,8 +1,8 @@
 
 .. _how_to_write_plugin:
 
-How to write a custom plugin module
-###################################
+How to write a custom control line handling plugin module for *spec*
+######################################################################
 
 .. sidebar:: The code to write plugins has changed with release 2021.0.0.
 
