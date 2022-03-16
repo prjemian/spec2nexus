@@ -9,15 +9,6 @@ Writes `path/to/file/specfile.hdf5`
 - Conda install:  `conda install -c conda-forge spec2nexus`
 - Pip install:  `pip install spec2nexus`
 
-**Contents**
-
-- [spec2nexus](#spec2nexus)
-  - [Provides](#provides)
-    - [Applications](#applications)
-    - [Libraries](#libraries)
-  - [Package Information](#package-information)
-  - [NOTE about support for Python version 2](#note-about-support-for-python-version-2)
-
 ## Provides
 
 ### Applications
@@ -25,10 +16,6 @@ Writes `path/to/file/specfile.hdf5`
 - [**spec2nexus**](https://prjemian.github.io/spec2nexus/spec2nexus.html) :
   Convert [SPEC](https://certif.com) data
   files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)
-
-  ```bash
-  ~ $ spec2nexus  path/to/file/specfile.dat
-  ```
 
 - [**extractSpecScan**](https://prjemian.github.io/spec2nexus/extractSpecScan.html) :
   Save columns from SPEC data file scan(s) to TSV files
@@ -51,8 +38,8 @@ Writes `path/to/file/specfile.hdf5`
 
 term | description
 --- | ---
-**links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **copyright** | (c) 2014-2022, Pete R. Jemian
+**links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6264513.svg)](https://doi.org/10.5281/zenodo.6264513)
 **license** | [![Creative Commons Attribution 4.0 International Public License](https://anaconda.org/conda-forge/spec2nexus/badges/license.svg)](https://prjemian.github.io/spec2nexus/license.html)  [LICENSE.txt](https://prjemian.github.io/spec2nexus/license.html)
 **current releases** | [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)

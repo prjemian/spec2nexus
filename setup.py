@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
-import os
+import pathlib
 import sys
 
 import versioneer
 
 # pull in some definitions from the package's __init__.py file
-basedir = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(basedir, "src",))
+basedir = pathlib.Path(__file__).absolute().parent
+sys.path.insert(0, str(basedir / "src"))
 import spec2nexus as package
 
 
 verbose = 1
-long_description = open(os.path.join(basedir, "README.md"), "r").read()
+readme = open(str(basedir / "README.md"), "r").read()
 
 
 setup(
@@ -23,7 +23,8 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     license=package.__license__,
     description=package.__description__,
-    long_description=long_description,
+    long_description=readme,
+    long_description_content_type="md",
     author=package.__author_name__,
     author_email=package.__author_email__,
     url=package.__url__,
