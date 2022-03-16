@@ -12,26 +12,40 @@ Writes `path/to/file/specfile.hdf5`
 **Contents**
 
 - [spec2nexus](#spec2nexus)
-  - [This Package Provides](#this-package-provides)
+  - [Provides](#provides)
+    - [Applications](#applications)
+    - [Libraries](#libraries)
   - [Package Information](#package-information)
   - [NOTE about support for Python version 2](#note-about-support-for-python-version-2)
 
-## This Package Provides 
+## Provides
 
-- **spec2nexus** : command-line tool: Convert [SPEC](https://certif.com) data
+### Applications
+
+- [**spec2nexus**](https://prjemian.github.io/spec2nexus/spec2nexus.html) :
+  Convert [SPEC](https://certif.com) data
   files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)
 
-- **extractSpecScan** : command-line tool: Save columns from SPEC data file
-  scan(s) to TSV files
+  ```bash
+  $ spec2nexus  path/to/file/specfile.dat
+  ```
 
-- **spec** : library: python binding to read SPEC data files
+- [**extractSpecScan**](https://prjemian.github.io/spec2nexus/extractSpecScan.html) :
+  Save columns from SPEC data file scan(s) to TSV files
 
-- **eznx** : library: (Easy NeXus) supports writing NeXus HDF5 files using h5py
+- [**specplot**](https://prjemian.github.io/spec2nexus/specplot.html) :
+  plot a SPEC scan to an image file
 
-- **specplot** : command-line tool: plot a SPEC scan to an image file
+- [**specplot\_gallery**](https://prjemian.github.io/spec2nexus/specplot_gallery.html) :
+  call **specplot** for all scans in a list of files, makes a web gallery
 
-- **specplot\_gallery** : command-line tool: call **specplot** for all scans in
-  a list of files, makes a web gallery
+### Libraries
+
+- [**spec**](https://prjemian.github.io/spec2nexus/spec.html) :
+  python binding to read SPEC data files
+
+- [**eznx**](https://prjemian.github.io/spec2nexus/eznx.html) :
+  (Easy NeXus) supports writing NeXus HDF5 files using h5py
 
 ## Package Information
 
