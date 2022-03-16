@@ -16,16 +16,16 @@ Provides
 Command-line tools
 ------------------
 
-* **:ref:`spec2nexus`**       : Convert `SPEC <https://certif.com>`_ data files to `NeXus <https://nexusformat.org>`_ `HDF5 <https://hdfgroup.org>`_
-* **:ref:`extractSpecScan`**  : Save columns from SPEC data file scan(s) to TSV files
-* **:ref:`specplot`**         : plot a SPEC scan to an image file
-* **:ref:`specplot_gallery`** : call **specplot** for all scans in a list of files, makes a web gallery
+* :ref:`spec2nexus`       : Convert `SPEC <https://certif.com>`_ data files to `NeXus <https://nexusformat.org>`_ `HDF5 <https://hdfgroup.org>`_
+* :ref:`extractSpecScan`  : Save columns from SPEC data file scan(s) to TSV files
+* :ref:`specplot`         : plot a SPEC scan to an image file
+* :ref:`specplot_gallery` : call **specplot** for all scans in a list of files, makes a web gallery
 
 Libraries
 ---------
 
-* **:ref:`spec`**    : python binding to read SPEC data files
-* **:ref:`eznx`**    : (Easy NeXus) supports writing NeXus HDF5 files using h5py
+* :ref:`spec`    : python binding to read SPEC data files
+* :ref:`eznx`    : (Easy NeXus) supports writing NeXus HDF5 files using h5py
 
 Package Information
 ###################

@@ -27,7 +27,7 @@ Writes `path/to/file/specfile.hdf5`
   files to [NeXus](https://nexusformat.org) [HDF5](https://hdfgroup.org)
 
   ```bash
-  $ spec2nexus  path/to/file/specfile.dat
+  ~ $ spec2nexus  path/to/file/specfile.dat
   ```
 
 - [**extractSpecScan**](https://prjemian.github.io/spec2nexus/extractSpecScan.html) :
