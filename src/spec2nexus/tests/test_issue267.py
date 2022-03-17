@@ -1,8 +1,10 @@
+import h5py
 import pathlib
 import pytest
 
-# from ._core import hfile
+from ._core import hfile
 from .. import spec
+from .. import writer
 from ..diffractometers import LatticeParameters2D
 from ..diffractometers import Reflections2D
 
@@ -76,3 +78,58 @@ def test_contents_s1():
     assert round(scan.diffractometer.reflections[0].angles["th"], 4) == 30
     assert round(scan.Q[0], 4) == 0.0026
     assert round(scan.Q[1], 4) == 0.0042
+
+
+def test_writer(hfile):
+    sdf = spec.SpecDataFile(TESTFILE)
+    w = writer.Writer(sdf)
+    assert w is not None
+
+    hdf_file = pathlib.Path(hfile)
+    assert hdf_file.exists()
+
+    w.save(hfile, scan_list=sdf.getScanNumbersChronological())
+    assert hdf_file.exists()
+
+    with h5py.File(hdf_file, "r") as root:
+        for k in "S1 S2 S2.1".split():
+            assert k in root
+
+            entry = root[k]
+            assert entry.attrs.get("NX_class") == "NXentry"
+            assert "instrument" in entry
+
+            instrument = entry["instrument"]
+            assert "geometry_parameters" in instrument
+            assert "diffractometer" in instrument
+
+            geom = instrument["geometry_parameters"]
+            dfrct = instrument["diffractometer"]
+            assert geom == dfrct
+            assert geom.attrs["target"] != geom.name
+            assert dfrct.attrs["target"] == dfrct.name
+            assert "diffractometer_full" in geom
+            assert geom["diffractometer_full"][()] == [b"twoc.default"]
+            assert geom["diffractometer_simple"][()] == [b"twoc"]
+            assert geom["diffractometer_variant"][()] == [b"default"]
+            assert "g_aa" in geom
+            assert "g_bb" in geom
+            assert "g_cc" not in geom
+            assert "g_ga" in geom
+            assert "g_lambda" in geom
+
+            assert "sample" in entry
+            sample = entry["sample"]
+            assert "unit_cell_abc" not in sample
+            assert "unit_cell_a" in sample
+            assert "unit_cell_b" in sample
+            assert "unit_cell_c" not in sample
+            assert "unit_cell_gamma" in sample
+            assert "beam/incident_wavelength" in sample
+            assert "or0" in sample
+            assert "or0/h" in sample
+            assert "or0/k" in sample
+            assert "or0/th" in sample
+            assert "or0/tth" in sample
+            assert "or0/wavelength" in sample
+            assert "or1" not in sample
