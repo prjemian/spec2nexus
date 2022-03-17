@@ -26,6 +26,7 @@ lmn40.spe                               SPEC scans  1-D & 2-D scans (hklmesh), t
 mca_spectra_example.dat                 SPEC scans  1-D scans (cscan) with 4 MCA spectra in each scan (issue #55)
 spec_from_spock.spc                     SPEC scans  no header section, uses "nan", from sardana
 startup_1.spec                          SPEC scans  1-D scans with SCA spectra & UXML headers for RSM code
+twoc.dat                                SPEC scans  1-D scans, 2-circle (twoc) diffractometer geometry, with orientation
 user6idd.dat                            SPEC scans  1-D scans, aborted scan, control lines:  #R #UB #UE #UX #UX1 #UX2 #X,
                                                     non-default format in #X lines
 usaxs-bluesky-specwritercallback.dat    SPEC scans  1-D scans, #MD control lines

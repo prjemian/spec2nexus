@@ -169,6 +169,7 @@ def test_class_DiffractometerGeometryCatalog():
         [EXAMPLES_PATH, "mca_spectra_example.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "spec_from_spock.spc", -1, "spec.default"],
         [EXAMPLES_PATH, "startup_1.spec", 1, "spec"],
+        [EXAMPLES_PATH, "twoc.dat", 1, "twoc.default"],
         [EXAMPLES_PATH, "usaxs-bluesky-specwritercallback.dat", -1, "spec.default"],
         [EXAMPLES_PATH, "user6idd.dat", -1, "spec"],  # predates #o (mnemonics) lines
         [EXAMPLES_PATH, "YSZ011_ALDITO_Fe2O3_planar_fired_1.spc", -1, "fourc.default"],

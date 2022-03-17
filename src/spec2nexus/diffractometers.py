@@ -35,11 +35,17 @@ KeyDescriptionValue = namedtuple(
     "KeyDescriptionValue", "key description value"
 )
 
-LatticeParameters = namedtuple(
-    "LatticeParameters", "a b c alpha beta gamma"
+LatticeParameters2D = namedtuple(
+    "LatticeParameters2D", "a b gamma"
 )
 
-Reflections = namedtuple("Reflections", "h k l wavelength angles")
+LatticeParameters3D = namedtuple(
+    "LatticeParameters3D", "a b c alpha beta gamma"
+)
+
+Reflections2D = namedtuple("Reflections2D", "h k wavelength angles")
+
+Reflections3D = namedtuple("Reflections3D", "h k l wavelength angles")
 
 
 # lattice constants, orientation reflections
@@ -269,14 +275,12 @@ class Diffractometer:
                         for v, kd in zip(g1, gonio_U)
                     }
                 )
-                self.lattice = LatticeParameters(
-                    U["g_aa"].value,
-                    U["g_bb"].value,
-                    U["g_cc"].value,
-                    U["g_al"].value,
-                    U["g_be"].value,
-                    U["g_ga"].value,
-                )
+                if ("g_cc" in U) and ("g_al" in U) and ("g_be" in U):
+                    _parms = [U[f"g_{key}"].value for key in "aa bb cc al be ga".split()]
+                    self.lattice = LatticeParameters3D(*_parms)
+                else:  # twoc
+                    _parms = [U[f"g_{key}"].value for key in "aa bb ga".split()]
+                    self.lattice = LatticeParameters2D(*_parms)
                 for ref_num in (0, 1):
                     template = "g_u%d%%d" % ref_num
                     variant = dgc.get_variant(gonio, self.variant)
@@ -285,13 +289,17 @@ class Diffractometer:
                         k = template % i
                         if k in U:
                             angles[mne] = U[k].value
-                    ref = Reflections(
-                        U["g_h%d" % ref_num].value,
-                        U["g_k%d" % ref_num].value,
-                        U["g_l%d" % ref_num].value,
-                        U["g_lambda%d" % ref_num].value,
-                        angles,
-                    )
+                    if ("g_lambda" not in U):
+                        _parms = [U[f"g_{k}{ref_num}"].value for k in "h k l lambda".split()]
+                        _parms.append(angles)
+                        ref = Reflections3D(*_parms)
+                    else:  # twoc
+                        if ref_num > 0:
+                            break  # at most, 1 reflection is defined
+                        _parms = [U[f"g_{k}{ref_num}"].value for k in "h k".split()]
+                        _parms.append(U["g_lambda"].value)
+                        _parms.append(angles)
+                        ref = Reflections2D(*_parms)
                     self.reflections.append(ref)
 
                 self.geometry_parameters.update(U)

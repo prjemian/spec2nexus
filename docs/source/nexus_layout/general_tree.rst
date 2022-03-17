@@ -7,7 +7,7 @@ The **general tree structure** (with parts described in the sections below)
 will follow this outline:
 
 ============================================= =============== =============================
-HDF5 address                                  structure       see section
+HDF5 address                                  structure       reference
 ============================================= =============== =============================
 ``/``                                         (NXroot)        :ref:`data.file`
 ``/@default``                                 NX_CHAR         :ref:`data.file`
@@ -33,7 +33,8 @@ HDF5 address                                  structure       see section
 ``/SCAN/G/G3``                                NX_NUMBER[]     :ref:`data.file.geometry`
 ``/SCAN/G/G4``                                NX_NUMBER[]     :ref:`data.file.geometry`
 ``/SCAN/instrument``                          NXinstrument    :ref:`data.file.instrument`
-``/SCAN/instrument/geometry_parameters``      NXnote          :ref:`data.file.geometry`
+``/SCAN/instrument/diffractometer``           NXnote          :ref:`data.file.geometry`
+``/SCAN/instrument/geometry_parameters``      NXnote          link to ``/SCAN/instrument/diffractometer``
 ``/SCAN/instrument/name``                     NX_CHAR         :ref:`data.file.geometry`
 ``/SCAN/instrument/monochromator``            NXmonochromator :ref:`data.file.geometry`
 ``/SCAN/instrument/monochromator/wavelength`` NX_NUMBER       :ref:`data.file.geometry`
@@ -50,9 +51,12 @@ HDF5 address                                  structure       see section
 ``/SCAN/sample/diffractometer_mode``          NX_CHAR         :ref:`data.file.geometry`
 ``/SCAN/sample/diffractometer_sector``        NX_NUMBER       :ref:`data.file.geometry`
 ``/SCAN/sample/ub_matrix``                    NX_NUMBER[3,3]  :ref:`data.file.geometry`
-``/SCAN/sample/unit_cell``                    NX_NUMBER[6]    :ref:`data.file.geometry`
+``/SCAN/sample/unit_cell_a``                  NX_NUMBER       only ``twoc`` geometry
 ``/SCAN/sample/unit_cell_abc``                NX_NUMBER[3]    :ref:`data.file.geometry`
 ``/SCAN/sample/unit_cell_alphabetagamma``     NX_NUMBER[3]    :ref:`data.file.geometry`
+``/SCAN/sample/unit_cell_b``                  NX_NUMBER       only ``twoc`` geometry
+``/SCAN/sample/unit_cell_gamma``              NX_NUMBER       only ``twoc`` geometry
+``/SCAN/sample/unit_cell``                    NX_NUMBER[6]    :ref:`data.file.geometry`
 ``/SCAN/sample/beam``                         NXbeam          :ref:`data.file.geometry`
 ``/SCAN/sample/beam/incident_wavelength``     NX_NUMBER       :ref:`data.file.geometry`
 ``/SCAN/sample/or0``                          NXnote          :ref:`data.file.geometry`

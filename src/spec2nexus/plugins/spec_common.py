@@ -16,6 +16,7 @@ import time
 from spec2nexus.plugin_core import ControlLineBase
 
 from spec2nexus.diffractometers import get_geometry_catalog, Diffractometer
+from spec2nexus.diffractometers import LatticeParameters3D
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup, makeLink
 from spec2nexus.scanf import scanf
 from spec2nexus.spec import (
@@ -353,28 +354,33 @@ class SPEC_Geometry(ControlLineBase):
             )
             if scan.diffractometer.lattice is not None:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
-                abc = [
-                    scan.diffractometer.lattice.a,
-                    scan.diffractometer.lattice.b,
-                    scan.diffractometer.lattice.c,
-                ]
-                angles = [
-                    scan.diffractometer.lattice.alpha,
-                    scan.diffractometer.lattice.beta,
-                    scan.diffractometer.lattice.gamma,
-                ]
-                write_dataset(
-                    nxsample, "unit_cell_abc", abc, units="angstrom",
-                )
-                write_dataset(
-                    nxsample,
-                    "unit_cell_alphabetagamma",
-                    angles,
-                    units="degrees",
-                )
-                write_dataset(  # ah, NeXus ... so many ways ...
-                    nxsample, "unit_cell", abc + angles,
-                )
+                lattice = scan.diffractometer.lattice
+                if isinstance(lattice, LatticeParameters3D):
+                    abc = [getattr(lattice, k) for k in "a b c".split()]
+                    angles = [getattr(lattice, k) for k in "alpha beta gamma".split()]
+                    write_dataset(
+                        nxsample, "unit_cell_abc", abc, units="angstrom",
+                    )
+                    write_dataset(
+                        nxsample,
+                        "unit_cell_alphabetagamma",
+                        angles,
+                        units="degrees",
+                    )
+                    write_dataset(  # ah, NeXus ... so many ways ...
+                        nxsample, "unit_cell", abc + angles,
+                    )
+                else:  # not a 3D lattice, so ad hoc structure
+                    for k in lattice._fields:
+                        v = getattr(lattice, k)
+                        egu = "angstrom"
+                        if len(k) > 1:
+                            # Assumes lengths have single letters,
+                            # angles are spelled out.
+                            egu = "degrees"
+                        write_dataset(
+                            nxsample, f"unit_cell_{k}", v, units=egu,
+                        )
             if "ub_matrix" in gpar:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
                 ub = gpar["ub_matrix"].value
@@ -405,7 +411,8 @@ class SPEC_Geometry(ControlLineBase):
                     )
                     write_dataset(nxnote, "h", ref.h)
                     write_dataset(nxnote, "k", ref.k)
-                    write_dataset(nxnote, "l", ref.l)
+                    if hasattr(ref, "l"):
+                        write_dataset(nxnote, "l", ref.l)
                     write_dataset(
                         nxnote,
                         "wavelength",
