@@ -16,6 +16,7 @@ import time
 from spec2nexus.plugin_core import ControlLineBase
 
 from spec2nexus.diffractometers import get_geometry_catalog, Diffractometer
+from spec2nexus.diffractometers import LatticeParameters3D
 from spec2nexus.eznx import write_dataset, makeGroup, openGroup, makeLink
 from spec2nexus.scanf import scanf
 from spec2nexus.spec import (
@@ -354,7 +355,7 @@ class SPEC_Geometry(ControlLineBase):
             if scan.diffractometer.lattice is not None:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
                 lattice = scan.diffractometer.lattice
-                if (hasattr(lattice, "c")) and (hasattr(lattice, "alpha")) and (hasattr(lattice, "beta")):
+                if isinstance(lattice, LatticeParameters3D):
                     abc = [getattr(lattice, k) for k in "a b c".split()]
                     angles = [getattr(lattice, k) for k in "alpha beta gamma".split()]
                     write_dataset(
@@ -371,8 +372,14 @@ class SPEC_Geometry(ControlLineBase):
                     )
                 else:  # not a 3D lattice, so ad hoc structure
                     for k in lattice._fields:
+                        v = getattr(lattice, k)
+                        egu = "angstrom"
+                        if len(k) > 1:
+                            # Assumes lengths have single letters,
+                            # angles are spelled out.
+                            egu = "degrees"
                         write_dataset(
-                            nxsample, f"unit_cell_{k}", getattr(lattice, k),
+                            nxsample, f"unit_cell_{k}", v, units=egu,
                         )
             if "ub_matrix" in gpar:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
