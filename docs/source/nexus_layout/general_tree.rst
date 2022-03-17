@@ -33,7 +33,8 @@ HDF5 address                                  structure       reference
 ``/SCAN/G/G3``                                NX_NUMBER[]     :ref:`data.file.geometry`
 ``/SCAN/G/G4``                                NX_NUMBER[]     :ref:`data.file.geometry`
 ``/SCAN/instrument``                          NXinstrument    :ref:`data.file.instrument`
-``/SCAN/instrument/geometry_parameters``      NXnote          :ref:`data.file.geometry`
+``/SCAN/instrument/diffractometer``           NXnote          :ref:`data.file.geometry`
+``/SCAN/instrument/geometry_parameters``      NXnote          link to ``/SCAN/instrument/diffractometer``
 ``/SCAN/instrument/name``                     NX_CHAR         :ref:`data.file.geometry`
 ``/SCAN/instrument/monochromator``            NXmonochromator :ref:`data.file.geometry`
 ``/SCAN/instrument/monochromator/wavelength`` NX_NUMBER       :ref:`data.file.geometry`

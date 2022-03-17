@@ -143,6 +143,13 @@ class Writer(object):
         for func in scan.h5writers.values():
             # ask the scan plugins to save their part
             func(nxentry, self, scan, nxclass=CONTAINER_CLASS)
+
+        # additions: links
+        if "instrument/geometry_parameters" in nxentry:
+            nxinstrument = nxentry["instrument"]
+            nxinstrument["diffractometer"] = nxinstrument["geometry_parameters"]
+            target = nxinstrument["diffractometer"]
+            target.attrs["target"] = target.name
         if ("positioners" in nxentry) and ("instrument/positioners" in nxentry):
             target = nxentry["instrument/positioners"]
             # turn the link around

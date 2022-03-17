@@ -84,8 +84,9 @@ The uninterpreted information from the ``#G`` control lines is written to
       G4:NX_FLOAT64[26] = [3.986173683, 4.00012985, 0.0, '...', 0.0]
         @spec_name = "G4"
 
-The interpreted information from the ``G[]`` array is written to ``/SCAN/instrument/geometry_parameters``
-(see section :ref:`data.file.geometry`).  Text description
+The interpreted information from the ``G[]`` array is written to
+``/SCAN/instrument/diffractometer`` (and linked to
+``/SCAN/instrument/geometry_parameters``).  Text description
 of each parameter is provided when available.
 
 If it was possible to determine the name of the diffractometer geometry, that
@@ -108,7 +109,7 @@ descrption of any of the geometry information.
       @NX_class = "NXinstrument"
       name:NX_CHAR = [b'fourc.default']
       positioners --> /S1/positioners
-      geometry_parameters:NXnote
+      diffractometer:NXnote
         @NX_class = "NXnote"
         @description = "SPEC geometry arrays, interpreted"
         ALPHA:NX_FLOAT64 = 0.0
