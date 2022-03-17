@@ -353,28 +353,27 @@ class SPEC_Geometry(ControlLineBase):
             )
             if scan.diffractometer.lattice is not None:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
-                abc = [
-                    scan.diffractometer.lattice.a,
-                    scan.diffractometer.lattice.b,
-                    scan.diffractometer.lattice.c,
-                ]
-                angles = [
-                    scan.diffractometer.lattice.alpha,
-                    scan.diffractometer.lattice.beta,
-                    scan.diffractometer.lattice.gamma,
-                ]
-                write_dataset(
-                    nxsample, "unit_cell_abc", abc, units="angstrom",
-                )
-                write_dataset(
-                    nxsample,
-                    "unit_cell_alphabetagamma",
-                    angles,
-                    units="degrees",
-                )
-                write_dataset(  # ah, NeXus ... so many ways ...
-                    nxsample, "unit_cell", abc + angles,
-                )
+                lattice = scan.diffractometer.lattice
+                if (hasattr(lattice, "c")) and (hasattr(lattice, "alpha")) and (hasattr(lattice, "beta")):
+                    abc = [getattr(lattice, k) for k in "a b c".split()]
+                    angles = [getattr(lattice, k) for k in "alpha beta gamma".split()]
+                    write_dataset(
+                        nxsample, "unit_cell_abc", abc, units="angstrom",
+                    )
+                    write_dataset(
+                        nxsample,
+                        "unit_cell_alphabetagamma",
+                        angles,
+                        units="degrees",
+                    )
+                    write_dataset(  # ah, NeXus ... so many ways ...
+                        nxsample, "unit_cell", abc + angles,
+                    )
+                else:  # not a 3D lattice, so ad hoc structure
+                    for k in lattice._fields:
+                        write_dataset(
+                            nxsample, f"unit_cell_{k}", getattr(lattice, k),
+                        )
             if "ub_matrix" in gpar:
                 nxsample = openGroup(h5parent, "sample", "NXsample")
                 ub = gpar["ub_matrix"].value
@@ -405,7 +404,8 @@ class SPEC_Geometry(ControlLineBase):
                     )
                     write_dataset(nxnote, "h", ref.h)
                     write_dataset(nxnote, "k", ref.k)
-                    write_dataset(nxnote, "l", ref.l)
+                    if hasattr(ref, "l"):
+                        write_dataset(nxnote, "l", ref.l)
                     write_dataset(
                         nxnote,
                         "wavelength",
