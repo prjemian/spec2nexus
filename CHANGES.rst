@@ -25,13 +25,14 @@ release expected by middle 2022-03
 Notice
 ------------------------------------
 
-* Use conda-forge now: ``conda install -c conda-forge spec2nexus``
+* Conda package now on conda-forge: ``conda install -c conda-forge spec2nexus``
 * Updated format for new Change History entries.
 
 Breaking Changes
 ------------------------------------
 
-* (planned) Scans now identified by numeric keys instead of strings.
+The plugin system was rebuilt to make it easier to write and load plugins,
+especially custom, user-provided plugins.
 
 New Features and/or Enhancements
 ------------------------------------
@@ -45,10 +46,15 @@ Add new diffractometer configuration reports:
 * ``scan.diffractometer.print_brief(scan)`` : content similar to SPEC's ``wh``
 * ``scan.diffractometer.print_all(scan)`` : content similar to SPEC's ``pa``
 
+Documentation reorganized and using new Furo theme.
+
+New documentation of the NeXus file structure.
+
 Fixes
 ------------------------------------
 
 * ``eznx``: needs to return text as ``str`` (not ``bytes``).
+* ``twoc``: diffractometer geometry has 2-D lattice and reflection(s)
 
 Maintenance
 ------------------------------------
@@ -58,7 +64,7 @@ Maintenance
   single and multiple MCA detectors.
 * Tests of code using Python 3.7, 3.8, 3.9, 3.10
 * All unit test code now in-source using ``pytest``
-* Code is not compliant with [PEP8](https://pep8.org/) (Python code style guide).
+* Code is now compliant with `PEP8 <https://pep8.org/>`_ (Python code style guide).
 * Increase number of unit tests to improve code coverage (now ~95%).
 * Resume use of test code coverage reporting:
   https://coveralls.io/github/prjemian/spec2nexus
@@ -68,8 +74,15 @@ Deprecations
 
 * Python versions lower than 3.7 are no longer supported.
 
-.. Contributors
-   ------------------------------------
+Contributors
+------------------------------------
+
+* Radu Abrudan
+
+-------------
+
+Older Releases
++++++++++++++++
 
 :2021.1.11: released *2022.02.24*
 
