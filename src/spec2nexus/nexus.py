@@ -85,7 +85,7 @@ def get_user_parameters():
         action="store",
         dest="output_filename",
         help=msg)
-    
+
     #     parser.add_argument('-t',
     #                         '--tree-only',
     #                         action='store_true',
