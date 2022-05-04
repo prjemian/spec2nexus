@@ -1,8 +1,6 @@
 General Tree Structure
 ----------------------
 
-.. FIXME: links have changed direction, new contents added
-
 The **general tree structure** (with parts described in the sections below)
 will follow this outline:
 
