@@ -917,6 +917,52 @@ class SPEC_HKL(ControlLineBase):
         write_dataset(h5parent, "Q", scan.Q, description=desc)
 
 
+class SPEC_UserResults(ControlLineBase):
+
+    """
+    **#R** -- Reserved for user results
+
+    IN-MEMORY REPRESENTATION
+
+    * (SpecDataFileHeader): **R**, [*str*]
+    * (SpecDataFileScan): **R**, [*str*]
+
+    HDF5/NeXus REPRESENTATION
+
+    * Within a *NXnote* group named **UserResults** in the *NXentry* group:
+      dataset(s) named **header_##** (from the SPEC data file header
+      section) or **item_##** (from the SPEC data file scan section),
+      such as */S1/UserResults/header_1* and  */S1/UserResults/item_5*
+    """
+
+    key = r"#R"
+    scan_attributes_defined = ["R"]
+
+    def process(self, text, sdf_object, *args, **kws):
+        text = strip_first_word(text)
+        if not hasattr(sdf_object, "R"):
+            sdf_object.R = []
+        sdf_object.R.append(text.strip())
+
+        sdf_object.addH5writer(self.key, self.writer)
+
+    def writer(self, h5parent, writer, sdf_object, *args, **kws):
+        """Describe how to store this data in an HDF5 NeXus file"""
+        desc = 'SPEC control line "#R: Reserved for user results"'
+        group = openGroup(
+            h5parent, "UserResults", "NXnote", description=desc
+        )
+        if isinstance(sdf_object, SpecDataFileHeader):
+            tag = "header"
+        else:
+            tag = "item"
+        for i, text in enumerate(sdf_object.R):
+            key = "%s_%d" % (tag, i + 1)
+            write_dataset(
+                group, key, text, description="#R line %d" % (i + 1)
+            )
+
+
 class SPEC_CountTime(ControlLineBase):
 
     """
@@ -957,7 +1003,7 @@ class SPEC_CountTime(ControlLineBase):
 class SPEC_UserReserved(ControlLineBase):
 
     """
-    **#U** -- Reserved for user
+    **#U** -- Reserved for user-defined information
 
     IN-MEMORY REPRESENTATION
 
