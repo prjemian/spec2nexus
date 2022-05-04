@@ -45,7 +45,8 @@ command-line options
     :linenos:
 
       user@host ~$ spec2nexus.py -h
-      usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-v] [-s SCAN_LIST] [-t]
+      usage: spec2nexus [-h] [-e HDF5_EXTENSION] [-f] [-v] [-s SCAN_LIST]
+                        [-o OUTPUT_FILENAME]
                         [--quiet | --verbose]
                         infile [infile ...]
 
@@ -64,6 +65,9 @@ command-line options
         -s SCAN_LIST, --scan SCAN_LIST
                               specify which scans to save, such as: -s all or -s 1
                               or -s 1,2,3-5 (no spaces!), default = all
+        -o OUTPUT_FILENAME, --output OUTPUT_FILENAME
+                              explicitly set the output file (default is same as input file, but with
+                              the .spec extension changed to .hdf5)
         --quiet 	            suppress all program output (except errors), do not
                               use with --verbose option
         --verbose	            print more program output, do not use with --quiet

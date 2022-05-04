@@ -28,6 +28,11 @@ New Features and/or Enhancements
 Added ``--output`` (short version: ``-o``) command-line option to
 ``spec2nexus`` application to name the output file.
 
+Maintenance
+------------------------------------
+
+Add support for SPEC ``#R` (user results) control line.
+
 Contributors
 ------------------------------------
 
