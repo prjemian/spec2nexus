@@ -1,17 +1,23 @@
 """Tests for the spec module."""
 
+import h5py
 import numpy as np
 import os
+import pathlib
 import platform
 import pytest
 import time
 
 from . import _core
+from ._core import EXAMPLES_PATH
 from ._core import file_from_examples
 from ._core import file_from_tests
+from ._core import hfile
+from ._core import TEST_DATA_PATH
 from ._core import testpath
 from .. import spec
 from .. import utils
+from .. import writer
 
 
 # interval between file update and mtime reading
@@ -535,7 +541,71 @@ def test_slicing_errors(filename, given, error):
             f"spec.SpecDataFile(file_from_examples('{filename}'))[{given}]"
         )
 
-# -----------------------------------------------------------------------------
+
+@pytest.mark.parametrize(
+    "specFile, scan_number, contents",
+    [
+        [f"{EXAMPLES_PATH}/user6idd.dat", 2, ["2"]],
+        [f"{EXAMPLES_PATH}/user6idd.dat", 1, None],
+        [
+            f"{TEST_DATA_PATH}/issue109_data.txt",
+            11,
+            [(
+                "11  Max: 83356  at 5.469   FWHM: 0.0165099"
+                "  at 5.48551   COM: 5.48525   SUM: 3.47646e+06"
+            )]
+        ],
+    ]
+)
+def test_user_results__issue263(specFile, scan_number, contents, hfile):
+    assert os.path.exists(specFile)
+
+    sdf = spec.SpecDataFile(specFile)
+    assert isinstance(sdf, spec.SpecDataFile)
+
+    scan = sdf.getScan(scan_number)
+    assert isinstance(scan, spec.SpecDataFileScan)
+
+    assert not scan.__interpreted__, (specFile, scan_number)
+
+    scan.interpret()
+    assert scan.__interpreted__, (specFile, scan_number)
+
+    if contents is None:
+        assert not hasattr(scan, "R"), (specFile, scan_number)
+    else:
+        assert hasattr(scan, "R"), (specFile, scan_number)
+        assert scan.R == contents, (specFile, scan_number)
+
+    # test HDF5 file
+    specwriter = writer.Writer(sdf)
+    specwriter.save(hfile, [scan_number])
+    assert pathlib.Path(hfile).exists()
+    with h5py.File(hfile, "r") as root:
+        entry_name = f"/S{scan_number}"
+        assert entry_name in root
+
+        entry = root[entry_name]
+        key = "UserResults"
+        if contents is None:
+            assert key not in entry
+        else:
+            assert key in entry
+
+            note = entry[key]
+            assert note.attrs.get("NX_class") == "NXnote"
+            assert len(note) == len(contents)
+
+            for i, item in enumerate(contents, start=1):
+                item_name = f"item_{i}"
+                assert item_name in note
+
+                v = note[item_name][()][0].decode()
+                assert v == item, (specFile, scan_number, item_name, item, v)
+
+
+# ----------------------
+# -------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
 # :copyright: (c) 2014-2022, Pete R. Jemian
