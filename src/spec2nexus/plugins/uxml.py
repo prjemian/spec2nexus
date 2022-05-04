@@ -101,7 +101,7 @@ class UXML_metadata(ControlLineBase):
             try:
                 xml_schema.assertValid(root)  # basic exception report
             except etree.DocumentInvalid as exc:
-                raise UXML_Error(f"UXML error: {exc}")
+                raise UXML_Error(f"UXML error in {scan.parent.fileName}: {exc}")
 
         scan.addH5writer("UXML_metadata", self.writer)
 
