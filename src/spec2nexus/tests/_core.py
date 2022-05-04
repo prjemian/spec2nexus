@@ -40,6 +40,7 @@ CONTROL_KEYS_TO_BE_TESTED = set([
     "#O\\d+",
     "#P\\d+",
     "#Q",
+    "#R",
     "#S",
     "#T",
     "#U",
