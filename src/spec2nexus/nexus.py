@@ -76,6 +76,16 @@ def get_user_parameters():
         default=SCAN_LIST_ALL,
         help=msg,
     )
+    msg = "explicitly set the output file (default is same as input file, "
+    msg += "but with the .spec extension changed to .hdf5)"
+    parser.add_argument(
+        "-o",
+        "--output",
+        nargs=1,
+        action="store",
+        dest="output_filename",
+        help=msg)
+
     #     parser.add_argument('-t',
     #                         '--tree-only',
     #                         action='store_true',
@@ -179,7 +189,10 @@ def main():
             print("  converting scan number(s): " + ", ".join(map(str, scan_list)))
 
         basename = os.path.splitext(spec_data_file_name)[0]
-        nexus_output_file_name = basename + user_parms.hdf5_extension
+        if user_parms.output_filename is None:
+            nexus_output_file_name = basename + user_parms.hdf5_extension
+        else:
+            nexus_output_file_name = user_parms.output_filename[0]
         if user_parms.force_write or not os.path.exists(nexus_output_file_name):
             out = writer.Writer(spec_data)
             out.save(nexus_output_file_name, scan_list)
