@@ -22,6 +22,17 @@ Production
 
 release expected by end of 2022-05
 
+New Features and/or Enhancements
+------------------------------------
+
+Added ``--output`` (short version: ``-o``) command-line option to
+``spec2nexus`` application to name the output file.
+
+Contributors
+------------------------------------
+
+* Florin Boariu
+
 2021.2.0
 +++++++++++++
 
