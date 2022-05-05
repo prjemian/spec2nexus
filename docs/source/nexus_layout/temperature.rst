@@ -40,7 +40,7 @@ and also linked into a new ``temperature`` subgroup [#NXlog]_ of the
 .. code-block::
    :linenos:
 
-  #X Control: 298.873K  Sample: 299.036K
+   #X Control: 298.873K  Sample: 299.036K
 
     DEGC_SP:NX_FLOAT64 = 299.036
     TEMP_SP:NX_FLOAT64 = 298.873

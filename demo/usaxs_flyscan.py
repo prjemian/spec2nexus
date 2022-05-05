@@ -14,10 +14,13 @@ Plot data from the USAXS FlyScan macro.
 
 import h5py
 import numpy
-import os
+import pathlib
 
 import spec2nexus.specplot
 import spec2nexus.specplot_gallery
+
+# $URL: https://subversion.xray.aps.anl.gov/small_angle/USAXS/livedata/specplot.py $
+REDUCED_FLY_SCAN_BINS = 250  # the default
 
 
 # methods picked (& modified) from the USAXS livedata project
@@ -26,14 +29,14 @@ def read_reduced_fly_scan_file(hdf5_file_name):
     Read any and all reduced data from the HDF5 file, return in a dictionary.
 
     dictionary = {
-      'full': dict(Q, R, R_max, ar, fwhm, centroid)
-      '250':  dict(Q, R, dR)
-      '5000': dict(Q, R, dR)
+      'full': (dictionary keys: Q, R, R_max, ar, fwhm, centroid)
+      '250':  (dictionary keys: Q, R, dR)
+      '5000': (dictionary keys: Q, R, dR)
     }
     """
 
     reduced = {}
-    with h5py.File(hdf5_file_name, "r") as hdf:
+    with h5py.File(str(hdf5_file_name), "r") as hdf:
         entry = hdf["/entry"]
         for key in entry.keys():
             if key.startswith("flyScan_reduced_"):
@@ -50,21 +53,17 @@ def read_reduced_fly_scan_file(hdf5_file_name):
     return reduced
 
 
-# $URL: https://subversion.xray.aps.anl.gov/small_angle/USAXS/livedata/specplot.py $
-REDUCED_FLY_SCAN_BINS = 250  # the default
-
-
 def retrieve_flyScanData(scan):
     """Retrieve reduced, rebinned data from USAXS Fly Scans."""
-    path = os.path.dirname(scan.header.parent.fileName)
-    key_string = "FlyScan file name = "
     comment = scan.comments[2]
+    key_string = "FlyScan file name = "
     index = comment.find(key_string) + len(key_string)
     hdf_file_name = comment[index:-1]
-    abs_file = os.path.abspath(os.path.join(path, hdf_file_name))
+    path = pathlib.Path(scan.header.parent.fileName).parent
+    abs_file = (path / hdf_file_name).absolute()
 
     plotData = {}
-    if os.path.exists(abs_file):
+    if abs_file.exists():
         reduced = read_reduced_fly_scan_file(abs_file)
         s_num_bins = str(REDUCED_FLY_SCAN_BINS)
 
@@ -123,13 +122,15 @@ def debugging_setup():
     import sys
     import shutil
 
-    sys.path.insert(0, os.path.join("..", "src"))
+    path = pathlib.Path("..") / "src"
+    sys.path.insert(0, str(path))
     path = "__usaxs__"
     shutil.rmtree(path, ignore_errors=True)
-    os.mkdir(path)
+    pathlib.os.mkdir(path)
     sys.argv.append("-d")
     sys.argv.append(path)
-    sys.argv.append(os.path.join("..", "src", "spec2nexus", "data", "02_03_setup.dat"))
+    data_file = path / "spec2nexus" / "data" / "02_03_setup.dat"
+    sys.argv.append(str(data_file.absolute()))
 
 
 def main():

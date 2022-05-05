@@ -238,7 +238,7 @@ reduced data is on a log-log plot to reveal the many decades of both :math:`I` a
 :math:`Q` covered by the measurement.
 
 With the default handling by :class:`~spec2nexus.specplot.LinePlotter`, no plot 
-can be generated since the dfata is given in a separate HDF5 file.  That file
+can be generated since the data is given in a separate HDF5 file.  That file
 is read with the custom handling of the `usaxs_flyscan.py` demo:
 
 .. rubric:: `usaxs_flyscan.py` example
@@ -255,8 +255,11 @@ The data is then rendered in a customized log-log plot of :math:`I(Q)`:
    
    USAXS *FlyScan*, handled by :class:`USAXS_FlyScan_Plotter`
 
-
 .. TODO: describe the parts of the custom code.
+   (autodoc won't work for out-of-package demo)
+
+   log-log plot
+   missing reduction
 
 
 Usage
