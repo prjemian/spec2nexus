@@ -39,6 +39,7 @@ HDF5 address                                  structure       reference
 ``/SCAN/instrument/positioners``              NXnote          :ref:`data.file.positioners`
 ``/SCAN/M``                                   NX_NUMBER       :ref:`data.file.scan`
 ``/SCAN/MCA``                                 NXnote          :ref:`data.file.mca`
+``/SCAN/metadata``                            NXnote          :ref:`data.file.metadata.HV`
 ``/SCAN/monitor``                             NXmonitor       :ref:`data.file.scan`
 ``/SCAN/monitor/preset``                      NX_NUMBER       :ref:`data.file.scan`
 ``/SCAN/positioner_cross_reference``          NXnote          :ref:`data.file.positioners`
@@ -71,7 +72,8 @@ HDF5 address                                  structure       reference
 ``/SCAN/TEMP_SP``                             NX_NUMBER       :ref:`data.file.scan`
 ``/SCAN/title``                               NX_CHAR         :ref:`data.file.scan`
 ``/SCAN/{UNRECOGNIZED}``                      NXnote          :ref:`data.file.unrecognized`
-``/SCAN/UserReserved``                        NXnote          :ref:`data.file.metadata`
+``/SCAN/UserReserved``                        NXnote          :ref:`data.file.metadata.U`
+``/SCAN/UXML``                                NXnote          :ref:`data.file.metadata.UXML`
 ============================================= =============== =============================
 
 

@@ -31,7 +31,7 @@ Added ``--output`` (short version: ``-o``) command-line option to
 Maintenance
 ------------------------------------
 
-Add support for SPEC ``#R` (user results) control line.
+Add support for SPEC ``#R`` (user results) control line.
 
 Contributors
 ------------------------------------
