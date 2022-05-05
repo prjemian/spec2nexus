@@ -21,6 +21,7 @@ import spec2nexus.specplot_gallery
 
 # $URL: https://subversion.xray.aps.anl.gov/small_angle/USAXS/livedata/specplot.py $
 REDUCED_FLY_SCAN_BINS = 250  # the default
+PLOT_AXES = ["Q", "R"]
 
 
 # methods picked (& modified) from the USAXS livedata project
@@ -42,7 +43,7 @@ def read_reduced_fly_scan_file(hdf5_file_name):
             if key.startswith("flyScan_reduced_"):
                 nxdata = entry[key]
                 d = {}
-                for dsname in ["Q", "R"]:
+                for dsname in PLOT_AXES:
                     if dsname in nxdata:
                         value = nxdata[dsname]
                         if value.size == 1:
@@ -70,7 +71,7 @@ def retrieve_flyScanData(scan):
         choice = reduced.get(s_num_bins) or reduced.get("full")
 
         if choice is not None:
-            plotData = {axis: choice[axis] for axis in "Q R".split()}
+            plotData = {axis: choice[axis] for axis in PLOT_AXES}
 
     return plotData
 
@@ -93,7 +94,7 @@ class USAXS_FlyScan_Plotter(spec2nexus.specplot.LinePlotter):
             raise spec2nexus.specplot.NoDataToPlot(str(self.scan))
 
         self.signal = "R"
-        self.axes = ["Q", ]
+        self.axes = ["Q"]
         self.data = fly_data
 
         # customize the plot just a bit
