@@ -1,17 +1,18 @@
 """Tests for the UXML control lines."""
 
+
+from . import _core
+from ._core import file_from_tests
+from ._core import hfile
+from .. import writer
+from ..plugins import uxml
+from ..spec import SpecDataFile, SpecDataFileScan
+
 from lxml import etree
 import h5py
 import numpy
 import os
 import pytest
-
-from . import _core
-from ._core import hfile
-from ._core import file_from_tests
-from ..plugins import uxml
-from .. import writer
-from ..spec import SpecDataFile, SpecDataFileScan
 
 
 SPEC_DATA_FILE_LINES = """
@@ -114,7 +115,7 @@ def test_writer():
     assert result
 
 
-def test_UXML_Error(hfile):
+def test_UXML_DocumentInvalid(hfile):
     spec_file = file_from_tests("test_3_error.spec")
     assert os.path.exists(spec_file)
 
@@ -123,15 +124,11 @@ def test_UXML_Error(hfile):
 
     scan = spec_data.getScan(1)
 
-    with pytest.raises(uxml.UXML_Error) as exc:
+    with pytest.raises(etree.DocumentInvalid) as exc:
         scan.interpret()
     received = str(exc.value.args[0])
-    expected = (
-        "UXML error: Element 'group': "
-        "Character content other than whitespace is not allowed "
-        "because the content type is 'element-only'."
-    )
-    assert received.startswith(expected)
+    expected = "Element 'group': Character content other than whitespace is not allowed"
+    assert received.startswith(expected), (received, exc)
 
 
 def test_file_3(hfile):

@@ -6,6 +6,7 @@
 """
 
 from lxml import etree
+import logging
 import os
 
 from spec2nexus.eznx import makeGroup, makeLink, makeDataset
@@ -13,13 +14,14 @@ from spec2nexus.plugin_core import ControlLineBase
 from spec2nexus.utils import strip_first_word
 
 
+logger = logging.getLogger(__name__)
 DEFAULT_XML_ROOT_TAG = "UXML"
 UXML_PROVIDES_ROOT_TAG = False
 XML_SCHEMA = os.path.join(os.path.dirname(__file__), "uxml.xsd")
 
 
 class UXML_Error(Exception):
-    pass
+    """Report detected UXML errors."""
 
 
 class UXML_metadata(ControlLineBase):
@@ -96,12 +98,12 @@ class UXML_metadata(ControlLineBase):
         xml_schema = etree.XMLSchema(xml_schema_tree)
 
         if not xml_schema.validate(root):
-            # XML file is not valid, let lxml report what is wrong as an exception
+            # XML file is not valid, lxml will raise an exception
+            logger.warning(
+                "XML Schema error in file '%s': %s", scan.parent.fileName, xml_schema.error_log
+            )
             # log = xmlschema.error_log    # access more details
-            try:
-                xml_schema.assertValid(root)  # basic exception report
-            except etree.DocumentInvalid as exc:
-                raise UXML_Error(f"UXML error in {scan.parent.fileName}: {exc}")
+            xml_schema.assertValid(root)
 
         scan.addH5writer("UXML_metadata", self.writer)
 

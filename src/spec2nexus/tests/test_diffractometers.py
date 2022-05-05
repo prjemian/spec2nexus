@@ -2,16 +2,17 @@
 unit tests for the diffractometers module
 """
 
+
+from ._core import EXAMPLES_PATH
+from ._core import TEST_DATA_PATH
+from .. import diffractometers
+from .. import spec
+
+from lxml import etree
 import numpy
 import os
 import pathlib
 import pytest
-
-from ._core import EXAMPLES_PATH
-from ._core import TEST_DATA_PATH
-from .. import spec
-from .. import diffractometers
-from ..plugins.uxml import UXML_Error
 
 
 def test_dictionary():
@@ -150,7 +151,7 @@ def test_class_DiffractometerGeometryCatalog():
         [TEST_DATA_PATH, "issue119_data.txt", -1, "spec.default", None],  # USAXS
         [TEST_DATA_PATH, "issue161_spock_spec_file", -1, "spec.default", None],  # SPOCK
         [TEST_DATA_PATH, "JL124_1.spc", -1, "sixc.default", None],
-        [TEST_DATA_PATH, 'test_3_error.spec', -1, 'spec', UXML_Error],  # UXML, has syntax error
+        [TEST_DATA_PATH, 'test_3_error.spec', -1, 'spec', etree.DocumentInvalid],  # UXML, has syntax error
         [TEST_DATA_PATH, "test_3.spec", -1, "spec", None],  # predates #o (mnemonics) lines
         [TEST_DATA_PATH, "test_4.spec", -1, "spec", None],  # predates #o (mnemonics) lines
         [EXAMPLES_PATH, "02_03_setup.dat", -1, "spec.default", None],
@@ -187,7 +188,7 @@ def test_file_processing(base_path, filename, scan_number, geo_name, exc):
     assert scan is not None
 
     if exc is not None:
-        with pytest.raises(Exception):  # hmmm.. can't seem to catch UXML_Error here
+        with pytest.raises(exc):
             scan.interpret()
             dgc.match(scan)
             return
