@@ -115,7 +115,7 @@ def test_writer():
     assert result
 
 
-def test_UXML_DocumentInvalid(hfile):
+def test_UXML_DocumentInvalid():
     spec_file = file_from_tests("test_3_error.spec")
     assert os.path.exists(spec_file)
 
