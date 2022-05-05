@@ -59,6 +59,7 @@ def retrieve_flyScanData(scan):
     comment = scan.comments[2]
     key_string = "FlyScan file name = "
     index = comment.find(key_string) + len(key_string)
+
     hdf_file_name = comment[index:-1]
     path = pathlib.Path(scan.header.parent.fileName).parent
     abs_file = (path / hdf_file_name).absolute()
