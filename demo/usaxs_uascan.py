@@ -21,8 +21,10 @@ class UAscan_Plotter(spec2nexus.specplot.LinePlotter):
         spec2nexus.specplot.LinePlotter.retrieve_plot_data(self)
 
         if self.signal in self.data:
+            # can't plot negative Y on log scale
+            # Alternative to raising NotPlottable would be
+            # to remove any data where Y <= 0
             if min(self.data[self.signal]) <= 0:
-                # TODO: remove any data where Y <= 0 (can't plot on log scale)
                 msg = "cannot plot Y<0: " + str(self.scan)
                 raise spec2nexus.specplot.NotPlottable(msg)
 
