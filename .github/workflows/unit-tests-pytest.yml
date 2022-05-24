@@ -40,17 +40,17 @@ jobs:
 
     - name: Install dependencies
       run: |
-        $CONDA/bin/conda env update --file environment.yml --name $ENV_NAME
-        $CONDA/bin/conda install coverage coveralls pytest pyyaml ruamel_yaml yaml -c conda-forge --name $ENV_NAME
-        $CONDA/bin/conda list -r --name $ENV_NAME
+        mamba env update --file environment.yml --name $ENV_NAME
+        mamba install coverage coveralls pytest pyyaml ruamel_yaml yaml -c conda-forge --name $ENV_NAME
+        mamba list -r --name $ENV_NAME
       env:
         PY_VER: ${{ matrix.python-version }}
         ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
 
     - name: Diagnostic
       run: |
-        $CONDA/bin/conda env list
-        $CONDA/bin/conda list --name $ENV_NAME
+        mamba env list
+        mamba list --name $ENV_NAME
       env:
         PY_VER: ${{ matrix.python-version }}
         ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
