@@ -163,7 +163,7 @@ class Diffractometer:
 
         if level in ("pa", "wh"):
             info["lattice"] = f"{self.lattice}"
-            for key in "alpha beta azimuth omega".split():  # TODO: generalize
+            for key in "alpha beta azimuth omega".split():  # TODO: generalize per issue #274
                 if key.upper() in gpars:
                     info[key.lower()] = f"{gpars[key.upper()].value}"
 

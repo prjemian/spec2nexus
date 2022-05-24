@@ -11,6 +11,7 @@ SPEC data file standard control lines
 
 from collections import OrderedDict
 import datetime
+import logging
 import time
 
 from spec2nexus.plugin_core import ControlLineBase
@@ -34,6 +35,7 @@ from spec2nexus.utils import (
 from spec2nexus.writer import CONTAINER_CLASS
 
 
+logger = logging.getLogger(__name__)
 SCAN_DATA_KEY = "scan_data"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,8 +126,6 @@ class SPEC_Date(ControlLineBase):
 
     def process(self, text, sdf_object, *args, **kws):
         text = strip_first_word(text)
-        # if isinstance(sdf_object, SpecDataFileScan):
-        #     sdf_object = sdf_object.header
         sp = text.split(" ")
         if len(sp) == 1:
             sdf_object.epoch = int(float(text))
@@ -139,10 +139,18 @@ class SPEC_Date(ControlLineBase):
             sdf_object.epoch = time.mktime(ts)
         if isinstance(sdf_object, SpecDataFileScan):
             sdf_object.addH5writer(self.key, self.writer)
-            if len(sdf_object.header.date.strip()) == 0:
-                sdf_object.header.date = text
-                sdf_object.header.epoch = sdf_object.epoch
-            # TODO: what if header date is greater than this scan's date?
+            header = sdf_object.header
+            if len(header.date.strip()) == 0:
+                header.date = text
+                header.epoch = sdf_object.epoch
+            else:
+                # Report if header date is greater than this scan's date.
+                if header.epoch > sdf_object.epoch:
+                    logger.warning(
+                        "Header epoch (%s) is younger than scan (%s)",
+                        str(datetime.datetime.fromtimestamp(header.epoch)),
+                        str(datetime.datetime.fromtimestamp(sdf_object.epoch)),
+                    )
 
     def writer(self, h5parent, writer, sdf_object, *args, **kws):
         """Describe how to store this data in an HDF5 NeXus file"""
@@ -224,7 +232,7 @@ class SPEC_Scan(ControlLineBase):
     def process(self, part, sdf, *args, **kws):
         if len(sdf.headers) == 0:
             # make a header if none exists now
-            raw = ""  # TODO: what default content to use?
+            raw = ""
             header = SpecDataFileHeader(raw, parent=sdf)
             sdf.headers.append(header)
         else:
