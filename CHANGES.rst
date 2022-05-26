@@ -17,10 +17,16 @@ Change History
 Production
 **********
 
+2021.2.2
++++++++++++++
+
+release expected by end of 2022-07
+**********
+
 2021.2.1
 +++++++++++++
 
-release expected by end of 2022-05
+released 2022-05-26
 
 New Features and/or Enhancements
 ------------------------------------
