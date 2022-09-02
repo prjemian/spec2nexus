@@ -13,5 +13,6 @@ The **spec2nexus** package application-programmer interface includes these modul
    plugin_core
    scanf
    singletons
+   spec
    utils
    writer

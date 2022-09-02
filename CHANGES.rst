@@ -20,8 +20,7 @@ Production
 2021.2.2
 +++++++++++++
 
-release expected by end of 2022-07
-**********
+release expected by end of 2022-09
 
 2021.2.1
 +++++++++++++
