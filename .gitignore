@@ -77,3 +77,6 @@ nosetests.xml
 
 # PyTest
 .pytest_cache/
+
+# Version Management
+_version.py
