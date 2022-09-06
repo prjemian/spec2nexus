@@ -1,7 +1,7 @@
 name: spec2nexus
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
   - h5py
   - lxml
