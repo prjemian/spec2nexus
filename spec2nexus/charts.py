@@ -18,8 +18,6 @@ import matplotlib.figure
 matplotlib.use("Agg")
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
-import spec2nexus
-
 
 SCALING_FACTOR = 1  # 2**24
 PLOT_H_INT = 9  # 7
