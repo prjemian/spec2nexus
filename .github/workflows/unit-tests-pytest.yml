@@ -1,10 +1,42 @@
 name: Unit Tests
 
-on: [push, pull_request]
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:   # allow manual triggering
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
+
+  # lint:
+  #   name: Code style
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - uses: actions/setup-python@v2
+
+  #     - name: Install Dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install flake8
+
+  #     - name: Run flake8
+  #       run: |
+  #         flake8
+
   build-linux:
-    name: CI py${{ matrix.python-version }}
+    name: Python ${{ matrix.python-version }}
+    # needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,70 +46,45 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v2
+    - name: Create Python ${{ matrix.python-version }} environment
+      uses: mamba-org/provision-with-micromamba@main
+      # use main branch to enable choice of channel-priority
       with:
-        activate-environment:
-            anaconda-test-env-py-${{ matrix.python-version }}
-        auto-update-conda: true
-        channel-priority: true
-        channels: defaults,conda-forge,prjemian
-        # environment-file: environment.yml
-        mamba-version: "*"
-        python-version: ${{ matrix.python-version }}
-        use-only-tar-bz2: true  # required for caching
-    - shell: bash -l {0}
-      run: |
-        conda info
-        conda list
-        conda config --show-sources
-        conda config --show
-        conda env list
-        printenv | sort
-
-    # $CONDA is an environment variable pointing to the
-    # root of the miniconda directory
-
-    - name: Install dependencies
-      run: |
-        mamba env update --file environment.yml --name $ENV_NAME
-        mamba install coverage coveralls pytest pyyaml ruamel_yaml yaml setuptools-scm -c conda-forge --name $ENV_NAME
-        mamba list -r --name $ENV_NAME
-      env:
-        PY_VER: ${{ matrix.python-version }}
-        ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
+        cache-env: true
+        cache-env-key: env-key-${{ matrix.python-version }}
+        channel-priority: flexible
+        environment-file: environment.yml
+        environment-name: anaconda-test-env-py-${{ matrix.python-version }}
+        extra-specs: |
+          coverage
+          coveralls
+          pytest
+          pyyaml
+          ruamel_yaml
+          yaml
+          setuptools-scm
 
     - name: Diagnostic
       run: |
-        mamba env list
-        mamba list --name $ENV_NAME
-      env:
-        PY_VER: ${{ matrix.python-version }}
-        ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
+        micromamba info
+        micromamba list
+        conda config --show-sources
+        conda config --show
+        micromamba env list
+        printenv | sort
 
     - name: Run tests with pytest & coverage
+      shell: bash -l {0}
       run: |
-        source $CONDA/bin/activate $ENV_NAME
-        coverage run --concurrency=thread --parallel-mode -m pytest --lf -vvv .
+        # proceed as in hklpy
+        coverage run --concurrency=thread --parallel-mode -m pytest -vvv .
         coverage combine
-      env:
-        PY_VER: ${{ matrix.python-version }}
-        ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
-
-    - name: Coverage Report
-      run: |
-        source $CONDA/bin/activate $ENV_NAME
-        coverage report -m --precision 3
-      env:
-        PY_VER: ${{ matrix.python-version }}
-        ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
+        coverage report --precision 3
 
     - name: Upload to coveralls
       # https://github.com/TheKevJames/coveralls-python
+      shell: bash -l {0}
       run: |
-        source $CONDA/bin/activate $ENV_NAME
         coveralls --service=github
       env:
-        PY_VER: ${{ matrix.python-version }}
-        ENV_NAME: anaconda-test-env-py-${{ matrix.python-version }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
