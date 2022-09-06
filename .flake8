@@ -4,9 +4,8 @@ exclude =
     __pycache__,
     build,
     dist,
-    versioneer.py,
     docs/source,
-    src/spec2nexus/_version.py,
+    spec2nexus/_version.py,
     demo,
     docs/debug*.py,
 

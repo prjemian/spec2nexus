@@ -39,7 +39,7 @@ How to use *specplot*
 
 Plot a scan from one of the sample data files supplied with *spec2nexus*::
 
-    user@host ~$ specplot src/spec2nexus/data/APS_spec_data.dat 2 specplot.png
+    user@host ~$ specplot spec2nexus/data/APS_spec_data.dat 2 specplot.png
 
 .. figure:: img/specplot.png
    :width: 95%

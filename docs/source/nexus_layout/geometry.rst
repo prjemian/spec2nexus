@@ -346,7 +346,7 @@ and wavelength) is written to ``/SCAN/sample`` (a **NXsample** [#NXsample]_ grou
         wavelength:NX_FLOAT64 = 0.8265814273
           @units = "Angstrom"
 
-.. [#diffractometer.dict] database of diffractometer geometries in SPEC data files:   https://github.com/prjemian/spec2nexus/blob/main/src/spec2nexus/diffractometer-geometries.dict
+.. [#diffractometer.dict] database of diffractometer geometries in SPEC data files:   https://github.com/prjemian/spec2nexus/blob/main/spec2nexus/diffractometer-geometries.dict
 .. [#NX.unittype] List of NeXus unit categories:   https://manual.nexusformat.org/nxdl-types.html#unit-categories-allowed-in-nxdl-specifications
 .. [#NX.field] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is   due to historical reasons in NeXus when XML was used as a back-end data file   storage format.
 .. [#NXmonochromator] **NXmonochromator**:   https://manual.nexusformat.org/classes/base_classes/NXmonochromator.html

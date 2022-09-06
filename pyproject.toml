@@ -27,4 +27,4 @@ exclude = '''
 '''
 
 [tool.setuptools_scm]
-write_to = "src/spec2nexus/_version.py"
+write_to = "spec2nexus/_version.py"

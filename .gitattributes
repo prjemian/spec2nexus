@@ -1,1 +1,1 @@
-src/spec2nexus/_version.py export-subst
+spec2nexus/_version.py export-subst
