@@ -86,13 +86,11 @@ def expand_scan_range_terms(scans):
 def get_user_parameters():
     """configure user's command line parameters from sys.argv"""
     import argparse
-    from spec2nexus._version import get_versions
-
-    version = get_versions()["version"]
+    from . import __version__
 
     doc = __doc__.strip().splitlines()[0]
     doc += "\n  URL: " + __url__
-    doc += "\n  v" + version
+    doc += "\n  v" + __version__
     parser = argparse.ArgumentParser(
         prog="extractSpecScan", description=doc
     )
@@ -102,7 +100,7 @@ def get_user_parameters():
         "--version",
         action="version",
         help="print version number and exit",
-        version=version,
+        version=__version__,
     )
 
     msg = (

@@ -22,6 +22,13 @@ Production
 
 release expected by end of 2022-09
 
+Maintenance
+------------------------------------
+
+Switch version management to setuptools-scm.
+
+Updated Sphinx (documentation) configuration to v5.1.
+
 2021.2.1
 +++++++++++++
 

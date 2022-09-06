@@ -31,7 +31,7 @@ How to use *specplot_gallery*: command line
 
 Here is an example::
 
-   user@host ~$ specplot_gallery -d ./__demo__ ../src/spec2nexus/data/33bm_spec.dat 
+   user@host ~$ specplot_gallery -d ./__demo__ ../spec2nexus/data/33bm_spec.dat 
 
 .. figure:: img/gallery_screen_33bm.png
    :width: 95%

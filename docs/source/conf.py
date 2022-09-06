@@ -5,6 +5,8 @@
 
 # -- Path setup --------------------------------------------------------------
 
+from importlib.metadata import version
+import configparser
 import pathlib
 import sys
 sys.path.insert(0, str(pathlib.Path().absolute().parent.parent / "src"))
@@ -13,39 +15,36 @@ import spec2nexus
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = spec2nexus.__package_name__
-copyright = spec2nexus.__copyright__
-author = spec2nexus.__author__
-description = spec2nexus.__description__
+root_path = pathlib.Path(__file__).parent.parent.parent
+parser = configparser.ConfigParser()
+parser.read(root_path / "setup.cfg")
+metadata = parser["metadata"]
 
-# version: The short X.Y version
-# release: The full version, including alpha/beta/rc tags
-from spec2nexus._version import get_versions
-versioneer_version = get_versions()['version']
-del get_versions
-versioneer_version = versioneer_version.split('+')
-version = versioneer_version[0]
-# The full version, including alpha/beta/rc tags.
-#release = punx.__release__
-#release = version
-if len(versioneer_version) == 2:
-    release = versioneer_version[1]
-else:
-    release = ''
+project = metadata["name"]
+copyright = metadata["copyright"]
+author = metadata["author"]
+description = metadata["description"]
+rst_prolog = f".. |author| replace:: {author}"
+
+# -- Special handling for version numbers ------------------------------------
+# https://github.com/pypa/setuptools_scm#usage-from-sphinx
+
+release = version(project)
+version = ".".join(release.split(".")[:2])
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.inheritance_diagram',
-]
+extensions = """
+    sphinx.ext.autodoc
+    sphinx.ext.autosummary
+    sphinx.ext.todo
+    sphinx.ext.coverage
+    sphinx.ext.mathjax
+    sphinx.ext.viewcode
+    sphinx.ext.githubpages
+    sphinx.ext.inheritance_diagram
+""".split()
 
 templates_path = ['_templates']
 # source_suffix = ['.rst', '.md']

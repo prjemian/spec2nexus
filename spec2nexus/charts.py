@@ -25,10 +25,7 @@ SCALING_FACTOR = 1  # 2**24
 PLOT_H_INT = 9  # 7
 PLOT_V_INT = 5  # 3
 COLORMAP = "cubehelix"  # https://matplotlib.org/api/pyplot_summary.html#matplotlib.pyplot.colormaps
-WATERMARK_TEXT = "%s, (C) %s" % (
-    spec2nexus.__package_name__,
-    spec2nexus.__copyright__.split(",")[0],
-)
+WATERMARK_TEXT = "spec2nexus, (C) 2014-2022, Pete R. Jemian"
 
 
 def make_png(

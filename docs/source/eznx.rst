@@ -12,7 +12,7 @@ How to use :mod:`spec2nexus.eznx`
 
 Here is a simple example to write a NeXus data file using eznx:
 
-.. literalinclude:: ../../src/spec2nexus/eznx_example.py
+.. literalinclude:: ../../spec2nexus/eznx_example.py
    :tab-width: 4
    :linenos:
    :language: guess

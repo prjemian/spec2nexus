@@ -26,7 +26,7 @@ is defined from the content provided in the SPEC scan.
 
 Please consult the XML Schema file for the rules governing the
 use of ``#UXML`` in a SPEC data file: 
-* :download:`uxml.xsd <../../../src/spec2nexus/plugins/uxml.xsd>`
+* :download:`uxml.xsd <../../../spec2nexus/plugins/uxml.xsd>`
  
 
 ----

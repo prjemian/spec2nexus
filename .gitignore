@@ -9,7 +9,7 @@ dev_data/
 .pydevproject
 
 # output from this program
-src/spec2nexus/data/*.hdf5
+spec2nexus/data/*.hdf5
 
 # used when building release notes
 __github_creds__.txt
@@ -70,10 +70,15 @@ nosetests.xml
 # local #
 #########
 /.settings
-/src/spec2nexus/__plots__
+/spec2nexus/__plots__
 
 # IPython session logs
 .logs/
 
 # PyTest
 .pytest_cache/
+
+# Version Management
+_version.py
+
+archive/

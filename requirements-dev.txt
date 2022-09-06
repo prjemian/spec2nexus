@@ -1,5 +1,0 @@
-coverage
-coveralls
-docopt
-versioneer
-furo

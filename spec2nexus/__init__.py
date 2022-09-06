@@ -1,20 +1,16 @@
-"""Tests for the _requirements module."""
+# -*- coding: iso-8859-1 -*-
 
-import pytest
+"""Configuration of spec2nexus package."""
 
-from .. import _requirements
+try:
+    from setuptools_scm import get_version
 
-EXPECTED_PACKAGES = "h5py lxml matplotlib-base numpy".split()
+    __version__ = get_version()
+    del get_version
+except (LookupError, ModuleNotFoundError):
+    from importlib.metadata import version
 
-
-@pytest.mark.parametrize("package", EXPECTED_PACKAGES)
-def test_learn_requirements(package):
-    reqs = _requirements.learn_requirements()
-    assert isinstance(reqs, list)
-    assert len(reqs) > 0
-    assert len(reqs) == len(EXPECTED_PACKAGES)
-    assert package in reqs
-
+    __version__ = version("spec2nexus")
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
