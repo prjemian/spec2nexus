@@ -17,10 +17,15 @@ Change History
 Production
 **********
 
+2022.0.0
++++++++++++++
+
+release expected by end of 2022-12
+
 2021.2.2
 +++++++++++++
 
-release expected by end of 2022-09
+released 2022-09-06
 
 Maintenance
 ------------------------------------
