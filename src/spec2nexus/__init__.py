@@ -1,65 +1,16 @@
 # -*- coding: iso-8859-1 -*-
 
-"""command-line tool to convert SPEC data files to NeXus HDF5"""
+"""Configuration of spec2nexus package."""
 
+try:
+    from setuptools_scm import get_version
 
-__author__ = "Pete R. Jemian"
-__email__ = "prjemian@gmail.com"
-__copyright__ = "2014-2022, Pete R. Jemian"
+    __version__ = get_version()
+    del get_version
+except (LookupError, ModuleNotFoundError):
+    from importlib.metadata import version
 
-__package_name__ = "spec2nexus"
-
-__license_url__ = "https://creativecommons.org/licenses/by/4.0/deed.en_US"
-__license__ = "Creative Commons Attribution 4.0 International Public License (see LICENSE file)"
-__description__ = (
-    "Converts SPEC data files and scans into NeXus HDF5 files"
-)
-__author_name__ = __author__
-__author_email__ = __email__
-__url__ = u"https://prjemian.github.io/spec2nexus"
-__keywords__ = [
-    "SPEC",
-    "diffraction",
-    "data acquisition",
-    "NeXus",
-    "HDF5",
-    "MatPlotLib",
-]
-
-from ._requirements import learn_requirements
-
-__install_requires__ = learn_requirements()
-del learn_requirements
-
-__classifiers__ = [
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Console",
-    "Intended Audience :: Science/Research",
-    "License :: Freely Distributable",
-    "License :: Public Domain",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Topic :: Scientific/Engineering",
-    "Topic :: Scientific/Engineering :: Astronomy",
-    "Topic :: Scientific/Engineering :: Bio-Informatics",
-    "Topic :: Scientific/Engineering :: Chemistry",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
-    "Topic :: Scientific/Engineering :: Mathematics",
-    "Topic :: Scientific/Engineering :: Physics",
-    "Topic :: Scientific/Engineering :: Visualization",
-    "Topic :: Software Development",
-    "Topic :: Utilities",
-]
-
-from ._version import get_versions
-
-__version__ = get_versions()["version"]
-del get_versions
+    __version__ = version("spec2nexus")
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian

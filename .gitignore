@@ -80,3 +80,5 @@ nosetests.xml
 
 # Version Management
 _version.py
+
+archive/

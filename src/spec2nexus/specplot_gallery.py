@@ -55,7 +55,6 @@ import socket
 import sys
 
 
-from . import __version__
 from . import spec
 from . import specplot
 
@@ -427,6 +426,8 @@ def buildIndexHtml(specFile, plotted_scans, problem_scans):
     :param str specFile: name of SPEC data file (relative or absolute)
     :param [str] plotList: list of HTML `<a>` elements, one for each plot image
     """
+    from . import __version__
+
     baseSpecFile = os.path.basename(specFile)
     comment = "\n"
     comment += "   written by: %s\n" % sys.argv[0]
