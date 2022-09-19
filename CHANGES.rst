@@ -22,6 +22,16 @@ Production
 
 release expected by end of 2022-12
 
+2021.2.3
++++++++++++++
+
+released 2022-09-19
+
+Fixes
+-----
+
+Documentation was not published for the common plugins.
+
 2021.2.2
 +++++++++++++
 
