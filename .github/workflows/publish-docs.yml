@@ -15,6 +15,13 @@ jobs:
       with:
         fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
 
+    - name: Install pip
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install python3-pip
+        which pip3
+        which pip
+
     - name: Install furo theme
       run: |
         pip install furo "pygments >=2.7.0"
@@ -22,9 +29,10 @@ jobs:
     - name: Install package
       run: |
         pip install --no-deps -e .
+        which spec2nexus
 
     - name: Build and Commit
-      uses: sphinx-notes/pages@master
+      uses: sphinx-notes/pages@v2
       with:
         # path to conf.py directory
         documentation_path: docs/source

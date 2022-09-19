@@ -9,7 +9,7 @@ from importlib.metadata import version
 import configparser
 import pathlib
 import sys
-sys.path.insert(0, str(pathlib.Path().absolute().parent.parent / "src"))
+sys.path.insert(0, str(pathlib.Path().absolute().parent.parent))
 import spec2nexus
 
 # -- Project information -----------------------------------------------------
