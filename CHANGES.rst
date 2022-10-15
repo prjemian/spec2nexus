@@ -27,6 +27,11 @@ release expected by end of 2022-12
 
 release expected by end of 2022-10
 
+Maintenance
+------------------
+
+* Ensure additional files are installed by conda & pip, per PEP-518.
+
 Deprecations
 ------------------
 

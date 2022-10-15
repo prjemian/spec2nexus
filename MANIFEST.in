@@ -1,0 +1,9 @@
+include *.dict
+graft spec2nexus/data/*
+graft spec2nexus/plugins/*
+exclude .*
+prune .*/
+prune *.egg-info/
+prune demo/
+prune dist/
+prune docs/
