@@ -22,6 +22,16 @@ Production
 
 release expected by end of 2022-12
 
+2021.2.4
++++++++++++++
+
+release expected by end of 2022-10
+
+Deprecations
+------------------
+
+* Drop support for Python <3.8.
+
 2021.2.3
 +++++++++++++
 
