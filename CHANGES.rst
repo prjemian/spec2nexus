@@ -25,7 +25,7 @@ release expected by end of 2022-12
 2021.2.4
 +++++++++++++
 
-release expected by end of 2022-10
+released 2022-10-14
 
 Maintenance
 ------------------
