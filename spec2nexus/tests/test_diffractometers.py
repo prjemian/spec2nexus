@@ -287,7 +287,40 @@ def test_print_brief():
 
     scan.interpret()
     assert scan.__interpreted__
-    assert len(dir(scan)) == 66
+    keys = """
+        G L M N P Q S T V
+        _aborted_
+        _interpret_data_row
+        _interpreter_comments_
+        _unique_key
+        addH5writer
+        addPostProcessor
+        add_interpreter_comment
+        column_first
+        column_last
+        comments
+        data
+        data_lines
+        date
+        diffractometer
+        epoch
+        get_interpreter_comments
+        get_macro_name
+        h5writers
+        header
+        interpret
+        metadata
+        monitor_name
+        parent
+        positioner
+        postprocessors
+        raw
+        scanCmd
+        scanNum
+        specFile
+    """.split()
+    for k in keys:
+        assert hasattr(scan, k), f"{k=}"
 
     out = scan.diffractometer.print_brief(scan).strip()
     assert len(out) > 0
