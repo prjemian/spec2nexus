@@ -253,7 +253,37 @@ def test_print_brief():
     scan = sdf.getScan(TESTSCAN)
     assert not scan.__interpreted__
     assert scan.scanCmd.startswith("hklscan")
-    assert len(dir(scan)) == 62, dir(scan)
+    keys = """
+        G L M N P Q S T V
+        _interpret_data_row
+        _interpreter_comments_
+        _unique_key
+        addH5writer
+        addPostProcessor
+        add_interpreter_comment
+        column_first
+        column_last
+        comments
+        data
+        data_lines
+        date
+        epoch
+        get_interpreter_comments
+        get_macro_name
+        h5writers
+        header
+        interpret
+        parent
+        positioner
+        postprocessors
+        raw
+        scanCmd
+        scanNum
+        specFile
+    """.split()
+    for k in keys:
+        assert k in scan, f"{k=}"
+
     assert not scan.__interpreted__
 
     scan.interpret()
