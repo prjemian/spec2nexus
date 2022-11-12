@@ -22,6 +22,11 @@ Production
 
 release expected by end of 2022-12
 
+Maintenance
+------------------
+
+* Add support for Python 3.11.
+
 2021.2.4
 +++++++++++++
 
