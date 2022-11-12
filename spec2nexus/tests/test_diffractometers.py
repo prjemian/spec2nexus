@@ -253,7 +253,7 @@ def test_print_brief():
     scan = sdf.getScan(TESTSCAN)
     assert not scan.__interpreted__
     assert scan.scanCmd.startswith("hklscan")
-    assert len(dir(scan)) == 62
+    assert len(dir(scan)) == 62, dir(scan)
     assert not scan.__interpreted__
 
     scan.interpret()
