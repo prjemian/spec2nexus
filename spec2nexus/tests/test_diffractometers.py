@@ -253,6 +253,7 @@ def test_print_brief():
     scan = sdf.getScan(TESTSCAN)
     assert not scan.__interpreted__
     assert scan.scanCmd.startswith("hklscan")
+    assert not scan.__interpreted__
     keys = """
         G L M N P Q S T V
         _interpret_data_row
@@ -282,9 +283,7 @@ def test_print_brief():
         specFile
     """.split()
     for k in keys:
-        assert k in scan, f"{k=}"
-
-    assert not scan.__interpreted__
+        assert hasattr(scan, k), f"{k=}"
 
     scan.interpret()
     assert scan.__interpreted__
