@@ -60,8 +60,8 @@ jobs:
         environment-file: environment.yml
         environment-name: anaconda-test-env-py-${{ matrix.python-version }}
         extra-specs: |
-          coverage
-          coveralls<5
+          coverage<5
+          coveralls
           pytest
           python=${{ matrix.python-version }}
           pyyaml
