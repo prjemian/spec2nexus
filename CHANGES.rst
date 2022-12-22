@@ -26,7 +26,7 @@ Production
 2021.2.5
 +++++++++++++
 
-To be released 2022-12
+Released 2022-12-22
 
 Fixes
 ------------------
