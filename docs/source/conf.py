@@ -58,3 +58,9 @@ exclude_patterns = []
 html_theme = 'alabaster'
 html_theme = "furo"
 html_static_path = ['_static']
+
+autodoc_mock_imports = """
+    h5py
+    lxml
+    numpy
+""".split()

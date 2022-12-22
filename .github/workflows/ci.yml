@@ -60,14 +60,17 @@ jobs:
         environment-file: environment.yml
         environment-name: anaconda-test-env-py-${{ matrix.python-version }}
         extra-specs: |
-          coverage
-          coveralls
           pytest
           python=${{ matrix.python-version }}
           pyyaml
           ruamel_yaml
           yaml
           setuptools-scm
+
+    - name: Install code coverage requirements by pip
+      run: |
+        # https://github.com/pradyunsg/furo/discussions/308#discussioncomment-3064061
+        pip install coverage coveralls
 
     - name: Diagnostic
       run: |
@@ -90,7 +93,7 @@ jobs:
       # https://github.com/TheKevJames/coveralls-python
       shell: bash -l {0}
       run: |
-        micromamba list coveralls
+        micromamba list cover
         which coveralls
         coveralls debug
         coveralls --service=github
