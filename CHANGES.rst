@@ -17,15 +17,31 @@ Change History
 Production
 **********
 
-2022.0.0
+..
+   2022.0.0
+   +++++++++++++
+
+   to be released 2023
+
+2021.2.5
 +++++++++++++
 
-release expected by end of 2022-12
+to be released 2022-12
+
+Fixes
+------------------
+
+* Version number not reported correctly in certain situations (issue #299).
+* Coverage/Coveralls were failing to upload code coverage results (issue #299).
 
 Maintenance
 ------------------
 
+* Add CodeQL analysis workflow, per GitHub bot recommendation (issue #295).
 * Add support for Python 3.11.
+* Adjust badges on root-level README page.
+* When building documentation, "mock" the additional packages.
+* Refactor Sphinx publishing from GitHub Action to in-line workflow.
 
 2021.2.4
 +++++++++++++
