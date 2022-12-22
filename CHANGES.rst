@@ -21,12 +21,12 @@ Production
    2022.0.0
    +++++++++++++
 
-   to be released 2023
+   To be released 2023
 
 2021.2.5
 +++++++++++++
 
-to be released 2022-12
+To be released 2022-12
 
 Fixes
 ------------------
