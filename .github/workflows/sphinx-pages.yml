@@ -43,9 +43,11 @@ jobs:
         run: |
           echo $(pwd)
           ls -lAFgh
+
       - name: Install package
         run: |
           pip install --no-deps -e . -vv
+
       - name: Diagnostics
         run: |
           python -m pip list
@@ -55,6 +57,7 @@ jobs:
         run: |
           # https://github.com/pradyunsg/furo/discussions/308#discussioncomment-3064061
           pip install setuptools-scm sphinx "furo <=2022.4.7"
+
       - name: Sphinx
         run: |
           make -C docs html
