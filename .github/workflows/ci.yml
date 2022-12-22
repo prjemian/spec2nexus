@@ -89,7 +89,7 @@ jobs:
       # https://github.com/TheKevJames/coveralls-python
       shell: bash -l {0}
       run: |
-        micromamba install -c conda-forge coveralls
+        micromamba install -c conda-forge python-coveralls
         micromamba list coveralls
         which coveralls
         coveralls debug
