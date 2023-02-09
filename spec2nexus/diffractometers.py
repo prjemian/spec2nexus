@@ -230,6 +230,10 @@ class Diffractometer:
     def parse(self, scan):
         dgc = DiffractometerGeometryCatalog()
         gonio = dgc.get(self.geometry_name_full)
+        if gonio is None:
+            raise RuntimeError(
+                f"Could not find geometry '{self.geometry_name_full}': {scan}"
+            )
 
         G = OrderedDict()
         if "G0" in scan.G:
@@ -270,25 +274,31 @@ class Diffractometer:
                 # at least one geometry overrides the default U[] terms
                 gonio_U = gonio.get("U", list(DEFAULT_U))
                 U = OrderedDict(
+                    # fmt: off
                     {
                         kd[0]: KeyDescriptionValue(kd[0], kd[1], v)
                         for v, kd in zip(g1, gonio_U)
                     }
+                    # fmt: on
                 )
+
                 if ("g_cc" in U) and ("g_al" in U) and ("g_be" in U):
                     _parms = [U[f"g_{key}"].value for key in "aa bb cc al be ga".split()]
                     self.lattice = LatticeParameters3D(*_parms)
-                else:  # twoc
+                else:  # such as twoc
                     _parms = [U[f"g_{key}"].value for key in "aa bb ga".split()]
                     self.lattice = LatticeParameters2D(*_parms)
+
                 for ref_num in (0, 1):
                     template = "g_u%d%%d" % ref_num
                     variant = dgc.get_variant(gonio, self.variant)
+
                     angles = OrderedDict()
                     for i, mne in enumerate(variant["motors"]):
                         k = template % i
                         if k in U:
                             angles[mne] = U[k].value
+
                     if ("g_lambda" not in U):
                         _parms = [U[f"g_{k}{ref_num}"].value for k in "h k l lambda".split()]
                         _parms.append(angles)
@@ -300,6 +310,7 @@ class Diffractometer:
                         _parms.append(U["g_lambda"].value)
                         _parms.append(angles)
                         ref = Reflections2D(*_parms)
+
                     self.reflections.append(ref)
 
                 self.geometry_parameters.update(U)
@@ -396,7 +407,7 @@ _geometry_catalog = None
 def get_geometry_catalog():
     global _geometry_catalog
     if _geometry_catalog is None:
-        _geometry_catalog = 0
+        _geometry_catalog = 0  # must be non-None for next call
         _geometry_catalog = DiffractometerGeometryCatalog()
     return _geometry_catalog
 
@@ -529,11 +540,23 @@ class DiffractometerGeometryCatalog:
 
     def match(self, scan):
         """
-        find the ``geo_name`` geometry that matches the ``scan``
+        Find the ``geo_name`` geometry that matches the ``scan``.
 
+        Look at the data file header if the name is defined on the first comment
+        line, as written by the SPEC standard macro.
         If there is more than one matching geometry, pick the first one.
         """
         match = []
+
+        if len(scan.header.comments)>0:  # Stated in the file header?
+            parts = scan.header.comments[0].split()
+            if len(parts) == 4 and parts[1] == "User":  # as written by SPEC standard macros
+                # `twoc  User = user`
+                geo_name = parts[0]
+                dgc = get_geometry_catalog()
+                if dgc.has_geometry(geo_name):  # Is this geometry in our database?
+                    var_name = "default"
+                    match.append("%s.%s" % (geo_name, var_name))
 
         scan_positioners = self._get_scan_positioners_(scan)
 
@@ -588,11 +611,13 @@ class DiffractometerGeometryCatalog:
                 match.append("%s.%s" % (geo_name, var_name))
 
         if len(match) > 1:
-            msg = "scan geometry match is not unique!"
-            msg += "  Picking the first one from: " + str(match)
-            msg += ", file: " + scan.specFile
-            msg += ", scan: " + str(scan)
-            logger.debug(msg)
+            logger.debug(
+                (
+                    "Scan geometry match is not unique!"
+                    "  Picking the first one from: %s, file: %s, scan: %s"
+                ),
+                match, scan.specFile, scan
+            )
         elif len(match) == 0:
             match = [self.get_default_geometry()["name"]]
 

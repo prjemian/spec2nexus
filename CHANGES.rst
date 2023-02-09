@@ -23,6 +23,21 @@ Production
 
    To be released 2023
 
+2021.2.6
++++++++++++++
+
+Expected by 2023-02-18
+
+Fixes
+------------------
+
+* Data file with twoc geometry not recognized, caused problems interpreting ``#G1`` control lines
+
+Maintenance
+------------------
+
+* Uses geometry when data file declares in file header, as written by SPEC standard macro.
+
 2021.2.5
 +++++++++++++
 
