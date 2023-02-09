@@ -61,7 +61,7 @@ class Writer(object):
         :param [int] scanlist: list of scan numbers to be read
         """
         scan_list = scan_list or []
-        
+
         with h5py.File(hdf_file, "w") as root:
             eznx.addAttributes(root, **self.root_attributes())
 
