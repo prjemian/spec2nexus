@@ -13,6 +13,7 @@ from collections import OrderedDict
 import datetime
 import logging
 import time
+import warnings
 
 from spec2nexus.plugin_core import ControlLineBase
 
@@ -1565,7 +1566,7 @@ def data_lines_postprocessing(scan):
 
     :param SpecDataFileScan scan: data from a single SPEC scan
     """
-    if len(scan.L) == 1 and scan.L[0].split(" ") == scan.N[0]:
+    if len(scan.L) == 1 and scan.L[0].split(" ") != scan.L[0].split("  "):
         # https://github.com/prjemian/spec2nexus/issues/216#issuecomment-569745297
         raise ValueError(
             "file {}: "
@@ -1577,14 +1578,15 @@ def data_lines_postprocessing(scan):
 
     if len(scan.L) != scan.N[0]:
         # https://github.com/prjemian/spec2nexus/issues/216
-        raise ValueError(
-            "file {}: "
-            "#S {}: "
-            "# of given column labels in #L ({}) "
-            "does not match # specified in #N ({})".format(
-                scan.specFile, scan.S, len(scan.L), scan.N[0]
-            )
+        # https://github.com/prjemian/spec2nexus/issues/300
+        warnings.warn(
+            f"file {scan.specFile}: "
+            f"#S {scan.S}: "
+            f"# of given column labels in #L ({len(scan.L)}) "
+            f"does not match # specified in #N ({scan.N[0]})"
+            f": {scan.L=}"
         )
+        # TODO: update scan.N[0]?
 
     # first, get the column labels, rename redundant labels to be unique
     # the unique labels will be the scan.data dictionary keys
