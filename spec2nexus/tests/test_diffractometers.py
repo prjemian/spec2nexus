@@ -158,13 +158,8 @@ def test_class_DiffractometerGeometryCatalog():
         [EXAMPLES_PATH, "03_06_JanTest.dat", -1, "spec.default", None],
         [EXAMPLES_PATH, "05_02_test.dat", -1, "spec.default", None],
         [EXAMPLES_PATH, "33bm_spec.dat", -1, "fourc.default", None],
-        [
-            EXAMPLES_PATH,
-            "33id_spec.dat",
-            -1,
-            "spec",
-            None,
-        ],  # psic but predates #o (mnemonics) lines
+        # 33id_spec.dat is psic but predates #o (mnemonics) lines
+        [EXAMPLES_PATH, "33id_spec.dat", -1, "psic.default", None],
         [EXAMPLES_PATH, "APS_spec_data.dat", -1, "spec.default", None],
         [EXAMPLES_PATH, "CdOsO", -1, "fourc.default", None],
         [EXAMPLES_PATH, "CdSe", -1, "fourc.default", None],
