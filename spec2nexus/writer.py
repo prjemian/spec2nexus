@@ -61,45 +61,47 @@ class Writer(object):
         :param [int] scanlist: list of scan numbers to be read
         """
         scan_list = scan_list or []
-        root = eznx.makeFile(hdf_file, **self.root_attributes())
-        pick_first_entry = True
-        for key in scan_list:
-            nxentry = eznx.makeGroup(root, "S" + str(key), "NXentry")
-            eznx.makeDataset(
-                nxentry,
-                "experiment_description",
-                "SPEC scan",
-                description="SPEC data file scan",
-            )
-            self.save_scan(nxentry, self.spec.getScan(key))
-            if pick_first_entry:
-                pick_first_entry = False
-                eznx.addAttributes(root, default="S" + str(key))
-            if "data" not in nxentry:
-                # NXentry MUST have a NXdata group with data for default plot
-                nxdata = eznx.makeGroup(
+        
+        with h5py.File(hdf_file, "w") as root:
+            eznx.addAttributes(root, **self.root_attributes())
+
+            pick_first_entry = True
+            for key in scan_list:
+                nxentry = eznx.makeGroup(root, f"S{key}", "NXentry")
+                eznx.makeDataset(
                     nxentry,
-                    "data",
-                    "NXdata",
-                    signal="no_y_data",
-                    axes="no_x_data",
-                    no_x_data_indices=[0],
+                    "experiment_description",
+                    "SPEC scan",
+                    description="SPEC data file scan",
                 )
-                eznx.makeDataset(
-                    nxdata,
-                    "no_x_data",
-                    (0, 1),
-                    units="none",
-                    long_name="no data points in this scan",
-                )
-                eznx.makeDataset(
-                    nxdata,
-                    "no_y_data",
-                    (0, 1),
-                    units="none",
-                    long_name="no data points in this scan",
-                )
-        root.close()  # be CERTAIN to close the file
+                self.save_scan(nxentry, self.spec.getScan(key))
+                if pick_first_entry:
+                    pick_first_entry = False
+                    eznx.addAttributes(root, default="S" + str(key))
+                if "data" not in nxentry:
+                    # NXentry MUST have a NXdata group with data for default plot
+                    nxdata = eznx.makeGroup(
+                        nxentry,
+                        "data",
+                        "NXdata",
+                        signal="no_y_data",
+                        axes="no_x_data",
+                        no_x_data_indices=[0],
+                    )
+                    eznx.makeDataset(
+                        nxdata,
+                        "no_x_data",
+                        (0, 1),
+                        units="none",
+                        long_name="no data points in this scan",
+                    )
+                    eznx.makeDataset(
+                        nxdata,
+                        "no_y_data",
+                        (0, 1),
+                        units="none",
+                        long_name="no data points in this scan",
+                    )
 
     def root_attributes(self):
         """*internal*: returns the attributes to be written to the root element as a dict"""
