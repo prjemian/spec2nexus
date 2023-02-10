@@ -1,0 +1,537 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="specplot" href="specplot.html" /><link rel="prev" title="Unrecognized Control Line" href="nexus_layout/unrecognized_content.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>extractSpecScan - spec2nexus 2021.2.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">spec2nexus 2021.2.6 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">spec2nexus 2021.2.6 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="contents.html">Contents</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="applications.html">Applications</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">extractSpecScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="libraries.html">Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="howto.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html">Change History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="extractspecscan">
+<span id="id1"></span><h1>extractSpecScan<a class="headerlink" href="#extractspecscan" title="Permalink to this headline">#</a></h1>
+<p>Command line tool to extract scan data from a SPEC data file.</p>
+<section id="how-to-use-extractspecscan">
+<span id="index-0"></span><h2>How to use <strong>extractSpecScan</strong><a class="headerlink" href="#how-to-use-extractspecscan" title="Permalink to this headline">#</a></h2>
+<p>Extract one scan from a SPEC data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan data/APS_spec_data.dat -s 1 -c mr USAXS_PD I0 seconds
+</pre></div>
+</div>
+<p>the usage message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan
+usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
+                       [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
+                       spec_file
+</pre></div>
+</div>
+<p>the version number:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan -v
+2017.0201.0
+</pre></div>
+</div>
+<p>the help message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan -h
+usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
+                       [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
+                       spec_file
+
+Save columns from SPEC data file scan(s) to TSV files URL:
+https://prjemian.github.io/spec2nexus//extractSpecScan.html v2016.1025.0
+
+positional arguments:
+  spec_file             SPEC data file name(s)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         print version number and exit
+  --nolabels            do not write column labels to output file (default:
+                        write labels)
+  -s SCAN [SCAN ...], --scan SCAN [SCAN ...]
+                        scan number(s) to be extracted (must specify at least
+                        one)
+  -c COLUMN [COLUMN ...], --column COLUMN [COLUMN ...]
+                        column label(s) to be extracted (must specify at least
+                        one)
+  -G                    report scan Geometry (#G) header information
+  -P                    report scan Positioners (#O &amp; #P) header information
+  -Q                    report scan Q (#Q) header information
+  -V                    report scan (UNICAT-style #H &amp; #V) header information
+  --quiet               suppress all program output (except errors), do not
+                        use with --verbose option
+  --verbose             print more program output, do not use with --quiet
+                        option
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h2>
+<p>Extract four columns (mr, USAXS_PD, I0, seconds) from two
+scans (1, 6) in a SPEC data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ extractSpecScan data/APS_spec_data.dat -s 1 6 -c mr USAXS_PD I0 seconds
+
+program: /path/to/extractSpecScan.py
+read: data/APS_spec_data.dat
+wrote: data/APS_spec_data_1.dat
+wrote: data/APS_spec_data_6.dat
+</pre></div>
+</div>
+<p>Here’s the contents of <em>data/APS_spec_data_6.dat</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mr  USAXS_PD I0 seconds</span>
+<span class="mf">15.61017</span> <span class="mf">9.0</span>   <span class="mf">243.0</span> <span class="mf">0.3</span>
+<span class="mf">15.61</span> <span class="mf">13.0</span>  <span class="mf">325.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60984</span> <span class="mf">19.0</span>  <span class="mf">460.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60967</span> <span class="mf">30.0</span>  <span class="mf">609.0</span> <span class="mf">0.3</span>
+<span class="mf">15.6095</span>  <span class="mf">54.0</span>  <span class="mf">883.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60934</span> <span class="mf">161.0</span> <span class="mf">1780.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60917</span> <span class="mf">499.0</span> <span class="mf">3649.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.609</span>   <span class="mf">1257.0</span>   <span class="mf">6588.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60884</span> <span class="mf">2832.0</span>   <span class="mf">10245.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60867</span> <span class="mf">7294.0</span>   <span class="mf">13118.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6085</span>  <span class="mf">139191.0</span> <span class="mf">16527.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60834</span> <span class="mf">299989.0</span> <span class="mf">17893.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60817</span> <span class="mf">299989.0</span> <span class="mf">18276.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.608</span>   <span class="mf">299989.0</span> <span class="mf">18240.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60784</span> <span class="mf">299989.0</span> <span class="mf">18266.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60767</span> <span class="mf">299989.0</span> <span class="mf">18616.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6075</span>  <span class="mf">299989.0</span> <span class="mf">19033.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60734</span> <span class="mf">299989.0</span> <span class="mf">19036.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60717</span> <span class="mf">299988.0</span> <span class="mf">18587.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.607</span>   <span class="mf">299989.0</span> <span class="mf">17471.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60684</span> <span class="mf">123003.0</span> <span class="mf">14814.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60667</span> <span class="mf">11060.0</span>  <span class="mf">11861.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6065</span>  <span class="mf">2217.0</span>   <span class="mf">8131.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60634</span> <span class="mf">637.0</span> <span class="mf">4269.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60617</span> <span class="mf">254.0</span> <span class="mf">2632.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.606</span>   <span class="mf">132.0</span> <span class="mf">1927.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60584</span> <span class="mf">79.0</span>  <span class="mf">1406.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60567</span> <span class="mf">58.0</span>  <span class="mf">1075.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.6055</span>  <span class="mf">32.0</span>  <span class="mf">695.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60534</span> <span class="mf">17.0</span>  <span class="mf">374.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60517</span> <span class="mf">10.0</span>  <span class="mf">245.0</span> <span class="mf">0.3</span>
+</pre></div>
+</div>
+</section>
+<section id="module-spec2nexus.extractSpecScan">
+<span id="source-code-documentation"></span><h2>source code documentation<a class="headerlink" href="#module-spec2nexus.extractSpecScan" title="Permalink to this headline">#</a></h2>
+<p>Save columns from SPEC data file scan(s) to TSV files</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TSV: tab-separated values</p>
+</div>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extractSpecScan</span><span class="o">.</span><span class="n">py</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">CeCoIn5</span> <span class="o">-</span><span class="n">s</span> <span class="mi">5</span> <span class="o">-</span><span class="n">c</span> <span class="n">HerixE</span> <span class="n">Ana5</span> <span class="n">ICO</span><span class="o">-</span><span class="n">C</span>
+<span class="n">extractSpecScan</span><span class="o">.</span><span class="n">py</span> <span class="o">./</span><span class="n">testdata</span><span class="o">/</span><span class="mi">11_03</span><span class="n">_Vinod</span><span class="o">.</span><span class="n">dat</span>   <span class="o">-</span><span class="n">s</span> <span class="mi">2</span> <span class="mi">12</span>   <span class="o">-</span><span class="n">c</span> <span class="n">USAXS</span><span class="o">.</span><span class="n">m2rp</span> <span class="n">Monitor</span>  <span class="n">I0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>sdpecified column names <strong>MUST</strong> appear in all chosen scans</p>
+</div>
+<p>Compatible with Python 2.7+</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.get_user_parameters">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">get_user_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#get_user_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.get_user_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>configure user’s command line parameters from sys.argv</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.main">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.main" title="Permalink to this definition">#</a></dt>
+<dd><p>read the data file, find each scan, find the columns, save the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmdArgs</strong> (<em>[</em><em>str</em><em>]</em>) – Namespace from argparse, returned from get_user_parameters()</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each column label must match <em>exactly</em> the name of a label
+in each chosen SPEC scan number or the program will skip that particular scan</p>
+<p>If more than one column matches, the first match will be selected.</p>
+</div>
+<p>example output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mr    I0    USAXS_PD</span>
+<span class="mf">1.9475</span>    <span class="mi">65024</span>    <span class="mi">276</span>
+<span class="mf">1.9725</span>    <span class="mi">64845</span>    <span class="mi">352</span>
+<span class="mf">1.9975</span>    <span class="mi">65449</span>    <span class="mi">478</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.makeOutputFileName">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">makeOutputFileName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scanNum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#makeOutputFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.makeOutputFileName" title="Permalink to this definition">#</a></dt>
+<dd><p>return an output file name based on specFile and scanNum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specFile</strong> (<em>str</em>) – name of existing SPEC data file to be read</p></li>
+<li><p><strong>scanNum</strong> (<em>str</em>) – number of chosen SPEC scan</p></li>
+</ul>
+</dd>
+</dl>
+<p>append scanNum to specFile to get output file name
+(before file extension if present)</p>
+<p>Always add a file extension to the output file.
+If none is present, use “.dat”.</p>
+<p>Examples:</p>
+<div class="table-wrapper"><table class="docutils align-default">
+<colgroup>
+<col style="width: 32%"/>
+<col style="width: 24%"/>
+<col style="width: 44%"/>
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>specFile</p></th>
+<th class="head"><p>scanNum</p></th>
+<th class="head"><p>outFile</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CeCoIn5</p></td>
+<td><p>scan 5</p></td>
+<td><p>CeCoIn5_5.dat</p></td>
+</tr>
+<tr class="row-odd"><td><p>CeCoIn5.dat</p></td>
+<td><p>scan 77</p></td>
+<td><p>CeCoIn5_77.dat</p></td>
+</tr>
+<tr class="row-even"><td><p>CeCoIn5.dat</p></td>
+<td><p>scan 5.1</p></td>
+<td><p>CeCoIn5_5_1.dat</p></td>
+</tr>
+</tbody>
+</table></div>
+</dd></dl>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="specplot.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">specplot</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="nexus_layout/unrecognized_content.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Unrecognized Control Line</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2014-2022, Pete R. Jemian
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">extractSpecScan</a><ul>
+<li><a class="reference internal" href="#how-to-use-extractspecscan">How to use <strong>extractSpecScan</strong></a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#module-spec2nexus.extractSpecScan">source code documentation</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    </body>
+</html>

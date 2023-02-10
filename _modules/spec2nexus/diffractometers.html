@@ -1,0 +1,937 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>spec2nexus.diffractometers - spec2nexus 2021.2.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">spec2nexus 2021.2.6 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">spec2nexus 2021.2.6 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../contents.html">Contents</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../example_data.html">Example data</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../applications.html">Applications</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../spec2nexus.html">spec2nexus</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../nexus_layout/index.html">NeXus File Layout</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot.html">specplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../libraries.html">Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changes.html">Change History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for spec2nexus.diffractometers</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Describe SPEC diffractometer geometry #G control lines.</span>
+
+<span class="sd">  #G0 ...       G[] array (geo mode, sector, etc)</span>
+<span class="sd">  #G1 ...       U[] array (lattice constants, orientation reflections)</span>
+<span class="sd">  #G2 is unused</span>
+<span class="sd">  #G3 ...       UB[] array (orientation matrix)</span>
+<span class="sd">  #G4 ...       Q[] array (lambda, frozen angles, cut points, etc)</span>
+
+<span class="sd">API</span>
+
+<span class="sd">.. autosummary::</span>
+
+<span class="sd">    ~Diffractometer</span>
+<span class="sd">    ~DiffractometerGeometryCatalog</span>
+<span class="sd">    ~split_name_variation</span>
+<span class="sd">    ~get_geometry_catalog</span>
+<span class="sd">    ~reset_geometry_catalog</span>
+
+<span class="sd">"""</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">DICT_FILE</span> <span class="o">=</span> <span class="n">_path</span> <span class="o">/</span> <span class="s2">"diffractometer-geometries.dict"</span>
+
+
+<span class="n">KeyDescriptionValue</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">"KeyDescriptionValue"</span><span class="p">,</span> <span class="s2">"key description value"</span>
+<span class="p">)</span>
+
+<span class="n">LatticeParameters2D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">"LatticeParameters2D"</span><span class="p">,</span> <span class="s2">"a b gamma"</span>
+<span class="p">)</span>
+
+<span class="n">LatticeParameters3D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">"LatticeParameters3D"</span><span class="p">,</span> <span class="s2">"a b c alpha beta gamma"</span>
+<span class="p">)</span>
+
+<span class="n">Reflections2D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">"Reflections2D"</span><span class="p">,</span> <span class="s2">"h k wavelength angles"</span><span class="p">)</span>
+
+<span class="n">Reflections3D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">"Reflections3D"</span><span class="p">,</span> <span class="s2">"h k l wavelength angles"</span><span class="p">)</span>
+
+
+<span class="c1"># lattice constants, orientation reflections</span>
+<span class="c1"># most geometries use this default schema</span>
+<span class="c1"># at least one geometry (twoc) has overrides</span>
+<span class="n">DEFAULT_U</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"g_aa"</span><span class="p">,</span> <span class="s2">"a lattice constant (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_bb"</span><span class="p">,</span> <span class="s2">"b lattice constant (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_cc"</span><span class="p">,</span> <span class="s2">"c lattice constant (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_al"</span><span class="p">,</span> <span class="s2">"alpha lattice angle (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_be"</span><span class="p">,</span> <span class="s2">"beta  lattice angle (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_ga"</span><span class="p">,</span> <span class="s2">"gamma lattice angle (real space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_aa_s"</span><span class="p">,</span> <span class="s2">"a lattice constant (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_bb_s"</span><span class="p">,</span> <span class="s2">"b lattice constant (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_cc_s"</span><span class="p">,</span> <span class="s2">"c lattice constant (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_al_s"</span><span class="p">,</span> <span class="s2">"alpha lattice angle (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_be_s"</span><span class="p">,</span> <span class="s2">"beta  lattice angle (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_ga_s"</span><span class="p">,</span> <span class="s2">"gamma lattice angle (reciprocal space)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_h0"</span><span class="p">,</span> <span class="s2">"H of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_k0"</span><span class="p">,</span> <span class="s2">"K of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_l0"</span><span class="p">,</span> <span class="s2">"L of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_h1"</span><span class="p">,</span> <span class="s2">"H of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_k1"</span><span class="p">,</span> <span class="s2">"K of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_l1"</span><span class="p">,</span> <span class="s2">"L of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u00"</span><span class="p">,</span> <span class="s2">"angle 0 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u01"</span><span class="p">,</span> <span class="s2">"angle 1 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u02"</span><span class="p">,</span> <span class="s2">"angle 2 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u03"</span><span class="p">,</span> <span class="s2">"angle 3 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u04"</span><span class="p">,</span> <span class="s2">"angle 4 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u05"</span><span class="p">,</span> <span class="s2">"angle 5 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u10"</span><span class="p">,</span> <span class="s2">"angle 0 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u11"</span><span class="p">,</span> <span class="s2">"angle 1 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u12"</span><span class="p">,</span> <span class="s2">"angle 2 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u13"</span><span class="p">,</span> <span class="s2">"angle 3 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u14"</span><span class="p">,</span> <span class="s2">"angle 4 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u15"</span><span class="p">,</span> <span class="s2">"angle 5 of secondary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_lambda0"</span><span class="p">,</span> <span class="s2">"lambda when or0 was set"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_lambda1"</span><span class="p">,</span> <span class="s2">"lambda when or1 was set"</span><span class="p">),</span>
+    <span class="c1"># For backward compatibility, additional angles added at end of array</span>
+    <span class="p">(</span><span class="s2">"g_u06"</span><span class="p">,</span> <span class="s2">"optional, angle 6 of primary reflection"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g_u16"</span><span class="p">,</span> <span class="s2">"optional, angle 6 of secondary reflection"</span><span class="p">),</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="split_name_variation"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.split_name_variation">[docs]</a><span class="k">def</span> <span class="nf">split_name_variation</span><span class="p">(</span><span class="n">geo_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    split geo_name into geometry name and variation</span>
+<span class="sd">    """</span>
+    <span class="n">nm</span> <span class="o">=</span> <span class="n">geo_name</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">nm</span><span class="p">,</span> <span class="n">variant</span> <span class="o">=</span> <span class="n">geo_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">variant</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">nm</span><span class="p">,</span> <span class="n">variant</span></div>
+
+
+<div class="viewcode-block" id="Diffractometer"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.Diffractometer">[docs]</a><span class="k">class</span> <span class="nc">Diffractometer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    describe the diffractometer for the scan</span>
+
+<span class="sd">    .. autosummary::</span>
+
+<span class="sd">        ~parse</span>
+<span class="sd">        ~print_all</span>
+<span class="sd">        ~print_brief</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span> <span class="o">=</span> <span class="n">geo_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variant</span> <span class="o">=</span> <span class="n">split_name_variation</span><span class="p">(</span><span class="n">geo_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># combined #G terms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reflections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sector</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">gpar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span>
+        <span class="n">gpar</span><span class="p">[</span><span class="s2">"diffractometer_full"</span><span class="p">]</span> <span class="o">=</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span>
+            <span class="s2">"diffractometer_full"</span><span class="p">,</span>
+            <span class="s2">"name of diffractometer (and variant), deduced from scan information"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">gpar</span><span class="p">[</span><span class="s2">"diffractometer_simple"</span><span class="p">]</span> <span class="o">=</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span>
+            <span class="s2">"diffractometer_simple"</span><span class="p">,</span>
+            <span class="s2">"name of diffractometer, deduced from scan information"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geometry_name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">gpar</span><span class="p">[</span><span class="s2">"diffractometer_variant"</span><span class="p">]</span> <span class="o">=</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span>
+            <span class="s2">"diffractometer_variant"</span><span class="p">,</span>
+            <span class="s2">"name of diffractometer variant, deduced from scan information"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variant</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_info_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"str"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Return dictionary for use in various reports.</span>
+
+<span class="sd">        PARAMETER</span>
+
+<span class="sd">        level str :</span>
+<span class="sd">            Level of detail for desired report.</span>
+<span class="sd">            One of these values: ``pa``, ``str``, ``wh``.</span>
+<span class="sd">            Default: ``str``</span>
+<span class="sd">        """</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">gpars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span>
+
+        <span class="n">info</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_name</span><span class="si">}</span><span class="s2">'"</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"mode"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s2">'"</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"sector"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_names</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">gpars</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
+
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"pa"</span><span class="p">,</span> <span class="s2">"wh"</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"lattice"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">"alpha beta azimuth omega"</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>  <span class="c1"># TODO: generalize per issue #274</span>
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="n">gpars</span><span class="p">:</span>
+                    <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">gpars</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
+
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"pa"</span><span class="p">,</span> <span class="p">):</span>
+            <span class="n">full_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"full_geometry_name"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">full_name</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"lattice"</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"lattice"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"UB"</span><span class="p">):</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"UB"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UB</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"reflections"</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">refl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reflections</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">info</span><span class="p">[</span><span class="sa">f</span><span class="s2">"reflection </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">refl</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"UB"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UB</span>
+
+        <span class="k">return</span> <span class="n">info</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Brief representation of this diffractometer.</span>
+<span class="sd">        """</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_info_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Diffractometer(</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_Q_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        List of names used to define Q (typically: h k l).  All lower case.</span>
+<span class="sd">        """</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">get_geometry_catalog</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">q_term</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">q_term</span> <span class="ow">in</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"Q"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">"Miller index"</span> <span class="ow">in</span> <span class="n">q_term</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_positioners_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Dictionary with positioners (keys) and positions (values) in this scan.</span>
+
+<span class="sd">        PARAMETERS</span>
+
+<span class="sd">        scan obj :</span>
+<span class="sd">            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).</span>
+<span class="sd">        """</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">get_geometry_catalog</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span><span class="p">)</span>
+        <span class="n">number_motors_in_geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"numgeo"</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">scan</span><span class="o">.</span><span class="n">positioner</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">positioner</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="n">number_motors_in_geometry</span><span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_Q_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Dictionary with all the Q-related terms &amp; values (hkl, for example).</span>
+
+<span class="sd">        PARAMETERS</span>
+
+<span class="sd">        info dict :</span>
+<span class="sd">            from `_get_info_dict()`</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_names</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+        <span class="n">dgc</span> <span class="o">=</span> <span class="n">DiffractometerGeometryCatalog</span><span class="p">()</span>
+        <span class="n">gonio</span> <span class="o">=</span> <span class="n">dgc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gonio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Could not find geometry '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_name_full</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">scan</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+        <span class="n">G</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">"G0"</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
+            <span class="n">g0</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">[</span><span class="s2">"G0"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g0</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">gonio</span><span class="p">[</span><span class="s2">"G"</span><span class="p">]):</span>
+                <span class="n">G</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span><span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">kd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">g0</span><span class="p">,</span> <span class="n">gonio</span><span class="p">[</span><span class="s2">"G"</span><span class="p">])</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+                <span class="n">additions</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">kdv</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"g_sect"</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">sector</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kdv</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"g_mode"</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">modes</span> <span class="o">=</span> <span class="n">gonio</span><span class="p">[</span><span class="s2">"modes"</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kdv</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                        <span class="k">continue</span>
+                    <span class="n">entry</span> <span class="o">=</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span>
+                        <span class="n">k</span> <span class="o">+</span> <span class="s2">"_name"</span><span class="p">,</span>
+                        <span class="s2">"name of "</span> <span class="o">+</span> <span class="n">kdv</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                        <span class="n">modes</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">kdv</span><span class="o">.</span><span class="n">value</span><span class="p">)],</span>
+                    <span class="p">)</span>
+                    <span class="n">additions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="c1"># must update G{} in two steps</span>
+                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">additions</span><span class="p">:</span>
+                    <span class="n">G</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+                    <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s2">"g_mode_name"</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">"G1"</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
+            <span class="n">g1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">[</span><span class="s2">"G1"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># at least one geometry overrides the default U[] terms</span>
+                <span class="n">gonio_U</span> <span class="o">=</span> <span class="n">gonio</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"U"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">DEFAULT_U</span><span class="p">))</span>
+                <span class="n">U</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+                    <span class="c1"># fmt: off</span>
+                    <span class="p">{</span>
+                        <span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span><span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">kd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">g1</span><span class="p">,</span> <span class="n">gonio_U</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    <span class="c1"># fmt: on</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="s2">"g_cc"</span> <span class="ow">in</span> <span class="n">U</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">"g_al"</span> <span class="ow">in</span> <span class="n">U</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">"g_be"</span> <span class="ow">in</span> <span class="n">U</span><span class="p">):</span>
+                    <span class="n">_parms</span> <span class="o">=</span> <span class="p">[</span><span class="n">U</span><span class="p">[</span><span class="sa">f</span><span class="s2">"g_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">"aa bb cc al be ga"</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">LatticeParameters3D</span><span class="p">(</span><span class="o">*</span><span class="n">_parms</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># such as twoc</span>
+                    <span class="n">_parms</span> <span class="o">=</span> <span class="p">[</span><span class="n">U</span><span class="p">[</span><span class="sa">f</span><span class="s2">"g_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="s2">"aa bb ga"</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">LatticeParameters2D</span><span class="p">(</span><span class="o">*</span><span class="n">_parms</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">ref_num</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="s2">"g_u</span><span class="si">%d%%</span><span class="s2">d"</span> <span class="o">%</span> <span class="n">ref_num</span>
+                    <span class="n">variant</span> <span class="o">=</span> <span class="n">dgc</span><span class="o">.</span><span class="n">get_variant</span><span class="p">(</span><span class="n">gonio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variant</span><span class="p">)</span>
+
+                    <span class="n">angles</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mne</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">variant</span><span class="p">[</span><span class="s2">"motors"</span><span class="p">]):</span>
+                        <span class="n">k</span> <span class="o">=</span> <span class="n">template</span> <span class="o">%</span> <span class="n">i</span>
+                        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">U</span><span class="p">:</span>
+                            <span class="n">angles</span><span class="p">[</span><span class="n">mne</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="s2">"g_lambda"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">U</span><span class="p">):</span>
+                        <span class="n">_parms</span> <span class="o">=</span> <span class="p">[</span><span class="n">U</span><span class="p">[</span><span class="sa">f</span><span class="s2">"g_</span><span class="si">{</span><span class="n">k</span><span class="si">}{</span><span class="n">ref_num</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="s2">"h k l lambda"</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+                        <span class="n">_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
+                        <span class="n">ref</span> <span class="o">=</span> <span class="n">Reflections3D</span><span class="p">(</span><span class="o">*</span><span class="n">_parms</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># twoc</span>
+                        <span class="k">if</span> <span class="n">ref_num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">break</span>  <span class="c1"># at most, 1 reflection is defined</span>
+                        <span class="n">_parms</span> <span class="o">=</span> <span class="p">[</span><span class="n">U</span><span class="p">[</span><span class="sa">f</span><span class="s2">"g_</span><span class="si">{</span><span class="n">k</span><span class="si">}{</span><span class="n">ref_num</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="s2">"h k"</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+                        <span class="n">_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="s2">"g_lambda"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                        <span class="n">_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
+                        <span class="n">ref</span> <span class="o">=</span> <span class="n">Reflections2D</span><span class="p">(</span><span class="o">*</span><span class="n">_parms</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reflections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">"G3"</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
+            <span class="n">g3</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">[</span><span class="s2">"G3"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="n">UB</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">g3</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span><span class="p">[</span>
+                    <span class="s2">"ub_matrix"</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span><span class="s2">"ub_matrix"</span><span class="p">,</span> <span class="s2">"UB[] matrix"</span><span class="p">,</span> <span class="n">UB</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">UB</span> <span class="o">=</span> <span class="n">UB</span>
+
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">"G4"</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
+            <span class="n">g4</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">[</span><span class="s2">"G4"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g4</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">gonio</span><span class="p">[</span><span class="s2">"Q"</span><span class="p">]):</span>
+                <span class="n">Q</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">KeyDescriptionValue</span><span class="p">(</span><span class="n">kd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">kd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">g4</span><span class="p">,</span> <span class="n">gonio</span><span class="p">[</span><span class="s2">"Q"</span><span class="p">])</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="s2">"LAMBDA"</span> <span class="ow">in</span> <span class="n">Q</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="s2">"LAMBDA"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Diffractometer.print_all"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.Diffractometer.print_all">[docs]</a>    <span class="k">def</span> <span class="nf">print_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Print All (pa) about this diffractometer scan.</span>
+
+<span class="sd">        PARAMETERS</span>
+
+<span class="sd">        scan obj :</span>
+<span class="sd">            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).</span>
+<span class="sd">        """</span>
+        <span class="n">scan</span><span class="o">.</span><span class="n">interpret</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"SPEC file"</span><span class="p">:</span> <span class="n">scan</span><span class="o">.</span><span class="n">specFile</span><span class="p">,</span>
+            <span class="s2">"scan #"</span><span class="p">:</span> <span class="n">scan</span><span class="o">.</span><span class="n">scanNum</span><span class="p">,</span>
+            <span class="s2">"SPEC scanCmd"</span><span class="p">:</span> <span class="n">scan</span><span class="o">.</span><span class="n">scanCmd</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="s2">"epoch"</span><span class="p">):</span>
+            <span class="n">s</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_info_dict</span><span class="p">(</span><span class="s2">"pa"</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_positioners_dict</span><span class="p">(</span><span class="n">scan</span><span class="p">))</span>
+
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+        <span class="k">return</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">^</span><span class="si">{</span><span class="n">width</span><span class="si">}}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="Diffractometer.print_brief"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.Diffractometer.print_brief">[docs]</a>    <span class="k">def</span> <span class="nf">print_brief</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Print brief information (wh: where) about this diffractometer scan.</span>
+
+<span class="sd">        PARAMETERS</span>
+
+<span class="sd">        scan obj :</span>
+<span class="sd">            SPEC data file scan (a ``spec2nexus.spec.SpecDataFileScan`` object).</span>
+<span class="sd">        """</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_info_dict</span><span class="p">(</span><span class="s2">"wh"</span><span class="p">)</span>
+        <span class="n">qdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_Q_dict</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">qdict</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">k</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">qdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'  '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">qdict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_compose_row_</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"  "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">labels</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">info</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_compose_row_</span><span class="p">(</span><span class="s2">"alpha beta azimuth"</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_compose_row_</span><span class="p">(</span><span class="s2">"omega wavelength"</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positioners_dict</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># singleton reference to DiffractometerGeometryCatalog</span>
+<span class="n">_geometry_catalog</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">get_geometry_catalog</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_geometry_catalog</span>
+    <span class="k">if</span> <span class="n">_geometry_catalog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_geometry_catalog</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># must be non-None for next call</span>
+        <span class="n">_geometry_catalog</span> <span class="o">=</span> <span class="n">DiffractometerGeometryCatalog</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_geometry_catalog</span>
+
+
+<span class="k">def</span> <span class="nf">reset_geometry_catalog</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_geometry_catalog</span>
+    <span class="n">_geometry_catalog</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="DiffractometerGeometryCatalog"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog">[docs]</a><span class="k">class</span> <span class="nc">DiffractometerGeometryCatalog</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    catalog of the diffractometer geometries known to SPEC</span>
+
+<span class="sd">    .. autosummary::</span>
+
+<span class="sd">        ~geometries</span>
+<span class="sd">        ~get</span>
+<span class="sd">        ~get_default_geometry</span>
+<span class="sd">        ~has_geometry</span>
+<span class="sd">        ~match</span>
+<span class="sd">    """</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_geometry_catalog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">"Do not create DiffractometerGeometryCatalog()."</span>
+                <span class="s2">"  Instead, call: get_geometry_catalog()"</span>
+                <span class="c1"># don't call that here, _geometry_catalog is a singleton</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">DICT_FILE</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_simple</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_full</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="s2">"number="</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">"DiffractometerGeometryCatalog(</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="DiffractometerGeometryCatalog.geometries"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries">[docs]</a>    <span class="k">def</span> <span class="nf">geometries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variations</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        list known geometries</span>
+
+<span class="sd">        PARAMETERS</span>
+
+<span class="sd">        variations : bool</span>
+<span class="sd">            If True, also list known variations</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_simple</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_full</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="c1"># optimize with a cache, construct only once</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_simple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_full</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">geometry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+                <span class="n">nm</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_full</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">nm</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"variations"</span><span class="p">]</span>
+                <span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_simple</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="kc">True</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_full</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometries_simple</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">choices</span><span class="p">[</span><span class="n">variations</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DiffractometerGeometryCatalog.get"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        return dictionary for diffractometer geometry ``geo_name``</span>
+<span class="sd">        """</span>
+        <span class="n">nm</span> <span class="o">=</span> <span class="n">split_name_variation</span><span class="p">(</span><span class="n">geo_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">geometries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometries</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">geometries</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">geometries</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">nm</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">default</span></div>
+
+    <span class="k">def</span> <span class="nf">get_default_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">" "</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_geometry</span>
+
+    <span class="k">def</span> <span class="nf">get_variant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">variant_name</span><span class="p">):</span>
+        <span class="s2">" "</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"variations"</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">==</span> <span class="n">variant_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"variations"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="DiffractometerGeometryCatalog.has_geometry"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">has_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Is the ``geo_name`` geometry defined?  True or False</span>
+<span class="sd">        """</span>
+        <span class="n">nm</span><span class="p">,</span> <span class="n">variant</span> <span class="o">=</span> <span class="n">split_name_variation</span><span class="p">(</span><span class="n">geo_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">variant</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometries</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">geo_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometries</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_scan_positioners_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+        <span class="n">scan_positioners</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">):</span>  <span class="c1"># prefer mnemonics</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+                <span class="n">scan_positioners</span> <span class="o">+=</span> <span class="n">row</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="s2">"O"</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">O</span><span class="p">:</span>
+                <span class="n">scan_positioners</span> <span class="o">+=</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scan_positioners</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">positioner</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_positioners</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">scan_positioners_new</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">scan_positioners</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"2-theta"</span><span class="p">,</span> <span class="s2">"two theta"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"tth"</span><span class="p">):</span>
+                    <span class="n">k</span> <span class="o">=</span> <span class="s2">"tth"</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"theta"</span><span class="p">,):</span>
+                    <span class="n">k</span> <span class="o">=</span> <span class="s2">"th"</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"delta"</span><span class="p">,):</span>
+                    <span class="n">k</span> <span class="o">=</span> <span class="s2">"del"</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"gamma"</span><span class="p">,):</span>
+                    <span class="n">k</span> <span class="o">=</span> <span class="s2">"gam"</span>
+                <span class="n">scan_positioners_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">scan_positioners</span> <span class="o">=</span> <span class="n">scan_positioners_new</span>
+
+        <span class="k">return</span> <span class="n">scan_positioners</span>
+
+<div class="viewcode-block" id="DiffractometerGeometryCatalog.match"><a class="viewcode-back" href="../../diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Find the ``geo_name`` geometry that matches the ``scan``.</span>
+
+<span class="sd">        Look at the data file header if the name is defined on the first comment</span>
+<span class="sd">        line, as written by the SPEC standard macro.</span>
+<span class="sd">        If there is more than one matching geometry, pick the first one.</span>
+<span class="sd">        """</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">comments</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>  <span class="c1"># Stated in the file header?</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"User"</span><span class="p">:</span>  <span class="c1"># as written by SPEC standard macros</span>
+                <span class="c1"># `twoc  User = user`</span>
+                <span class="n">geo_name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">dgc</span> <span class="o">=</span> <span class="n">get_geometry_catalog</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">dgc</span><span class="o">.</span><span class="n">has_geometry</span><span class="p">(</span><span class="n">geo_name</span><span class="p">):</span>  <span class="c1"># Is this geometry in our database?</span>
+                    <span class="n">var_name</span> <span class="o">=</span> <span class="s2">"default"</span>
+                    <span class="k">match</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">geo_name</span><span class="p">,</span> <span class="n">var_name</span><span class="p">))</span>
+
+        <span class="n">scan_positioners</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scan_positioners_</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="s2">"G"</span><span class="p">):</span>
+            <span class="n">scan_G0</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"G0"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">scan_G0</span> <span class="o">==</span> <span class="p">[</span>
+                <span class="s2">"0"</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="n">scan_G0</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">if</span> <span class="s2">"G4"</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">:</span>
+                <span class="n">scan_G4</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">G</span><span class="p">[</span><span class="s2">"G4"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">scan_G4</span> <span class="o">==</span> <span class="p">[</span>
+                    <span class="s2">"0"</span><span class="p">,</span>
+                <span class="p">]:</span>
+                    <span class="n">scan_G4</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">scan_G4</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scan_G0</span><span class="p">,</span> <span class="n">scan_G4</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">geometry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+            <span class="n">geo_name</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_G0</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">[</span><span class="s2">"G"</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"#G0 G[] did not match </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">scan_G4</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_G4</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">[</span><span class="s2">"Q"</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"#G4 Q[] did not match </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">variant</span> <span class="ow">in</span> <span class="n">geometry</span><span class="p">[</span><span class="s2">"variations"</span><span class="p">]:</span>
+                <span class="n">var_name</span> <span class="o">=</span> <span class="n">variant</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+                <span class="n">n_motors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">variant</span><span class="p">[</span><span class="s2">"motors"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">scan_positioners</span><span class="p">[:</span><span class="n">n_motors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">variant</span><span class="p">[</span><span class="s2">"motors"</span><span class="p">]:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"motors did not match </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">geo_name</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">others_match</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">mne</span> <span class="ow">in</span> <span class="n">variant</span><span class="p">[</span><span class="s2">"other-motors"</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">mne</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">positioner</span><span class="p">:</span>
+                        <span class="n">others_match</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">others_match</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s2">"other-motors did not match </span><span class="si">%s</span><span class="s2"> (mne=</span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
+                        <span class="n">geo_name</span><span class="p">,</span>
+                        <span class="n">mne</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="k">match</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">geo_name</span><span class="p">,</span> <span class="n">var_name</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">match</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">"Scan geometry match is not unique!"</span>
+                    <span class="s2">"  Picking the first one from: </span><span class="si">%s</span><span class="s2">, file: </span><span class="si">%s</span><span class="s2">, scan: </span><span class="si">%s</span><span class="s2">"</span>
+                <span class="p">),</span>
+                <span class="n">match</span><span class="p">,</span> <span class="n">scan</span><span class="o">.</span><span class="n">specFile</span><span class="p">,</span> <span class="n">scan</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">match</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_geometry</span><span class="p">()[</span><span class="s2">"name"</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># :author:    Pete R. Jemian</span>
+<span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="c1"># :copyright: (c) 2014-2022, Pete R. Jemian</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="c1">#</span>
+<span class="c1"># The full license is in the file LICENSE.txt, distributed with this software.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2014-2022, Pete R. Jemian
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    </body>
+</html>

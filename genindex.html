@@ -1,0 +1,1226 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/><title>Index - spec2nexus 2021.2.6 documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">spec2nexus 2021.2.6 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">spec2nexus 2021.2.6 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="contents.html">Contents</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="applications.html">Applications</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="libraries.html">Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="howto.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html">Change History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a> | <a href="#X"><strong>X</strong></a></div>
+</section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters2D.a">a (spec2nexus.diffractometers.LatticeParameters2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.a">(spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.add_interpreter_comment">add_interpreter_comment() (spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.addAttributes">addAttributes() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileHeader.addH5writer">addH5writer() (spec2nexus.spec.SpecDataFileHeader method)</a>
+
+        <ul>
+          <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.addH5writer">(spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileHeader.addPostProcessor">addPostProcessor() (spec2nexus.spec.SpecDataFileHeader method)</a>
+
+        <ul>
+          <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.addPostProcessor">(spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        </ul></li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.alpha">alpha (spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections2D.angles">angles (spec2nexus.diffractometers.Reflections2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D.angles">(spec2nexus.diffractometers.Reflections3D attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters2D.b">b (spec2nexus.diffractometers.LatticeParameters2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.b">(spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.beta">beta (spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.c">c (spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.clean_name">clean_name() (in module spec2nexus.utils)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.combine_split_NM_lines">combine_split_NM_lines() (in module spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="plugin_core.html#index-1"><strong>control line</strong></a>, <a href="how_to_write_plugin.html#index-1">[1]</a>, <a href="how_to_write_plugin.html#index-2">[2]</a>, <a href="nexus_layout/basic_tree.html#index-2">[3]</a>, <a href="plugin_core.html#index-2">[4]</a>, <a href="supplied_plugins/apstools_specwriter.html#index-0">[5]</a>, <a href="supplied_plugins/uxml.html#index-0">[6]</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.ControlLineBase">ControlLineBase (class in spec2nexus.plugin_core)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.data_lines_postprocessing">data_lines_postprocessing() (in module spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.data_lines_writer">data_lines_writer() (in module spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.dataset">dataset() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.KeyDescriptionValue.description">description (spec2nexus.diffractometers.KeyDescriptionValue attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Diffractometer">Diffractometer (class in spec2nexus.diffractometers)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog">DiffractometerGeometryCatalog (class in spec2nexus.diffractometers)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.dissect_file">dissect_file() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.DuplicateKeyError">DuplicateKeyError</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.DuplicateSpecScanNumber">DuplicateSpecScanNumber</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    examples
+
+        <ul>
+          <li><a href="example_data.html#index-0">data files</a>
+</li>
+          <li><a href="extractSpecScan.html#index-0">extractSpecScan</a>
+</li>
+          <li><a href="eznx.html#index-0">eznx</a>
+</li>
+          <li><a href="spec.html#index-0">spec</a>
+</li>
+          <li><a href="spec.html#index-8">SPEC control lines</a>
+</li>
+          <li><a href="spec.html#index-9">SPEC MCA data</a>
+</li>
+          <li><a href="spec2nexus.html#index-0">spec2nexus</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters2D.gamma">gamma (spec2nexus.diffractometers.LatticeParameters2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D.gamma">(spec2nexus.diffractometers.LatticeParameters3D attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries">geometries() (spec2nexus.diffractometers.DiffractometerGeometryCatalog method)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get">get() (spec2nexus.diffractometers.DiffractometerGeometryCatalog method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.get_interpreter_comments">get_interpreter_comments() (spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.get_macro_name">get_macro_name() (spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        <li><a href="extractSpecScan.html#spec2nexus.extractSpecScan.get_user_parameters">get_user_parameters() (in module spec2nexus.extractSpecScan)</a>
+
+        <ul>
+          <li><a href="spec2nexus.html#spec2nexus.nexus.get_user_parameters">(in module spec2nexus.nexus)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getFirstScanNumber">getFirstScanNumber() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getLastScanNumber">getLastScanNumber() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getMaxScanNumber">getMaxScanNumber() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getMinScanNumber">getMinScanNumber() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getScan">getScan() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getScanCommands">getScanCommands() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getScanNumbers">getScanNumbers() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.getScanNumbersChronological">getScanNumbersChronological() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.group">group() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="H" class="genindex-section">
+  <h2>H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections2D.h">h (spec2nexus.diffractometers.Reflections2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D.h">(spec2nexus.diffractometers.Reflections3D attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.hardlink">hardlink() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry">has_geometry() (spec2nexus.diffractometers.DiffractometerGeometryCatalog method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.install_user_plugin">install_user_plugin() (in module spec2nexus.plugin_core)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileHeader.interpret">interpret() (spec2nexus.spec.SpecDataFileHeader method)</a>
+
+        <ul>
+          <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan.interpret">(spec2nexus.spec.SpecDataFileScan method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.is_spec_file">is_spec_file() (in module spec2nexus.spec)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.is_spec_file_with_header">is_spec_file_with_header() (in module spec2nexus.spec)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.iso8601">iso8601() (in module spec2nexus.utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="K" class="genindex-section">
+  <h2>K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections2D.k">k (spec2nexus.diffractometers.Reflections2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D.k">(spec2nexus.diffractometers.Reflections3D attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="how_to_write_plugin.html#index-0"><strong>key</strong></a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.KeyDescriptionValue.key">(spec2nexus.diffractometers.KeyDescriptionValue attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.KeyDescriptionValue">KeyDescriptionValue (class in spec2nexus.diffractometers)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D.l">l (spec2nexus.diffractometers.Reflections3D attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters2D">LatticeParameters2D (class in spec2nexus.diffractometers)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.LatticeParameters3D">LatticeParameters3D (class in spec2nexus.diffractometers)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="extractSpecScan.html#spec2nexus.extractSpecScan.main">main() (in module spec2nexus.extractSpecScan)</a>
+
+        <ul>
+          <li><a href="spec2nexus.html#spec2nexus.nexus.main">(in module spec2nexus.nexus)</a>
+</li>
+        </ul></li>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.make_NeXus_links">make_NeXus_links() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.makeDataset">makeDataset() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.makeExternalLink">makeExternalLink() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.makeFile">makeFile() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.makeGroup">makeGroup() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.makeLink">makeLink() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="extractSpecScan.html#spec2nexus.extractSpecScan.makeOutputFileName">makeOutputFileName() (in module spec2nexus.extractSpecScan)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.DiffractometerGeometryCatalog.match">match() (spec2nexus.diffractometers.DiffractometerGeometryCatalog method)</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.ControlLineBase.match_key">match_key() (spec2nexus.plugin_core.ControlLineBase method)</a>
+
+        <ul>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_DataLine.match_key">(spec2nexus.plugins.spec_common.SPEC_DataLine method)</a>
+</li>
+        </ul></li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.mca_spectra">mca_spectra() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="supplied_plugins/apstools_specwriter.html#spec2nexus.plugins.apstools_specwriter.MD_apstools">MD_apstools (class in spec2nexus.plugins.apstools_specwriter)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.mesh">mesh() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="control_lines.html#module-spec2nexus.control_lines">spec2nexus.control_lines</a>
+</li>
+          <li><a href="diffractometers.html#module-spec2nexus.diffractometers">spec2nexus.diffractometers</a>
+</li>
+          <li><a href="extractSpecScan.html#module-spec2nexus.extractSpecScan">spec2nexus.extractSpecScan</a>
+</li>
+          <li><a href="eznx.html#module-spec2nexus.eznx">spec2nexus.eznx</a>
+</li>
+          <li><a href="spec2nexus.html#module-spec2nexus.nexus">spec2nexus.nexus</a>
+</li>
+          <li><a href="plugin_core.html#module-spec2nexus.plugin_core">spec2nexus.plugin_core</a>
+</li>
+          <li><a href="supplied_plugins/apstools_specwriter.html#module-spec2nexus.plugins.apstools_specwriter">spec2nexus.plugins.apstools_specwriter</a>
+</li>
+          <li><a href="supplied_plugins/fallback.html#module-spec2nexus.plugins.fallback">spec2nexus.plugins.fallback</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#module-spec2nexus.plugins.spec_common">spec2nexus.plugins.spec_common</a>
+</li>
+          <li><a href="supplied_plugins/uim.html#module-spec2nexus.plugins.uim">spec2nexus.plugins.uim</a>
+</li>
+          <li><a href="supplied_plugins/unicat.html#module-spec2nexus.plugins.unicat">spec2nexus.plugins.unicat</a>
+</li>
+          <li><a href="supplied_plugins/uxml.html#module-spec2nexus.plugins.uxml">spec2nexus.plugins.uxml</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#module-spec2nexus.plugins.XPCS">spec2nexus.plugins.XPCS</a>
+</li>
+          <li><a href="scanf.html#module-spec2nexus.scanf">spec2nexus.scanf</a>
+</li>
+          <li><a href="singletons.html#module-spec2nexus.singletons">spec2nexus.singletons</a>
+</li>
+          <li><a href="spec.html#module-spec2nexus.spec">spec2nexus.spec</a>
+</li>
+          <li><a href="utils.html#module-spec2nexus.utils">spec2nexus.utils</a>
+</li>
+          <li><a href="writer.html#module-spec2nexus.writer">spec2nexus.writer</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    NeXus structure
+
+        <ul>
+          <li><a href="eznx.html#index-1">SPEC data</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.NotASpecDataFile">NotASpecDataFile</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="writer.html#spec2nexus.writer.Writer.oneD">oneD() (spec2nexus.writer.Writer method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="eznx.html#spec2nexus.eznx.openGroup">openGroup() (in module spec2nexus.eznx)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec2nexus.html#spec2nexus.nexus.parse_scan_list_spec">parse_scan_list_spec() (in module spec2nexus.nexus)</a>
+</li>
+        <li><a href="spec2nexus.html#spec2nexus.nexus.pick_scans">pick_scans() (in module spec2nexus.nexus)</a>
+</li>
+        <li><a href="control_lines.html#index-0"><strong>plugin</strong></a>, <a href="diffractometers.html#index-0"><strong>[1]</strong></a>, <a href="plugin_core.html#index-0"><strong>[2]</strong></a>, <a href="nexus_layout/basic_tree.html#index-0">[3]</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.PluginMounter">PluginMounter (class in spec2nexus.plugin_core)</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.ControlLineBase.postprocess">postprocess() (spec2nexus.plugin_core.ControlLineBase method)</a>
+
+        <ul>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterMnemonics.postprocess">(spec2nexus.plugins.spec_common.SPEC_CounterMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterNames.postprocess">(spec2nexus.plugins.spec_common.SPEC_CounterNames method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_DataLine.postprocess">(spec2nexus.plugins.spec_common.SPEC_DataLine method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Geometry.postprocess">(spec2nexus.plugins.spec_common.SPEC_Geometry method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Array.postprocess">(spec2nexus.plugins.spec_common.SPEC_MCA_Array method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics.postprocess">(spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Positioners.postprocess">(spec2nexus.plugins.spec_common.SPEC_Positioners method)</a>
+</li>
+          <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataValues.postprocess">(spec2nexus.plugins.unicat.UNICAT_MetadataValues method)</a>
+</li>
+          <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.postprocess">(spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+        </ul></li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Diffractometer.print_all">print_all() (spec2nexus.diffractometers.Diffractometer method)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Diffractometer.print_brief">print_brief() (spec2nexus.diffractometers.Diffractometer method)</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.ControlLineBase.process">process() (spec2nexus.plugin_core.ControlLineBase method)</a>
+
+        <ul>
+          <li><a href="supplied_plugins/apstools_specwriter.html#spec2nexus.plugins.apstools_specwriter.MD_apstools.process">(spec2nexus.plugins.apstools_specwriter.MD_apstools method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Comment.process">(spec2nexus.plugins.spec_common.SPEC_Comment method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterMnemonics.process">(spec2nexus.plugins.spec_common.SPEC_CounterMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterNames.process">(spec2nexus.plugins.spec_common.SPEC_CounterNames method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CountTime.process">(spec2nexus.plugins.spec_common.SPEC_CountTime method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_DataLine.process">(spec2nexus.plugins.spec_common.SPEC_DataLine method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Date.process">(spec2nexus.plugins.spec_common.SPEC_Date method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Epoch.process">(spec2nexus.plugins.spec_common.SPEC_Epoch method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_File.process">(spec2nexus.plugins.spec_common.SPEC_File method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Geometry.process">(spec2nexus.plugins.spec_common.SPEC_Geometry method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_HKL.process">(spec2nexus.plugins.spec_common.SPEC_HKL method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Labels.process">(spec2nexus.plugins.spec_common.SPEC_Labels method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA.process">(spec2nexus.plugins.spec_common.SPEC_MCA method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Array.process">(spec2nexus.plugins.spec_common.SPEC_MCA_Array method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Calibration.process">(spec2nexus.plugins.spec_common.SPEC_MCA_Calibration method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation.process">(spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_CountTime.process">(spec2nexus.plugins.spec_common.SPEC_MCA_CountTime method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest.process">(spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Monitor.process">(spec2nexus.plugins.spec_common.SPEC_Monitor method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_NormalizingFactor.process">(spec2nexus.plugins.spec_common.SPEC_NormalizingFactor method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_NumColumns.process">(spec2nexus.plugins.spec_common.SPEC_NumColumns method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics.process">(spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerNames.process">(spec2nexus.plugins.spec_common.SPEC_PositionerNames method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Positioners.process">(spec2nexus.plugins.spec_common.SPEC_Positioners method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Scan.process">(spec2nexus.plugins.spec_common.SPEC_Scan method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint.process">(spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserReserved.process">(spec2nexus.plugins.spec_common.SPEC_UserReserved method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserResults.process">(spec2nexus.plugins.spec_common.SPEC_UserResults method)</a>
+</li>
+          <li><a href="supplied_plugins/uim.html#spec2nexus.plugins.uim.UIM_generic.process">(spec2nexus.plugins.uim.UIM_generic method)</a>
+</li>
+          <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataMnemonics.process">(spec2nexus.plugins.unicat.UNICAT_MetadataMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataValues.process">(spec2nexus.plugins.unicat.UNICAT_MetadataValues method)</a>
+</li>
+          <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.process">(spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD.process">(spec2nexus.plugins.XPCS.XPCS_CCD method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA.process">(spec2nexus.plugins.XPCS.XPCS_VA method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD.process">(spec2nexus.plugins.XPCS.XPCS_VD method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE.process">(spec2nexus.plugins.XPCS.XPCS_VE method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS.process">(spec2nexus.plugins.XPCS.XPCS_XPCS method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.prune_dict">prune_dict() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.read">read() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.read_nexus_field">read_nexus_field() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="eznx.html#spec2nexus.eznx.read_nexus_group_fields">read_nexus_group_fields() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections2D">Reflections2D (class in spec2nexus.diffractometers)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D">Reflections3D (class in spec2nexus.diffractometers)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.refresh">refresh() (spec2nexus.spec.SpecDataFile method)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.reshape_data">reshape_data() (in module spec2nexus.utils)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.root_attributes">root_attributes() (spec2nexus.writer.Writer method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="utils.html#spec2nexus.utils.sanitize_name">sanitize_name() (in module spec2nexus.utils)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.save">save() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.save_data">save_data() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.save_dict">save_dict() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.save_scan">save_scan() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="scanf.html#spec2nexus.scanf.scanf">scanf() (in module spec2nexus.scanf)</a>
+</li>
+        <li><a href="singletons.html#spec2nexus.singletons.Singleton">Singleton (class in spec2nexus.singletons)</a>
+</li>
+        <li><a href="spec.html#index-2"><strong>slice parameters</strong></a>
+</li>
+        <li><a href="spec.html#index-1"><strong>slicing</strong></a>
+</li>
+        <li>
+    SPEC
+
+        <ul>
+          <li><a href="spec.html#index-5">control lines</a>
+</li>
+          <li><a href="spec.html#index-4">data file structure</a>
+</li>
+          <li><a href="spec.html#index-6">data lines</a>
+</li>
+          <li><a href="spec.html#index-7">special data lines</a>
+</li>
+        </ul></li>
+        <li><a href="spec.html#index-3">SPEC data file keys</a>
+</li>
+        <li>
+    spec2nexus.control_lines
+
+        <ul>
+          <li><a href="control_lines.html#module-spec2nexus.control_lines">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.diffractometers
+
+        <ul>
+          <li><a href="diffractometers.html#module-spec2nexus.diffractometers">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.extractSpecScan
+
+        <ul>
+          <li><a href="extractSpecScan.html#module-spec2nexus.extractSpecScan">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.eznx
+
+        <ul>
+          <li><a href="eznx.html#module-spec2nexus.eznx">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.nexus
+
+        <ul>
+          <li><a href="spec2nexus.html#module-spec2nexus.nexus">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugin_core
+
+        <ul>
+          <li><a href="plugin_core.html#module-spec2nexus.plugin_core">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.apstools_specwriter
+
+        <ul>
+          <li><a href="supplied_plugins/apstools_specwriter.html#module-spec2nexus.plugins.apstools_specwriter">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.fallback
+
+        <ul>
+          <li><a href="supplied_plugins/fallback.html#module-spec2nexus.plugins.fallback">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.spec_common
+
+        <ul>
+          <li><a href="supplied_plugins/spec_common.html#module-spec2nexus.plugins.spec_common">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.uim
+
+        <ul>
+          <li><a href="supplied_plugins/uim.html#module-spec2nexus.plugins.uim">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.unicat
+
+        <ul>
+          <li><a href="supplied_plugins/unicat.html#module-spec2nexus.plugins.unicat">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.uxml
+
+        <ul>
+          <li><a href="supplied_plugins/uxml.html#module-spec2nexus.plugins.uxml">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.plugins.XPCS
+
+        <ul>
+          <li><a href="supplied_plugins/XPCS.html#module-spec2nexus.plugins.XPCS">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.scanf
+
+        <ul>
+          <li><a href="scanf.html#module-spec2nexus.scanf">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    spec2nexus.singletons
+
+        <ul>
+          <li><a href="singletons.html#module-spec2nexus.singletons">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.spec
+
+        <ul>
+          <li><a href="spec.html#module-spec2nexus.spec">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.utils
+
+        <ul>
+          <li><a href="utils.html#module-spec2nexus.utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    spec2nexus.writer
+
+        <ul>
+          <li><a href="writer.html#module-spec2nexus.writer">module</a>
+</li>
+        </ul></li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Comment">SPEC_Comment (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterMnemonics">SPEC_CounterMnemonics (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterNames">SPEC_CounterNames (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CountTime">SPEC_CountTime (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_DataLine">SPEC_DataLine (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Date">SPEC_Date (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Epoch">SPEC_Epoch (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_File">SPEC_File (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Geometry">SPEC_Geometry (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_HKL">SPEC_HKL (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Labels">SPEC_Labels (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA">SPEC_MCA (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Array">SPEC_MCA_Array (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Calibration">SPEC_MCA_Calibration (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation">SPEC_MCA_ChannelInformation (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_CountTime">SPEC_MCA_CountTime (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest">SPEC_MCA_RegionOfInterest (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Monitor">SPEC_Monitor (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_NormalizingFactor">SPEC_NormalizingFactor (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_NumColumns">SPEC_NumColumns (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics">SPEC_PositionerMnemonics (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerNames">SPEC_PositionerNames (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Positioners">SPEC_Positioners (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Scan">SPEC_Scan (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint">SPEC_TemperatureSetPoint (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserReserved">SPEC_UserReserved (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserResults">SPEC_UserResults (class in spec2nexus.plugins.spec_common)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile">SpecDataFile (class in spec2nexus.spec)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileCouldNotOpen">SpecDataFileCouldNotOpen</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileHeader">SpecDataFileHeader (class in spec2nexus.spec)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileNotFound">SpecDataFileNotFound</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFileScan">SpecDataFileScan (class in spec2nexus.spec)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.split_column_labels">split_column_labels() (in module spec2nexus.utils)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.split_name_variation">split_name_variation() (in module spec2nexus.diffractometers)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.split_scan_number_string">split_scan_number_string() (in module spec2nexus.utils)</a>
+</li>
+        <li><a href="utils.html#spec2nexus.utils.strip_first_word">strip_first_word() (in module spec2nexus.utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="nexus_layout/basic_tree.html#index-1"><strong>tree structure - NeXus HDF5</strong></a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/uim.html#spec2nexus.plugins.uim.UIM_generic">UIM_generic (class in spec2nexus.plugins.uim)</a>
+</li>
+        <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataMnemonics">UNICAT_MetadataMnemonics (class in spec2nexus.plugins.unicat)</a>
+</li>
+        <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataValues">UNICAT_MetadataValues (class in spec2nexus.plugins.unicat)</a>
+</li>
+        <li><a href="nexus_layout/geometry.html#index-0">units</a>, <a href="nexus_layout/positioners.html#index-0">[1]</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="spec.html#spec2nexus.spec.UnknownSpecFilePart">UnknownSpecFilePart</a>
+</li>
+        <li><a href="supplied_plugins/fallback.html#spec2nexus.plugins.fallback.UnrecognizedControlLine">UnrecognizedControlLine (class in spec2nexus.plugins.fallback)</a>
+</li>
+        <li><a href="spec.html#spec2nexus.spec.SpecDataFile.update_available">update_available (spec2nexus.spec.SpecDataFile property)</a>
+</li>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_Error">UXML_Error</a>
+</li>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata">UXML_metadata (class in spec2nexus.plugins.uxml)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.KeyDescriptionValue.value">value (spec2nexus.diffractometers.KeyDescriptionValue attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="W" class="genindex-section">
+  <h2>W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.walk_xml_tree">walk_xml_tree() (spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+        <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections2D.wavelength">wavelength (spec2nexus.diffractometers.Reflections2D attribute)</a>
+
+        <ul>
+          <li><a href="diffractometers.html#spec2nexus.diffractometers.Reflections3D.wavelength">(spec2nexus.diffractometers.Reflections3D attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="eznx.html#spec2nexus.eznx.write_dataset">write_dataset() (in module spec2nexus.eznx)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer.write_ds">write_ds() (spec2nexus.writer.Writer method)</a>
+</li>
+        <li><a href="writer.html#spec2nexus.writer.Writer">Writer (class in spec2nexus.writer)</a>
+</li>
+        <li><a href="plugin_core.html#spec2nexus.plugin_core.ControlLineBase.writer">writer() (spec2nexus.plugin_core.ControlLineBase method)</a>
+
+        <ul>
+          <li><a href="supplied_plugins/apstools_specwriter.html#spec2nexus.plugins.apstools_specwriter.MD_apstools.writer">(spec2nexus.plugins.apstools_specwriter.MD_apstools method)</a>
+</li>
+          <li><a href="supplied_plugins/fallback.html#spec2nexus.plugins.fallback.UnrecognizedControlLine.writer">(spec2nexus.plugins.fallback.UnrecognizedControlLine method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Comment.writer">(spec2nexus.plugins.spec_common.SPEC_Comment method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterMnemonics.writer">(spec2nexus.plugins.spec_common.SPEC_CounterMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CounterNames.writer">(spec2nexus.plugins.spec_common.SPEC_CounterNames method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_CountTime.writer">(spec2nexus.plugins.spec_common.SPEC_CountTime method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Date.writer">(spec2nexus.plugins.spec_common.SPEC_Date method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Geometry.writer">(spec2nexus.plugins.spec_common.SPEC_Geometry method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_HKL.writer">(spec2nexus.plugins.spec_common.SPEC_HKL method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_Calibration.writer">(spec2nexus.plugins.spec_common.SPEC_MCA_Calibration method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation.writer">(spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_CountTime.writer">(spec2nexus.plugins.spec_common.SPEC_MCA_CountTime method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest.writer">(spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Monitor.writer">(spec2nexus.plugins.spec_common.SPEC_Monitor method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_NormalizingFactor.writer">(spec2nexus.plugins.spec_common.SPEC_NormalizingFactor method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics.writer">(spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_Positioners.writer">(spec2nexus.plugins.spec_common.SPEC_Positioners method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint.writer">(spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserReserved.writer">(spec2nexus.plugins.spec_common.SPEC_UserReserved method)</a>
+</li>
+          <li><a href="supplied_plugins/spec_common.html#spec2nexus.plugins.spec_common.SPEC_UserResults.writer">(spec2nexus.plugins.spec_common.SPEC_UserResults method)</a>
+</li>
+          <li><a href="supplied_plugins/unicat.html#spec2nexus.plugins.unicat.UNICAT_MetadataValues.writer">(spec2nexus.plugins.unicat.UNICAT_MetadataValues method)</a>
+</li>
+          <li><a href="supplied_plugins/uxml.html#spec2nexus.plugins.uxml.UXML_metadata.writer">(spec2nexus.plugins.uxml.UXML_metadata method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD.writer">(spec2nexus.plugins.XPCS.XPCS_CCD method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA.writer">(spec2nexus.plugins.XPCS.XPCS_VA method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD.writer">(spec2nexus.plugins.XPCS.XPCS_VD method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE.writer">(spec2nexus.plugins.XPCS.XPCS_VE method)</a>
+</li>
+          <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS.writer">(spec2nexus.plugins.XPCS.XPCS_XPCS method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="X" class="genindex-section">
+  <h2>X</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD">XPCS_CCD (class in spec2nexus.plugins.XPCS)</a>
+</li>
+        <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA">XPCS_VA (class in spec2nexus.plugins.XPCS)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD">XPCS_VD (class in spec2nexus.plugins.XPCS)</a>
+</li>
+        <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE">XPCS_VE (class in spec2nexus.plugins.XPCS)</a>
+</li>
+        <li><a href="supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS">XPCS_XPCS (class in spec2nexus.plugins.XPCS)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2014-2022, Pete R. Jemian
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    </body>
+</html>

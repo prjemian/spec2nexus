@@ -1,0 +1,1096 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>spec2nexus.spec - spec2nexus 2021.2.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">spec2nexus 2021.2.6 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">spec2nexus 2021.2.6 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../contents.html">Contents</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../example_data.html">Example data</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../applications.html">Applications</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../spec2nexus.html">spec2nexus</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../nexus_layout/index.html">NeXus File Layout</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot.html">specplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../libraries.html">Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changes.html">Change History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for spec2nexus.spec</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">"""</span>
+<span class="sd">A set of classes to read the contents of a SPEC data file.</span>
+
+<span class="sd">:author: Pete Jemian</span>
+<span class="sd">:email: jemian@anl.gov</span>
+
+<span class="sd">:meth:`~spec2nexus.spec.SpecDataFile` is the only class users will need to call.</span>
+<span class="sd">All other :mod:`~spec2nexus.spec` classes are called from this class. The</span>
+<span class="sd">:meth:`~spec2nexus.spec.SpecDataFile.read` method is called automatically.</span>
+
+<span class="sd">The user should create a class instance for each spec data file, specifying the</span>
+<span class="sd">file reference (by path reference as needed) and the internal routines will take</span>
+<span class="sd">care of all that is necessary to read and interpret the information.</span>
+
+<span class="sd">.. autosummary::</span>
+
+<span class="sd">    ~is_spec_file</span>
+<span class="sd">    ~is_spec_file_with_header</span>
+<span class="sd">    ~SpecDataFile</span>
+<span class="sd">    ~SpecDataFileHeader</span>
+<span class="sd">    ~SpecDataFileScan</span>
+
+
+<span class="sd">..  ----------------------------------------------------------------------</span>
+<span class="sd">    old documentation</span>
+<span class="sd">    ----------------------------------------------------------------------</span>
+
+<span class="sd">    .. index:: SPEC data file structure</span>
+
+<span class="sd">    The parser makes the assumption that a SPEC data file is composed from a</span>
+<span class="sd">    sequence of component blocks.  The component blocks are either header or</span>
+<span class="sd">    scan blocks.  Header blocks have the first line starting with ``#F`` while</span>
+<span class="sd">    scan blocks have the first line starting with ``#S``.  Usually, there is</span>
+<span class="sd">    only one header block in a SPEC data file, followed by many scan blocks.</span>
+<span class="sd">    The header block contains information common to all the scan blocks that</span>
+<span class="sd">    follow it.  Content for each block continues until the next block starts or</span>
+<span class="sd">    the file ends.  The pattern is:</span>
+
+<span class="sd">    * #F line starts a header block</span>
+<span class="sd">    * there could be multiple #F lines in a data file</span>
+<span class="sd">    * #S lines start a SPEC scan</span>
+<span class="sd">    * everything between #F and the next #S is header content</span>
+<span class="sd">    * everything after a #S line is scan content (until EOF, the next #S or the</span>
+<span class="sd">      next #F)</span>
+
+<span class="sd">    .. rubric:: Additional assumptions</span>
+
+<span class="sd">    * Lines that begin with ``#`` contain metadata of some form.</span>
+<span class="sd">    * Lines that begin with ``@`` contain MCA data</span>
+<span class="sd">    * Lines that begin with a number are data points</span>
+<span class="sd">    * Line that are blank will be ignored</span>
+<span class="sd">    * Lines that begin with anything else are unexpected and will be ignored</span>
+
+<span class="sd">    For lines that begin with ``#``, these hold keys to some form of metadata.</span>
+<span class="sd">    Some of the keys are identified and used by the SPEC standard.mac (and other)</span>
+<span class="sd">    macro files.  Other keys are left to the user to define.  There are two</span>
+<span class="sd">    general types of key, best described by a regular expression:</span>
+
+<span class="sd">    ====================  ============  ============================</span>
+<span class="sd">    regexp                example       how it appears</span>
+<span class="sd">    ====================  ============  ============================</span>
+<span class="sd">    ``^#[a-zA-Z]+\s``     ``#S``        by itself</span>
+<span class="sd">    ``^#[a-zA-Z]+\d+\s``  ``#P5``       part of a numbered series</span>
+<span class="sd">    ====================  ============  ============================</span>
+
+<span class="sd">    Note that keys that appear as part of a numbered series (such as ``#O0 #O1 #O2`` ...),</span>
+<span class="sd">    usually have numbers starting at 0.</span>
+<span class="sd">    -----------------------------------------------------------------------------------------</span>
+
+<span class="sd">Note that the SPEC geometry control lines (``#G0 #G1`` ...)</span>
+<span class="sd">have meanings that are unique to specific diffractometer geometries including</span>
+<span class="sd">different numbers of values.  Consult the geometry macro file for specifics.</span>
+
+
+
+<span class="sd">.. rubric:: Examples</span>
+
+<span class="sd">Get the first and last scan numbers from the file:</span>
+
+<span class="sd">    &gt;&gt;&gt; from spec2nexus import spec</span>
+<span class="sd">    &gt;&gt;&gt; spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')</span>
+<span class="sd">    &gt;&gt;&gt; print(spec_data.fileName)</span>
+<span class="sd">    path/to/my/spec_data.dat</span>
+<span class="sd">    &gt;&gt;&gt; print('first scan: ', spec_data.getFirstScanNumber())</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; print('last scan: ', spec_data.getLastScanNumber())</span>
+<span class="sd">    22</span>
+
+<span class="sd">Get plottable data from scan number 10:</span>
+
+<span class="sd">    &gt;&gt;&gt; from spec2nexus import spec</span>
+<span class="sd">    &gt;&gt;&gt; spec_data = spec.SpecDataFile('path/to/my/spec_data.dat')</span>
+<span class="sd">    &gt;&gt;&gt; scan10 = spec_data.getScan(10)</span>
+<span class="sd">    &gt;&gt;&gt; x_label = scan10.L[0]</span>
+<span class="sd">    &gt;&gt;&gt; y_label = scan10.L[-1]</span>
+<span class="sd">    &gt;&gt;&gt; x_data = scan10.data[x_label]</span>
+<span class="sd">    &gt;&gt;&gt; y_data = scan10.data[y_label]</span>
+
+
+<span class="sd">Try to read a file that does not exist:</span>
+
+<span class="sd">    &gt;&gt;&gt; spec_data = spec.SpecDataFile('missing_file')</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">      ...</span>
+<span class="sd">    spec.SpecDataFileNotFound: file does not exist: missing_file</span>
+
+<span class="sd">.. rubric::  Classes and Methods</span>
+
+<span class="sd">"""</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">split_scan_number_string</span>
+
+
+<span class="n">UNRECOGNIZED_KEY</span> <span class="o">=</span> <span class="s2">"unrecognized_control_line"</span>
+<span class="n">MCA_DATA_KEY</span> <span class="o">=</span> <span class="s2">"_mca_"</span>
+
+
+<div class="viewcode-block" id="SpecDataFileNotFound"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileNotFound">[docs]</a><span class="k">class</span> <span class="nc">SpecDataFileNotFound</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""data file was not found"""</span></div>
+
+
+<div class="viewcode-block" id="SpecDataFileCouldNotOpen"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileCouldNotOpen">[docs]</a><span class="k">class</span> <span class="nc">SpecDataFileCouldNotOpen</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""data file could not be opened"""</span></div>
+
+
+<div class="viewcode-block" id="NotASpecDataFile"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.NotASpecDataFile">[docs]</a><span class="k">class</span> <span class="nc">NotASpecDataFile</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""content of file is not SPEC data (first line must start with ``#F``)"""</span></div>
+
+
+<div class="viewcode-block" id="DuplicateSpecScanNumber"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.DuplicateSpecScanNumber">[docs]</a><span class="k">class</span> <span class="nc">DuplicateSpecScanNumber</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""multiple use of scan number in a single SPEC data file"""</span></div>
+
+
+<div class="viewcode-block" id="UnknownSpecFilePart"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.UnknownSpecFilePart">[docs]</a><span class="k">class</span> <span class="nc">UnknownSpecFilePart</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""unknown part in a single SPEC data file"""</span></div>
+
+
+<div class="viewcode-block" id="is_spec_file"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.is_spec_file">[docs]</a><span class="k">def</span> <span class="nf">is_spec_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    test if a given file name is a SPEC data file</span>
+
+<span class="sd">    :param str filename: path/to/possible/spec/data.file</span>
+
+<span class="sd">    *filename* is a SPEC file if it contains at least one #S control line</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#S "</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_spec_file_with_header"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.is_spec_file_with_header">[docs]</a><span class="k">def</span> <span class="nf">is_spec_file_with_header</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    test if a given file name is a SPEC data file</span>
+
+<span class="sd">    :param str filename: path/to/possible/spec/data.file</span>
+
+<span class="sd">    *filename* is a SPEC file only if the file starts [#]_</span>
+<span class="sd">    with these control lines in order:</span>
+
+<span class="sd">    * #F    - original filename</span>
+<span class="sd">    * #E    - the UNIX epoch (seconds from 00:00 GMT 1/1/70)</span>
+<span class="sd">    * #D    - current date and time in UNIX format</span>
+<span class="sd">    * #C    - comment line (the first one provides the filename again and the user name)</span>
+
+<span class="sd">    such as::</span>
+
+<span class="sd">        #F LNO_LAO</span>
+<span class="sd">        #E 1276730676</span>
+<span class="sd">        #D Wed Jun 16 18:24:36 2010</span>
+<span class="sd">        #C LNO_LAO  User = epix33bm</span>
+
+<span class="sd">    .. [#] SPEC manual, *Standard Data File Format*, https://www.certif.com/spec_manual/user_1_4_1.html</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">expected_controls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"#F "</span><span class="p">,</span> <span class="s2">"#E "</span><span class="p">,</span> <span class="s2">"#D "</span><span class="p">,</span> <span class="s2">"#C "</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_controls</span><span class="p">)]</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_controls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">expected</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">expected_controls</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">expected</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SpecDataFile"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile">[docs]</a><span class="k">class</span> <span class="nc">SpecDataFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    contents of a SPEC data file</span>
+
+<span class="sd">    .. autosummary::</span>
+
+<span class="sd">        ~dissect_file</span>
+<span class="sd">        ~getFirstScanNumber</span>
+<span class="sd">        ~getLastScanNumber</span>
+<span class="sd">        ~getMaxScanNumber</span>
+<span class="sd">        ~getMinScanNumber</span>
+<span class="sd">        ~getScan</span>
+<span class="sd">        ~getScanCommands</span>
+<span class="sd">        ~getScanNumbers</span>
+<span class="sd">        ~getScanNumbersChronological</span>
+<span class="sd">        ~read</span>
+<span class="sd">        ~refresh</span>
+<span class="sd">        ~update_available</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">fileName</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">scans</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">readOK</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scans</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readOK</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_scan</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mtime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filesize</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SpecDataFileNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">"file does not exist: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_spec_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">NotASpecDataFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">"not a SPEC data file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span> <span class="o">=</span> <span class="n">filename</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span> <span class="ow">or</span> <span class="s2">"None"</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Slicing interface: sliced access to SPEC scan list."""</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">given</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="c1"># print(f"slice: {given.start=} {given.stop=} {given.step=}")</span>
+            <span class="n">scanlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbersChronological</span><span class="p">()</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">start</span> <span class="ow">or</span> <span class="n">scanlist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">stop</span> <span class="ow">or</span> <span class="n">scanlist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># print(f"adjusted: {start=} {stop=}")</span>
+            <span class="k">if</span> <span class="p">(</span>  <span class="c1"># relative positions</span>
+                <span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">stop</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">given</span><span class="o">.</span><span class="n">stop</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">stop</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">given</span><span class="o">.</span><span class="n">start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">stop</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">):</span>
+
+                <span class="n">keys</span> <span class="o">=</span> <span class="n">scanlist</span><span class="p">[</span><span class="n">given</span><span class="o">.</span><span class="n">start</span> <span class="p">:</span> <span class="n">given</span><span class="o">.</span><span class="n">stop</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">stop</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># range of absolute scan numbers</span>
+                <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">scanlist</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">stop</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"slice start and stop must have same sign: given='</span><span class="si">{</span><span class="n">given</span><span class="si">}</span><span class="s2">'"</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">given</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># relative choice</span>
+                    <span class="n">kd</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># create a dictionary for selections</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                        <span class="n">s</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">split_scan_number_string</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                        <span class="c1"># look for multiple occurrences</span>
+                        <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># first scan s in file</span>
+                            <span class="n">kd</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>  <span class="c1"># additional scan s in file</span>
+                            <span class="n">kd</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+                    <span class="c1"># relative or absolute, same indexing _here_</span>
+                    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">kd</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)][</span><span class="n">step</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kd</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># absolute choice</span>
+                    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">split_scan_number_string</span><span class="p">(</span><span class="n">k</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">step</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">getScan</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">given</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="c1"># print(f"mutiple: {given=}")</span>
+            <span class="n">scans</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">given</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SpecDataFileScan</span><span class="p">):</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">]</span>
+                <span class="n">scans</span> <span class="o">+=</span> <span class="n">result</span>
+            <span class="k">return</span> <span class="n">scans</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># a plain index</span>
+            <span class="k">if</span> <span class="n">given</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`None` is not a valid index."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">given</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">given</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># absolute scan number match</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScan</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># relative position in the list</span>
+                <span class="n">scanlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbersChronological</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScan</span><span class="p">(</span><span class="n">scanlist</span><span class="p">[</span><span class="n">given</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">update_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Has the file been updated since the last time it was read?</span>
+
+<span class="sd">        Reference file modification time is stored *after*</span>
+<span class="sd">        file is read in :meth:`read()` method.</span>
+
+<span class="sd">        EXAMPLE USAGE</span>
+
+<span class="sd">        Open the SPEC data file (example):</span>
+
+<span class="sd">            sdf = spec.SpecDataFile(filename)</span>
+
+<span class="sd">        then, monitor (continuing example):</span>
+
+<span class="sd">            if sdf.update_available:</span>
+<span class="sd">                myLastScan = sdf.last_scan</span>
+<span class="sd">                sdf.read()</span>
+<span class="sd">                plot_scan_and_newer(myLastScan)    # new method</span>
+<span class="sd">                myLastScan = sdf.last_scan</span>
+
+<span class="sd">        .. note: The previous last_scan is reprocessed since</span>
+<span class="sd">           that scan may not have been complete when the file</span>
+<span class="sd">           was read() previously.</span>
+
+<span class="sd">        """</span>
+        <span class="n">same_mtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mtime</span> <span class="o">==</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="n">same_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filesize</span> <span class="o">==</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="n">identical</span> <span class="o">=</span> <span class="n">same_mtime</span> <span class="ow">and</span> <span class="n">same_size</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">identical</span>
+
+<div class="viewcode-block" id="SpecDataFile.refresh"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        update (refresh) the content if the file is updated</span>
+
+<span class="sd">        returns previous last_scan or None if file not updated</span>
+
+<span class="sd">        .. caution:  previous last_scan must be re-created if updated</span>
+
+<span class="sd">           After calling :meth:`refresh()`, any client</span>
+<span class="sd">           with an object of the previous last scan</span>
+<span class="sd">           should get a new object with the update data.</span>
+
+<span class="sd">           EXAMPLE::</span>
+
+<span class="sd">               scan = sdf.getScan(42)</span>
+<span class="sd">               checkpoint = sdf.refresh()</span>
+<span class="sd">               if checkpoint is not None:</span>
+<span class="sd">                   scan = sdf.getScan(checkpoint)    # get updates</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_available</span><span class="p">:</span>
+            <span class="n">previous_scan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scan</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">previous_scan</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_read_file_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec_file_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Reads a spec data file"""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">spec_file_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SpecDataFileNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">"file does not exist: </span><span class="si">{</span><span class="n">spec_file_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">spec_file_name</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="n">scan_found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">buf</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#S "</span><span class="p">):</span>
+                    <span class="n">scan_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">scan_found</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NotASpecDataFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Not a spec data file: </span><span class="si">{</span><span class="n">spec_file_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SpecDataFileCouldNotOpen</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Could not open spec file: </span><span class="si">{</span><span class="n">spec_file_name</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+        <span class="c1"># caution: some files may have EOL = \r\n</span>
+        <span class="c1"># convert all '\r\n' to '\n', then all '\r' to '\n'</span>
+
+        <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\r</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SpecDataFile.dissect_file"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.dissect_file">[docs]</a>    <span class="k">def</span> <span class="nf">dissect_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        divide (SPEC data file text) buffer into sections</span>
+
+<span class="sd">        internal: A *section* starts with either #F | #E | #S</span>
+
+<span class="sd">        RETURNS</span>
+
+<span class="sd">        [block]</span>
+<span class="sd">            list of sections where each section is one or more lines of</span>
+<span class="sd">            text with one of the above control lines at its start</span>
+
+<span class="sd">        """</span>
+        <span class="n">SECTION_CONTROL_KEYS</span> <span class="o">=</span> <span class="s2">"#E #F #S"</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="n">file_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_file_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">is_section_start</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">SECTION_CONTROL_KEYS</span>
+
+        <span class="n">boundaries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_line_num</span>
+            <span class="k">for</span> <span class="n">_line_num</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_lines</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_section_start</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">boundaries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotASpecDataFile</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"None of these SPEC control keys (</span><span class="si">{</span><span class="n">SECTION_CONTROL_KEYS</span><span class="si">}</span><span class="s2">)"</span>
+                <span class="sa">f</span><span class="s2">" found in file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="c1"># last section goes all the way to the end</span>
+        <span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">file_lines</span><span class="p">))</span>
+
+        <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_lines</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">finish</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">finish</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boundaries</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">sections</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.read"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Reads and parses a spec data file"""</span>
+        <span class="kn">from</span> <span class="nn">.control_lines</span> <span class="kn">import</span> <span class="n">control_line_registry</span>
+
+        <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dissect_file</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">control_line_registry</span><span class="o">.</span><span class="n">get_control_key</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
+                <span class="k">continue</span>  <span class="c1"># cannot process this block, skip silently</span>
+            <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"#S"</span><span class="p">:</span>
+                <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"#D"</span><span class="p">,):</span>
+                            <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">scan</span><span class="p">)</span>
+                            <span class="k">break</span>
+
+        <span class="c1"># fix any missing parts</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"specFile"</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">specFile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_scan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLastScanNumber</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filesize</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getScan"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getScan">[docs]</a>    <span class="k">def</span> <span class="nf">getScan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return the scan number indicated, None if not found"""</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">scan_number</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># relative scan reference</span>
+            <span class="n">scanlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbers</span><span class="p">()</span>
+            <span class="n">scan_number</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">scanlist</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_number</span><span class="p">)]</span>
+        <span class="n">scan_number</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">scan_number</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scan_number</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="n">scan_number</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getScanNumbers"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getScanNumbers">[docs]</a>    <span class="k">def</span> <span class="nf">getScanNumbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return a list of all scan numbers sorted by scan number"""</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getScanNumbersChronological"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getScanNumbersChronological">[docs]</a>    <span class="k">def</span> <span class="nf">getScanNumbersChronological</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return a list of all scan numbers sorted by date"""</span>
+
+        <span class="k">def</span> <span class="nf">byDate_key</span><span class="p">(</span><span class="n">scan</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+
+        <span class="n">scans</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">byDate_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">scanNum</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">scans</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getMinScanNumber"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getMinScanNumber">[docs]</a>    <span class="k">def</span> <span class="nf">getMinScanNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return the lowest numbered scan"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getMaxScanNumber"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getMaxScanNumber">[docs]</a>    <span class="k">def</span> <span class="nf">getMaxScanNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return the highest numbered scan"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbers</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getFirstScanNumber"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getFirstScanNumber">[docs]</a>    <span class="k">def</span> <span class="nf">getFirstScanNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return the first scan"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbersChronological</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getLastScanNumber"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getLastScanNumber">[docs]</a>    <span class="k">def</span> <span class="nf">getLastScanNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return the last scan"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbersChronological</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFile.getScanCommands"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFile.getScanCommands">[docs]</a>    <span class="k">def</span> <span class="nf">getScanCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""return all the scan commands as a list, with scan number"""</span>
+        <span class="n">scan_list</span> <span class="o">=</span> <span class="n">scan_list</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScanNumbers</span><span class="p">()</span>
+        <span class="n">commands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">scan_list</span><span class="p">:</span>
+            <span class="n">scan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getScan</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">SpecDataFileScan</span><span class="p">):</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"#S "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">scan</span><span class="o">.</span><span class="n">scanCmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">commands</span></div></div>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SpecDataFileHeader"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileHeader">[docs]</a><span class="k">class</span> <span class="nc">SpecDataFileHeader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    contents of a spec data file header (#E) section</span>
+
+<span class="sd">    .. autosummary::</span>
+
+<span class="sd">        ~interpret</span>
+<span class="sd">        ~addPostProcessor</span>
+<span class="sd">        ~addH5writer</span>
+<span class="sd">        ~getLatestScan</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># ----------- initialize the instance variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>  <span class="c1"># instance of SpecDataFile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">fileName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">O</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">buf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="SpecDataFileHeader.interpret"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileHeader.interpret">[docs]</a>    <span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Interpret the supplied buffer with the spec data file header."""</span>
+        <span class="kn">from</span> <span class="nn">.control_lines</span> <span class="kn">import</span> <span class="n">control_line_registry</span>
+
+        <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># ignore blank lines</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">control_line_registry</span><span class="o">.</span><span class="n">get_control_key</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># log message instead of raise exception</span>
+                <span class="c1"># https://github.com/prjemian/spec2nexus/issues/57</span>
+                <span class="c1"># raise UnknownSpecFilePart("line %d: unknown header line: %s" % (_i, line))</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">UNRECOGNIZED_KEY</span>
+                <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"#E"</span><span class="p">:</span>
+                <span class="k">pass</span>  <span class="c1"># avoid recursion</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># most of the work is done here</span>
+                <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># call any post-processing hook functions from the plugins</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SpecDataFileHeader.addPostProcessor"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileHeader.addPostProcessor">[docs]</a>    <span class="k">def</span> <span class="nf">addPostProcessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        add a function to be processed after interpreting all lines from a header</span>
+
+<span class="sd">        :param str label: unique label by which this postprocessor will be known</span>
+<span class="sd">        :param obj func: function reference of postprocessor</span>
+
+<span class="sd">        The postprocessors will be called at the end of header interpretation.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="SpecDataFileHeader.addH5writer"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileHeader.addH5writer">[docs]</a>    <span class="k">def</span> <span class="nf">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        add a function to be processed when writing the scan header</span>
+
+<span class="sd">        :param str label: unique label by which this writer will be known</span>
+<span class="sd">        :param obj func: function reference of writer</span>
+
+<span class="sd">        The writers will be called when the HDF5 file is to be written.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+    <span class="k">def</span> <span class="nf">getLatestScan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SpecDataFileScan"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan">[docs]</a><span class="k">class</span> <span class="nc">SpecDataFileScan</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    contents of a spec data file scan (#S) section</span>
+
+<span class="sd">    .. autosummary::</span>
+
+<span class="sd">        ~get_macro_name</span>
+<span class="sd">        ~interpret</span>
+<span class="sd">        ~add_interpreter_comment</span>
+<span class="sd">        ~get_interpreter_comments</span>
+<span class="sd">        ~addPostProcessor</span>
+<span class="sd">        ~addH5writer</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>  <span class="c1"># instance of SpecDataFile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># index number of relevant #F section previously interpreted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">header</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positioner</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">buf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanNum</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanCmd</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpreter_comments_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># avoid changing the interface for clients</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">SpecDataFile</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">specFile</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">fileName</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">SpecDataFileHeader</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">specFile</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">fileName</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">specFile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">fileName</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">specFile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_first</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_last</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># the control_key_registry.lazy_attributes</span>
+        <span class="c1"># are set only after a call to self.interpret()</span>
+        <span class="c1"># That call is triggered on the first call for any of these attributes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_interpret__</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__interpreted__</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span>
+
+    <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.control_lines</span> <span class="kn">import</span> <span class="n">control_line_registry</span>
+
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">control_line_registry</span><span class="o">.</span><span class="n">lazy_attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_interpret__</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">interpret</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SpecDataFileScan.get_macro_name"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.get_macro_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_macro_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        name of the SPEC macro used for this scan</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanCmd</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SpecDataFileScan.interpret"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.interpret">[docs]</a>    <span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Interpret the supplied buffer with the spec scan data."""</span>
+        <span class="kn">from</span> <span class="nn">.control_lines</span> <span class="kn">import</span> <span class="n">control_line_registry</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__interpreted__</span><span class="p">:</span>  <span class="c1"># do not do this twice</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_interpret__</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># set now to avoid recursion</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\\\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># ignore blank lines</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">control_line_registry</span><span class="o">.</span><span class="n">get_control_key</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># __s__ = '&lt;' + line + '&gt;'</span>
+                <span class="c1"># _msg = "scan %s, line %d: unknown key, ignored text: %s" % (str(self.scanNum), _i, line)</span>
+                <span class="c1"># raise UnknownSpecFilePart(_msg)</span>
+                <span class="c1"># log message instead of raise exception</span>
+                <span class="c1"># https://github.com/prjemian/spec2nexus/issues/57</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">UNRECOGNIZED_KEY</span>
+                <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">"#S"</span><span class="p">:</span>  <span class="c1"># avoid recursion</span>
+                <span class="c1"># most of the work is done here</span>
+                <span class="n">control_line_registry</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># call any post-processing hook functions from the plugins</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__interpreted__</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="SpecDataFileScan.add_interpreter_comment"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.add_interpreter_comment">[docs]</a>    <span class="k">def</span> <span class="nf">add_interpreter_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        allow the interpreter to communicate information to the caller</span>
+
+<span class="sd">        see issue #66: https://github.com/prjemian/spec2nexus/issues/66</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpreter_comments_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SpecDataFileScan.get_interpreter_comments"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.get_interpreter_comments">[docs]</a>    <span class="k">def</span> <span class="nf">get_interpreter_comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        return the list of comments</span>
+
+<span class="sd">        see issue #66: https://github.com/prjemian/spec2nexus/issues/66</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpreter_comments_</span></div>
+
+<div class="viewcode-block" id="SpecDataFileScan.addPostProcessor"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.addPostProcessor">[docs]</a>    <span class="k">def</span> <span class="nf">addPostProcessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        add a function to be processed after interpreting all lines from a scan</span>
+
+<span class="sd">        :param str label: unique label by which this postprocessor will be known</span>
+<span class="sd">        :param obj func: function reference of postprocessor</span>
+
+<span class="sd">        The postprocessors will be called at the end of scan data interpretation.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">postprocessors</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="SpecDataFileScan.addH5writer"><a class="viewcode-back" href="../../spec.html#spec2nexus.spec.SpecDataFileScan.addH5writer">[docs]</a>    <span class="k">def</span> <span class="nf">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        add a function to be processed when writing the scan data</span>
+
+<span class="sd">        :param str label: unique label by which this writer will be known</span>
+<span class="sd">        :param obj func: function reference of writer</span>
+
+<span class="sd">        The writers will be called when the HDF5 file is to be written.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h5writers</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+    <span class="k">def</span> <span class="nf">_interpret_data_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_text</span><span class="p">):</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_text</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+            <span class="n">buf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">col</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_unique_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">keylist</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""ensure that label is not yet existing in keylist"""</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="k">while</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keylist</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1000</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">"cannot make unique key for duplicated column label!"</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># :author:    Pete R. Jemian</span>
+<span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="c1"># :copyright: (c) 2014-2022, Pete R. Jemian</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="c1">#</span>
+<span class="c1"># The full license is in the file LICENSE.txt, distributed with this software.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2014-2022, Pete R. Jemian
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    </body>
+</html>
