@@ -25,12 +25,12 @@ defaults:
 
 jobs:
 
-  sphinx-pages:
+  pages:
     runs-on: ubuntu-latest
 
     steps:
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
@@ -55,12 +55,11 @@ jobs:
 
       - name: Install Sphinx build requirements
         run: |
-          # https://github.com/pradyunsg/furo/discussions/308#discussioncomment-3064061
-          pip install setuptools-scm sphinx "furo <=2022.4.7"
+          pip install setuptools-scm sphinx furo
 
       - name: Sphinx
         run: |
-          make -C docs html
+          TZ=UTC make -C docs html
 
       - name: Deploy (to gh-pages branch) only on demand
         uses: peaceiris/actions-gh-pages@v3
