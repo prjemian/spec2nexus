@@ -61,7 +61,7 @@ dev = [
   "pytest",
   "ruff",
   "setuptools-scm",
-  "twine",
+  "twine ==6.0.1",
 ]
 doc = [
   "furo",
