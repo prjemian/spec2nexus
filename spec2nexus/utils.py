@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 def clean_name(key):
-    """
+    r"""
     create a name that is allowed by both HDF5 and NeXus rules
 
     :param str key: identifying string from SPEC data file
@@ -114,7 +114,8 @@ def split_scan_number_string(key):
 
 
 def sanitize_name(group, key):  # for legacy support only
-    """make name that is allowed by HDF5 and NeXus rules
+    r"""
+    Make name that is allowed by HDF5 and NeXus rules.
 
     :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
     :param str group: unused

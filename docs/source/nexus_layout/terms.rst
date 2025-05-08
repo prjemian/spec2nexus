@@ -12,7 +12,7 @@ symbolic            example             meaning
 ``@{NAME}``         ``@default``        HDF5 attribute of the parent group or field [#NX.field]_
 ``NX_{datatype}``   ``NX_NUMBER``       uses this NeXus data type [#NX.datatype]_
 ``NX_{unittype}``   ``NX_CHAR``         uses this NeXus unit type [#NX.unittype]_
-``/SCAN``           ``/S1.1``           name of the scan **NXentry** [#NXentry] group in the NeXus HDF5 file
+``/SCAN``           ``/S1.1``           name of the scan **NXentry** [#NXentry]_ group in the NeXus HDF5 file
 ==================  ==================  ==================
 
 .. note:: *for reference*: tree views
@@ -23,19 +23,7 @@ symbolic            example             meaning
 
    is used to generate a tree view of an HDF5 file's structure.
 
-.. [#spec.format] SPEC **Standard Data-File Format** :
-   https://certif.com/spec_manual/mac_3_13.html
-.. [#NX.field] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is
-   due to historical reasons in NeXus when XML was used as a back-end data file
-   storage format.
-.. [#NX.datatype] List of NeXus data types:
-   https://manual.nexusformat.org/nxdl-types.html#field-types-allowed-in-nxdl-specifications
-.. [#NX.unittype] List of NeXus unit categories:
-   https://manual.nexusformat.org/nxdl-types.html#unit-categories-allowed-in-nxdl-specifications
-.. [#punx] Visualize NeXus file tree structure :
-   https://prjemian.github.io/punx/tree.html#tree
-
-NeXus base classes
+.. rubric:: NeXus base classes
 
 .. [#NXbeam] **NXbeam**:   https://manual.nexusformat.org/classes/base_classes/NXbeam.html
 .. [#NXdata] **NXdata**:   https://manual.nexusformat.org/classes/base_classes/NXdata.html
@@ -48,3 +36,17 @@ NeXus base classes
 .. [#NXpositioner] **NXpositioner**:   https://manual.nexusformat.org/classes/base_classes/NXpositioner.html
 .. [#NXroot] **NXroot**:   https://manual.nexusformat.org/classes/base_classes/NXroot.html
 .. [#NXsample] **NXsample**:   https://manual.nexusformat.org/classes/base_classes/NXsample.html
+
+.. rubric:: References
+
+.. [#spec.format] SPEC **Standard Data-File Format** :
+   https://certif.com/spec_manual/mac_3_13.html
+.. [#NX.field] A NeXus **field** is the same as an HDF5 **dataset**.  The rename is
+   due to historical reasons in NeXus when XML was used as a back-end data file
+   storage format.
+.. [#NX.datatype] List of NeXus data types:
+   https://manual.nexusformat.org/nxdl-types.html#field-types-allowed-in-nxdl-specifications
+.. [#NX.unittype] List of NeXus unit categories:
+   https://manual.nexusformat.org/nxdl-types.html#unit-categories-allowed-in-nxdl-specifications
+.. [#punx] Visualize NeXus file tree structure :
+   https://prjemian.github.io/punx/tree.html#tree
