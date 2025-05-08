@@ -47,6 +47,7 @@ Fixes
 Maintenance
 ------------------
 
+* Expand recognition of SPEC data files to match more patterns.
 * Uses geometry when data file declares in file header, as written by SPEC standard macro.
 
 2021.2.5
