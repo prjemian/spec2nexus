@@ -23,22 +23,22 @@ Production
 
    To be released ...
 
-   2021.2.7
-   +++++++++++++
+2021.2.7
++++++++++++++
 
-   To be released 2025-05
+Released 2025-05-08
 
-   Fixes
-   ------------------
+Fixes
+------------------
 
-   * Don't warn when truncation affects comparison of file epoch and scan epoch.
+* Don't warn when truncation affects comparison of file epoch and scan epoch.
 
-   Maintenance
-   ------------------
+Maintenance
+------------------
 
-   * Documentation switched to pydata-sphinx-theme.
-   * Expand recognition of SPEC data files to match more patterns.
-   * Update project packaging.
+* Documentation switched to pydata-sphinx-theme.
+* Expand recognition of SPEC data files to match more patterns.
+* Update project packaging.
 
 2021.2.6
 +++++++++++++
