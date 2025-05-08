@@ -47,6 +47,7 @@ Fixes
 Maintenance
 ------------------
 
+* Documentation switched to pydata-sphinx-theme.
 * Expand recognition of SPEC data files to match more patterns.
 * Uses geometry when data file declares in file header, as written by SPEC standard macro.
 

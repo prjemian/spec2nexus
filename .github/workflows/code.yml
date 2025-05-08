@@ -78,7 +78,6 @@ jobs:
     - name: Install our package and its requirements
       run: |
         set -vxeuo pipefail
-        # https://github.com/pradyunsg/furo/discussions/308#discussioncomment-3064061
         pip install -e .[dev]
 
     - name: Diagnostic
