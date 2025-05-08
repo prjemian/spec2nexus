@@ -16,27 +16,30 @@ defaults:
 
 jobs:
 
-  # lint:
-  #   name: Code style
-  #   runs-on: ubuntu-latest
+  lint:
+    name: Code style
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-  #     - name: Install Dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install flake8
+      - name: Install package
+        run: |
+          set -vxeuo pipefail
+          python -m pip install --upgrade pip
 
-  #     - name: Run flake8
-  #       run: |
-  #         flake8
+      - name: Run ruff
+        uses: davidslusser/actions_python_ruff@v1.0.2
+        with:
+          python_version: "3.12"
 
-  code:
+  tests:
     name: Python ${{ matrix.python-version }}
-    # needs: lint
+    needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,14 +55,17 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Create Python ${{ matrix.python-version }} environment
-      uses: mamba-org/provision-with-micromamba@main
-      # use main branch to enable choice of channel-priority
+      uses: mamba-org/setup-micromamba@v2
       with:
-        cache-env: true
-        cache-env-key: env-key-${{ matrix.python-version }}
-        channel-priority: flexible
+        cache-environment: true
+        cache-environment-key: env-key-${{ matrix.python-version }}
+        condarc: |
+          channels:
+            - conda-forge
+            - nodefaults
+          channel-priority: flexible
         environment-name: anaconda-test-env-py-${{ matrix.python-version }}
-        extra-specs: |
+        create-args: >-
           pytest
           python=${{ matrix.python-version }}
           pyyaml
@@ -69,8 +75,9 @@ jobs:
 
     - name: Install our package and its requirements
       run: |
+        set -vxeuo pipefail
         # https://github.com/pradyunsg/furo/discussions/308#discussioncomment-3064061
-        pip install .[dev]
+        pip install -e .[dev]
 
     - name: Diagnostic
       run: |
@@ -84,15 +91,22 @@ jobs:
     - name: Run tests with pytest & coverage
       shell: bash -l {0}
       run: |
-        # proceed as in hklpy
+        set -vxeuo pipefail
         coverage run --concurrency=thread --parallel-mode -m pytest -vvv .
         coverage combine
         coverage report --precision 3
+
+    - name: Force Install coveralls by pip
+      shell: bash -l {0}
+      run: |
+        set -vxeuo pipefail
+        python -m pip install --force-reinstall coveralls
 
     - name: Upload to coveralls
       # https://github.com/TheKevJames/coveralls-python
       shell: bash -l {0}
       run: |
+        set -vxeuo pipefail
         micromamba list cover
         which coveralls
         coveralls debug
