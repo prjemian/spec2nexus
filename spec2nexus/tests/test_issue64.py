@@ -59,7 +59,7 @@ def test_extractSpecScans_issue_66_verbose_reporting_mismatch_P_O(capsys):
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2022, Pete R. Jemian
+# :copyright: (c) 2014-2025, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
