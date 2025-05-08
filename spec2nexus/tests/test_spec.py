@@ -1,5 +1,6 @@
 """Tests for the spec module."""
 
+from contextlib import nullcontext as does_not_raise
 import h5py
 import numpy as np
 import os
@@ -603,6 +604,50 @@ def test_user_results__issue263(specFile, scan_number, contents, hfile):
                 v = note[item_name][()][0].decode()
                 assert v == item, (specFile, scan_number, item_name, item, v)
 
+@pytest.mark.parametrize(
+    "lines, header, sdf, context, expression",
+    [
+        # What about parameters that raise exceptions?
+        [["not SPEC data"], False,False, does_not_raise(), None],
+        [["#F file.spc"], False, False, does_not_raise(), None],
+        [["#S 1 test_scan"], False,True, does_not_raise(), None],
+        [[
+            "#F spec.dat",
+            "#E 1746668725.1978145",
+            "#D Wed May 07 20:45:25 2025",
+            "#C Bluesky  user = test  host = workstation",
+
+        ], True, True, does_not_raise(), None],
+        [[
+            "#F spec.dat",
+            "#E 1746668725.1978145",
+            "#D Wed May 07 20:45:25 2025",
+            "#C Bluesky  user = test  host = workstation",
+            "",
+            "#S 1 test_scan"
+
+        ], True, True, does_not_raise(), None],
+    ]
+)
+def test_is_spec_file(lines, header, sdf, context, expression, testpath):
+    with context as exinfo:
+        assert not isinstance(testpath, pathlib.Path)
+
+        path = pathlib.Path(testpath)
+        assert path.exists()
+
+        tfile = path / "testfile.dat"
+        assert not tfile.exists()
+
+        with open(tfile, "w") as f:  # make the data file
+            f.writelines("\n".join(lines))
+        assert tfile.exists()
+
+        assert spec.is_spec_file_with_header(tfile) == header
+        assert spec.is_spec_file(tfile) == sdf
+
+    if expression is not None:
+        assert expression in str(exinfo)
 
 # ----------------------
 # -------------------------------------------------------

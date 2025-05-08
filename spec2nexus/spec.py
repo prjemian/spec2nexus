@@ -143,14 +143,16 @@ class UnknownSpecFilePart(Exception):
 
 def is_spec_file(filename):
     """
-    test if a given file name is a SPEC data file
+    Report if a given file name is a SPEC data file.
 
     :param str filename: path/to/possible/spec/data.file
 
-    *filename* is a SPEC file if it contains at least one #S control line
+    *filename* is a SPEC file if it contains at least one #F or #S control line.
     """
     if not os.path.exists(filename) or not os.path.isfile(filename):
         return False
+    if is_spec_file_with_header(filename):
+        return True
     try:
         with open(filename, "r") as fp:
             for line in fp.readlines():
@@ -163,7 +165,7 @@ def is_spec_file(filename):
 
 def is_spec_file_with_header(filename):
     """
-    test if a given file name is a SPEC data file
+    Report if a given file name is a SPEC data file.
 
     :param str filename: path/to/possible/spec/data.file
 
@@ -384,7 +386,7 @@ class SpecDataFile(object):
                 if line.startswith("#S "):
                     scan_found = True
                     break
-            if not scan_found:
+            if not scan_found and not is_spec_file_with_header(spec_file_name):
                 raise NotASpecDataFile(f"Not a spec data file: {spec_file_name}")
         except IOError:
             raise SpecDataFileCouldNotOpen(
@@ -476,6 +478,8 @@ class SpecDataFile(object):
         if int(float(scan_number)) < 1:
             # relative scan reference
             scanlist = self.getScanNumbers()
+            if len(scanlist) == 0:
+                return None
             scan_number = list(scanlist)[int(scan_number)]
         scan_number = str(scan_number)
         if scan_number in self.scans:
@@ -502,19 +506,31 @@ class SpecDataFile(object):
 
     def getMinScanNumber(self):
         """return the lowest numbered scan"""
-        return self.getScanNumbers()[0]
+        scans = self.getScanNumbers()
+        if len(scans) == 0:
+            return 0
+        return scans[0]
 
     def getMaxScanNumber(self):
         """return the highest numbered scan"""
-        return self.getScanNumbers()[-1]
+        scans = self.getScanNumbers()
+        if len(scans) == 0:
+            return 0
+        return scans[-1]
 
     def getFirstScanNumber(self):
         """return the first scan"""
-        return self.getScanNumbersChronological()[0]
+        scans = self.getScanNumbersChronological()
+        if len(scans) == 0:
+            return 0
+        return scans[0]
 
     def getLastScanNumber(self):
         """return the last scan"""
-        return self.getScanNumbersChronological()[-1]
+        scans = self.getScanNumbersChronological()
+        if len(scans) == 0:
+            return 0
+        return scans[-1]
 
     def getScanCommands(self, scan_list=None):
         """return all the scan commands as a list, with scan number"""
