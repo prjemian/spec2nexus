@@ -34,7 +34,7 @@ jobs:
   #       run: |
   #         flake8
 
-  test-matrix:
+  code:
     name: Python ${{ matrix.python-version }}
     # needs: lint
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
   # https://coveralls-python.readthedocs.io/en/latest/usage/configuration.html#github-actions-support
   coveralls:
     name: Report unit test coverage to coveralls
-    needs: test-matrix
+    needs: code
     runs-on: ubuntu-latest
     container: python:3-slim
 

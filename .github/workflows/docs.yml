@@ -25,7 +25,7 @@ defaults:
 
 jobs:
 
-  pages:
+  docs:
     runs-on: ubuntu-latest
 
     steps:
