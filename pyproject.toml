@@ -64,13 +64,12 @@ dev = [
   "twine ==6.0.1",
 ]
 doc = [
-  "furo",
   "markupsafe",
   "myst-nb",
   "myst-parser",
   "nbsphinx",
   "ophyd",
-  # "pydata-sphinx-theme",
+  "pydata-sphinx-theme",
   "setuptools >=77",
   "setuptools-scm >=8",
   "setuptools-scm",
