@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spec2nexus.nexus &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=7f236878"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/spec2nexus/nexus';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">spec2nexus.nexus</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for spec2nexus.nexus</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Converts SPEC data files and scans into NeXus HDF5 files&quot;&quot;&quot;</span>
+
+<span class="c1"># this is the main code for the *spec2nexus* application</span>
+
+<span class="n">__url__</span> <span class="o">=</span> <span class="s2">&quot;https://prjemian.github.io/spec2nexus/spec2nexus.html&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># put us on the path for developers</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">spec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">writer</span>
+
+
+<span class="n">hdf5_extension</span> <span class="o">=</span> <span class="s2">&quot;.hdf5&quot;</span>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------------</span>
+
+
+<span class="n">REPORTING_QUIET</span> <span class="o">=</span> <span class="s2">&quot;quiet&quot;</span>
+<span class="n">REPORTING_STANDARD</span> <span class="o">=</span> <span class="s2">&quot;standard&quot;</span>
+<span class="n">REPORTING_VERBOSE</span> <span class="o">=</span> <span class="s2">&quot;verbose&quot;</span>
+<span class="n">SCAN_LIST_ALL</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+
+
+<div class="viewcode-block" id="get_user_parameters">
+<a class="viewcode-back" href="../../spec2nexus.html#spec2nexus.nexus.get_user_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_user_parameters</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;configure user&#39;s command line parameters from sys.argv&quot;&quot;&quot;</span>
+    <span class="c1"># global hdf5_extension</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="vm">__doc__</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">doc</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  URL: &quot;</span> <span class="o">+</span> <span class="n">__url__</span>
+    <span class="n">doc</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  v&quot;</span> <span class="o">+</span> <span class="n">__version__</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;spec2nexus&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;infile&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;SPEC data file name(s)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;NeXus HDF5 output file extension&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;, default = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">hdf5_extension</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-e&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--hdf5-extension&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;hdf5_extension&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">hdf5_extension</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--force-overwrite&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;force_write&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;overwrite output file if it exists&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;specify which scans to save&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;, such as: -s all  or  -s 1  or  -s 1,2,3-5  (no spaces!)&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;, default = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">SCAN_LIST_ALL</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--scan&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># action=&#39;append&#39;,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;scan_list&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SCAN_LIST_ALL</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;explicitly set the output file (default is same as input file, &quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;but with the .spec extension changed to .hdf5)&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--output&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;output_filename&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1">#     parser.add_argument(&#39;-t&#39;,</span>
+    <span class="c1">#                         &#39;--tree-only&#39;,</span>
+    <span class="c1">#                         action=&#39;store_true&#39;,</span>
+    <span class="c1">#                         dest=&#39;tree_only&#39;,</span>
+    <span class="c1">#                         help=&#39;print NeXus/HDF5 node tree (does not save to a file)&#39;,</span>
+    <span class="c1">#                         default=False)</span>
+
+    <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">reporting_level</span><span class="o">=</span><span class="n">REPORTING_STANDARD</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;suppress all program output (except errors)&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;, do not use with --verbose option&quot;</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;reporting_level&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="n">REPORTING_QUIET</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;print more program output&quot;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;, do not use with --quiet option&quot;</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;reporting_level&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="n">REPORTING_VERBOSE</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="parse_scan_list_spec">
+<a class="viewcode-back" href="../../spec2nexus.html#spec2nexus.nexus.parse_scan_list_spec">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_scan_list_spec</span><span class="p">(</span><span class="n">scan_list_spec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;parses the argument of the -s option, returns a scan number list&quot;&quot;&quot;</span>
+    <span class="c1"># can this be simpler?</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="n">scan_list_spec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+    <span class="n">scan_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sl</span><span class="p">:</span>
+        <span class="n">sublist</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sublist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">scan_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sublist</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">sublist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">scan_list</span> <span class="o">+=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sublist</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">sublist</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;improper scan list specifier: &quot;</span> <span class="o">+</span> <span class="n">sublist</span><span class="p">)</span>
+
+    <span class="n">sl</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scan_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sl</span><span class="p">:</span>
+            <span class="n">sl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sl</span></div>
+
+
+
+<div class="viewcode-block" id="pick_scans">
+<a class="viewcode-back" href="../../spec2nexus.html#spec2nexus.nexus.pick_scans">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pick_scans</span><span class="p">(</span><span class="n">all_scans</span><span class="p">,</span> <span class="n">opt_scan_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    edit opt_scan_list for the scans to be converted</span>
+
+<span class="sd">    To be converted, a scan number must be first specified in opt_scan_list</span>
+<span class="sd">    and then all_scans is checked to make sure that scan exists.</span>
+<span class="sd">    The final list is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">opt_scan_list</span> <span class="o">==</span> <span class="n">SCAN_LIST_ALL</span><span class="p">:</span>
+        <span class="n">scan_list</span> <span class="o">=</span> <span class="n">all_scans</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scan_list</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">opt_scan_list</span><span class="p">)</span>
+        <span class="c1"># for item in scan_list:</span>
+        <span class="c1">#     if str(item) not in all_scans:</span>
+        <span class="c1">#         scan_list.remove(item)</span>
+        <span class="n">scan_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">scan_list</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">in</span> <span class="n">all_scans</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">scan_list</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../spec2nexus.html#spec2nexus.nexus.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;entry point for command-line interface&quot;&quot;&quot;</span>
+
+    <span class="n">user_parms</span> <span class="o">=</span> <span class="n">get_user_parameters</span><span class="p">()</span>
+
+    <span class="n">spec_data_file_name_list</span> <span class="o">=</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">infile</span>
+
+    <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">scan_list</span> <span class="o">!=</span> <span class="n">SCAN_LIST_ALL</span><span class="p">:</span>
+        <span class="n">user_parms</span><span class="o">.</span><span class="n">scan_list</span> <span class="o">=</span> <span class="n">parse_scan_list_spec</span><span class="p">(</span><span class="n">user_parms</span><span class="o">.</span><span class="n">scan_list</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">hdf5_extension</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">extsep</span><span class="p">):</span>
+        <span class="n">user_parms</span><span class="o">.</span><span class="n">hdf5_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">extsep</span> <span class="o">+</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">hdf5_extension</span>
+
+    <span class="k">for</span> <span class="n">spec_data_file_name</span> <span class="ow">in</span> <span class="n">spec_data_file_name_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">spec_data_file_name</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;File not found: &quot;</span> <span class="o">+</span> <span class="n">spec_data_file_name</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">reporting_level</span> <span class="ow">in</span> <span class="p">(</span><span class="n">REPORTING_STANDARD</span><span class="p">,</span> <span class="n">REPORTING_VERBOSE</span><span class="p">,):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reading SPEC data file: &quot;</span> <span class="o">+</span> <span class="n">spec_data_file_name</span><span class="p">)</span>
+        <span class="n">spec_data</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">SpecDataFile</span><span class="p">(</span><span class="n">spec_data_file_name</span><span class="p">)</span>
+
+        <span class="n">all_scans</span> <span class="o">=</span> <span class="n">spec_data</span><span class="o">.</span><span class="n">getScanNumbers</span><span class="p">()</span>
+        <span class="n">scan_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pick_scans</span><span class="p">(</span><span class="n">all_scans</span><span class="p">,</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">scan_list</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">reporting_level</span> <span class="ow">in</span> <span class="p">(</span><span class="n">REPORTING_VERBOSE</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  discovered </span><span class="si">%d</span><span class="s2"> scans&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">spec_data</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  converting scan number(s): &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">scan_list</span><span class="p">)))</span>
+
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">spec_data_file_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">output_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nexus_output_file_name</span> <span class="o">=</span> <span class="n">basename</span> <span class="o">+</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">hdf5_extension</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nexus_output_file_name</span> <span class="o">=</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">output_filename</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">force_write</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nexus_output_file_name</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="n">spec_data</span><span class="p">)</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nexus_output_file_name</span><span class="p">,</span> <span class="n">scan_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user_parms</span><span class="o">.</span><span class="n">reporting_level</span> <span class="ow">in</span> <span class="p">(</span><span class="n">REPORTING_STANDARD</span><span class="p">,</span> <span class="n">REPORTING_VERBOSE</span><span class="p">,):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wrote NeXus HDF5 file: &quot;</span> <span class="o">+</span> <span class="n">nexus_output_file_name</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># :author:    Pete R. Jemian</span>
+<span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="c1"># :copyright: (c) 2014-2025, Pete R. Jemian</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="c1">#</span>
+<span class="c1"># The full license is in the file LICENSE, distributed with this software.</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

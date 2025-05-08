@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>apstools SpecWriterCallback metadata plugin &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=7f236878"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'supplied_plugins/apstools_specwriter';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fallback plugin" href="fallback.html" />
+    <link rel="prev" title="XPCS plugin" href="XPCS.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_data.html">Example data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../applications.html">Applications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../spec2nexus.html">spec2nexus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../nexus_layout/index.html">NeXus File Layout</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../specplot.html">specplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../libraries.html">Libraries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto.html">How-to guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fallback.html">Fallback plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uim.html">UIM plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicat.html">unicat plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../contents.html" class="nav-link">Contents</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../plugin_core.html" class="nav-link"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">apstools SpecWriterCallback metadata plugin</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="apstools-specwritercallback-metadata-plugin">
+<span id="apstools-specwriter-plugin"></span><h1>apstools SpecWriterCallback metadata plugin<a class="headerlink" href="#apstools-specwritercallback-metadata-plugin" title="Link to this heading">#</a></h1>
+<p>Looks for <code class="docutils literal notranslate"><span class="pre">#MD</span></code> <span class="target" id="index-0"></span>control line control lines.
+These lines contain metadata supplied to the bluesky <code class="docutils literal notranslate"><span class="pre">RunEngine</span></code>
+and recorded during the execution of a scan.  The data are stored
+in a dictionary of each scan: <code class="docutils literal notranslate"><span class="pre">scan.MD</span></code>.  If there are no
+<code class="docutils literal notranslate"><span class="pre">#MD</span></code> control lines, then <code class="docutils literal notranslate"><span class="pre">scan.MD</span></code> does not exist.</p>
+<p><strong>see</strong> <a class="reference external" href="https://prjemian.github.io/spec2nexus/source/_filewriters.html#apstools.filewriters.SpecWriterCallback">https://prjemian.github.io/spec2nexus/source/_filewriters.html#apstools.filewriters.SpecWriterCallback</a></p>
+<hr class="docutils" />
+<p id="module-spec2nexus.plugins.apstools_specwriter"><strong>#MD</strong> : Bluesky metadata from apstools SpecWriterCallback.</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#MD APSTOOLS_VERSION = 1.1.0</span>
+<span class="c1">#MD BLUESKY_VERSION = 1.5.2</span>
+<span class="c1">#MD EPICS_CA_MAX_ARRAY_BYTES = 1280000</span>
+<span class="c1">#MD EPICS_HOST_ARCH = linux-x86_64</span>
+<span class="c1">#MD OPHYD_VERSION = 1.3.2</span>
+<span class="c1">#MD beamline_id = APS USAXS 9-ID-C</span>
+<span class="c1">#MD datetime = 2019-04-19 10:04:44.400750</span>
+<span class="c1">#MD login_id = usaxs@usaxscontrol.xray.aps.anl.gov</span>
+<span class="c1">#MD pid = 27062</span>
+<span class="c1">#MD proposal_id = testing Bluesky installation</span>
+<span class="c1">#MD purpose = tuner</span>
+<span class="c1">#MD tune_md = {&#39;width&#39;: -0.004, &#39;initial_position&#39;: 8.824885, &#39;time_iso8601&#39;: &#39;2019-04-19 10:04:44.402643&#39;}</span>
+<span class="c1">#MD tune_parameters = {&#39;num&#39;: 31, &#39;width&#39;: -0.004, &#39;initial_position&#39;: 8.824885, &#39;peak_choice&#39;: &#39;com&#39;, &#39;x_axis&#39;: &#39;m_stage_r&#39;, &#39;y_axis&#39;: &#39;I0_USAXS&#39;}</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.plugins.apstools_specwriter.</span></span><span class="sig-name descname"><span class="pre">MD_apstools</span></span><a class="reference internal" href="../_modules/spec2nexus/plugins/apstools_specwriter.html#MD_apstools"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../plugin_core.html#spec2nexus.plugin_core.ControlLineBase" title="spec2nexus.plugin_core.ControlLineBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ControlLineBase</span></code></a></p>
+<p><strong>#MD</strong> – Bluesky metadata from apstools SpecWriterCallback</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'#MD\\w*'</span></em><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.known_keys">
+<span class="sig-name descname"><span class="pre">known_keys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'#&#64;CHANN':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation</span> <span class="pre">object&gt;,</span> <span class="pre">'#&#64;CTIME':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">'#&#64;MCA':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA</span> <span class="pre">object&gt;,</span> <span class="pre">'#&#64;ROI':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest</span> <span class="pre">object&gt;,</span> <span class="pre">'#&#64;[cC][aA][lL][iI][bB]':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_Calibration</span> <span class="pre">object&gt;,</span> <span class="pre">'#C':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Comment</span> <span class="pre">object&gt;,</span> <span class="pre">'#CCD':</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_CCD</span> <span class="pre">object&gt;,</span> <span class="pre">'#D':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Date</span> <span class="pre">object&gt;,</span> <span class="pre">'#E':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Epoch</span> <span class="pre">object&gt;,</span> <span class="pre">'#F':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_File</span> <span class="pre">object&gt;,</span> <span class="pre">'#G\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Geometry</span> <span class="pre">object&gt;,</span> <span class="pre">'#H\\d+':</span> <span class="pre">&lt;unicat.UNICAT_MetadataMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">'#I':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_NormalizingFactor</span> <span class="pre">object&gt;,</span> <span class="pre">'#J\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CounterNames</span> <span class="pre">object&gt;,</span> <span class="pre">'#L':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Labels</span> <span class="pre">object&gt;,</span> <span class="pre">'#M':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Monitor</span> <span class="pre">object&gt;,</span> <span class="pre">'#MD\\w*':</span> <span class="pre">&lt;spec2nexus.plugins.apstools_specwriter.MD_apstools</span> <span class="pre">object&gt;,</span> <span class="pre">'#N':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_NumColumns</span> <span class="pre">object&gt;,</span> <span class="pre">'#O\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_PositionerNames</span> <span class="pre">object&gt;,</span> <span class="pre">'#P\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Positioners</span> <span class="pre">object&gt;,</span> <span class="pre">'#Q':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_HKL</span> <span class="pre">object&gt;,</span> <span class="pre">'#R':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_UserResults</span> <span class="pre">object&gt;,</span> <span class="pre">'#S':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Scan</span> <span class="pre">object&gt;,</span> <span class="pre">'#T':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">'#U':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_UserReserved</span> <span class="pre">object&gt;,</span> <span class="pre">'#UIM\\w*':</span> <span class="pre">&lt;spec2nexus.plugins.uim.UIM_generic</span> <span class="pre">object&gt;,</span> <span class="pre">'#UXML':</span> <span class="pre">&lt;uxml.UXML_metadata</span> <span class="pre">object&gt;,</span> <span class="pre">'#VA\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VA</span> <span class="pre">object&gt;,</span> <span class="pre">'#VD\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VD</span> <span class="pre">object&gt;,</span> <span class="pre">'#VE\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VE</span> <span class="pre">object&gt;,</span> <span class="pre">'#V\\d+':</span> <span class="pre">&lt;unicat.UNICAT_MetadataValues</span> <span class="pre">object&gt;,</span> <span class="pre">'#X':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint</span> <span class="pre">object&gt;,</span> <span class="pre">'#XPCS':</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_XPCS</span> <span class="pre">object&gt;,</span> <span class="pre">'#j\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CounterMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">'#o\\d+':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">'&#64;A\\d*':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_Array</span> <span class="pre">object&gt;,</span> <span class="pre">'scan_data':</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_DataLine</span> <span class="pre">object&gt;,</span> <span class="pre">'unrecognized_control_line':</span> <span class="pre">&lt;spec2nexus.plugins.fallback.UnrecognizedControlLine</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.known_keys" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.lazy_attributes">
+<span class="sig-name descname"><span class="pre">lazy_attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['H',</span> <span class="pre">'V',</span> <span class="pre">'metadata',</span> <span class="pre">'UXML',</span> <span class="pre">'UXML_root',</span> <span class="pre">'MD',</span> <span class="pre">'_unrecognized',</span> <span class="pre">'UIM',</span> <span class="pre">'comments',</span> <span class="pre">'G',</span> <span class="pre">'diffractometer',</span> <span class="pre">'I',</span> <span class="pre">'J',</span> <span class="pre">'j',</span> <span class="pre">'L',</span> <span class="pre">'column_first',</span> <span class="pre">'column_last',</span> <span class="pre">'M',</span> <span class="pre">'monitor_name',</span> <span class="pre">'N',</span> <span class="pre">'O',</span> <span class="pre">'o',</span> <span class="pre">'P',</span> <span class="pre">'positioner',</span> <span class="pre">'Q',</span> <span class="pre">'R',</span> <span class="pre">'T',</span> <span class="pre">'time_name',</span> <span class="pre">'U',</span> <span class="pre">'TEMP_SP',</span> <span class="pre">'DEGC_SP',</span> <span class="pre">'data',</span> <span class="pre">'data_lines',</span> <span class="pre">'MCA',</span> <span class="pre">'VA',</span> <span class="pre">'VD',</span> <span class="pre">'VE',</span> <span class="pre">'XPCS',</span> <span class="pre">'CCD']</span></em><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.lazy_attributes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.match_key">
+<span class="sig-name descname"><span class="pre">match_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.match_key" title="Link to this definition">#</a></dt>
+<dd><p>Test if this handler’s key matches text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – first word on the line,
+up to but not including the first whitespace</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key or None</p>
+</dd>
+</dl>
+<p>Applies a regular expression match using each handler’s
+<code class="docutils literal notranslate"><span class="pre">key</span></code> as the regular expression to match with <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.plugins">
+<span class="sig-name descname"><span class="pre">plugins</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;spec2nexus.plugins.unicat.UNICAT_MetadataMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.unicat.UNICAT_MetadataValues</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.uxml.UXML_metadata</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;apstools_specwriter.MD_apstools</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;fallback.UnrecognizedControlLine</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;unicat.UNICAT_MetadataMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;unicat.UNICAT_MetadataValues</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;uxml.UXML_metadata</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;uim.UIM_generic</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_File</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Epoch</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Date</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Comment</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Scan</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Geometry</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_NormalizingFactor</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_CounterNames</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_CounterMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Labels</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Monitor</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_NumColumns</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_PositionerNames</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_PositionerMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_Positioners</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_HKL</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_UserResults</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_UserReserved</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_TemperatureSetPoint</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_DataLine</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA_Array</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA_Calibration</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA_ChannelInformation</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec_common.SPEC_MCA_RegionOfInterest</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;XPCS.XPCS_VA</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;XPCS.XPCS_VD</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;XPCS.XPCS_VE</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;XPCS.XPCS_XPCS</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;XPCS.XPCS_CCD</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.uim.UIM_generic</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.apstools_specwriter.MD_apstools</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VA</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VD</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_VE</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_XPCS</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.XPCS.XPCS_CCD</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.fallback.UnrecognizedControlLine</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_File</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Epoch</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Date</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Comment</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Scan</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Geometry</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_NormalizingFactor</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CounterNames</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CounterMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Labels</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Monitor</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_NumColumns</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_PositionerNames</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_PositionerMnemonics</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_Positioners</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_HKL</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_UserResults</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_UserReserved</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_TemperatureSetPoint</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_DataLine</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_Array</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_Calibration</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_ChannelInformation</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_CountTime</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;spec2nexus.plugins.spec_common.SPEC_MCA_RegionOfInterest</span> <span class="pre">object&gt;]</span></em><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.plugins" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.postprocess">
+<span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.postprocess" title="Link to this definition">#</a></dt>
+<dd><p><em>optional:</em> More processing deferred until <em>after</em> data file has been read.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spec2nexus/plugins/apstools_specwriter.html#MD_apstools.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.process" title="Link to this definition">#</a></dt>
+<dd><p>read #MD lines from SPEC data file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.scan_attributes_defined">
+<span class="sig-name descname"><span class="pre">scan_attributes_defined</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['MD']</span></em><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.scan_attributes_defined" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.plugins.apstools_specwriter.MD_apstools.writer">
+<span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nxclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spec2nexus/plugins/apstools_specwriter.html#MD_apstools.writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.writer" title="Link to this definition">#</a></dt>
+<dd><p>Describe how to store this data in an HDF5 NeXus file</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="XPCS.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">XPCS plugin</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fallback.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fallback plugin</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools"><code class="docutils literal notranslate"><span class="pre">MD_apstools</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.key"><code class="docutils literal notranslate"><span class="pre">MD_apstools.key</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.known_keys"><code class="docutils literal notranslate"><span class="pre">MD_apstools.known_keys</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.lazy_attributes"><code class="docutils literal notranslate"><span class="pre">MD_apstools.lazy_attributes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.match_key"><code class="docutils literal notranslate"><span class="pre">MD_apstools.match_key()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.plugins"><code class="docutils literal notranslate"><span class="pre">MD_apstools.plugins</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.postprocess"><code class="docutils literal notranslate"><span class="pre">MD_apstools.postprocess()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.process"><code class="docutils literal notranslate"><span class="pre">MD_apstools.process()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.scan_attributes_defined"><code class="docutils literal notranslate"><span class="pre">MD_apstools.scan_attributes_defined</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.plugins.apstools_specwriter.MD_apstools.writer"><code class="docutils literal notranslate"><span class="pre">MD_apstools.writer()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/supplied_plugins/apstools_specwriter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

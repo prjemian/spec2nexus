@@ -1,0 +1,1134 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to write a custom scan handling class for specplot &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=7f236878"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'specplot_custom_scan_macro';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="How to write a custom control line handling plugin module for spec" href="how_to_write_plugin.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="applications.html">Applications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="libraries.html">Libraries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="howto.html">How-to guides</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="contents.html" class="nav-link">Contents</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="howto.html" class="nav-link">How-to guides</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">How to write a custom scan handling class for <em>specplot</em></span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="how-to-write-a-custom-scan-handling-class-for-specplot">
+<span id="how-to-write-custom-scan-macro-handling"></span><h1>How to write a custom scan handling class for <em>specplot</em><a class="headerlink" href="#how-to-write-a-custom-scan-handling-class-for-specplot" title="Link to this heading">#</a></h1>
+<p>Sometimes, it will be obvious that a certain scan macro never generates any plot
+images, or that the default handling creates a plot that is a poor
+representation of the data, such as the <a class="reference internal" href="#custom-hklscan-specplot"><span class="std std-ref">hklscan</span></a>
+where only one of the the axes <em>hkl</em> is scanned.  To pick the scanned axis for
+plotting, it is necessary to prepare custom handling and replace the default
+handling.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>It is possible to add in additional handling by writing a Python module.
+This module creates a subclass of the standard handling, such as
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a>,
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.MeshPlotter" title="spec2nexus.specplot.MeshPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshPlotter</span></code></a>, or their superclass
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.ImageMaker" title="spec2nexus.specplot.ImageMaker"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageMaker</span></code></a>.
+The support is added to the macro selection class
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.Selector" title="spec2nexus.specplot.Selector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Selector</span></code></a> with code such as in the brief
+example described below: <a class="reference internal" href="#custom-ascan-specplot"><span class="std std-ref">Change the plot title text in ascan macros</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;ascan&#39;</span><span class="p">,</span> <span class="n">Custom_Ascan</span><span class="p">)</span>
+<span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="data-model">
+<h2>Data Model<a class="headerlink" href="#data-model" title="Link to this heading">#</a></h2>
+<p>The data to be plotted is kept in an appropriate subclass of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PlotDataStructure</span></code> in attributes show in the next
+table.  The data model is an adaptation of the NeXus <em>NXdata</em> base class. <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>attribute</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self.signal</span></code></p></td>
+<td><p>name of the dependent data (<em>y</em> axis or image) to be plotted</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self.axes</span></code></p></td>
+<td><p>list of names of the independent axes <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self.data</span></code></p></td>
+<td><p>dictionary with the data, indexed by name (<span class="math notranslate nohighlight">\(Q\)</span> &amp; <span class="math notranslate nohighlight">\(R\)</span>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>NeXus <em>NXdata</em> base class:
+<a class="reference external" href="https://download.nexusformat.org/doc/html/classes/base_classes/NXdata.html">https://download.nexusformat.org/doc/html/classes/base_classes/NXdata.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>The number of names provided in <cite>self.axes</cite> is equal to the <em>rank</em>
+of the <em>signal</em> data (<cite>self.data[self.signal]</cite>).
+For 1-D data, <cite>self.axes</cite> has one name and the <em>signal</em> data is one-dimensional.
+For 2-D data, <cite>self.axes</cite> has two names and the <em>signal</em> data is two-dimensional.</p>
+</aside>
+</aside>
+</section>
+<section id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Link to this heading">#</a></h2>
+<p>In all cases, custom handling of a specific SPEC macro name is provided by
+creating a subclass of <a class="reference internal" href="specplot.html#spec2nexus.specplot.ImageMaker" title="spec2nexus.specplot.ImageMaker"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageMaker</span></code></a> and defining one
+or more of its methods.  In the simplest case, certain settings may be changed
+by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">spec2nexus.specplot.ImageMaker.configure()</span></code> with the custom
+values.  Examples of further customization are provided below, such as when the
+data to be plotted is stored outside of the SPEC data file.  This is common for
+images from area detectors.</p>
+<p>It may also be necessary to create a subclass of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PlotDataStructure</span></code> to gather the data to be
+plotted or override the default <a class="reference internal" href="specplot.html#spec2nexus.specplot.ImageMaker.plottable" title="spec2nexus.specplot.ImageMaker.plottable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spec2nexus.specplot.ImageMaker.plottable()</span></code></a>
+method. An example of this is shown with the
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.MeshPlotter" title="spec2nexus.specplot.MeshPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshPlotter</span></code></a> and associated
+<code class="xref py py-class docutils literal notranslate"><span class="pre">MeshStructure</span></code> classes.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>A few examples of custom macro handling are provided, some simple, some complex.
+In each example, decisions have been made about where to provide the desired features.</p>
+<section id="change-the-plot-title-text-in-ascan-macros">
+<span id="custom-ascan-specplot"></span><h3>Change the plot title text in <em>ascan</em> macros<a class="headerlink" href="#change-the-plot-title-text-in-ascan-macros" title="Link to this heading">#</a></h3>
+<p>The SPEC <em>ascan</em> macro is a workhorse and records the scan of a positioner and
+the measurement of data in a counter. Since this macro name ends with “scan”,
+the default selection in <em>specplot</em> images this data using the
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a> class. Here is a plot of the default
+handling of data from the <em>ascan</em> macro:</p>
+<figure class="align-default" id="id7">
+<a class="reference internal image-reference" href="_images/ascan.png"><img alt="_images/ascan.png" src="_images/ascan.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Standard plot of data from <em>ascan</em> macro</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We will show how to change the plot title as a means to illustrate how to
+customize the handling for a scan macro.</p>
+<p>We write <code class="xref py py-class docutils literal notranslate"><span class="pre">Custom_Ascan</span></code> which is a subclass of
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a>.  The <code class="xref py py-mod docutils literal notranslate"><span class="pre">get_plot_data</span></code> method is
+written (overrides the default method) to gain access to the place where we can
+introduce the change.  The change is made by the call to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">configure</span></code>
+method (defined in the superclass).  Here’s the code:</p>
+<p class="rubric"><cite>ascan.py</cite> example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="ch">#!/usr/bin/env python</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos"> 4</span><span class="sd">Plot all scans that used the SPEC `ascan` macro, showing only the scan number (not full scan command)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="sd">This is a simple example of how to customize the scan macro handling.</span>
+<span class="linenos"> 7</span><span class="sd">There are many more ways to add complexity.</span>
+<span class="linenos"> 8</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot</span>
+<span class="linenos">11</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot_gallery</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="k">class</span><span class="w"> </span><span class="nc">Custom_Ascan</span><span class="p">(</span><span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="p">):</span>
+<span class="linenos">15</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;simple customization&#39;&#39;&#39;</span>
+<span class="linenos">16</span>    
+<span class="linenos">17</span>    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">18</span><span class="w">        </span><span class="sd">&#39;&#39;&#39;substitute with the data&amp;time the plot was created&#39;&#39;&#39;</span>
+<span class="linenos">19</span>        <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="linenos">20</span>        <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="o">.</span><span class="n">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="linenos">21</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_plot_subtitle</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">25</span>    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="linenos">26</span>    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;ascan&#39;</span><span class="p">,</span> <span class="n">Custom_Ascan</span><span class="p">)</span>
+<span class="linenos">27</span>    <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">31</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="linenos">34</span><span class="c1"># :author:    Pete R. Jemian</span>
+<span class="linenos">35</span><span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="linenos">36</span><span class="c1"># :copyright: (c) 2014-2025, Pete R. Jemian</span>
+<span class="linenos">37</span><span class="c1">#</span>
+<span class="linenos">38</span><span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="linenos">39</span><span class="c1">#</span>
+<span class="linenos">40</span><span class="c1"># The full license is in the file LICENSE, distributed with this software.</span>
+<span class="linenos">41</span><span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>See the changed title:</p>
+<figure class="align-default" id="id8">
+<a class="reference internal image-reference" href="_images/ascan_custom.png"><img alt="_images/ascan_custom.png" src="_images/ascan_custom.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Customized plot of data from <em>ascan</em> macro</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="make-the-y-axis-log-scale">
+<span id="custom-y-log-specplot"></span><h3>Make the <em>y</em>-axis log scale<a class="headerlink" href="#make-the-y-axis-log-scale" title="Link to this heading">#</a></h3>
+<p>A very simple customization can make the Y axis to be logarithmic scale. (This
+customization is planned for an added feature <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> in a future relase of the
+<em>spec2nexus</em> package.)  We present two examples.</p>
+<section id="modify-handling-of-a2scan">
+<h4>modify handling of <cite>a2scan</cite><a class="headerlink" href="#modify-handling-of-a2scan" title="Link to this heading">#</a></h4>
+<p>One user wants all the <cite>a2scan</cite> images to be plotted with a logarithmic
+scale on the Y axis.  Here’s the code:</p>
+<p class="rubric"><cite>custom_a2scan_gallery.py</cite> example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="ch">#!/usr/bin/env python</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos"> 4</span><span class="sd">Customization for specplot_gallery: plot a2scan with log(y) axis</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="sd">This program changes the plotting for all scans that used the *a2scan* SPEC macro.</span>
+<span class="linenos"> 7</span><span class="sd">The Y axis of these plots will be plotted as logarithmic if all the data values are </span>
+<span class="linenos"> 8</span><span class="sd">greater than zero.  Otherwise, the Y axis scale will be linear.</span>
+<span class="linenos"> 9</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot</span>
+<span class="linenos">12</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot_gallery</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="k">class</span><span class="w"> </span><span class="nc">Custom_a2scan_Plotter</span><span class="p">(</span><span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="p">):</span>
+<span class="linenos">15</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;plot `a2scan` y axis as log if possible&#39;&#39;&#39;</span>
+<span class="linenos">16</span>    
+<span class="linenos">17</span>    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">18</span><span class="w">        </span><span class="sd">&#39;&#39;&#39;plot the vertical axis on log scale&#39;&#39;&#39;</span>
+<span class="linenos">19</span>        <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="o">.</span><span class="n">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>        <span class="n">choose_log_scale</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>    <span class="c1"># log(y) if all data positive</span>
+<span class="linenos">24</span>            <span class="n">choose_log_scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_y_log</span><span class="p">(</span><span class="n">choose_log_scale</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">30</span>    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="linenos">31</span>    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;a2scan&#39;</span><span class="p">,</span> <span class="n">Custom_a2scan_Plotter</span><span class="p">)</span>
+<span class="linenos">32</span>    <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">36</span>    <span class="c1"># debugging_setup()</span>
+<span class="linenos">37</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">40</span><span class="sd">Instructions:</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="sd">Save this file in a directory you can write and call it from your cron tasks.  </span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="sd">Note that in cron entries, you cannot rely on shell environment variables to </span>
+<span class="linenos">45</span><span class="sd">be defined.  Best to spell things out completely.  For example, if your $HOME </span>
+<span class="linenos">46</span><span class="sd">directory is `/home/user` and you have these directories:</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="sd">* `/home/user/bin`: various custom executables you use</span>
+<span class="linenos">49</span><span class="sd">* `/home/user/www/specplots`: a directory you access with a web browser for your plots</span>
+<span class="linenos">50</span><span class="sd">* `/home/user/spec/data`: a directory with your SPEC data files</span>
+<span class="linenos">51</span>
+<span class="linenos">52</span><span class="sd">then save this file to `/home/user/bin/custom_a2scan_gallery.py` and make it executable</span>
+<span class="linenos">53</span><span class="sd">(using `chmod +x ./home/user/bin/custom_a2scan_gallery.py`).</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="sd">Edit your list of cron tasks using `crontab -e` and add this (possibly </span>
+<span class="linenos">56</span><span class="sd">replacing a call to `specplot_gallery` with this call `custom_a2scan_gallery.py`)::</span>
+<span class="linenos">57</span>
+<span class="linenos">58</span><span class="sd">    # every five minutes (generates no output from outer script)</span>
+<span class="linenos">59</span><span class="sd">    0-59/5 * * * *  /home/user/bin/custom_a2scan_gallery.py -d /home/user/www/specplots /home/user/spec/data 2&gt;&amp;1 &gt;&gt; /home/user/www/specplots/log_cron.txt</span>
+<span class="linenos">60</span>
+<span class="linenos">61</span><span class="sd">Any output from this periodic task will be recorded in the file</span>
+<span class="linenos">62</span><span class="sd">`/home/user/www/specplots/log_cron.txt`.  This file can be reviewed</span>
+<span class="linenos">63</span><span class="sd">for diagnostics or troubleshooting.</span>
+<span class="linenos">64</span><span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-uascan">
+<h4>custom <cite>uascan</cite><a class="headerlink" href="#custom-uascan" title="Link to this heading">#</a></h4>
+<p>The APS USAXS instrument uses a custom scan macro called <em>uascan</em> for routine
+step scans. Since this macro name ends with “scan”, the default selection in
+<em>specplot</em> images this data using the <a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a>
+class. Here is a plot of the default handling of data from the <em>uascan</em> macro:</p>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="_images/uascan_as_ascan.png"><img alt="_images/uascan_as_ascan.png" src="_images/uascan_as_ascan.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">USAXS <em>uascan</em>, handled as <a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a></span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The can be changed by making the <em>y</em> axis log scale. To do this, a custom
+version of <a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a> is created as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Custom_Ascan</span></code>.  The <code class="xref py py-mod docutils literal notranslate"><span class="pre">get_plot_data</span></code> method is written (overrides
+the default method) to make the <em>y</em> axis log-scale by calling the
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">configure</span></code> method (defined in the superclass).  Here’s the code:</p>
+<p class="rubric"><cite>usaxs_uascan.py</cite> example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="ch">#!/usr/bin/env python</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 4</span><span class="sd">Plot data from the USAXS uascan macro</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="sd">.. autosummary::</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="sd">    ~UAscan_Plotter</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot</span>
+<span class="linenos">13</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot_gallery</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="k">class</span><span class="w"> </span><span class="nc">UAscan_Plotter</span><span class="p">(</span><span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="p">):</span>
+<span class="linenos">17</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Customized `uascan` handling&quot;&quot;&quot;</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">20</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;plot the vertical axis on log scale&quot;&quot;&quot;</span>
+<span class="linenos">21</span>        <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="o">.</span><span class="n">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+<span class="linenos">24</span>            <span class="c1"># can&#39;t plot negative Y on log scale</span>
+<span class="linenos">25</span>            <span class="c1"># Alternative to raising NotPlottable would be</span>
+<span class="linenos">26</span>            <span class="c1"># to remove any data where Y &lt;= 0</span>
+<span class="linenos">27</span>            <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">28</span>                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;cannot plot Y&lt;0: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">)</span>
+<span class="linenos">29</span>                <span class="k">raise</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">NotPlottable</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>        <span class="c1"># in the uascan, a name for the sample is given in `self.scan.comments[0]`</span>
+<span class="linenos">32</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_y_log</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">33</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_plot_subtitle</span><span class="p">(</span>
+<span class="linenos">34</span>            <span class="s2">&quot;#</span><span class="si">%s</span><span class="s2"> uascan: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">scanNum</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">35</span>        <span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="k">def</span><span class="w"> </span><span class="nf">debugging_setup</span><span class="p">():</span>
+<span class="linenos">39</span>    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
+<span class="linenos">40</span>    <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="linenos">41</span>    <span class="kn">import</span><span class="w"> </span><span class="nn">ascan</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="linenos">44</span>    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;ascan&quot;</span><span class="p">,</span> <span class="n">ascan</span><span class="o">.</span><span class="n">Custom_Ascan</span><span class="p">)</span>  <span class="c1"># just for the demo</span>
+<span class="linenos">45</span>    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;__usaxs__&quot;</span>
+<span class="linenos">46</span>    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">47</span>    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="linenos">48</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">)</span>
+<span class="linenos">49</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="linenos">50</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="linenos">51</span>        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="s2">&quot;spec2nexus&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;APS_spec_data.dat&quot;</span><span class="p">)</span>
+<span class="linenos">52</span>    <span class="p">)</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">56</span>    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="linenos">57</span>    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;uascan&quot;</span><span class="p">,</span> <span class="n">UAscan_Plotter</span><span class="p">)</span>
+<span class="linenos">58</span>    <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+<span class="linenos">59</span>
+<span class="linenos">60</span>
+<span class="linenos">61</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">62</span>    <span class="c1"># debugging_setup()</span>
+<span class="linenos">63</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">64</span>
+<span class="linenos">65</span><span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="linenos">66</span><span class="c1"># :author:    Pete R. Jemian</span>
+<span class="linenos">67</span><span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="linenos">68</span><span class="c1"># :copyright: (c) 2014-2025, Pete R. Jemian</span>
+<span class="linenos">69</span><span class="c1">#</span>
+<span class="linenos">70</span><span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="linenos">71</span><span class="c1">#</span>
+<span class="linenos">72</span><span class="c1"># The full license is in the file LICENSE, distributed with this software.</span>
+<span class="linenos">73</span><span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>Note that in the <em>uascan</em>, a name for the sample provided by the user is given
+in <cite>self.scan.comments[0]</cite>.  The plot title is changed to include this and the
+scan number. The customized plot has a logarithmic <em>y</em> axis:</p>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="_images/uascan_log_y.png"><img alt="_images/uascan_log_y.png" src="_images/uascan_log_y.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">USAXS <em>uascan</em>, with logarithmic <em>y</em> axis</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The most informative view of this data is when the raw data are reduced to
+<span class="math notranslate nohighlight">\(I(Q)\)</span> and viewed on a log-log plot, but that process is beyond this
+simple example. See the example <a class="reference internal" href="#custom-usaxs-specplot"><span class="std std-ref">Get xy data from HDF5 file</span></a> below.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/102">specplot: add option for default log(signal)</a></p>
+</aside>
+</aside>
+</section>
+</section>
+<section id="spec-s-hklscan-macro">
+<span id="custom-hklscan-specplot"></span><h3>SPEC’s <em>hklscan</em> macro<a class="headerlink" href="#spec-s-hklscan-macro" title="Link to this heading">#</a></h3>
+<p>The SPEC <em>hklscan</em> macro appears in a SPEC data file due to either a <em>hscan</em>,
+<em>kscan</em>, or <em>lscan</em>.  In each of these one of the <em>hkl</em> vectors is scanned while
+the other two remain constant.</p>
+<p>The normal handling of the <em>ascan</em> macro plots the last data column against the
+first.  This works for data collected with the <em>hscan</em>. For <em>kscan</em> or <em>lscan</em>
+macros, the <em>h</em> axis is still plotted by default since it is in the first
+column.</p>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="_images/hklscan_as_ascan.png"><img alt="_images/hklscan_as_ascan.png" src="_images/hklscan_as_ascan.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SPEC <em>hklscan</em> (<em>lscan</em>, in this case), plotted against the (default) first axis <em>H</em></span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>To display the scanned axis, it is necessary to examine the data in a custom
+subclass of <a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a>.  The
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.HKLScanPlotter" title="spec2nexus.specplot.HKLScanPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">HKLScanPlotter</span></code></a> subclass, provided with <em>specplot</em>,
+defines the <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_plot_data()</span></code> method determines the scanned axis, setting it
+by name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">axis</span><span class="p">,]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">column_first</span> <span class="o">=</span> <span class="n">axis</span>
+</pre></div>
+</div>
+<p>Then, the standard plot handling used by <em>LinePlotter</em>
+uses this information to make the plot.</p>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="_images/hklscan.png"><img alt="_images/hklscan.png" src="_images/hklscan.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SPEC <em>hklscan</em> (<em>lscan</em>), plotted against <em>L</em></span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="get-xy-data-from-hdf5-file">
+<span id="custom-usaxs-specplot"></span><h3>Get <em>xy</em> data from HDF5 file<a class="headerlink" href="#get-xy-data-from-hdf5-file" title="Link to this heading">#</a></h3>
+<p>One example of complexity is when SPEC has been used to direct data collection
+but the data is not stored in the SPEC data file.  The SPEC data file scan
+must provide some indication about where the collected scan data has been stored.</p>
+<section id="custom-usaxs-flyscan">
+<h4>custom <cite>usaxs_flyscan</cite><a class="headerlink" href="#custom-usaxs-flyscan" title="Link to this heading">#</a></h4>
+<p>The USAXS instrument at APS has a <em>FlyScan</em> macro that commands the instrument
+to collect data continuously over the desired <span class="math notranslate nohighlight">\(Q\)</span> range.  The data is written
+to a NeXus HDF5 data file.  Later, a data reduction process converts the arrays of
+raw data to one-dimensional <span class="math notranslate nohighlight">\(I(Q)\)</span> profiles.  The best representation of this
+reduced data is on a log-log plot to reveal the many decades of both <span class="math notranslate nohighlight">\(I\)</span> and
+<span class="math notranslate nohighlight">\(Q\)</span> covered by the measurement.</p>
+<p>With the default handling by <a class="reference internal" href="specplot.html#spec2nexus.specplot.LinePlotter" title="spec2nexus.specplot.LinePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinePlotter</span></code></a>, no plot
+can be generated since the data is given in a separate HDF5 file.  That file
+is read with the custom handling of the <cite>usaxs_flyscan.py</cite> demo:</p>
+<p class="rubric"><cite>usaxs_flyscan.py</cite> example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="ch">#!/usr/bin/env python</span>
+<span class="linenos">  2</span>
+<span class="linenos">  3</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  4</span><span class="sd">Plot data from the USAXS FlyScan macro.</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span><span class="sd">.. autosummary::</span>
+<span class="linenos">  7</span>
+<span class="linenos">  8</span><span class="sd">    ~read_reduced_fly_scan_file</span>
+<span class="linenos">  9</span><span class="sd">    ~retrieve_flyScanData</span>
+<span class="linenos"> 10</span><span class="sd">    ~USAXS_FlyScan_Structure</span>
+<span class="linenos"> 11</span><span class="sd">    ~USAXS_FlyScan_Plotter</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span><span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="linenos"> 16</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="linenos"> 17</span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot</span>
+<span class="linenos"> 20</span><span class="kn">import</span><span class="w"> </span><span class="nn">spec2nexus.specplot_gallery</span>
+<span class="linenos"> 21</span>
+<span class="linenos"> 22</span><span class="c1"># $URL: https://subversion.xray.aps.anl.gov/small_angle/USAXS/livedata/specplot.py $</span>
+<span class="linenos"> 23</span><span class="n">REDUCED_FLY_SCAN_BINS</span> <span class="o">=</span> <span class="mi">250</span>  <span class="c1"># the default</span>
+<span class="linenos"> 24</span><span class="n">PLOT_AXES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">]</span>
+<span class="linenos"> 25</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span><span class="c1"># methods picked (&amp; modified) from the USAXS livedata project</span>
+<span class="linenos"> 28</span><span class="k">def</span><span class="w"> </span><span class="nf">read_reduced_fly_scan_file</span><span class="p">(</span><span class="n">hdf5_file_name</span><span class="p">):</span>
+<span class="linenos"> 29</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 30</span><span class="sd">    Read any and all reduced data from the HDF5 file, return in a dictionary.</span>
+<span class="linenos"> 31</span>
+<span class="linenos"> 32</span><span class="sd">    dictionary = {</span>
+<span class="linenos"> 33</span><span class="sd">      &#39;full&#39;: (dictionary keys: Q, R, R_max, ar, fwhm, centroid)</span>
+<span class="linenos"> 34</span><span class="sd">      &#39;250&#39;:  (dictionary keys: Q, R, dR)</span>
+<span class="linenos"> 35</span><span class="sd">      &#39;5000&#39;: (dictionary keys: Q, R, dR)</span>
+<span class="linenos"> 36</span><span class="sd">    }</span>
+<span class="linenos"> 37</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span>    <span class="n">reduced</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 40</span>    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">hdf5_file_name</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf</span><span class="p">:</span>
+<span class="linenos"> 41</span>        <span class="n">entry</span> <span class="o">=</span> <span class="n">hdf</span><span class="p">[</span><span class="s2">&quot;/entry&quot;</span><span class="p">]</span>
+<span class="linenos"> 42</span>        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="linenos"> 43</span>            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;flyScan_reduced_&quot;</span><span class="p">):</span>
+<span class="linenos"> 44</span>                <span class="n">nxdata</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="linenos"> 45</span>                <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 46</span>                <span class="k">for</span> <span class="n">dsname</span> <span class="ow">in</span> <span class="n">PLOT_AXES</span><span class="p">:</span>
+<span class="linenos"> 47</span>                    <span class="k">if</span> <span class="n">dsname</span> <span class="ow">in</span> <span class="n">nxdata</span><span class="p">:</span>
+<span class="linenos"> 48</span>                        <span class="n">value</span> <span class="o">=</span> <span class="n">nxdata</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span>
+<span class="linenos"> 49</span>                        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos"> 50</span>                            <span class="n">d</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos"> 51</span>                        <span class="k">else</span><span class="p">:</span>
+<span class="linenos"> 52</span>                            <span class="n">d</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="linenos"> 53</span>                <span class="n">reduced</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;flyScan_reduced_&quot;</span><span class="p">)</span> <span class="p">:]]</span> <span class="o">=</span> <span class="n">d</span>
+<span class="linenos"> 54</span>    <span class="k">return</span> <span class="n">reduced</span>
+<span class="linenos"> 55</span>
+<span class="linenos"> 56</span>
+<span class="linenos"> 57</span><span class="k">def</span><span class="w"> </span><span class="nf">retrieve_flyScanData</span><span class="p">(</span><span class="n">scan</span><span class="p">):</span>
+<span class="linenos"> 58</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve reduced, rebinned data from USAXS Fly Scans.&quot;&quot;&quot;</span>
+<span class="linenos"> 59</span>    <span class="n">comment</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="linenos"> 60</span>    <span class="n">key_string</span> <span class="o">=</span> <span class="s2">&quot;FlyScan file name = &quot;</span>
+<span class="linenos"> 61</span>    <span class="n">index</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">key_string</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">key_string</span><span class="p">)</span>
+<span class="linenos"> 62</span>
+<span class="linenos"> 63</span>    <span class="n">hdf_file_name</span> <span class="o">=</span> <span class="n">comment</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos"> 64</span>    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos"> 65</span>    <span class="n">abs_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">hdf_file_name</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span>    <span class="n">plotData</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 68</span>    <span class="k">if</span> <span class="n">abs_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="linenos"> 69</span>        <span class="n">reduced</span> <span class="o">=</span> <span class="n">read_reduced_fly_scan_file</span><span class="p">(</span><span class="n">abs_file</span><span class="p">)</span>
+<span class="linenos"> 70</span>        <span class="n">s_num_bins</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">REDUCED_FLY_SCAN_BINS</span><span class="p">)</span>
+<span class="linenos"> 71</span>
+<span class="linenos"> 72</span>        <span class="n">choice</span> <span class="o">=</span> <span class="n">reduced</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s_num_bins</span><span class="p">)</span> <span class="ow">or</span> <span class="n">reduced</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;full&quot;</span><span class="p">)</span>
+<span class="linenos"> 73</span>
+<span class="linenos"> 74</span>        <span class="k">if</span> <span class="n">choice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos"> 75</span>            <span class="n">plotData</span> <span class="o">=</span> <span class="p">{</span><span class="n">axis</span><span class="p">:</span> <span class="n">choice</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">PLOT_AXES</span><span class="p">}</span>
+<span class="linenos"> 76</span>
+<span class="linenos"> 77</span>    <span class="k">return</span> <span class="n">plotData</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span>
+<span class="linenos"> 80</span><span class="k">class</span><span class="w"> </span><span class="nc">USAXS_FlyScan_Plotter</span><span class="p">(</span><span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">LinePlotter</span><span class="p">):</span>
+<span class="linenos"> 81</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 82</span><span class="sd">    Customize `FlyScan` handling, plot :math:`log(I)` *vs.* :math:`log(Q)`.</span>
+<span class="linenos"> 83</span>
+<span class="linenos"> 84</span><span class="sd">    The USAXS FlyScan data is stored in a NeXus HDF5 file in a subdirectory</span>
+<span class="linenos"> 85</span><span class="sd">    below the SPEC data file.  This code uses existing code from the</span>
+<span class="linenos"> 86</span><span class="sd">    USAXS instrument to read that file.</span>
+<span class="linenos"> 87</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 90</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve reduced data from the FlyScan&#39;s HDF5 file.&quot;&quot;&quot;</span>
+<span class="linenos"> 91</span>        <span class="c1"># get the data from the HDF5 file</span>
+<span class="linenos"> 92</span>        <span class="n">fly_data</span> <span class="o">=</span> <span class="n">retrieve_flyScanData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">)</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fly_data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="linenos"> 95</span>            <span class="k">raise</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">NoDataToPlot</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">))</span>
+<span class="linenos"> 96</span>
+<span class="linenos"> 97</span>        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
+<span class="linenos"> 98</span>        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span>
+<span class="linenos"> 99</span>        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">fly_data</span>
+<span class="linenos">100</span>
+<span class="linenos">101</span>        <span class="c1"># customize the plot just a bit</span>
+<span class="linenos">102</span>        <span class="c1"># sample name as given by the user?</span>
+<span class="linenos">103</span>        <span class="n">subtitle</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">scanNum</span><span class="p">)</span>
+<span class="linenos">104</span>        <span class="n">subtitle</span> <span class="o">+=</span> <span class="s2">&quot; FlyScan: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">105</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_plot_subtitle</span><span class="p">(</span><span class="n">subtitle</span><span class="p">)</span>
+<span class="linenos">106</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_x_log</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">107</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_y_log</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">108</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_x_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$|\vec</span><span class="si">{Q}</span><span class="s2">|, 1/\AA$&quot;</span><span class="p">)</span>
+<span class="linenos">109</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_y_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;USAXS $R(|\vec</span><span class="si">{Q}</span><span class="s2">|)$, a.u.&quot;</span><span class="p">)</span>
+<span class="linenos">110</span>
+<span class="linenos">111</span>    <span class="k">def</span><span class="w"> </span><span class="nf">plottable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">112</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">113</span><span class="sd">        Can this data be plotted as expected?</span>
+<span class="linenos">114</span><span class="sd">        &quot;&quot;&quot;</span>
+<span class="linenos">115</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+<span class="linenos">116</span>            <span class="n">signal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">]</span>
+<span class="linenos">117</span>            <span class="k">if</span> <span class="n">signal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">118</span>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]):</span>
+<span class="linenos">119</span>                    <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">120</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">121</span>
+<span class="linenos">122</span>
+<span class="linenos">123</span><span class="k">def</span><span class="w"> </span><span class="nf">debugging_setup</span><span class="p">():</span>
+<span class="linenos">124</span>    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="linenos">125</span>    <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="linenos">126</span>
+<span class="linenos">127</span>    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;src&quot;</span>
+<span class="linenos">128</span>    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+<span class="linenos">129</span>    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;__usaxs__&quot;</span>
+<span class="linenos">130</span>    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">131</span>    <span class="n">pathlib</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="linenos">132</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">)</span>
+<span class="linenos">133</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="linenos">134</span>    <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;spec2nexus&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;02_03_setup.dat&quot;</span>
+<span class="linenos">135</span>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">absolute</span><span class="p">()))</span>
+<span class="linenos">136</span>
+<span class="linenos">137</span>
+<span class="linenos">138</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">139</span>    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+<span class="linenos">140</span>    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;FlyScan&quot;</span><span class="p">,</span> <span class="n">USAXS_FlyScan_Plotter</span><span class="p">)</span>
+<span class="linenos">141</span>    <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+<span class="linenos">142</span>
+<span class="linenos">143</span>
+<span class="linenos">144</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">145</span>    <span class="c1"># debugging_setup()</span>
+<span class="linenos">146</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">147</span>
+<span class="linenos">148</span><span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="linenos">149</span><span class="c1"># :author:    Pete R. Jemian</span>
+<span class="linenos">150</span><span class="c1"># :email:     prjemian@gmail.com</span>
+<span class="linenos">151</span><span class="c1"># :copyright: (c) 2014-2025, Pete R. Jemian</span>
+<span class="linenos">152</span><span class="c1">#</span>
+<span class="linenos">153</span><span class="c1"># Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.</span>
+<span class="linenos">154</span><span class="c1">#</span>
+<span class="linenos">155</span><span class="c1"># The full license is in the file LICENSE, distributed with this software.</span>
+<span class="linenos">156</span><span class="c1"># -----------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>The data is then rendered in a customized log-log plot of <span class="math notranslate nohighlight">\(I(Q)\)</span>:</p>
+<figure class="align-default" id="id13">
+<a class="reference internal image-reference" href="_images/usaxs_flyscan.png"><img alt="_images/usaxs_flyscan.png" src="_images/usaxs_flyscan.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">USAXS <em>FlyScan</em>, handled by <code class="xref py py-class docutils literal notranslate"><span class="pre">USAXS_FlyScan_Plotter</span></code></span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The <code class="docutils literal notranslate"><span class="pre">USAXS_FlyScan_Plotter()</span></code> class provides custom methods for
+<code class="docutils literal notranslate"><span class="pre">retrieve_plot_data()</span></code> and <code class="docutils literal notranslate"><span class="pre">plottable()</span></code> which will be called from
+<a class="reference internal" href="specplot.html#spec2nexus.specplot.ImageMaker.plot_scan" title="spec2nexus.specplot.ImageMaker.plot_scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spec2nexus.specplot.ImageMaker.plot_scan()</span></code></a>.</p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">USAXS_FlyScan_Plotter.plottable()</span></code> returns a boolean value if the data
+can be plotted.</p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">USAXS_FlyScan_Plotter.retrieve_plot_data()</span></code> gets the data from the
+scan by calling <code class="docutils literal notranslate"><span class="pre">retrieve_flyScanData()</span></code> with the <code class="docutils literal notranslate"><span class="pre">scan</span></code> object.  Then the
+method customizes the plot details.</p>
+<p>Function <code class="docutils literal notranslate"><span class="pre">retrieve_flyScanData(scan)</span></code> gets the name of the NeXus/HDF5 file
+from the scan and reads the HDF5 file, returning either the reduced data with
+the number of points (as described in <code class="docutils literal notranslate"><span class="pre">REDUCED_FLY_SCAN_BINS</span></code>) or the full
+data set.</p>
+</section>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<p>When a custom scan macro handler is written and installed using code
+similar to the <a class="reference internal" href="#custom-ascan-specplot"><span class="std std-ref">custom ascan</span></a> handling above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">selector</span> <span class="o">=</span> <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+    <span class="n">selector</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;ascan&#39;</span><span class="p">,</span> <span class="n">Custom_Ascan</span><span class="p">)</span>
+    <span class="n">spec2nexus</span><span class="o">.</span><span class="n">specplot_gallery</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>then the command line arugment handling from <a class="reference internal" href="specplot_gallery.html#spec2nexus.specplot_gallery.main" title="spec2nexus.specplot_gallery.main"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spec2nexus.specplot_gallery.main()</span></code></a>
+can be accessed from the command line for help and usage information.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@localhost ~/.../spec2nexus/demo $ ./ascan.py
+usage: ascan.py [-h] [-r] [-d DIR] paths [paths ...]
+ascan.py: error: too few arguments
+</pre></div>
+</div>
+<p>Help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@localhost ~/.../spec2nexus/demo $ ./ascan.py -h
+usage: ascan.py [-h] [-r] [-d DIR] paths [paths ...]
+
+read a list of SPEC data files (or directories) and plot images of all scans
+
+positional arguments:
+  paths              SPEC data file name(s) or directory(s) with SPEC data
+                     files
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -r                 sort images from each data file in reverse chronolgical
+                     order
+  -d DIR, --dir DIR  base directory for output (default:/home/prjemian/Documen
+                     ts/eclipse/spec2nexus/demo)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="how_to_write_plugin.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">How to write a custom control line handling plugin module for <em>spec</em></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-model">Data Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#change-the-plot-title-text-in-ascan-macros">Change the plot title text in <em>ascan</em> macros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-the-y-axis-log-scale">Make the <em>y</em>-axis log scale</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-handling-of-a2scan">modify handling of <cite>a2scan</cite></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-uascan">custom <cite>uascan</cite></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-s-hklscan-macro">SPEC’s <em>hklscan</em> macro</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-xy-data-from-hdf5-file">Get <em>xy</em> data from HDF5 file</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-usaxs-flyscan">custom <cite>usaxs_flyscan</cite></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/specplot_custom_scan_macro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

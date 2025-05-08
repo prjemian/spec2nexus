@@ -1,0 +1,699 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>extractSpecScan &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=7f236878"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'extractSpecScan';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="specplot" href="specplot.html" />
+    <link rel="prev" title="Unrecognized Control Line" href="nexus_layout/unrecognized_content.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="applications.html">Applications</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">extractSpecScan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="libraries.html">Libraries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="howto.html">How-to guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="contents.html" class="nav-link">Contents</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="applications.html" class="nav-link">Applications</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">extractSpecScan</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="extractspecscan">
+<span id="id1"></span><h1>extractSpecScan<a class="headerlink" href="#extractspecscan" title="Link to this heading">#</a></h1>
+<p>Command line tool to extract scan data from a SPEC data file.</p>
+<section id="how-to-use-extractspecscan">
+<span id="index-0"></span><h2>How to use <strong>extractSpecScan</strong><a class="headerlink" href="#how-to-use-extractspecscan" title="Link to this heading">#</a></h2>
+<p>Extract one scan from a SPEC data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan data/APS_spec_data.dat -s 1 -c mr USAXS_PD I0 seconds
+</pre></div>
+</div>
+<p>the usage message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan
+usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
+                       [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
+                       spec_file
+</pre></div>
+</div>
+<p>the version number:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan -v
+2017.0201.0
+</pre></div>
+</div>
+<p>the help message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@host ~$ extractSpecScan -h
+usage: extractSpecScan [-h] [-v] [--nolabels] -s SCAN [SCAN ...] -c COLUMN
+                       [COLUMN ...] [-G] [-P] [-Q] [-V] [--quiet | --verbose]
+                       spec_file
+
+Save columns from SPEC data file scan(s) to TSV files URL:
+https://prjemian.github.io/spec2nexus//extractSpecScan.html v2016.1025.0
+
+positional arguments:
+  spec_file             SPEC data file name(s)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         print version number and exit
+  --nolabels            do not write column labels to output file (default:
+                        write labels)
+  -s SCAN [SCAN ...], --scan SCAN [SCAN ...]
+                        scan number(s) to be extracted (must specify at least
+                        one)
+  -c COLUMN [COLUMN ...], --column COLUMN [COLUMN ...]
+                        column label(s) to be extracted (must specify at least
+                        one)
+  -G                    report scan Geometry (#G) header information
+  -P                    report scan Positioners (#O &amp; #P) header information
+  -Q                    report scan Q (#Q) header information
+  -V                    report scan (UNICAT-style #H &amp; #V) header information
+  --quiet               suppress all program output (except errors), do not
+                        use with --verbose option
+  --verbose             print more program output, do not use with --quiet
+                        option
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<p>Extract four columns (mr, USAXS_PD, I0, seconds) from two
+scans (1, 6) in a SPEC data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ extractSpecScan data/APS_spec_data.dat -s 1 6 -c mr USAXS_PD I0 seconds
+
+program: /path/to/extractSpecScan.py
+read: data/APS_spec_data.dat
+wrote: data/APS_spec_data_1.dat
+wrote: data/APS_spec_data_6.dat
+</pre></div>
+</div>
+<p>Here’s the contents of <em>data/APS_spec_data_6.dat</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mr  USAXS_PD I0 seconds</span>
+<span class="mf">15.61017</span> <span class="mf">9.0</span>   <span class="mf">243.0</span> <span class="mf">0.3</span>
+<span class="mf">15.61</span> <span class="mf">13.0</span>  <span class="mf">325.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60984</span> <span class="mf">19.0</span>  <span class="mf">460.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60967</span> <span class="mf">30.0</span>  <span class="mf">609.0</span> <span class="mf">0.3</span>
+<span class="mf">15.6095</span>  <span class="mf">54.0</span>  <span class="mf">883.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60934</span> <span class="mf">161.0</span> <span class="mf">1780.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60917</span> <span class="mf">499.0</span> <span class="mf">3649.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.609</span>   <span class="mf">1257.0</span>   <span class="mf">6588.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60884</span> <span class="mf">2832.0</span>   <span class="mf">10245.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60867</span> <span class="mf">7294.0</span>   <span class="mf">13118.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6085</span>  <span class="mf">139191.0</span> <span class="mf">16527.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60834</span> <span class="mf">299989.0</span> <span class="mf">17893.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60817</span> <span class="mf">299989.0</span> <span class="mf">18276.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.608</span>   <span class="mf">299989.0</span> <span class="mf">18240.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60784</span> <span class="mf">299989.0</span> <span class="mf">18266.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60767</span> <span class="mf">299989.0</span> <span class="mf">18616.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6075</span>  <span class="mf">299989.0</span> <span class="mf">19033.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60734</span> <span class="mf">299989.0</span> <span class="mf">19036.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60717</span> <span class="mf">299988.0</span> <span class="mf">18587.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.607</span>   <span class="mf">299989.0</span> <span class="mf">17471.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60684</span> <span class="mf">123003.0</span> <span class="mf">14814.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.60667</span> <span class="mf">11060.0</span>  <span class="mf">11861.0</span>  <span class="mf">0.3</span>
+<span class="mf">15.6065</span>  <span class="mf">2217.0</span>   <span class="mf">8131.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60634</span> <span class="mf">637.0</span> <span class="mf">4269.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60617</span> <span class="mf">254.0</span> <span class="mf">2632.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.606</span>   <span class="mf">132.0</span> <span class="mf">1927.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60584</span> <span class="mf">79.0</span>  <span class="mf">1406.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.60567</span> <span class="mf">58.0</span>  <span class="mf">1075.0</span>   <span class="mf">0.3</span>
+<span class="mf">15.6055</span>  <span class="mf">32.0</span>  <span class="mf">695.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60534</span> <span class="mf">17.0</span>  <span class="mf">374.0</span> <span class="mf">0.3</span>
+<span class="mf">15.60517</span> <span class="mf">10.0</span>  <span class="mf">245.0</span> <span class="mf">0.3</span>
+</pre></div>
+</div>
+</section>
+<section id="module-spec2nexus.extractSpecScan">
+<span id="source-code-documentation"></span><h2>source code documentation<a class="headerlink" href="#module-spec2nexus.extractSpecScan" title="Link to this heading">#</a></h2>
+<p>Save columns from SPEC data file scan(s) to TSV files</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TSV: tab-separated values</p>
+</div>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extractSpecScan</span><span class="o">.</span><span class="n">py</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">CeCoIn5</span> <span class="o">-</span><span class="n">s</span> <span class="mi">5</span> <span class="o">-</span><span class="n">c</span> <span class="n">HerixE</span> <span class="n">Ana5</span> <span class="n">ICO</span><span class="o">-</span><span class="n">C</span>
+<span class="n">extractSpecScan</span><span class="o">.</span><span class="n">py</span> <span class="o">./</span><span class="n">testdata</span><span class="o">/</span><span class="mi">11_03</span><span class="n">_Vinod</span><span class="o">.</span><span class="n">dat</span>   <span class="o">-</span><span class="n">s</span> <span class="mi">2</span> <span class="mi">12</span>   <span class="o">-</span><span class="n">c</span> <span class="n">USAXS</span><span class="o">.</span><span class="n">m2rp</span> <span class="n">Monitor</span>  <span class="n">I0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>sdpecified column names <strong>MUST</strong> appear in all chosen scans</p>
+</div>
+<p>Compatible with Python 2.7+</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.expand_scan_range_terms">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">expand_scan_range_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scans</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#expand_scan_range_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.expand_scan_range_terms" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.get_user_parameters">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">get_user_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#get_user_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.get_user_parameters" title="Link to this definition">#</a></dt>
+<dd><p>configure user’s command line parameters from sys.argv</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.main">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.main" title="Link to this definition">#</a></dt>
+<dd><p>read the data file, find each scan, find the columns, save the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmdArgs</strong> (<em>[</em><em>str</em><em>]</em>) – Namespace from argparse, returned from get_user_parameters()</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each column label must match <em>exactly</em> the name of a label
+in each chosen SPEC scan number or the program will skip that particular scan</p>
+<p>If more than one column matches, the first match will be selected.</p>
+</div>
+<p>example output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mr    I0    USAXS_PD</span>
+<span class="mf">1.9475</span>    <span class="mi">65024</span>    <span class="mi">276</span>
+<span class="mf">1.9725</span>    <span class="mi">64845</span>    <span class="mi">352</span>
+<span class="mf">1.9975</span>    <span class="mi">65449</span>    <span class="mi">478</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.extractSpecScan.makeOutputFileName">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.extractSpecScan.</span></span><span class="sig-name descname"><span class="pre">makeOutputFileName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scanNum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/extractSpecScan.html#makeOutputFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.extractSpecScan.makeOutputFileName" title="Link to this definition">#</a></dt>
+<dd><p>return an output file name based on specFile and scanNum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specFile</strong> (<em>str</em>) – name of existing SPEC data file to be read</p></li>
+<li><p><strong>scanNum</strong> (<em>str</em>) – number of chosen SPEC scan</p></li>
+</ul>
+</dd>
+</dl>
+<p>append scanNum to specFile to get output file name
+(before file extension if present)</p>
+<p>Always add a file extension to the output file.
+If none is present, use “.dat”.</p>
+<p>Examples:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>specFile</p></th>
+<th class="head"><p>scanNum</p></th>
+<th class="head"><p>outFile</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CeCoIn5</p></td>
+<td><p>scan 5</p></td>
+<td><p>CeCoIn5_5.dat</p></td>
+</tr>
+<tr class="row-odd"><td><p>CeCoIn5.dat</p></td>
+<td><p>scan 77</p></td>
+<td><p>CeCoIn5_77.dat</p></td>
+</tr>
+<tr class="row-even"><td><p>CeCoIn5.dat</p></td>
+<td><p>scan 5.1</p></td>
+<td><p>CeCoIn5_5_1.dat</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nexus_layout/unrecognized_content.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Unrecognized Control Line</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="specplot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">specplot</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-extractspecscan">How to use <strong>extractSpecScan</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-spec2nexus.extractSpecScan">source code documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.extractSpecScan.expand_scan_range_terms"><code class="docutils literal notranslate"><span class="pre">expand_scan_range_terms()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.extractSpecScan.get_user_parameters"><code class="docutils literal notranslate"><span class="pre">get_user_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.extractSpecScan.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.extractSpecScan.makeOutputFileName"><code class="docutils literal notranslate"><span class="pre">makeOutputFileName()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/extractSpecScan.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

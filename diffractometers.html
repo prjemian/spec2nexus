@@ -1,0 +1,1169 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>spec2nexus.diffractometers &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=7f236878"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffractometers';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="spec2nexus.plugin" href="plugin_core.html" />
+    <link rel="prev" title="spec2nexus.control_lines" href="control_lines.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="applications.html">Applications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="libraries.html">Libraries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="howto.html">How-to guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="contents.html" class="nav-link">Contents</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="spec2nexus-diffractometers">
+<span id="index-0"></span><h1><a class="reference internal" href="#module-spec2nexus.diffractometers" title="spec2nexus.diffractometers: Describe SPEC diffractometer geometry #G control lines."><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a><a class="headerlink" href="#spec2nexus-diffractometers" title="Link to this heading">#</a></h1>
+<section id="module-spec2nexus.diffractometers">
+<span id="source-code-documentation"></span><h2>source code documentation<a class="headerlink" href="#module-spec2nexus.diffractometers" title="Link to this heading">#</a></h2>
+<p>Describe SPEC diffractometer geometry #G control lines.</p>
+<blockquote>
+<div><p>#G0 …       G[] array (geo mode, sector, etc)
+#G1 …       U[] array (lattice constants, orientation reflections)
+#G2 is unused
+#G3 …       UB[] array (orientation matrix)
+#G4 …       Q[] array (lambda, frozen angles, cut points, etc)</p>
+</div></blockquote>
+<p>API</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.Diffractometer" title="spec2nexus.diffractometers.Diffractometer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diffractometer</span></code></a>(geo_name)</p></td>
+<td><p>describe the diffractometer for the scan</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog</span></code></a>()</p></td>
+<td><p>catalog of the diffractometer geometries known to SPEC</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.split_name_variation" title="spec2nexus.diffractometers.split_name_variation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_name_variation</span></code></a>(geo_name)</p></td>
+<td><p>split geo_name into geometry name and variation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.get_geometry_catalog" title="spec2nexus.diffractometers.get_geometry_catalog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_geometry_catalog</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.reset_geometry_catalog" title="spec2nexus.diffractometers.reset_geometry_catalog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_geometry_catalog</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">Diffractometer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>describe the diffractometer for the scan</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.Diffractometer.parse" title="spec2nexus.diffractometers.Diffractometer.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(scan)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.Diffractometer.print_all" title="spec2nexus.diffractometers.Diffractometer.print_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_all</span></code></a>(scan)</p></td>
+<td><p>Print All (pa) about this diffractometer scan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.Diffractometer.print_brief" title="spec2nexus.diffractometers.Diffractometer.print_brief"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_brief</span></code></a>(scan)</p></td>
+<td><p>Print brief information (wh: where) about this diffractometer scan.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer._Q_names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_Q_names</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer._Q_names" title="Link to this definition">#</a></dt>
+<dd><p>List of names used to define Q (typically: h k l).  All lower case.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer._get_Q_dict">
+<span class="sig-name descname"><span class="pre">_get_Q_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer._get_Q_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer._get_Q_dict" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary with all the Q-related terms &amp; values (hkl, for example).</p>
+<p>PARAMETERS</p>
+<dl class="simple">
+<dt>info dict :</dt><dd><p>from <cite>_get_info_dict()</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer._get_info_dict">
+<span class="sig-name descname"><span class="pre">_get_info_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'str'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer._get_info_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer._get_info_dict" title="Link to this definition">#</a></dt>
+<dd><p>Return dictionary for use in various reports.</p>
+<p>PARAMETER</p>
+<dl class="simple">
+<dt>level str :</dt><dd><p>Level of detail for desired report.
+One of these values: <code class="docutils literal notranslate"><span class="pre">pa</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">wh</span></code>.
+Default: <code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer._positioners_dict">
+<span class="sig-name descname"><span class="pre">_positioners_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer._positioners_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer._positioners_dict" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary with positioners (keys) and positions (values) in this scan.</p>
+<p>PARAMETERS</p>
+<dl class="simple">
+<dt>scan obj :</dt><dd><p>SPEC data file scan (a <code class="docutils literal notranslate"><span class="pre">spec2nexus.spec.SpecDataFileScan</span></code> object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer.parse" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer.print_all">
+<span class="sig-name descname"><span class="pre">print_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer.print_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer.print_all" title="Link to this definition">#</a></dt>
+<dd><p>Print All (pa) about this diffractometer scan.</p>
+<p>PARAMETERS</p>
+<dl class="simple">
+<dt>scan obj :</dt><dd><p>SPEC data file scan (a <code class="docutils literal notranslate"><span class="pre">spec2nexus.spec.SpecDataFileScan</span></code> object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Diffractometer.print_brief">
+<span class="sig-name descname"><span class="pre">print_brief</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#Diffractometer.print_brief"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.Diffractometer.print_brief" title="Link to this definition">#</a></dt>
+<dd><p>Print brief information (wh: where) about this diffractometer scan.</p>
+<p>PARAMETERS</p>
+<dl class="simple">
+<dt>scan obj :</dt><dd><p>SPEC data file scan (a <code class="docutils literal notranslate"><span class="pre">spec2nexus.spec.SpecDataFileScan</span></code> object).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">DiffractometerGeometryCatalog</span></span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>catalog of the diffractometer geometries known to SPEC</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometries</span></code></a>([variations])</p></td>
+<td><p>list known geometries</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(geo_name[, default])</p></td>
+<td><p>return dictionary for diffractometer geometry <code class="docutils literal notranslate"><span class="pre">geo_name</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_default_geometry" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_default_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_geometry</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_geometry</span></code></a>(geo_name)</p></td>
+<td><p>Is the <code class="docutils literal notranslate"><span class="pre">geo_name</span></code> geometry defined?  True or False</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.match" title="spec2nexus.diffractometers.DiffractometerGeometryCatalog.match"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match</span></code></a>(scan)</p></td>
+<td><p>Find the <code class="docutils literal notranslate"><span class="pre">geo_name</span></code> geometry that matches the <code class="docutils literal notranslate"><span class="pre">scan</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog._get_scan_positioners_">
+<span class="sig-name descname"><span class="pre">_get_scan_positioners_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog._get_scan_positioners_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog._get_scan_positioners_" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.db">
+<span class="sig-name descname"><span class="pre">db</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.db" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries">
+<span class="sig-name descname"><span class="pre">geometries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.geometries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries" title="Link to this definition">#</a></dt>
+<dd><p>list known geometries</p>
+<p>PARAMETERS</p>
+<dl class="simple">
+<dt>variations<span class="classifier">bool</span></dt><dd><p>If True, also list known variations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get" title="Link to this definition">#</a></dt>
+<dd><p>return dictionary for diffractometer geometry <code class="docutils literal notranslate"><span class="pre">geo_name</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_default_geometry">
+<span class="sig-name descname"><span class="pre">get_default_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.get_default_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_default_geometry" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_variant">
+<span class="sig-name descname"><span class="pre">get_variant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variant_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.get_variant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_variant" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry">
+<span class="sig-name descname"><span class="pre">has_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.has_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry" title="Link to this definition">#</a></dt>
+<dd><p>Is the <code class="docutils literal notranslate"><span class="pre">geo_name</span></code> geometry defined?  True or False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.DiffractometerGeometryCatalog.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#DiffractometerGeometryCatalog.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.match" title="Link to this definition">#</a></dt>
+<dd><p>Find the <code class="docutils literal notranslate"><span class="pre">geo_name</span></code> geometry that matches the <code class="docutils literal notranslate"><span class="pre">scan</span></code>.</p>
+<p>Look at the data file header if the name is defined on the first comment
+line, as written by the SPEC standard macro.
+If there is more than one matching geometry, pick the first one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">KeyDescriptionValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('key',</span> <span class="pre">'description',</span> <span class="pre">'value')</span></em><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue._make">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new KeyDescriptionValue object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new KeyDescriptionValue object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue.description" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue.key" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.KeyDescriptionValue.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#spec2nexus.diffractometers.KeyDescriptionValue.value" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">LatticeParameters2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('a',</span> <span class="pre">'b',</span> <span class="pre">'gamma')</span></em><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D._make">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new LatticeParameters2D object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new LatticeParameters2D object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D.a">
+<span class="sig-name descname"><span class="pre">a</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D.a" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D.b">
+<span class="sig-name descname"><span class="pre">b</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D.b" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D.gamma" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters2D.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters2D.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">LatticeParameters3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('a',</span> <span class="pre">'b',</span> <span class="pre">'c',</span> <span class="pre">'alpha',</span> <span class="pre">'beta',</span> <span class="pre">'gamma')</span></em><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D._make">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new LatticeParameters3D object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new LatticeParameters3D object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.a">
+<span class="sig-name descname"><span class="pre">a</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.a" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.alpha" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.b">
+<span class="sig-name descname"><span class="pre">b</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.b" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.beta">
+<span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.beta" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.c">
+<span class="sig-name descname"><span class="pre">c</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.c" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.gamma" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.LatticeParameters3D.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.LatticeParameters3D.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">Reflections2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('h',</span> <span class="pre">'k',</span> <span class="pre">'wavelength',</span> <span class="pre">'angles')</span></em><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D._make">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new Reflections2D object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new Reflections2D object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.angles">
+<span class="sig-name descname"><span class="pre">angles</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.angles" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.h">
+<span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.h" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.k">
+<span class="sig-name descname"><span class="pre">k</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.k" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections2D.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections2D.wavelength" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">Reflections3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('h',</span> <span class="pre">'k',</span> <span class="pre">'l',</span> <span class="pre">'wavelength',</span> <span class="pre">'angles')</span></em><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D._make">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new Reflections3D object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new Reflections3D object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.angles">
+<span class="sig-name descname"><span class="pre">angles</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.angles" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.h">
+<span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.h" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.k">
+<span class="sig-name descname"><span class="pre">k</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.k" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.l">
+<span class="sig-name descname"><span class="pre">l</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.l" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.Reflections3D.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#spec2nexus.diffractometers.Reflections3D.wavelength" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.get_geometry_catalog">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">get_geometry_catalog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#get_geometry_catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.get_geometry_catalog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.reset_geometry_catalog">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">reset_geometry_catalog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#reset_geometry_catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.reset_geometry_catalog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spec2nexus.diffractometers.split_name_variation">
+<span class="sig-prename descclassname"><span class="pre">spec2nexus.diffractometers.</span></span><span class="sig-name descname"><span class="pre">split_name_variation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spec2nexus/diffractometers.html#split_name_variation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spec2nexus.diffractometers.split_name_variation" title="Link to this definition">#</a></dt>
+<dd><p>split geo_name into geometry name and variation</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="control_lines.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="plugin_core.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-spec2nexus.diffractometers">source code documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer"><code class="docutils literal notranslate"><span class="pre">Diffractometer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer._Q_names"><code class="docutils literal notranslate"><span class="pre">Diffractometer._Q_names</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer._get_Q_dict"><code class="docutils literal notranslate"><span class="pre">Diffractometer._get_Q_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer._get_info_dict"><code class="docutils literal notranslate"><span class="pre">Diffractometer._get_info_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer._positioners_dict"><code class="docutils literal notranslate"><span class="pre">Diffractometer._positioners_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer.parse"><code class="docutils literal notranslate"><span class="pre">Diffractometer.parse()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer.print_all"><code class="docutils literal notranslate"><span class="pre">Diffractometer.print_all()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Diffractometer.print_brief"><code class="docutils literal notranslate"><span class="pre">Diffractometer.print_brief()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog._get_scan_positioners_"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog._get_scan_positioners_()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.db"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.db</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.geometries"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.geometries()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.get()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_default_geometry"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.get_default_geometry()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.get_variant"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.get_variant()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.has_geometry"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.has_geometry()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.DiffractometerGeometryCatalog.match"><code class="docutils literal notranslate"><span class="pre">DiffractometerGeometryCatalog.match()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue._asdict"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue._asdict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue._field_defaults"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue._field_defaults</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue._fields"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue._fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue._make"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue._make()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue._replace"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue._replace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue.count"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue.description"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue.description</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue.index"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue.index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue.key"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue.key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.KeyDescriptionValue.value"><code class="docutils literal notranslate"><span class="pre">KeyDescriptionValue.value</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D._asdict"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D._asdict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D._field_defaults"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D._field_defaults</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D._fields"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D._fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D._make"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D._make()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D._replace"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D._replace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D.a"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D.a</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D.b"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D.b</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D.count"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D.gamma"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D.gamma</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters2D.index"><code class="docutils literal notranslate"><span class="pre">LatticeParameters2D.index()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D._asdict"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D._asdict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D._field_defaults"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D._field_defaults</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D._fields"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D._fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D._make"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D._make()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D._replace"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D._replace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.a"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.a</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.alpha"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.alpha</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.b"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.b</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.beta"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.beta</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.c"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.c</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.count"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.gamma"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.gamma</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.LatticeParameters3D.index"><code class="docutils literal notranslate"><span class="pre">LatticeParameters3D.index()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D"><code class="docutils literal notranslate"><span class="pre">Reflections2D</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D._asdict"><code class="docutils literal notranslate"><span class="pre">Reflections2D._asdict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D._field_defaults"><code class="docutils literal notranslate"><span class="pre">Reflections2D._field_defaults</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D._fields"><code class="docutils literal notranslate"><span class="pre">Reflections2D._fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D._make"><code class="docutils literal notranslate"><span class="pre">Reflections2D._make()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D._replace"><code class="docutils literal notranslate"><span class="pre">Reflections2D._replace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.angles"><code class="docutils literal notranslate"><span class="pre">Reflections2D.angles</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.count"><code class="docutils literal notranslate"><span class="pre">Reflections2D.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.h"><code class="docutils literal notranslate"><span class="pre">Reflections2D.h</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.index"><code class="docutils literal notranslate"><span class="pre">Reflections2D.index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.k"><code class="docutils literal notranslate"><span class="pre">Reflections2D.k</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections2D.wavelength"><code class="docutils literal notranslate"><span class="pre">Reflections2D.wavelength</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D"><code class="docutils literal notranslate"><span class="pre">Reflections3D</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D._asdict"><code class="docutils literal notranslate"><span class="pre">Reflections3D._asdict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D._field_defaults"><code class="docutils literal notranslate"><span class="pre">Reflections3D._field_defaults</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D._fields"><code class="docutils literal notranslate"><span class="pre">Reflections3D._fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D._make"><code class="docutils literal notranslate"><span class="pre">Reflections3D._make()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D._replace"><code class="docutils literal notranslate"><span class="pre">Reflections3D._replace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.angles"><code class="docutils literal notranslate"><span class="pre">Reflections3D.angles</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.count"><code class="docutils literal notranslate"><span class="pre">Reflections3D.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.h"><code class="docutils literal notranslate"><span class="pre">Reflections3D.h</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.index"><code class="docutils literal notranslate"><span class="pre">Reflections3D.index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.k"><code class="docutils literal notranslate"><span class="pre">Reflections3D.k</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.l"><code class="docutils literal notranslate"><span class="pre">Reflections3D.l</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.Reflections3D.wavelength"><code class="docutils literal notranslate"><span class="pre">Reflections3D.wavelength</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.get_geometry_catalog"><code class="docutils literal notranslate"><span class="pre">get_geometry_catalog()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.reset_geometry_catalog"><code class="docutils literal notranslate"><span class="pre">reset_geometry_catalog()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec2nexus.diffractometers.split_name_variation"><code class="docutils literal notranslate"><span class="pre">split_name_variation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/diffractometers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spec2nexus.plugins.XPCS &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=7f236878"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/spec2nexus/plugins/XPCS';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">spec2nexus.plugins.XPCS</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for spec2nexus.plugins.XPCS</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># :author:    John Hammonds</span>
+<span class="c1"># :email:     JPHammonds@anl.gov</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SPEC data file control lines unique to the APS XPCS instrument</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">spec2nexus.eznx</span><span class="w"> </span><span class="kn">import</span> <span class="n">makeGroup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spec2nexus.plugin_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlLineBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spec2nexus.spec</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpecDataFileHeader</span><span class="p">,</span> <span class="n">SpecDataFileScan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spec2nexus.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">strip_first_word</span>
+
+
+<div class="viewcode-block" id="XPCS_VA">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XPCS_VA</span><span class="p">(</span><span class="n">ControlLineBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**#VA**&quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;#VA\d+&quot;</span>
+    <span class="n">scan_attributes_defined</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;VA&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XPCS_VA.process">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">spec_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="n">subkey</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="s2">&quot;VA&quot;</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">VA</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">spec_obj</span><span class="o">.</span><span class="n">VA</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_first_word</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="n">SpecDataFileHeader</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XPCS_VA.writer">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VA.writer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5parent</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">nxclass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Describe how to write VA data&quot;&quot;&quot;</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;XPCS VA parameters&quot;</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">makeGroup</span><span class="p">(</span><span class="n">h5parent</span><span class="p">,</span> <span class="s2">&quot;VA&quot;</span><span class="p">,</span> <span class="n">nxclass</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">VA</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">dd</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">save_dict</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="XPCS_VD">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XPCS_VD</span><span class="p">(</span><span class="n">ControlLineBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**#VD** &quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;#VD\d+&quot;</span>
+    <span class="n">scan_attributes_defined</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;VD&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XPCS_VD.process">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">spec_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="n">subkey</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="s2">&quot;VD&quot;</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">VD</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">spec_obj</span><span class="o">.</span><span class="n">VD</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_first_word</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="n">SpecDataFileHeader</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XPCS_VD.writer">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VD.writer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5parent</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">nxclass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Describe how to write VD data&quot;&quot;&quot;</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;XPCS VD parameters&quot;</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">makeGroup</span><span class="p">(</span><span class="n">h5parent</span><span class="p">,</span> <span class="s2">&quot;VD&quot;</span><span class="p">,</span> <span class="n">nxclass</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">VD</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">dd</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">save_dict</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="XPCS_VE">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XPCS_VE</span><span class="p">(</span><span class="n">ControlLineBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**#VE** &quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;#VE\d+&quot;</span>
+    <span class="n">scan_attributes_defined</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;VE&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XPCS_VE.process">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">spec_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="n">subkey</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="s2">&quot;VE&quot;</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">VE</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">spec_obj</span><span class="o">.</span><span class="n">VE</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_first_word</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="n">SpecDataFileHeader</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XPCS_VE.writer">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_VE.writer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5parent</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">nxclass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Describe how to write VE data&quot;&quot;&quot;</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;XPCS VE parameters&quot;</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">makeGroup</span><span class="p">(</span><span class="n">h5parent</span><span class="p">,</span> <span class="s2">&quot;VE&quot;</span><span class="p">,</span> <span class="n">nxclass</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">scan</span><span class="o">.</span><span class="n">VE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">dd</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">save_dict</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="XPCS_XPCS">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XPCS_XPCS</span><span class="p">(</span><span class="n">ControlLineBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;#XPCS&quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;#XPCS&quot;</span>
+    <span class="n">scan_attributes_defined</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;XPCS&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XPCS_XPCS.process">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">spec_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="s2">&quot;XPCS&quot;</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">XPCS</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">splitWord</span> <span class="o">=</span> <span class="n">strip_first_word</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">spec_obj</span><span class="o">.</span><span class="n">XPCS</span><span class="p">[</span><span class="n">splitWord</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">splitWord</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="n">SpecDataFileScan</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XPCS_XPCS.writer">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_XPCS.writer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5parent</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">nxclass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="XPCS_CCD">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XPCS_CCD</span><span class="p">(</span><span class="n">ControlLineBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;#CCD&quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;#CCD&quot;</span>
+    <span class="n">scan_attributes_defined</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CCD&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XPCS_CCD.process">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">spec_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="s2">&quot;CCD&quot;</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">CCD</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">splitWord</span> <span class="o">=</span> <span class="n">strip_first_word</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">spec_obj</span><span class="o">.</span><span class="n">CCD</span><span class="p">[</span><span class="n">splitWord</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">splitWord</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_obj</span><span class="p">,</span> <span class="n">SpecDataFileScan</span><span class="p">):</span>
+            <span class="n">spec_obj</span><span class="o">.</span><span class="n">addH5writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XPCS_CCD.writer">
+<a class="viewcode-back" href="../../../supplied_plugins/XPCS.html#spec2nexus.plugins.XPCS.XPCS_CCD.writer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5parent</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">nxclass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

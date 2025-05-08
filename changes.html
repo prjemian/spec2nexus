@@ -1,0 +1,1427 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Change History &#8212; spec2nexus 2021.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=7f236878"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changes';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Unit Testing" href="unit_testing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2021.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spec2nexus 2021.2</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="contents.html">
+    Contents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_data.html">Example data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="applications.html">Applications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="spec2nexus.html">spec2nexus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="nexus_layout/index.html">NeXus File Layout</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/example_1d_scan.html">Example 1-D scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/terms.html">Nomenclature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/basic_tree.html">Basic Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/general_tree.html">General Tree Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_data_file.html">SPEC Data File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/spec_scan.html">Scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/scan_data.html">Scan Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/comments.html">Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/counters.html">Counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/geometry.html">Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/instrument.html">Instrument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/mca.html">Multi-channel analyzer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/metadata.html">Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/positioners.html">Positioners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/sample.html">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/temperature.html">Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nexus_layout/unrecognized_content.html">Unrecognized Control Line</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="extractSpecScan.html">extractSpecScan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot.html">specplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_gallery.html">specplot_gallery</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="libraries.html">Libraries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="eznx.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.eznx</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="howto.html">How-to guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="how_to_write_plugin.html">How to write a custom control line handling plugin module for <em>spec</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="specplot_custom_scan_macro.html">How to write a custom scan handling class for <em>specplot</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="charts.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.charts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="control_lines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.control_lines</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="diffractometers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.diffractometers</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="plugin_core.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.plugin</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/XPCS.html">XPCS plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/apstools_specwriter.html">apstools SpecWriterCallback metadata plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/fallback.html">Fallback plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/spec_common.html">SPEC standard plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uim.html">UIM plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/unicat.html">unicat plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supplied_plugins/uxml.html">#UXML: UXML metadata plugin</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="scanf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.scanf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.singletons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="writer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spec2nexus.writer</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_testing.html">Unit Testing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="contents.html" class="nav-link">Contents</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Change History</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="change-history">
+<h1>Change History<a class="headerlink" href="#change-history" title="Link to this heading">#</a></h1>
+<section id="production">
+<h2>Production<a class="headerlink" href="#production" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>2021.2.7<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Released 2025-05-08</p>
+<section id="fixes">
+<h4>Fixes<a class="headerlink" href="#fixes" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Don’t warn when truncation affects comparison of file epoch and scan epoch.</p></li>
+</ul>
+</section>
+<section id="maintenance">
+<h4>Maintenance<a class="headerlink" href="#maintenance" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Documentation switched to pydata-sphinx-theme.</p></li>
+<li><p>Expand recognition of SPEC data files to match more patterns.</p></li>
+<li><p>Update project packaging.</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h3>2021.2.6<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Released 2023-02-10</p>
+<section id="id3">
+<h4>Fixes<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Data file with twoc geometry not recognized, caused problems interpreting <code class="docutils literal notranslate"><span class="pre">#G1</span></code> control lines</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>Maintenance<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Uses geometry when data file declares in file header, as written by SPEC standard macro.</p></li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h3>2021.2.5<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Released 2022-12-22</p>
+<section id="id6">
+<h4>Fixes<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Version number not reported correctly in certain situations (issue #299).</p></li>
+<li><p>Coverage/Coveralls were failing to upload code coverage results (issue #299).</p></li>
+</ul>
+</section>
+<section id="id7">
+<h4>Maintenance<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Add CodeQL analysis workflow, per GitHub bot recommendation (issue #295).</p></li>
+<li><p>Add support for Python 3.11.</p></li>
+<li><p>Adjust badges on root-level README page.</p></li>
+<li><p>When building documentation, “mock” the additional packages.</p></li>
+<li><p>Refactor Sphinx publishing from GitHub Action to in-line workflow.</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h3>2021.2.4<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>released 2022-10-14</p>
+<section id="id9">
+<h4>Maintenance<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Ensure additional files are installed by conda &amp; pip, per PEP-518.</p></li>
+</ul>
+</section>
+<section id="deprecations">
+<h4>Deprecations<a class="headerlink" href="#deprecations" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Drop support for Python &lt;3.8.</p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h3>2021.2.3<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>released 2022-09-19</p>
+<section id="id11">
+<h4>Fixes<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>Documentation was not published for the common plugins.</p>
+</section>
+</section>
+<section id="id12">
+<h3>2021.2.2<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>released 2022-09-06</p>
+<section id="id13">
+<h4>Maintenance<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<p>Switch version management to setuptools-scm.</p>
+<p>Updated Sphinx (documentation) configuration to v5.1.</p>
+</section>
+</section>
+<section id="id14">
+<h3>2021.2.1<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>released 2022-05-26</p>
+<section id="new-features-and-or-enhancements">
+<h4>New Features and/or Enhancements<a class="headerlink" href="#new-features-and-or-enhancements" title="Link to this heading">#</a></h4>
+<p>Added <code class="docutils literal notranslate"><span class="pre">--output</span></code> (short version: <code class="docutils literal notranslate"><span class="pre">-o</span></code>) command-line option to
+<code class="docutils literal notranslate"><span class="pre">spec2nexus</span></code> application to name the output file.</p>
+</section>
+<section id="id15">
+<h4>Maintenance<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<p>Add support for SPEC <code class="docutils literal notranslate"><span class="pre">#R</span></code> (user results) control line.</p>
+</section>
+<section id="contributors">
+<h4>Contributors<a class="headerlink" href="#contributors" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Florin Boariu</p></li>
+</ul>
+</section>
+</section>
+<section id="id16">
+<h3>2021.2.0<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>released 2022-03-17</p>
+<section id="notice">
+<h4>Notice<a class="headerlink" href="#notice" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Conda package now on conda-forge: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">spec2nexus</span></code></p></li>
+<li><p>Updated format for new Change History entries.</p></li>
+</ul>
+</section>
+<section id="breaking-changes">
+<h4>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h4>
+<p>The plugin system was rebuilt to make it easier to write and load plugins,
+especially custom, user-provided plugins.</p>
+</section>
+<section id="id17">
+<h4>New Features and/or Enhancements<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<p>Added another way to access scans, using Python’s slicing interface.
+See the <em>Slice Parameters</em> section for more details and examples.</p>
+<p>Add new diffractometer configuration reports:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str(scan.diffractometer)</span></code>:  minimal view of <code class="docutils literal notranslate"><span class="pre">scan</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scan.diffractometer.print_brief(scan)</span></code> : content similar to SPEC’s <code class="docutils literal notranslate"><span class="pre">wh</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scan.diffractometer.print_all(scan)</span></code> : content similar to SPEC’s <code class="docutils literal notranslate"><span class="pre">pa</span></code></p></li>
+</ul>
+<p>Documentation reorganized and using new Furo theme.</p>
+<p>New documentation of the NeXus file structure.</p>
+</section>
+<section id="id18">
+<h4>Fixes<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">eznx</span></code>: needs to return text as <code class="docutils literal notranslate"><span class="pre">str</span></code> (not <code class="docutils literal notranslate"><span class="pre">bytes</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">twoc</span></code>: diffractometer geometry has 2-D lattice and reflection(s)</p></li>
+</ul>
+</section>
+<section id="id19">
+<h4>Maintenance<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Optimize initial load times for data files.</p></li>
+<li><p>Code tests now use real examples of non-zero MCA data using files with both
+single and multiple MCA detectors.</p></li>
+<li><p>Tests of code using Python 3.7, 3.8, 3.9, 3.10</p></li>
+<li><p>All unit test code now in-source using <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p></li>
+<li><p>Code is now compliant with <a class="reference external" href="https://pep8.org/">PEP8</a> (Python code style guide).</p></li>
+<li><p>Increase number of unit tests to improve code coverage (now ~95%).</p></li>
+<li><p>Resume use of test code coverage reporting:
+<a class="reference external" href="https://coveralls.io/github/prjemian/spec2nexus">https://coveralls.io/github/prjemian/spec2nexus</a></p></li>
+</ul>
+</section>
+<section id="id20">
+<h4>Deprecations<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Python versions lower than 3.7 are no longer supported.</p></li>
+</ul>
+</section>
+<section id="id21">
+<h4>Contributors<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Radu Abrudan</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="older-releases">
+<h3>Older Releases<a class="headerlink" href="#older-releases" title="Link to this heading">#</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">2021.1.11<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2022.02.24</em></p>
+<ul class="simple">
+<li><p>re-release due to documentation publishing workflow problem</p></li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.10<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2022.02.24</em></p>
+<ul class="simple">
+<li><p>re-release due to documentation publishing workflow problem</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2021.1.9<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2022.02.24</em></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/239">#239</a></dt><dd><p>publish documentation at <a class="reference external" href="https://prjemian.github.io/spec2nexus/">https://prjemian.github.io/spec2nexus/</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.8<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2020.11.10</em></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/221">#221</a></dt><dd><p>move CI from travis-ci to Github Actions, test with python 3.8</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/217">#217</a></dt><dd><p>raise ValueError when <code class="docutils literal notranslate"><span class="pre">#L</span></code> and <code class="docutils literal notranslate"><span class="pre">#N</span></code> lines do not agree</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Python 2 end of support</p>
+<p>spec2nexus stopped development for Python 2 after release <em>2021.1.7</em>, <em>2019-11-21</em>.
+For more information, visit <a class="reference external" href="https://python3statement.org/">https://python3statement.org/</a>.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">2021.1.7<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019-11-21</em></p>
+<p>Note: Last version with support for Python 2</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/213">#213</a></dt><dd><p>copy data file to gallery</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/208">#208</a></dt><dd><p>add more diagnostics to gallery web page comments</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/191">#191</a></dt><dd><p>write each positioner to NXpositioner group</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/188">#188</a></dt><dd><p>catenate continued lines before parsing data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/186">#186</a></dt><dd><p>remove unused code</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.6<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.11.01</em></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/210">#210</a></dt><dd><p>add <cite>-c prjemian</cite> conda channel</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2021.1.5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.11.01</em></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/209">#209</a></dt><dd><p><em>pyRestTable</em> added to installation requirements</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.4<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.10.18</em></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/206">#206</a></dt><dd><p>specplot_gallery: replot shows all existing plots</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2021.1.3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.08.19</em> - only update plots with <em>new</em> content</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/202">#202</a></dt><dd><p>specplot_gallery: switch to SVG (from PNG) for plots</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/201">#201</a></dt><dd><p>spec: subsequent calls to read() duplicate scans – FIXED</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/126">#126</a></dt><dd><p>spec: new <code class="docutils literal notranslate"><span class="pre">update_available</span></code> property</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/108">#108</a></dt><dd><p>specplot_gallery: only update plots with <em>new</em> content</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.2<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.08.15</em>, plugin enhancements</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/197">#197</a></dt><dd><p>plugins: handle empty empty #O0 or #P0 list</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/195">#195</a></dt><dd><p>drop CII badge: not useful to spec2nexus</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/190">#190</a></dt><dd><p>writer: link content into NXinstrument group</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/51">#51</a></dt><dd><p>plugins: interpret #Gn control lines</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2021.1.1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.07.22</em>, refactor</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/181">#181</a></dt><dd><p>plugins: revised technique to load control line handlers</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.1.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.07.15</em>, new features</p>
+<p><strong>NEW</strong></p>
+<ul class="simple">
+<li><p>support for <code class="docutils literal notranslate"><span class="pre">#UXML</span></code> metadata</p></li>
+<li><p>support for <code class="docutils literal notranslate"><span class="pre">hklscan</span></code> scans</p></li>
+<li><p>improved support for <code class="docutils literal notranslate"><span class="pre">mesh</span></code> and <code class="docutils literal notranslate"><span class="pre">hklmesh</span></code> scans</p></li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/159">#159</a></dt><dd><p>handle #UXML metadata control lines</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/155">#155</a></dt><dd><p>module: writer - recognize hklscan</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/150">#150</a></dt><dd><p>module: writer - increase coverage of unit tests: mesh, hklmesh</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/148">#148</a></dt><dd><p>module: eznx - increase coverage of unit tests</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2021.0.1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.07.13</em>, plugin loading and documentation</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/170">#170</a></dt><dd><p>describe how to write &amp; load Control Line Handler plugins</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/169">#169</a></dt><dd><p>announce deprecation of python 2</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/165">#165</a></dt><dd><p>resolve conda build error</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/149">#149</a></dt><dd><p>unit tests: <code class="docutils literal notranslate"><span class="pre">units</span></code> module</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2021.0.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.07.12</em>, API change affecting plugins</p>
+<p><strong>API change</strong>:
+Changed how plugins are defined and registered.
+Custom plugins must be modified and import code revised
+to work with new system.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/pull/168">#168</a></dt><dd><p>plugins are now self-registering</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/166">#166</a></dt><dd><p>fix conda packaging</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2020.0.2<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.07.09</em>, bug fixes and code review suggestions</p>
+<p>NOTE: conda package is broken (no plugins directory).
+Only use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">spec2nexus</span></code> with this release.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/164">#164</a></dt><dd><p>post conda packages to <cite>aps-anl-tag</cite> channel</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/161">#161</a></dt><dd><p>read files with no #E control line</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/156">#156</a></dt><dd><p>LGTM code review</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/153">#153</a></dt><dd><p>LGTM code review</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2020.0.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.05.16</em>, major release</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/145">#145</a></dt><dd><p>unit tests for header content</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/144">#144</a></dt><dd><p>eznx <cite>makeDataset()</cite> now recognizes if data is <cite>ndarray</cite></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/123">#123</a></dt><dd><p>Accept data files with no header control lines (#F #E #D #C sequence)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/113">#113</a></dt><dd><p>unit tests for eznx</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/70">#70</a></dt><dd><p>remove h5toText, find this now in <cite>punx</cite> package</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2019.0503.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>released <em>2019.05.03</em>, tag</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/142">#142</a></dt><dd><p>DuplicateSpecScanNumber with multiple #F sections</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/137">#137</a></dt><dd><p>(again) bug in #U control line handling</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2019.0501.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>released <em>2019.05.01</em>, tag</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/137">#137</a></dt><dd><p>bug in #U control line handling</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/140">#140</a></dt><dd><p>change: #U data goes into <cite>&lt;object&gt;.U</cite> list (name changed from <cite>UserReserved</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2.1.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2019.04.26, release</p>
+<ul>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/135">#135</a></dt><dd><p>switch to semantic versioning</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/133">#133</a></dt><dd><p>support user control line “#U “ with plugin</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/131">#131</a></dt><dd><p>support #MD control lines from apstools.SpecWriterCallback</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/125">#125</a></dt><dd><p>fluorescence spectra in files for RSM3D</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/120">#120</a></dt><dd><p>do not mock <cite>six</cite> package in documentation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/119">#119</a></dt><dd><p>delimiters in #H/#V lines with or without text values</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/116">#116</a></dt><dd><p>process data from spock</p>
+<blockquote>
+<div><p>see [release notes](<a class="github reference external" href="https://github.com/prjemian/spec2nexus/wiki/releasenotes__2-1-0">prjemian/spec2nexus</a>)</p>
+<p>It takes a couple steps to upgrade an existing conda installation from version 2017.nnnn to newer version 2.1.0</p>
+<ul class="simple">
+<li><p>add a declaration of <cite>spec2nexus &lt; 2000</cite> in the <cite>conda-meta/pinned</cite> file in the conda environment</p></li>
+<li><p><cite>conda update -c prjemian spec2nexus</cite> (should change to 2.1.0)</p></li>
+</ul>
+<p>It may still be necessary to uninstall and reinstall spec2nexus to effect an update:</p>
+<blockquote>
+<div><p>conda uninstall -y spec2nexus
+conda install -c prjemian spec2nexus</p>
+</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">2019.0422.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>(tag only)</p>
+<ul class="simple">
+<li><p>tag as-is, for issue #131</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2019.0321.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(tag only)</p>
+<ul class="simple">
+<li><p>tag as-is, post conda noarch package and post to pypi</p></li>
+</ul>
+</dd>
+<dt class="field-even">2017.901.4<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/62">#62</a></dt><dd><p>support Python3</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/112">#112</a></dt><dd><p>merge py3-62 branch</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/111">#111</a></dt><dd><p>Change raise statements to use parens around arguments. Affects issue #62</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/114">#114</a></dt><dd><p>travis-ci for python 3.5 &amp; 3.6</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/107">#107</a></dt><dd><p>Problems accessing SpecDataFileScan.data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/95">#95</a></dt><dd><p>document final release steps</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">2017.711.0<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/110">#110</a></dt><dd><p>Ownership of info between #L/data &amp; #S n</p>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/109">#109</a>
+Spaces in data labels on <cite>#L</cite> and other lines</p></li>
+</ul>
+</dd>
+<dt class="field-even">2017.522.1<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/105">#105</a>
+ignore extra content in <cite>#&#64;CALIB</cite> control lines</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/104">#104</a>
+use versioneer (again)</p></li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/101">#101</a></dt><dd><p>documentation URL &amp; date/time added to every gallery page</p>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/100">#100</a>
+conda package installs properly on Windows now</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/99">#99</a>
+BUG: specplot_gallery: plots of hklscan from file <cite>lmn40.spe</cite></p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/98">#98</a>
+BUG: specplot_gallery: identify as directory not found</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/52">#52</a>
+remove deprecated <em>prjPySpec</em> code</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2017.317.0<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>minor update of the <em>2017.3.0</em> release</p></li>
+</ul>
+</dd>
+<dt class="field-even">2017.3.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/103">#103</a>
+changed <em>converters</em> back to <em>utils</em></p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/97">#97</a>
+PyPI project description now formatted properly</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/90">#90</a>
+use <em>versioneer</em> (again)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2017-0202.0<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/99">#99</a>
+fix list index error in <em>hklscan</em> when hkl are all constant</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/96">#96</a>
+combine steps when publishing to PyPI</p></li>
+</ul>
+</dd>
+<dt class="field-even">2017-0201.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/milestone/3?closed=1">milestone punch list</a></p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/73">#73</a>
+refactor mesh and MCA data parsing code</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/67">#67</a>
+apply continuous integration via travis-ci</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/66">#66</a>
+add verbosity option</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/65">#65</a>
+apply unit testing</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/64">#64</a>
+<em>extractSpecScan</em>: fixed list index out of range</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/63">#63</a>
+<em>extractSpecScan</em>: command line option to select range of scans</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/56">#56</a>
+<em>specplot</em> and <em>specplot_gallery</em>: add from USAXS instrument and generalize</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.1025.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>standardize the versioning kit with pyRestTable and pvWebMonitor</p>
+</dd>
+<dt class="field-even">2016.1004.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/61">#61</a>
+release info from git (dropped versioneer package)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.0829.0<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/60">#60</a>
+Add new plugin test for XPCS plugin (thanks to John Hammonds)</p></li>
+</ul>
+</dd>
+<dt class="field-even">2016.0615.1<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/57">#57</a>
+keep information from unrecognized control lines,</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/56">#56</a>
+add <em>specplot</em> support,</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/55">#55</a>
+accept arbitrary number of MCA spectra</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.0601.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>match complete keys, use unix EOL internally, do not fail if no metadata</p>
+</dd>
+<dt class="field-even">2016.0216.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/36">#36</a>
+identify NIAC2014-compliant NeXus files</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.0210.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bugfix: eznx.makeGroup() now correctly sets attributes on new group + documentation for NIAC2014 attributes</p>
+</dd>
+<dt class="field-even">2016.0204.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/45">#45</a>
+handle case when no data points in scan ,</p></li>
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/46">#46</a>
+spec.getScan() ensures argument is used as <code class="docutils literal notranslate"><span class="pre">str</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.0201.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>added spec.getScanNumbersChronological(), spec.getFirstScanNumber(), and spec.getLastScanNumber()</p>
+</dd>
+<dt class="field-even">2016.0131.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/43">#43</a>
+support new NeXus method for default/signal/axes/_indices,</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2016.0130.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fixed <a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/44">#44</a></p>
+</dd>
+<dt class="field-even">2015.1221.1<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/40">#40</a>
+added versioneer support</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2015.1221.0<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/prjemian/spec2nexus/issues/39">#39</a>
+read scans with repeated scan numbers</p></li>
+</ul>
+</dd>
+<dt class="field-even">2015.0822.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>extractSpecScan: add option to report scan heading data, such as positioners and Q</p>
+</dd>
+<dt class="field-odd">2015.0214.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>h5toText: handle HDF5 ‘O’ data type (variable length strings)</p>
+</dd>
+<dt class="field-even">2015.0127.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>spec: ignore bad data lines</p>
+</dd>
+<dt class="field-odd">2015.0125.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spec: change handling of #L &amp; #X, refactor detection of scanNum and scanCmd</p>
+</dd>
+<dt class="field-even">2015.0113.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>dropped requirement of <em>lxml</em> package</p>
+</dd>
+<dt class="field-odd">2014.1228.1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spec: build mne:name cross-references for counters and positioners</p>
+</dd>
+<dt class="field-even">2014.1228.0<span class="colon">:</span></dt>
+<dd class="field-even"><p>show version in documentation</p>
+</dd>
+<dt class="field-odd">2014.1028.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spec: quietly ignore unrecognized scan content <em>for now</em></p>
+</dd>
+<dt class="field-even">2014.1027.1<span class="colon">:</span></dt>
+<dd class="field-even"><p>spec: major changes in SPEC file support: <strong>custom plugins</strong></p>
+<ul class="simple">
+<li><p><strong>spec</strong> based on plugins for each control line, users can add plugins</p></li>
+<li><p>declared <strong>prjPySpec</strong> module as legacy, code is frozen at <em>2014.0623.0</em> release</p></li>
+<li><p>added <strong>spec</strong> module to replace <strong>prjPySpec</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">2014.0623.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>updated argparse settings</p>
+</dd>
+<dt class="field-even">2014.0622.2<span class="colon">:</span></dt>
+<dd class="field-even"><p>added extractSpecScan.py to the suite from the USAXS project</p>
+</dd>
+<dt class="field-odd">2014.0410.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>restore scan.fileName variable to keep interface the same for some legacy clients</p>
+</dd>
+<dt class="field-even">2014.0404.1<span class="colon">:</span></dt>
+<dd class="field-even"><p>fix sdist utf8 problem, see: <a class="reference external" href="http://bugs.python.org/issue11638">http://bugs.python.org/issue11638</a></p>
+</dd>
+<dt class="field-odd">2014.0404.0<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tree_api_parser moved back into NeXpy project</p>
+</dd>
+<dt class="field-even">2014.0320.6<span class="colon">:</span></dt>
+<dd class="field-even"><p>handle multiple header sections in SPEC data file</p>
+</dd>
+<dt class="field-odd">2014.0320.5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fix the new project URL</p>
+</dd>
+<dt class="field-even">2014.0320.4<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sphinx cannot build PDF with code-block in a footnote</p>
+</dd>
+<dt class="field-odd">2014.0320.3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>note the new home URL in the packaging, too, drop nexpy requirement, default docs theme</p>
+</dd>
+<dt class="field-even">2014.0320.2<span class="colon">:</span></dt>
+<dd class="field-even"><p>tree_api_parse will go back into nexpy project, remove docs of it here</p>
+</dd>
+<dt class="field-odd">2014.0320.1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>allow readthedocs to build Sphinx without extra package requirements</p>
+</dd>
+<dt class="field-even">2014.0320.0<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p>new home page at <a class="reference external" href="http://spec2nexus.readthedocs.org">http://spec2nexus.readthedocs.org</a>, easier to publish there</p></li>
+<li><p>move common methods from __init__.py so docs will build at readthedocs.org</p></li>
+<li><p>new test case fails existing SPEC reader, ignore blank lines</p></li>
+</ul>
+</dd>
+<dt class="field-odd">2014.03.11<span class="colon">:</span></dt>
+<dd class="field-odd"><p>documentation</p>
+</dd>
+<dt class="field-even">2014.03.09<span class="colon">:</span></dt>
+<dd class="field-even"><p>h5toText: option to suppress printing of attributes, put URLs in command-line usage documentation, better test of is_spec_file()</p>
+</dd>
+<dt class="field-odd">2014.03.08<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fixed string writer and content display bug in eznx, added h5toText.py, prjPySpec docs improved again</p>
+</dd>
+<dt class="field-even">2014.03.051<span class="colon">:</span></dt>
+<dd class="field-even"><p>prjPySpec now handles SPEC v6 data file header additions, add new getScanCommands() method</p>
+</dd>
+<dt class="field-odd">2014.03.04<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(2014_Mardi_Gras release) removed nexpy project requirement from setup, prjPySpec raises exceptions now</p>
+</dd>
+<dt class="field-even">2014.03.02<span class="colon">:</span></dt>
+<dd class="field-even"><p>drops nexus tree API (and its dependencies) in favor of native h5py writer</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="development-github-repository">
+<h2>Development: GitHub repository<a class="headerlink" href="#development-github-repository" title="Link to this heading">#</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">2014.02.20<span class="colon">:</span></dt>
+<dd class="field-odd"><p>version number fits PEP440, LICENSE file included in sdist, more documentation and examples</p>
+</dd>
+<dt class="field-even">2014-02-19<span class="colon">:</span></dt>
+<dd class="field-even"><p>reference published documentation (re-posted)</p>
+</dd>
+<dt class="field-odd">2014-02-19<span class="colon">:</span></dt>
+<dd class="field-odd"><p>add documentation framework</p>
+</dd>
+<dt class="field-even">2014-02-18<span class="colon">:</span></dt>
+<dd class="field-even"><p>fork to GitHub to make generally available</p>
+</dd>
+</dl>
+</section>
+<section id="development-nexpy-branch">
+<h2>Development: NeXpy branch<a class="headerlink" href="#development-nexpy-branch" title="Link to this heading">#</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">2014-01<span class="colon">:</span></dt>
+<dd class="field-odd"><p>briefly, a branch in <a class="github reference external" href="https://github.com/nexpy/nexpy">nexpy/nexpy</a></p>
+<ul class="simple">
+<li><p>spec2nexus added during this phase</p></li>
+<li><p>relies on nexpy.api.nexus for NeXus support</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="production-usaxs-livedata">
+<h2>Production: USAXS livedata<a class="headerlink" href="#production-usaxs-livedata" title="Link to this heading">#</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">2010-2014<span class="colon">:</span></dt>
+<dd class="field-odd"><p>production use</p>
+<ul class="simple">
+<li><p>support livedata WWW page of APS USAXS instrument</p>
+<ul>
+<li><p>(<a class="reference external" href="http://usaxs.xray.aps.anl.gov/livedata/">http://usaxs.xray.aps.anl.gov/livedata/</a>),</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://subversion.xray.aps.anl.gov/trac/small_angle/browser/USAXS/livedata/prjPySpec.py">https://subversion.xray.aps.anl.gov/trac/small_angle/browser/USAXS/livedata/prjPySpec.py</a></p></li>
+<li><p>converted from Tcl</p></li>
+</ul>
+</dd>
+<dt class="field-even">2000-2010<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tcl code (<em>readSpecData.tcl</em>) in production use at APS sectors 32, 33, &amp; 34</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="unit_testing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Unit Testing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="license.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">License</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production">Production</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2021.2.7</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixes">Fixes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#maintenance">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2021.2.6</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Fixes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2021.2.5</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Fixes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2021.2.4</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Maintenance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecations">Deprecations</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2021.2.3</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2021.2.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2021.2.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features-and-or-enhancements">New Features and/or Enhancements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Maintenance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2021.2.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notice">Notice</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#breaking-changes">Breaking Changes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">New Features and/or Enhancements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Fixes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Maintenance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Deprecations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#older-releases">Older Releases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development-github-repository">Development: GitHub repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development-nexpy-branch">Development: NeXpy branch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-usaxs-livedata">Production: USAXS livedata</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2025, Pete R. Jemian.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
