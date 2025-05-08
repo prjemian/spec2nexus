@@ -28,9 +28,16 @@ Production
 
    To be released 2025-05
 
+   Fixes
+   ------------------
+
+   * Don't warn when truncation affects comparison of file epoch and scan epoch.
+
    Maintenance
    ------------------
 
+   * Documentation switched to pydata-sphinx-theme.
+   * Expand recognition of SPEC data files to match more patterns.
    * Update project packaging.
 
 2021.2.6
@@ -42,13 +49,10 @@ Fixes
 ------------------
 
 * Data file with twoc geometry not recognized, caused problems interpreting ``#G1`` control lines
-* Don't warn when truncation affects comparison of file epoch and scan epoch.
 
 Maintenance
 ------------------
 
-* Documentation switched to pydata-sphinx-theme.
-* Expand recognition of SPEC data files to match more patterns.
 * Uses geometry when data file declares in file header, as written by SPEC standard macro.
 
 2021.2.5
