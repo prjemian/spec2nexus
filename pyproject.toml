@@ -180,9 +180,9 @@ src_paths = ["spec2nexus"]
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
-filterwarnings =[
-    "ignore:Using or importing the ABCs from:DeprecationWarning",
-    "ignore:.*invalid escape sequence.*:DeprecationWarning",
+filterwarnings = [
+  "ignore:Using or importing the ABCs from:DeprecationWarning",
+  "ignore:.*invalid escape sequence.*:DeprecationWarning",
 ]
 
 [tool.ruff]
@@ -269,9 +269,8 @@ docstring-code-format = false
 docstring-code-line-length = "dynamic"
 
 
-
 [tool.setuptools]
-packages = ["spec2nexus"]
+packages = ["spec2nexus", "spec2nexus.data", "spec2nexus.plugins"]
 
 # [tool.setuptools.packages.find]
 # include = ["spec2nexus*"]  # package names should match these glob patterns (["*"] by default)
