@@ -1,9 +1,0 @@
-name: spec2nexus
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - h5py
-  - lxml
-  - matplotlib-base
-  - numpy

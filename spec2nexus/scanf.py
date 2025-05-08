@@ -61,7 +61,7 @@ scanf_cache = {}
 
 
 def _scanf_compile(fmt):
-    """
+    r"""
     This is an internal function which translates the format into regular expressions
 
     For example:

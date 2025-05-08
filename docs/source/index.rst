@@ -32,8 +32,8 @@ Package Information
 
 * **author**:    Pete R. Jemian
 * **email**:     prjemian@gmail.com
-* **copyright**: (c) 2014-2022, Pete R. Jemian
-* **license**:   Creative Commons Attribution 4.0 International Public License (see `LICENSE.txt <https://prjemian.github.io/spec2nexus/license.html>`_ file)
+* **copyright**: (c) 2014-2025, Pete R. Jemian
+* **license**:   Creative Commons Attribution 4.0 International Public License (see `LICENSE <https://prjemian.github.io/spec2nexus/license.html>`_ file)
 * **URL**:       documentation: https://prjemian.github.io/spec2nexus/
 * **git**:       source: https://github.com/prjemian/spec2nexus
 * **conda**:     Distribution: https://anaconda.org/conda-forge/spec2nexus

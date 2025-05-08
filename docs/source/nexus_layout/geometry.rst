@@ -96,7 +96,7 @@ have variants.  The variant is appended to the name as:
 
 The **wavelength** of the scan, if available in the ``#G`` lines, is written to
 the ``/SCAN/instrument/monochromator/wavelength`` field, [#NX.field]_ where
-``/SCAN/instrument/monochromator`` is a **NXmonochromator** [#NXmonochromator]
+``/SCAN/instrument/monochromator`` is a **NXmonochromator** [#NXmonochromator]_
 group.
 
 Consult the SPEC documentation (https://certif.com) or macros for further

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
+r"""
 A set of classes to read the contents of a SPEC data file.
 
 :author: Pete Jemian
@@ -785,9 +785,9 @@ class SpecDataFileScan(object):
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2022, Pete R. Jemian
+# :copyright: (c) 2014-2025, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
-# The full license is in the file LICENSE.txt, distributed with this software.
+# The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------

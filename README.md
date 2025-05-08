@@ -1,6 +1,6 @@
 # spec2nexus
 
-Converts SPEC data files and scans into NeXus HDF5 files:
+Reads SPEC data files, writes into NeXus HDF5 files:
 
     $ spec2nexus  path/to/file/specfile.dat
 
@@ -41,7 +41,7 @@ term | description
 **copyright** | (c) 2014-2022, Pete R. Jemian
 **links** | [documentation](https://prjemian.github.io/spec2nexus),  [release notes](https://github.com/prjemian/spec2nexus/wiki/Release-Notes),  [source code](https://github.com/prjemian/spec2nexus)
 **citation** | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6264513.svg)](https://doi.org/10.5281/zenodo.6264513)
-**license** | [![Creative Commons Attribution 4.0 International Public License](https://anaconda.org/conda-forge/spec2nexus/badges/license.svg)](https://prjemian.github.io/spec2nexus/license.html)  [LICENSE.txt](https://prjemian.github.io/spec2nexus/license.html)
+**license** | [![Creative Commons Attribution 4.0 International Public License](https://anaconda.org/conda-forge/spec2nexus/badges/license.svg)](https://prjemian.github.io/spec2nexus/license.html)  [LICENSE](https://prjemian.github.io/spec2nexus/license.html)
 **current releases** | [![image](https://img.shields.io/github/tag/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/tags)    [![image](https://img.shields.io/github/release/prjemian/spec2nexus.svg)](https://github.com/prjemian/spec2nexus/releases)
 **conda-forge** | [![https://anaconda.org/conda-forge/spec2nexus](https://anaconda.org/conda-forge/spec2nexus/badges/installer/conda.svg)](https://anaconda.org/conda-forge/spec2nexus)    [![https://anaconda.org/conda-forge/spec2nexus](https://anaconda.org/conda-forge/spec2nexus/badges/version.svg)](https://anaconda.org/conda-forge/spec2nexus)   [![Anaconda-Server Badge](https://anaconda.org/conda-forge/spec2nexus/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/spec2nexus)
 **PyPI** | [![https://pypi.python.org/pypi/spec2nexus](https://badge.fury.io/py/spec2nexus.svg)](https://badge.fury.io/py/spec2nexus)    [![image](https://img.shields.io/pypi/v/spec2nexus.svg)](https://pypi.python.org/pypi/spec2nexus/)

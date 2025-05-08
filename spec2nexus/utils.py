@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 def clean_name(key):
-    """
+    r"""
     create a name that is allowed by both HDF5 and NeXus rules
 
     :param str key: identifying string from SPEC data file
@@ -114,7 +114,8 @@ def split_scan_number_string(key):
 
 
 def sanitize_name(group, key):  # for legacy support only
-    """make name that is allowed by HDF5 and NeXus rules
+    r"""
+    Make name that is allowed by HDF5 and NeXus rules.
 
     :note: **deprecated**  use :func:`clean_name` instead (``group`` is never used)
     :param str group: unused
@@ -148,7 +149,7 @@ def reshape_data(scan_data, scan_shape):
         data = scan_data
     elif scan_data.size < scan_size:
         data = numpy.empty(scan_size)
-        data.fill(numpy.NaN)  # pad data with NaN
+        data.fill(numpy.nan)  # pad data with NaN
         data[0: scan_data.size] = scan_data.ravel()  # flatten & insert
     else:
         data = scan_data.ravel()  # flatten
@@ -158,9 +159,9 @@ def reshape_data(scan_data, scan_shape):
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
 # :email:     prjemian@gmail.com
-# :copyright: (c) 2014-2022, Pete R. Jemian
+# :copyright: (c) 2014-2025, Pete R. Jemian
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
-# The full license is in the file LICENSE.txt, distributed with this software.
+# The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------

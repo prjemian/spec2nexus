@@ -1,10 +1,101 @@
 [build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools_scm[toml]>=8", "setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "spec2nexus"
+dynamic = ["version"]
+description = "Reads SPEC data files, writes into NeXus HDF5 files."
+authors = [{ name = "Pete Jemian", email = "prjemian+spec2nexus@gmail.com" }]
+maintainers = [
+  { name = "Pete Jemian", email = "prjemian+spec2nexus@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = [
+  "SPEC",
+  "diffraction",
+  "data acquisition",
+  "NeXus",
+  "HDF5",
+  "MatPlotLib",
+]
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license
+license = "CC-BY-4.0"
+license-files = ["LICEN[CS]E*"]
+# license_url = "https://creativecommons.org/licenses/by/4.0/deed.en_US"
+# https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 6 - Mature",
+  "Environment :: Console",
+  "Environment :: OpenStack",
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Astronomy",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+  "Topic :: Scientific/Engineering :: Chemistry",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Topic :: Software Development",
+  "Topic :: Utilities",
+]
+
+dependencies = ["h5py", "lxml", "matplotlib", "numpy >=2"]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "coverage",
+  "coveralls",
+  "isort",
+  "mypy",
+  "pre-commit",
+  "pytest-cov",
+  "pytest",
+  "pytest",
+  "ruff",
+  "setuptools-scm",
+  "twine ==6.0.1",
+]
+doc = [
+  "furo",
+  "markupsafe",
+  "myst-nb",
+  "myst-parser",
+  "nbsphinx",
+  "ophyd",
+  # "pydata-sphinx-theme",
+  "setuptools >=77",
+  "setuptools-scm >=8",
+  "setuptools-scm",
+  "sphinx >=7",
+  "sphinx-autoapi",
+  "sphinx-design",
+  "sphinx-tabs",
+  "sphinx",
+]
+all = ["spec2nexus[dev,doc]"]
+
+[project.scripts]
+spec2nexus = "spec2nexus.nexus:main"
+extractSpecScan = "spec2nexus.extractSpecScan:main"
+specplot = "spec2nexus.specplot:main"
+specplot_gallery = "spec2nexus.specplot_gallery:main"
+
+[project.urls]
+homepage = "https://prjemian.github.io/spec2nexus"
+issues = "https://github.com/prjemian/spec2nexus/issues"
+source = "https://github.com/prjemian/spec2nexus"
+
 [tool.black]
-line-length = 115
-target-version = ['py37']
+line-length = 115 # matches the value of 'max-line-length' in .flake8
+target-version = ['py312']
 include = '\.pyi?$'
 exclude = '''
 
@@ -12,12 +103,12 @@ exclude = '''
   /(
       \.eggs         # exclude a few common directories in the
     | \.git          # root of the project
-    | \.hg
     | \.mypy_cache
     | \.tox
     | \.venv
     | \.pytest_cache
     | _build
+    | examples/archive
     | build
     | dist
     | docs
@@ -26,5 +117,185 @@ exclude = '''
 )
 '''
 
+[tool.copyright]
+copyright = "2014-2025, Pete R. Jemian"
+
+[tool.coverage.report]
+# exclude_lines =
+#     pragma: no cover
+#     def __repr__
+#     if self.debug:
+#     if settings.DEBUG
+#     raise AssertionError
+#     raise NotImplementedError
+#     if 0:
+#     if __name__ == .__main__.:
+
+
+[tool.coverage.run]
+concurrency = ["thread", "multiprocessing"]
+omit = [
+  # omit anything under the installed packages directory
+  "*/site-packages/*",
+  # omit these individual files
+  "*/_version.py",
+]
+relative_files = true
+
+[tool.flake8]
+max-line-length = 115
+exclude = [
+  ".git",
+  "__pycache__",
+  "build",
+  "dist",
+  "docs/source",
+  "demo",
+  "docs/debug*.py",
+]
+extend-ignore = [
+  "D203",
+  "D212",
+  "D415",
+  "E203", # See https://github.com/PyCQA/pycodestyle/issues/373
+  "E226",
+  "E402", # module level import not at top of file (for cansas.py)
+  "E501", # line too long
+  "E741",
+  "F401", # imported but unused
+  "F403",
+  "F722", # allow Annotated[typ, some_func("some string")]
+  "F811", # support typing.overload decorator
+  "W503",
+  "W504",
+  "W605",
+]
+
+[tool.isort]
+force_single_line = "True"
+include_trailing_comma = true
+multi_line_output = "NOQA"
+profile = "black"
+src_paths = ["spec2nexus"]
+
+[tool.pytest.ini_options]
+# https://learn.scientific-python.org/development/guides/repo-review/
+addopts = [
+  "--import-mode=importlib",
+  "-ra",
+  "--strict-config",
+  "--strict-markers",
+]
+filterwarnings = [
+  "ignore:Using or importing the ABCs from:DeprecationWarning",
+  "ignore:.*invalid escape sequence.*:DeprecationWarning",
+]
+log_cli_level = "INFO"
+minversion = "6"
+testpaths = ["spec2nexus/tests"]
+xfail_strict = true
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
+]
+
+# Same as Black.
+line-length = 115
+indent-width = 4
+
+# Assume Python 3.8
+target-version = "py38"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E402", "E741", "F405"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
+
+
+[tool.setuptools]
+packages = ["spec2nexus", "spec2nexus.data", "spec2nexus.plugins"]
+
+# [tool.setuptools.packages.find]
+# include = ["spec2nexus*"]  # package names should match these glob patterns (["*"] by default)
+# #
+# # from setup.cfg
+# # Specify any package data to be included in the wheel below.
+# [options.package_data]
+# # Include our documentation helpers: .md & .rst
+# spec2nexus =
+#     *.rst
+#     *.md
+#     data/**
+#     plugins/*.xsd
+#     LICENSE
+#     *.dict
+
+
 [tool.setuptools_scm]
-write_to = "spec2nexus/_version.py"

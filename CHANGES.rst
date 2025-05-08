@@ -21,7 +21,17 @@ Production
    2022.0.0
    +++++++++++++
 
-   To be released 2023
+   To be released ...
+
+   2021.2.7
+   +++++++++++++
+
+   To be released 2025-05
+
+   Maintenance
+   ------------------
+
+   * Update project packaging.
 
 2021.2.6
 +++++++++++++
