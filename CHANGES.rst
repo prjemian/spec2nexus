@@ -42,6 +42,7 @@ Fixes
 ------------------
 
 * Data file with twoc geometry not recognized, caused problems interpreting ``#G1`` control lines
+* Don't warn when truncation affects comparison of file epoch and scan epoch.
 
 Maintenance
 ------------------

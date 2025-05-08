@@ -146,7 +146,7 @@ class SPEC_Date(ControlLineBase):
                 header.epoch = sdf_object.epoch
             else:
                 # Report if header date is greater than this scan's date.
-                if header.epoch > sdf_object.epoch:
+                if int(header.epoch) == int(sdf_object.epoch):
                     logger.warning(
                         "Header epoch (%s) is younger than scan (%s)",
                         str(datetime.datetime.fromtimestamp(header.epoch)),
