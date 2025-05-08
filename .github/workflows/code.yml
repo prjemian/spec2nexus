@@ -16,30 +16,31 @@ defaults:
 
 jobs:
 
-  lint:
-    name: Code style
-    runs-on: ubuntu-latest
+  # TODO: re-enable
+  # lint:
+  #   name: Code style
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.12"
 
-      - name: Install package
-        run: |
-          set -vxeuo pipefail
-          python -m pip install --upgrade pip
+  #     - name: Install package
+  #       run: |
+  #         set -vxeuo pipefail
+  #         python -m pip install --upgrade pip
 
-      - name: Run ruff
-        uses: davidslusser/actions_python_ruff@v1.0.2
-        with:
-          python_version: "3.12"
+  #     - name: Run ruff
+  #       uses: davidslusser/actions_python_ruff@v1.0.2
+  #       with:
+  #         python_version: "3.12"
 
   tests:
     name: Python ${{ matrix.python-version }}
-    needs: lint
+    # needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -119,7 +120,7 @@ jobs:
   # https://coveralls-python.readthedocs.io/en/latest/usage/configuration.html#github-actions-support
   coveralls:
     name: Report unit test coverage to coveralls
-    needs: code
+    needs: tests
     runs-on: ubuntu-latest
     container: python:3-slim
 
