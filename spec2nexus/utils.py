@@ -149,7 +149,7 @@ def reshape_data(scan_data, scan_shape):
         data = scan_data
     elif scan_data.size < scan_size:
         data = numpy.empty(scan_size)
-        data.fill(numpy.NaN)  # pad data with NaN
+        data.fill(numpy.nan)  # pad data with NaN
         data[0: scan_data.size] = scan_data.ravel()  # flatten & insert
     else:
         data = scan_data.ravel()  # flatten

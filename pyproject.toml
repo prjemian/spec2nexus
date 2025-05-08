@@ -46,7 +46,7 @@ classifiers = [
   "Topic :: Utilities",
 ]
 
-dependencies = ["h5py", "lxml", "matplotlib", "numpy"]
+dependencies = ["h5py", "lxml", "matplotlib", "numpy >=2"]
 
 [project.optional-dependencies]
 dev = [
