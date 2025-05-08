@@ -270,7 +270,7 @@ docstring-code-line-length = "dynamic"
 
 
 [tool.setuptools]
-py-modules = ["spec2nexus"]
+packages = ["spec2nexus"]
 
 # [tool.setuptools.packages.find]
 # include = ["spec2nexus*"]  # package names should match these glob patterns (["*"] by default)

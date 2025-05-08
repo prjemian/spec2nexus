@@ -1,4 +1,5 @@
 include *.dict
+include LICENSE
 graft spec2nexus/data/*
 graft spec2nexus/plugins/*
 exclude .*
@@ -7,3 +8,6 @@ prune *.egg-info/
 prune demo/
 prune dist/
 prune docs/
+prune spec2nexus/plugins/__pycache__
+prune spec2nexus/tests
+prune spec2nexus/*/tests
