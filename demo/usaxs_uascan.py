@@ -69,5 +69,5 @@ if __name__ == "__main__":
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
-# The full license is in the file LICENSE.txt, distributed with this software.
+# The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------

@@ -2,15 +2,18 @@
 
 """Configuration of spec2nexus package."""
 
+__package__ = "spec2nexus"
+
 try:
     from setuptools_scm import get_version
 
     __version__ = get_version(root="..", relative_to=__file__)
     del get_version
+
 except (LookupError, ModuleNotFoundError):
     from importlib.metadata import version
 
-    __version__ = version("spec2nexus")
+    __version__ = version(__package__)
 
 # -----------------------------------------------------------------------------
 # :author:    Pete R. Jemian
@@ -19,5 +22,5 @@ except (LookupError, ModuleNotFoundError):
 #
 # Distributed under the terms of the Creative Commons Attribution 4.0 International Public License.
 #
-# The full license is in the file LICENSE.txt, distributed with this software.
+# The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------

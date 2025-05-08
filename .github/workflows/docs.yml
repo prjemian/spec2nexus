@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Checkout
         uses: actions/checkout@master
@@ -46,16 +46,12 @@ jobs:
 
       - name: Install package
         run: |
-          pip install --no-deps -e . -vv
+          pip install -e .[doc] -vv
 
       - name: Diagnostics
         run: |
           python -m pip list
           python -c "import spec2nexus; print(f'{spec2nexus.__version__=}')"
-
-      - name: Install Sphinx build requirements
-        run: |
-          pip install setuptools-scm sphinx furo
 
       - name: Sphinx
         run: |

@@ -1,5 +1,5 @@
 License
 =======
 
-.. literalinclude:: ../../spec2nexus/LICENSE.txt
+.. literalinclude:: ../../spec2nexus/LICENSE
    :language: text
